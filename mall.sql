@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `activity` (
 -- 正在导出表  mall.activity 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `activity` DISABLE KEYS */;
 INSERT INTO `activity` (`id`, `title`, `description`, `start_time`, `end_time`, `create_time`, `update_time`, `delete_time`, `remark`, `online`, `entrance_img`, `internal_top_img`, `name`) VALUES
-	(2, '夏日好礼送不停', '长夏村墟风日清', '2019-08-03 18:04:52.000', '2030-08-31 18:05:16.000', '2019-08-03 17:59:01.000', '2020-11-04 15:58:03.163', NULL, '限服装、鞋、文具等商品', 1, 'http://i2.sleeve.7yue.pro/m14.png', NULL, 'a-2');
+	(2, '夏日好礼送不停', '长夏村墟风日清', '2019-08-03 18:04:52.000', '2030-08-31 18:05:16.000', '2019-08-03 17:59:01.000', '2020-11-04 15:58:03.163', NULL, '限服装、鞋、文具等商品', 1, 'http://i2.sleeve.talelin.com/m14.png', NULL, 'a-2');
 /*!40000 ALTER TABLE `activity` ENABLE KEYS */;
 
 -- 导出  表 mall.activity_category 结构
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `banner` (
 /*!40000 ALTER TABLE `banner` DISABLE KEYS */;
 INSERT INTO `banner` (`id`, `name`, `description`, `create_time`, `update_time`, `delete_time`, `title`, `img`) VALUES
 	(1, 'b-1', '首页顶部主banner', '2019-07-28 04:47:15.000', '2019-08-04 01:03:16.000', NULL, NULL, NULL),
-	(2, 'b-2', '热销商品banner', '2019-08-01 00:37:47.000', '2020-11-04 16:02:30.006', NULL, NULL, 'http://i2.sleeve.7yue.pro/m4.png');
+	(2, 'b-2', '热销商品banner', '2019-08-01 00:37:47.000', '2020-11-04 16:02:30.006', NULL, NULL, 'http://i2.sleeve.talelin.com/m4.png');
 /*!40000 ALTER TABLE `banner` ENABLE KEYS */;
 
 -- 导出  表 mall.banner_item 结构
@@ -131,10 +131,10 @@ CREATE TABLE IF NOT EXISTS `banner_item` (
 -- 正在导出表  mall.banner_item 的数据：~6 rows (大约)
 /*!40000 ALTER TABLE `banner_item` DISABLE KEYS */;
 INSERT INTO `banner_item` (`id`, `img`, `keyword`, `type`, `create_time`, `update_time`, `delete_time`, `banner_id`, `name`) VALUES
-	(5, 'http://i2.sleeve.7yue.pro/m6.png', '28', 1, '2019-08-01 00:41:41.000', '2020-11-04 16:03:04.821', NULL, 2, 'left'),
-	(6, 'http://i2.sleeve.7yue.pro/m7.png', '26', 1, '2019-08-01 00:41:41.000', '2020-11-04 16:03:14.214', NULL, 2, 'right-top'),
-	(7, 'http://i2.sleeve.7yue.pro/m8.png', '27', 1, '2019-08-01 00:41:41.000', '2020-11-04 16:03:21.092', NULL, 2, 'right-bottom'),
-	(12, 'http://i2.sleeve.7yue.pro/m1.pnghttp://i2.sleeve.7yue.pro/m1.png', 't-2', 3, '2019-09-15 17:29:52.000', '2020-11-04 16:03:37.397', NULL, 1, NULL),
+	(5, 'http://i2.sleeve.talelin.com/m6.png', '28', 1, '2019-08-01 00:41:41.000', '2020-11-04 16:03:04.821', NULL, 2, 'left'),
+	(6, 'http://i2.sleeve.talelin.com/m7.png', '26', 1, '2019-08-01 00:41:41.000', '2020-11-04 16:03:14.214', NULL, 2, 'right-top'),
+	(7, 'http://i2.sleeve.talelin.com/m8.png', '27', 1, '2019-08-01 00:41:41.000', '2020-11-04 16:03:21.092', NULL, 2, 'right-bottom'),
+	(12, 'http://i2.sleeve.talelin.com/m1.pnghttp://i2.sleeve.talelin.com/m1.png', 't-2', 3, '2019-09-15 17:29:52.000', '2020-11-04 16:03:37.397', NULL, 1, NULL),
 	(13, 'http://i1.sleeve.7yue.pro/assets/702f2ce9-5729-4aa4-aeb3-921513327747.png', '23', 1, '2019-07-28 04:39:22.000', '2020-11-04 16:03:51.181', NULL, 1, NULL),
 	(14, 'http://i1.sleeve.7yue.pro/assets/b8e510a1-8340-43c2-a4b0-0e56a40256f9.png', '24', 1, '2019-07-28 04:40:10.000', '2020-11-04 16:04:00.388', NULL, 1, NULL);
 /*!40000 ALTER TABLE `banner_item` ENABLE KEYS */;
@@ -665,25 +665,25 @@ CREATE TABLE IF NOT EXISTS `spu` (
 -- 正在导出表  mall.spu 的数据：~19 rows (大约)
 /*!40000 ALTER TABLE `spu` DISABLE KEYS */;
 INSERT INTO `spu` (`id`, `title`, `subtitle`, `category_id`, `root_category_id`, `online`, `create_time`, `update_time`, `delete_time`, `price`, `sketch_spec_id`, `default_sku_id`, `img`, `discount_price`, `description`, `tags`, `is_test`, `spu_theme_img`, `for_theme_img`) VALUES
-	(1, '青锋大碗', '大碗主要用来盛宽面，凡凡倾情推荐', 28, 27, 1, '2019-07-15 14:47:11.000', '2020-11-04 16:09:37.485', NULL, '12.99', 1, NULL, 'http://i2.sleeve.7yue.pro/n9.pnghttp://i2.sleeve.7yue.pro/n9.png', '11.11', NULL, '林白推荐', 1, NULL, NULL),
+	(1, '青锋大碗', '大碗主要用来盛宽面，凡凡倾情推荐', 28, 27, 1, '2019-07-15 14:47:11.000', '2020-11-04 16:09:37.485', NULL, '12.99', 1, NULL, 'http://i2.sleeve.talelin.com/n9.pnghttp://i2.sleeve.talelin.com/n9.png', '11.11', NULL, '林白推荐', 1, NULL, NULL),
 	(2, '林间有风自营针织衫', '秋日冬款，浪漫满屋', 12, 2, 1, '2019-07-31 08:19:24.000', '2020-11-04 16:09:06.787', NULL, '77.00', 1, 2, 'http://i1.sleeve.7yue.pro/assets/ecf8d824-19d4-4db2-a5da-872ab014fecd.png', '62.00', NULL, '秋日冬款$浪漫满屋', 1, NULL, 'https://gitee.com/lrelia7/sleeve-static/raw/master/theme/spu1.png'),
-	(3, '抹茶小橡皮', '小作文写错了，用它擦一擦', 32, 24, 1, '2019-09-16 09:55:51.000', '2020-11-04 16:14:56.341', NULL, '29.99', 1, NULL, 'http://i2.sleeve.7yue.pro/m17.png', '17.00', NULL, '一飞推荐', 0, NULL, 'https://gitee.com/lrelia7/sleeve-static/raw/master/theme/spu2.png'),
-	(4, '印花桌布', '生活需要仪式感，吃饭也一样。桌旗+桌布给你绚烂的生命色彩', 26, 27, 1, '2019-07-30 06:26:33.000', '2020-11-04 16:09:19.274', NULL, '119.00', 5, NULL, 'http://i2.sleeve.7yue.pro/n10.png', '97.00', NULL, '风袖臻选', 1, NULL, NULL),
+	(3, '抹茶小橡皮', '小作文写错了，用它擦一擦', 32, 24, 1, '2019-09-16 09:55:51.000', '2020-11-04 16:14:56.341', NULL, '29.99', 1, NULL, 'http://i2.sleeve.talelin.com/m17.png', '17.00', NULL, '一飞推荐', 0, NULL, 'https://gitee.com/lrelia7/sleeve-static/raw/master/theme/spu2.png'),
+	(4, '印花桌布', '生活需要仪式感，吃饭也一样。桌旗+桌布给你绚烂的生命色彩', 26, 27, 1, '2019-07-30 06:26:33.000', '2020-11-04 16:09:19.274', NULL, '119.00', 5, NULL, 'http://i2.sleeve.talelin.com/n10.png', '97.00', NULL, '风袖臻选', 1, NULL, NULL),
 	(5, '七色针织衫', '女朋友不给你洗衣服？没关系，每天换一件。', 14, 2, 0, '2019-07-16 14:47:11.000', '2020-02-25 15:07:01.451', NULL, '349', 1, NULL, NULL, '279', NULL, 'pedro推荐', 1, NULL, NULL),
-	(6, 'Sleeve风袖说牛仔系列', 'Sleeve风袖说当季经典款', 14, 2, 1, '2019-08-01 08:19:24.000', '2020-11-04 16:10:15.715', NULL, '1799', 1, 5, 'http://i2.sleeve.7yue.pro/n14.png', '', NULL, '包邮$热门', 1, NULL, NULL),
-	(8, 'Ins复古碎花NoteBook', '林白默默的掏出小本本，将她说的话一次不漏的记了下来。', 32, 24, 1, '2019-09-15 05:00:21.000', '2020-11-04 16:13:51.845', NULL, '29.99', 1, NULL, 'http://i2.sleeve.7yue.pro/m19.png', '27.8', NULL, '林白推荐', 0, NULL, 'http://i1.sleeve.7yue.pro/assets/b6442702-4810-46cb-bb0b-f4602d38e4ff.png'),
-	(10, '碳素墨水', '虽然我们早已不再使用钢笔书写，但钢笔在纸上划过的笔触永远是键盘无法替代的。一只钢笔+一瓶墨水在一个安静的午后，写写内心的故事。', 32, 24, 1, '2019-09-16 09:57:15.000', '2020-11-04 16:15:30.078', NULL, '80.00', NULL, NULL, 'http://i2.sleeve.7yue.pro/m24.png', '69.00', NULL, '', 1, NULL, NULL),
-	(11, '飞行员墨镜', '戴起来像小李子', 36, 5, 1, '2019-08-07 22:47:05.000', '2020-11-04 16:10:41.063', NULL, '77.00', NULL, NULL, 'http://i2.sleeve.7yue.pro/n2.png', NULL, NULL, NULL, 1, NULL, NULL),
-	(12, '林间有风测试商品', '测试商品，可购买体验完整支付和订单流程', 38, 37, 1, '2019-08-25 19:03:03.000', '2020-11-04 16:11:09.151', NULL, '0.2', NULL, NULL, 'http://i2.sleeve.7yue.pro/x1.png', NULL, NULL, '测试数据$可支付', 0, NULL, NULL),
+	(6, 'Sleeve风袖说牛仔系列', 'Sleeve风袖说当季经典款', 14, 2, 1, '2019-08-01 08:19:24.000', '2020-11-04 16:10:15.715', NULL, '1799', 1, 5, 'http://i2.sleeve.talelin.com/n14.png', '', NULL, '包邮$热门', 1, NULL, NULL),
+	(8, 'Ins复古碎花NoteBook', '林白默默的掏出小本本，将她说的话一次不漏的记了下来。', 32, 24, 1, '2019-09-15 05:00:21.000', '2020-11-04 16:13:51.845', NULL, '29.99', 1, NULL, 'http://i2.sleeve.talelin.com/m19.png', '27.8', NULL, '林白推荐', 0, NULL, 'http://i1.sleeve.7yue.pro/assets/b6442702-4810-46cb-bb0b-f4602d38e4ff.png'),
+	(10, '碳素墨水', '虽然我们早已不再使用钢笔书写，但钢笔在纸上划过的笔触永远是键盘无法替代的。一只钢笔+一瓶墨水在一个安静的午后，写写内心的故事。', 32, 24, 1, '2019-09-16 09:57:15.000', '2020-11-04 16:15:30.078', NULL, '80.00', NULL, NULL, 'http://i2.sleeve.talelin.com/m24.png', '69.00', NULL, '', 1, NULL, NULL),
+	(11, '飞行员墨镜', '戴起来像小李子', 36, 5, 1, '2019-08-07 22:47:05.000', '2020-11-04 16:10:41.063', NULL, '77.00', NULL, NULL, 'http://i2.sleeve.talelin.com/n2.png', NULL, NULL, NULL, 1, NULL, NULL),
+	(12, '林间有风测试商品', '测试商品，可购买体验完整支付和订单流程', 38, 37, 1, '2019-08-25 19:03:03.000', '2020-11-04 16:11:09.151', NULL, '0.2', NULL, NULL, 'http://i2.sleeve.talelin.com/x1.png', NULL, NULL, '测试数据$可支付', 0, NULL, NULL),
 	(13, '基克的聚合束带', '三色可选，加攻、加防、还能加血', 39, 5, 0, '2019-09-07 16:06:47.000', '2020-02-25 15:07:01.451', NULL, '279', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL),
-	(14, 'Ins 复古小夹子（Mini)', '静静的，享受时光的流逝', 32, 24, 1, '2019-09-16 09:54:47.000', '2020-11-04 16:14:12.845', NULL, '19.9', NULL, NULL, 'http://i2.sleeve.7yue.pro/m23.png', NULL, NULL, '三色可选', 1, NULL, NULL),
-	(15, '多彩别针、回形针', '每盒70个，可爱多彩', 32, 24, 1, '2019-09-16 09:55:27.000', '2020-11-04 16:14:25.965', NULL, '24', 1, 25, 'http://i2.sleeve.7yue.pro/m26.png', '19.9', NULL, '三色可选', 1, NULL, NULL),
-	(23, '双色牛仔裤', '秋冬新款，做一个Cool Boy', 15, 2, 1, '2019-09-16 10:26:04.000', '2020-11-04 16:16:01.365', NULL, '1399', 1, NULL, 'http://i2.sleeve.7yue.pro/n11.png', NULL, NULL, '', 1, NULL, 'http://i1.sleeve.7yue.pro/assets/702f2ce9-5729-4aa4-aeb3-921513327747.png'),
-	(24, '秋冬新款驼色大衣', '2020新款，暖暖过秋冬', 16, 2, 1, '2019-09-14 02:13:20.000', '2020-11-04 16:12:11.413', NULL, '2999', 1, NULL, 'http://i2.sleeve.7yue.pro/n3.png', '2699', NULL, '经典单色', 1, NULL, 'http://i1.sleeve.7yue.pro/assets/b8e510a1-8340-43c2-a4b0-0e56a40256f9.png'),
-	(25, '复古双色沙发', '双色可选，经典青黄两色', 35, 4, 1, '2019-09-14 02:30:23.000', '2020-11-04 16:12:24.718', NULL, '3999', 1, NULL, 'http://i2.sleeve.7yue.pro/h3.pngv', NULL, NULL, '复刻经典$双色可选', 1, NULL, NULL),
-	(26, 'SemiConer柔质沙发', '窝在沙发上，一杯红酒配电影', 35, 4, 1, '2019-09-14 05:43:19.000', '2020-11-04 16:12:34.996', NULL, '4799', 1, NULL, 'http://i2.sleeve.7yue.pro/3.png', '4200', NULL, '', 1, NULL, NULL),
-	(27, 'Mier双色靠椅', '安静的午后，一杯清茶，追忆似水年华。看清风浮动，看落日余晖', 35, 4, 1, '2019-09-09 02:26:12.000', '2020-11-04 16:11:45.508', NULL, '1299', 1, NULL, 'http://i2.sleeve.7yue.pro/h1.png', NULL, NULL, '', 1, NULL, 'http://i1.sleeve.7yue.pro/assets/f6c9fce8-626f-44c0-a709-3f6ef9f3fbef.png'),
-	(28, 'Ins复古金色落地灯', 'Instagram复古台灯，就在此刻回到过去，找寻逝去的记忆', 23, 4, 1, '2019-09-14 06:19:12.000', '2020-11-04 16:12:44.182', NULL, '999', 8, NULL, 'http://i2.sleeve.7yue.pro/a9.png', NULL, NULL, 'Ins$复古流行', 1, NULL, NULL);
+	(14, 'Ins 复古小夹子（Mini)', '静静的，享受时光的流逝', 32, 24, 1, '2019-09-16 09:54:47.000', '2020-11-04 16:14:12.845', NULL, '19.9', NULL, NULL, 'http://i2.sleeve.talelin.com/m23.png', NULL, NULL, '三色可选', 1, NULL, NULL),
+	(15, '多彩别针、回形针', '每盒70个，可爱多彩', 32, 24, 1, '2019-09-16 09:55:27.000', '2020-11-04 16:14:25.965', NULL, '24', 1, 25, 'http://i2.sleeve.talelin.com/m26.png', '19.9', NULL, '三色可选', 1, NULL, NULL),
+	(23, '双色牛仔裤', '秋冬新款，做一个Cool Boy', 15, 2, 1, '2019-09-16 10:26:04.000', '2020-11-04 16:16:01.365', NULL, '1399', 1, NULL, 'http://i2.sleeve.talelin.com/n11.png', NULL, NULL, '', 1, NULL, 'http://i1.sleeve.7yue.pro/assets/702f2ce9-5729-4aa4-aeb3-921513327747.png'),
+	(24, '秋冬新款驼色大衣', '2020新款，暖暖过秋冬', 16, 2, 1, '2019-09-14 02:13:20.000', '2020-11-04 16:12:11.413', NULL, '2999', 1, NULL, 'http://i2.sleeve.talelin.com/n3.png', '2699', NULL, '经典单色', 1, NULL, 'http://i1.sleeve.7yue.pro/assets/b8e510a1-8340-43c2-a4b0-0e56a40256f9.png'),
+	(25, '复古双色沙发', '双色可选，经典青黄两色', 35, 4, 1, '2019-09-14 02:30:23.000', '2020-11-04 16:12:24.718', NULL, '3999', 1, NULL, 'http://i2.sleeve.talelin.com/h3.pngv', NULL, NULL, '复刻经典$双色可选', 1, NULL, NULL),
+	(26, 'SemiConer柔质沙发', '窝在沙发上，一杯红酒配电影', 35, 4, 1, '2019-09-14 05:43:19.000', '2020-11-04 16:12:34.996', NULL, '4799', 1, NULL, 'http://i2.sleeve.talelin.com/3.png', '4200', NULL, '', 1, NULL, NULL),
+	(27, 'Mier双色靠椅', '安静的午后，一杯清茶，追忆似水年华。看清风浮动，看落日余晖', 35, 4, 1, '2019-09-09 02:26:12.000', '2020-11-04 16:11:45.508', NULL, '1299', 1, NULL, 'http://i2.sleeve.talelin.com/h1.png', NULL, NULL, '', 1, NULL, 'http://i1.sleeve.7yue.pro/assets/f6c9fce8-626f-44c0-a709-3f6ef9f3fbef.png'),
+	(28, 'Ins复古金色落地灯', 'Instagram复古台灯，就在此刻回到过去，找寻逝去的记忆', 23, 4, 1, '2019-09-14 06:19:12.000', '2020-11-04 16:12:44.182', NULL, '999', 8, NULL, 'http://i2.sleeve.talelin.com/a9.png', NULL, NULL, 'Ins$复古流行', 1, NULL, NULL);
 /*!40000 ALTER TABLE `spu` ENABLE KEYS */;
 
 -- 导出  表 mall.spu_detail_img 结构
@@ -878,12 +878,12 @@ CREATE TABLE IF NOT EXISTS `theme` (
 -- 正在导出表  mall.theme 的数据：~6 rows (大约)
 /*!40000 ALTER TABLE `theme` DISABLE KEYS */;
 INSERT INTO `theme` (`id`, `title`, `description`, `name`, `create_time`, `tpl_name`, `update_time`, `delete_time`, `entrance_img`, `extend`, `internal_top_img`, `title_img`, `online`) VALUES
-	(1, '清凉一夏，折扣季', '秋天是金色的。麦穗是金色的，秋阳是金色的。虽然冬快至，但宜人的温度总是让我们心情愉快#我们为您精选了一系列秋冬折扣商品，慢慢挑选吧~', 't-1', '2019-07-18 07:10:59.000', 'janna', '2020-11-04 15:59:36.731', NULL, 'http://i2.sleeve.7yue.pro/m2.png', NULL, 'http://i2.sleeve.7yue.pro/m33.png', NULL, 1),
-	(4, '每周上新', '风袖`每周上新`活动#每周都有一款折扣商品，每周都有适合你的唯一专属#有Ins复古风装饰；金属CD唱片夹；每周来逛逛，找到你所喜爱的东西', 't-2', '2019-07-30 00:00:14.000', NULL, '2020-11-04 16:00:32.532', NULL, '', NULL, 'http://i2.sleeve.7yue.pro/m1.png', 'http://i2.sleeve.7yue.pro/m3.png', 1),
-	(5, '风袖甄选', '甄选', 't-3', '2019-07-30 17:20:23.000', 'diana', '2020-11-04 16:01:00.628', NULL, 'http://i2.sleeve.7yue.pro/m9.png', NULL, 'http://i2.sleeve.7yue.pro/m11.png', NULL, 1),
-	(6, '时尚穿搭', '帅点才有女朋友', 't-4', '2019-08-01 02:43:18.000', 'irelia', '2020-11-04 16:18:52.575', NULL, 'http://i2.sleeve.7yue.pro/m10.png', NULL, 'http://i2.sleeve.7yue.pro/m1.png', 'http://i2.sleeve.7yue.pro/m3.png', 1),
-	(7, '热卖好评', '林白选的那一定是最好的', 't-5', '2019-08-09 07:19:37.000', 'camille', '2020-11-04 16:19:25.183', NULL, 'http://i2.sleeve.7yue.pro/m9.png', NULL, 'http://i2.sleeve.7yue.pro/m11.png', 'http://i2.sleeve.7yue.pro/m11.png', 1),
-	(8, '热门推荐', '林白选的那一定是最好的', 't-6', '2019-09-10 11:43:06.000', 'camille', '2020-11-04 16:19:41.415', NULL, 'http://i2.sleeve.7yue.pro/m10.png', NULL, 'http://i2.sleeve.7yue.pro/m12.png', NULL, 1);
+	(1, '清凉一夏，折扣季', '秋天是金色的。麦穗是金色的，秋阳是金色的。虽然冬快至，但宜人的温度总是让我们心情愉快#我们为您精选了一系列秋冬折扣商品，慢慢挑选吧~', 't-1', '2019-07-18 07:10:59.000', 'janna', '2020-11-04 15:59:36.731', NULL, 'http://i2.sleeve.talelin.com/m2.png', NULL, 'http://i2.sleeve.talelin.com/m33.png', NULL, 1),
+	(4, '每周上新', '风袖`每周上新`活动#每周都有一款折扣商品，每周都有适合你的唯一专属#有Ins复古风装饰；金属CD唱片夹；每周来逛逛，找到你所喜爱的东西', 't-2', '2019-07-30 00:00:14.000', NULL, '2020-11-04 16:00:32.532', NULL, '', NULL, 'http://i2.sleeve.talelin.com/m1.png', 'http://i2.sleeve.talelin.com/m3.png', 1),
+	(5, '风袖甄选', '甄选', 't-3', '2019-07-30 17:20:23.000', 'diana', '2020-11-04 16:01:00.628', NULL, 'http://i2.sleeve.talelin.com/m9.png', NULL, 'http://i2.sleeve.talelin.com/m11.png', NULL, 1),
+	(6, '时尚穿搭', '帅点才有女朋友', 't-4', '2019-08-01 02:43:18.000', 'irelia', '2020-11-04 16:18:52.575', NULL, 'http://i2.sleeve.talelin.com/m10.png', NULL, 'http://i2.sleeve.talelin.com/m1.png', 'http://i2.sleeve.talelin.com/m3.png', 1),
+	(7, '热卖好评', '林白选的那一定是最好的', 't-5', '2019-08-09 07:19:37.000', 'camille', '2020-11-04 16:19:25.183', NULL, 'http://i2.sleeve.talelin.com/m9.png', NULL, 'http://i2.sleeve.talelin.com/m11.png', 'http://i2.sleeve.talelin.com/m11.png', 1),
+	(8, '热门推荐', '林白选的那一定是最好的', 't-6', '2019-09-10 11:43:06.000', 'camille', '2020-11-04 16:19:41.415', NULL, 'http://i2.sleeve.talelin.com/m10.png', NULL, 'http://i2.sleeve.talelin.com/m12.png', NULL, 1);
 /*!40000 ALTER TABLE `theme` ENABLE KEYS */;
 
 -- 导出  表 mall.theme_spu 结构
