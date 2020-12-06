@@ -10,9 +10,7 @@ import (
 )
 
 func main() {
-
 	core.StartModule()
-
 	router.HttpServerRun()
 	msg.StartMsg()
 	quit := make(chan os.Signal)
