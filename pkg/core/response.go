@@ -61,6 +61,14 @@ func InvalidParamsResp(c *gin.Context, msg string) {
 	})
 	return
 }
+func NotFoundResp(c *gin.Context, msg string) {
+
+	c.AbortWithStatusJSON(404, Error{
+		Code:    errcode.NotFound,
+		Message: msg,
+	})
+	return
+}
 
 func SuccessResp(c *gin.Context) {
 	c.JSON(200, Error{

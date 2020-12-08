@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"mall_go/pkg/core"
 )
 
@@ -18,8 +19,14 @@ func ErrorHandle() gin.HandlerFunc {
 		errors := e.Err
 
 		switch errors.(type) {
+		case error:
+			if errors == gorm.ErrRecordNotFound {
+				core.NotFoundResp(c, e.Err.Error())
+			}
 		case core.Error:
+
 			codeErr := errors.(core.Error)
+
 			core.FailResp(c, codeErr.Code)
 
 		case *json.UnmarshalTypeError:
@@ -27,7 +34,9 @@ func ErrorHandle() gin.HandlerFunc {
 			errStr := fmt.Errorf("%s 类型错误，期望类型 %s", unmarshalTypeError.Field, unmarshalTypeError.Type.String()).Error()
 			core.InvalidParamsResp(c, errStr)
 		default:
-			errStr := e.Err.Error()
+
+			errStr := errors.Error()
+
 			core.InvalidParamsResp(c, errStr)
 		}
 

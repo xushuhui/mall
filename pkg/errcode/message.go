@@ -3,6 +3,7 @@ package errcode
 const (
 	SUCCESS = iota
 	InvalidParams
+	NotFound
 	ServerError
 	AuthCheckTokenFail
 	AuthCheckTokenTimeout
@@ -14,6 +15,7 @@ const (
 var MsgFlags = map[int]string{
 	SUCCESS:               "ok",
 	InvalidParams:         "请求参数错误",
+	NotFound:              "未找到记录",
 	ServerError:           "系统异常，请联系管理员！",
 	AuthCheckTokenFail:    "Token鉴权失败",
 	AuthCheckTokenTimeout: "Token已超时",

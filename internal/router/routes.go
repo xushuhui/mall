@@ -23,7 +23,7 @@ func InitRouter() *gin.Engine {
 	router.GET("/banner/name/:name", api.BannerName)
 	router.GET("/theme/by/names", api.ThemeByNames)
 	router.GET("/theme/name/:name/with_spu", api.ThemeNameWithSpu)
-	router.Use(middleware.Auth())
+	//router.Use(middleware.Auth())
 	//需要登录的接口
 	return router
 }

@@ -24,16 +24,16 @@ func HttpServerRun() {
 		WriteTimeout:   global.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
-	go httpListen()
+
 	log.Printf(" [INFO] HttpServerRun:%s\n", port)
 
 }
-func httpListen() {
+func HttpListen() {
 	if e := HttpSrvHandler.ListenAndServe(); e != nil {
 		log.Fatalf(" [ERROR] HttpServerRun:%s Error:%v\n", port, e)
 	}
 }
-func httpsListen() {
+func HttpsListen() {
 	if e := HttpSrvHandler.ListenAndServeTLS("storage/cert.pem", "storage/key.pem"); e != nil {
 		log.Fatalf(" [ERROR] HttpServerRun:%s e:%v\n", port, e)
 	}

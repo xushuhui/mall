@@ -12,6 +12,7 @@ import (
 func main() {
 	core.StartModule()
 	router.HttpServerRun()
+	go router.HttpListen()
 	msg.StartMsg()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)
