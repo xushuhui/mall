@@ -1,9 +1,8 @@
 package api
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"mall_go/internal/services"
+	"mall_go/internal/logic"
 	"mall_go/pkg/core"
 	"strings"
 )
@@ -12,8 +11,7 @@ func ThemeByNames(c *gin.Context) {
 	names := c.Query("names")
 
 	nameSlice := strings.Split(names, ",")
-	data, err := services.ThemeByNames(nameSlice)
-	fmt.Println("err", err)
+	data, err := logic.ThemeByNames(nameSlice)
 	if err != nil {
 		c.Error(err)
 		return
@@ -26,7 +24,7 @@ func ThemeByNames(c *gin.Context) {
 func ThemeNameWithSpu(c *gin.Context) {
 	name := c.Param("name")
 
-	data, err := services.ThemeNameWithSpu(name)
+	data, err := logic.ThemeNameWithSpu(name)
 	if err != nil {
 		c.Error(err)
 		return

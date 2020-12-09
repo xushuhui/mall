@@ -1,4 +1,4 @@
-package services
+package logic
 
 import (
 	"mall_go/internal/model"

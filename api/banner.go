@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"mall_go/internal/services"
+	"mall_go/internal/logic"
 	"mall_go/pkg/core"
 	"mall_go/pkg/utils"
 )
@@ -12,7 +12,7 @@ func BannerID(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	data, err := services.BannerById(id)
+	data, err := logic.BannerById(id)
 	if err != nil {
 		return
 	}
@@ -23,7 +23,7 @@ func BannerID(c *gin.Context) {
 func BannerName(c *gin.Context) {
 	name := c.Param("name")
 
-	data, err := services.BannerByName(name)
+	data, err := logic.BannerByName(name)
 	if err != nil {
 		return
 	}

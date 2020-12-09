@@ -1,4 +1,4 @@
-package services
+package logic
 
 import (
 	"golang.org/x/crypto/bcrypt"

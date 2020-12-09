@@ -1,8 +1,8 @@
 package api
 
 import (
+	"mall_go/internal/logic"
 	"mall_go/internal/request"
-	"mall_go/internal/services"
 	"mall_go/pkg/core"
 
 	"github.com/gin-gonic/gin"
@@ -36,7 +36,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	data, e := services.Login(req)
+	data, e := logic.Login(req)
 	if e != nil {
 		c.Error(e)
 		return

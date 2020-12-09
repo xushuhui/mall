@@ -1,4 +1,4 @@
-package services
+package logic
 
 type ActivityItem struct {
 	ID          int         `json:"id"`
