@@ -7,9 +7,9 @@ import (
 )
 
 type BaseModel struct {
-	ID         uint `gorm:"primaryKey"`
-	CreateTime time.Time
-	UpdateTime time.Time
+	ID         uint      `gorm:"primaryKey"`
+	CreateTime time.Time `gorm:"-",json:"create_time"`
+	UpdateTime time.Time `gorm:"-"`
 	DeleteTime gorm.DeletedAt
 }
 type Banner struct {
@@ -30,7 +30,7 @@ type BannerItem struct {
 	Type     int    `json:"type"`
 }
 type Theme struct {
-	ID             uint   `gorm:"primaryKey"`
+	BaseModel
 	Title          string `json:"title"`
 	Description    string `json:"description"`
 	Name           string `json:"name"`
@@ -41,36 +41,7 @@ type Theme struct {
 	TitleImg       string `json:"title_img"`
 	TplName        string `json:"tpl_name"`
 	SpuList        []Spu  `gorm:"many2many:theme_spu"`
-
-	//CityList []City `gorm:"many2many:car_city"`
 }
-
-type Spu struct {
-	ID             uint   `gorm:"primaryKey"`
-	Title          string `json:"title"`
-	Subtitle       string `json:"subtitle"`
-	CategoryID     int    `json:"category_id"`
-	RootCategoryID int    `json:"root_category_id"`
-	Price          string `json:"price"`
-	Img            string `json:"img"`
-	ForThemeImg    string `json:"for_theme_img"`
-	Description    string `json:"description"`
-	DiscountPrice  string `json:"discount_price"`
-	Tags           string `json:"tags"`
-	IsTest         bool   `json:"is_test"`
-	Online         bool   `json:"online"`
-	//ThemeList []Theme `gorm:"many2many:theme_spu"`
-}
-
-//type Car struct {
-//	ID       uint   `gorm:"primaryKey"`
-//	Name     string `json:"name"`
-//	CityList []City `gorm:"many2many:car_city"`
-//}
-//type City struct {
-//	ID   uint   `gorm:"primaryKey"`
-//	Name string `json:"name"`
-//}
 
 func GetBannerById(id uint) (model Banner, e error) {
 	e = global.DBEngine.Preload("Items").First(&model, id).Error

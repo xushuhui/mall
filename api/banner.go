@@ -10,10 +10,12 @@ import (
 func BannerID(c *gin.Context) {
 	id, err := utils.StringToUint(c.Param("id"))
 	if err != nil {
+		c.Error(err)
 		return
 	}
 	data, err := logic.BannerById(id)
 	if err != nil {
+		c.Error(err)
 		return
 	}
 	core.SetData(c, data)
@@ -25,6 +27,7 @@ func BannerName(c *gin.Context) {
 
 	data, err := logic.BannerByName(name)
 	if err != nil {
+		c.Error(err)
 		return
 	}
 	core.SetData(c, data)

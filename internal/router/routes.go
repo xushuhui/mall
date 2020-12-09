@@ -19,10 +19,23 @@ func InitRouter() *gin.Engine {
 	})
 
 	router.POST("/login", api.Login)
-	router.GET("/banner/id/:id", api.BannerID)
-	router.GET("/banner/name/:name", api.BannerName)
-	router.GET("/theme/by/names", api.ThemeByNames)
-	router.GET("/theme/name/:name/with_spu", api.ThemeNameWithSpu)
+
+	banner := router.Group("/banner")
+	{
+		banner.GET("/id/:id", api.BannerID)
+		banner.GET("/name/:name", api.BannerName)
+	}
+	theme := router.Group("/theme")
+	{
+		theme.GET("/theme/by/names", api.ThemeByNames)
+		theme.GET("/theme/name/:name/with_spu", api.ThemeNameWithSpu)
+	}
+	spu := router.Group("/spu")
+	{
+		spu.GET("/id/:id/detail", api.Detail)
+		spu.GET("/latest", api.Latest)
+		spu.GET("/by/category/:id", api.SpuByCategory)
+	}
 	//router.Use(middleware.Auth())
 	//需要登录的接口
 	return router
