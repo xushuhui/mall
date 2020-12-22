@@ -1,11 +1,34 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"mall_go/internal/logic"
+	"mall_go/pkg/core"
+)
 
-func ActivityByName(g *gin.Context) {
+func ActivityByName(c *gin.Context) {
+
+	name := c.Param("name")
+
+	data, err := logic.BannerByName(name)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+	core.SetData(c, data)
+	return
 
 }
 
-func ActivityNameWithSpu(g *gin.Context) {
+func ActivityNameWithSpu(c *gin.Context) {
+	name := c.Param("name")
+
+	data, err := logic.BannerByName(name)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+	core.SetData(c, data)
+	return
 
 }

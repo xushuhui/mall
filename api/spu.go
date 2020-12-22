@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"mall_go/internal/logic"
 	"mall_go/pkg/core"
@@ -11,10 +12,12 @@ func SaleExplainFixed(c *gin.Context) {
 
 }
 func Search(c *gin.Context) {
-
+	q := c.Query("q")
+	fmt.Println(q)
 }
 func TagType(c *gin.Context) {
-
+	types := c.Param("type")
+	fmt.Println(types)
 }
 func Detail(c *gin.Context) {
 
