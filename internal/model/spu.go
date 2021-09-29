@@ -1,7 +1,6 @@
 package model
 
 import (
-	"mall_go/global"
 	"time"
 )
 
@@ -70,10 +69,10 @@ type Tag struct {
 }
 
 func GetSpu(id uint) (mode Spu, err error) {
-	err = global.DBEngine.First(&mode, id).Error
+
 	return
 }
 func GetSpuByCategory(id uint) (model []Spu, err error) {
-	err = global.DBEngine.Find(&model, "category_id = ?", id).Error
+
 	return
 }

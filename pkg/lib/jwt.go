@@ -11,11 +11,11 @@ import (
 var jwtSecret = []byte("setting.JwtSecret")
 
 type Claims struct {
-	Uid uint `json:"uid"`
+	Uid int64 `json:"uid"`
 	jwt.StandardClaims
 }
 
-func GenerateToken(uid uint) (string, error) {
+func GenerateToken(uid int64) (string, error) {
 	expireTime := time.Now().Add(24 * time.Hour)
 
 	claims := Claims{

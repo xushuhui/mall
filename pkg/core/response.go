@@ -1,10 +1,12 @@
 package core
 
 import (
+	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
+
 	"github.com/go-playground/validator/v10"
-	"mall_go/pkg/errcode"
+	"github.com/gofiber/fiber/v2"
+	co "mall_go/pkg/code"
 )
 
 // Error 数据返回通用 JSON 数据结构
@@ -12,17 +14,17 @@ type Error struct {
 	Code    int         `json:"code"`    // 错误码 ((0: 成功，1: 失败，>1: 错误码))
 	Message string      `json:"message"` // 提示信息
 	Data    interface{} `json:"data"`    // 返回数据 (业务接口定义具体数据结构)
-
+	Err     error       `json:"-"`
 }
 
 func (e Error) Error() (re string) {
 	return fmt.Sprintf("code=%v, Message=%v", e.Code, e.Message)
 }
 
-func NewError(code int) (e Error) {
+func NewErrorCode(code int) (e Error) {
 	e = Error{
 		Code:    code,
-		Message: errcode.GetMsg(code),
+		Message: co.GetMsg(code),
 	}
 	return
 }
@@ -34,71 +36,88 @@ func NewErrorMessage(code int, message string) (e Error) {
 	return
 }
 func NewInvalidParamsError(message string) (e Error) {
-	return NewErrorMessage(errcode.InvalidParams, message)
+	return NewErrorMessage(co.InvalidParams, message)
 }
-func ParseRequest(c *gin.Context, request interface{}) (e error) {
-	e = c.ShouldBind(request)
 
-	if e != nil {
-		msg := Translate(e.(validator.ValidationErrors))
-		e = NewErrorMessage(errcode.InvalidParams, msg)
-		return
+func ValidateRequest(obj interface{}) error {
+
+	err := validate.Struct(obj)
+
+	if err != nil {
+		s := Translate(err.(validator.ValidationErrors))
+		return errors.New(s)
 	}
+	return nil
+}
+func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
+	err = c.BodyParser(request)
+
+	if err != nil {
+		return err
+	}
+	err = ValidateRequest(request)
 	return
 }
-func FailResp(c *gin.Context, code int) {
-	c.AbortWithStatusJSON(200, Error{
+func FailResp(c *fiber.Ctx, code int) error {
+	return c.JSON(Error{
 		Code:    code,
-		Message: errcode.GetMsg(code),
+		Message: co.GetMsg(code),
 	})
-	return
 }
-func InvalidParamsResp(c *gin.Context, msg string) {
 
-	c.AbortWithStatusJSON(200, Error{
-		Code:    errcode.InvalidParams,
+func ErrorResp(c *fiber.Ctx, code int, msg string) error {
+	return c.JSON(Error{
+		Code:    code,
 		Message: msg,
 	})
-	return
-}
-func NotFoundResp(c *gin.Context, msg string) {
 
-	c.AbortWithStatusJSON(404, Error{
-		Code:    errcode.NotFound,
+}
+func InvalidParamsResp(c *fiber.Ctx, msg string) error {
+
+	return c.JSON(Error{
+		Code:    co.InvalidParams,
 		Message: msg,
 	})
-	return
+
 }
 
-func SuccessResp(c *gin.Context) {
-	c.JSON(200, Error{
+func SuccessResp(c *fiber.Ctx) error {
+	return c.JSON(Error{
 		Code:    0,
-		Message: errcode.GetMsg(0),
+		Message: co.GetMsg(0),
 	})
 }
-func SetData(c *gin.Context, data interface{}) {
-	c.JSON(200, Error{
+func SetData(c *fiber.Ctx, data interface{}) error {
+	return c.JSON(Error{
 		Code:    0,
-		Message: errcode.GetMsg(0),
+		Message: co.GetMsg(0),
 		Data:    data,
 	})
 }
 
-func SetPage(c *gin.Context, list interface{}, totalRows int) {
-	c.JSON(200, Error{
+func SetPage(c *fiber.Ctx, list interface{}, totalRows int) error {
+	return c.JSON(Error{
 		Code:    0,
-		Message: errcode.GetMsg(0),
+		Message: co.GetMsg(0),
 		Data: Pager{
-			Page:      GetPage(c),
-			PageSize:  GetPageSize(c),
-			TotalRows: totalRows,
-			List:      list,
+			Page:  GetPage(c),
+			Size:  GetSize(c),
+			Total: totalRows,
+			Items: list,
 		},
 	})
 }
-func ServerError(c *gin.Context) {
-	c.JSON(500, Error{
-		Code:    errcode.ServerError,
-		Message: errcode.GetMsg(errcode.ServerError),
+func ServerError(c *fiber.Ctx, err error) error {
+
+	return c.JSON(Error{
+		Code:    co.ServerError,
+		Message: co.GetMsg(co.ServerError),
+		Err:     err,
+	})
+}
+func (e Error) HttpError(c *fiber.Ctx) error {
+	return c.JSON(Error{
+		Code:    e.Code,
+		Message: co.GetMsg(e.Code),
 	})
 }

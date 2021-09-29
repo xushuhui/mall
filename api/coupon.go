@@ -1,26 +1,28 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
-func CouponWholeStore(g *gin.Context) {
-
-}
-func CouponMyselfByStatus(g *gin.Context) {
-
-}
-func CouponMyselfAvailable(g *gin.Context) {
+func CouponWholeStore(c *fiber.Ctx) {
 
 }
-func CouponCollect(g *gin.Context) {
+func CouponMyselfByStatus(c *fiber.Ctx) {
 
 }
-func CouponByCategory(g *gin.Context) {
+func CouponMyselfAvailable(c *fiber.Ctx) {
+
+}
+func CouponCollect(c *fiber.Ctx) {
+
+}
+func CouponByCategory(c *fiber.Ctx) {
 
 }
 
-func CategoryAll(g *gin.Context) {
+func CategoryAll(c *fiber.Ctx) {
 
 }
-func CategoryGrid(g *gin.Context) {
+func CategoryGrid(c *fiber.Ctx) {
 
 }

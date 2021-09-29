@@ -2,53 +2,56 @@ package api
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"mall_go/internal/logic"
+	"mall_go/internal/biz"
+
+	"github.com/gofiber/fiber/v2"
+
 	"mall_go/pkg/core"
 	"mall_go/pkg/utils"
 )
 
-func SaleExplainFixed(c *gin.Context) {
-
+func SaleExplainFixed(c *fiber.Ctx) error {
+	return nil
 }
-func Search(c *gin.Context) {
+func Search(c *fiber.Ctx) error {
 	q := c.Query("q")
 	fmt.Println(q)
+	return nil
 }
-func TagType(c *gin.Context) {
-	types := c.Param("type")
+func TagType(c *fiber.Ctx) error {
+	types := c.Params("type")
 	fmt.Println(types)
+	return nil
 }
-func Detail(c *gin.Context) {
+func Detail(c *fiber.Ctx) error {
 
-	id, err := utils.StringToUint(c.Param("id"))
+	id, err := utils.StringToUint(c.Params("id"))
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	data, err := logic.SpuById(id)
+	data, err := biz.SpuById(id)
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	core.SetData(c, data)
-	return
-}
-func Latest(c *gin.Context) {
+	return core.SetData(c, data)
 
 }
-func SpuByCategory(c *gin.Context) {
-	id, err := utils.StringToUint(c.Param("id"))
+func Latest(c *fiber.Ctx) error {
+	return nil
+}
+func SpuByCategory(c *fiber.Ctx) (err error) {
+	id, err := utils.StringToUint(c.Params("id"))
 	if err != nil {
-		c.Error(err)
+
 		return
 	}
-	data, err := logic.SpuByCategory(id)
+	data, err := biz.SpuByCategory(id)
 	if err != nil {
-		c.Error(err)
+
 		return
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
 
 }

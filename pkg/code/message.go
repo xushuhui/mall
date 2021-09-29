@@ -1,4 +1,4 @@
-package errcode
+package code
 
 const (
 	SUCCESS = iota
@@ -8,7 +8,6 @@ const (
 	AuthCheckTokenFail
 	AuthCheckTokenTimeout
 	ErrorAuthToken
-	TimeoutAuthToken
 	ErrorPassWord
 )
 

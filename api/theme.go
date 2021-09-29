@@ -1,34 +1,34 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"mall_go/internal/logic"
+	"github.com/gofiber/fiber/v2"
+	"mall_go/internal/biz"
+
 	"mall_go/pkg/core"
 	"strings"
 )
 
-func ThemeByNames(c *gin.Context) {
+func ThemeByNames(c *fiber.Ctx) (err error) {
 	names := c.Query("names")
 
 	nameSlice := strings.Split(names, ",")
-	data, err := logic.ThemeByNames(nameSlice)
+	data, err := biz.ThemeByNames(nameSlice)
 	if err != nil {
-		c.Error(err)
+
 		return
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
 
 }
 
-func ThemeNameWithSpu(c *gin.Context) {
-	name := c.Param("name")
+func ThemeNameWithSpu(c *fiber.Ctx) error {
+	name := c.Params("name")
 
-	data, err := logic.ThemeNameWithSpu(name)
+	data, err := biz.ThemeNameWithSpu(name)
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
+
 }

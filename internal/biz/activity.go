@@ -1,4 +1,4 @@
-package logic
+package biz
 
 type ActivityItem struct {
 	ID          int         `json:"id"`
@@ -25,4 +25,8 @@ type CouponItem struct {
 	Type        int     `json:"type"`
 	Remark      string  `json:"remark"`
 	WholeStore  bool    `json:"whole_store"`
+}
+
+func ActivityByName(name string) (data []ActivityItem, err error) {
+	return
 }

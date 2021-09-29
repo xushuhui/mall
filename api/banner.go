@@ -1,36 +1,34 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"mall_go/internal/logic"
+	"github.com/gofiber/fiber/v2"
+	"mall_go/internal/biz"
 	"mall_go/pkg/core"
 	"mall_go/pkg/utils"
 )
 
-func BannerID(c *gin.Context) {
-	id, err := utils.StringToUint(c.Param("id"))
+func BannerID(c *fiber.Ctx) error {
+	id, err := utils.StringToUint(c.Params("id"))
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	data, err := logic.BannerById(id)
+	data, err := biz.BannerById(id)
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
 
 }
-func BannerName(c *gin.Context) {
-	name := c.Param("name")
+func BannerName(c *fiber.Ctx) error {
+	name := c.Params("name")
 
-	data, err := logic.BannerByName(name)
+	data, err := biz.BannerByName(name)
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
 
 }

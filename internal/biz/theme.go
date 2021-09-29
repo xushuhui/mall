@@ -1,4 +1,4 @@
-package logic
+package biz
 
 type ThemeItem struct {
 	ID             int         `json:"id"`

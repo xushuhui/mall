@@ -1,4 +1,4 @@
-package logic
+package biz
 
 import (
 	"mall_go/internal/model"

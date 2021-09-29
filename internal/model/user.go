@@ -1,21 +1,27 @@
 package model
 
 import (
-	"gorm.io/gorm"
-	"mall_go/global"
 	"time"
 )
 
 type User struct {
-	gorm.Model
-	Phone    string `gorm:"column:phone"`
+	ID       int64  `gorm:"primarykey"`
+	UserName string `gorm:"column:userName"`
 	Password string `gorm:"column:password"`
 }
 
 func GetAccountUserOne(where string, args ...interface{}) (model User, err error) {
-	err = global.DBEngine.First(&model, where, args).Error
+
 	return
 
+}
+func GetUserByNames(names []string) (model []User, e error) {
+
+	return
+}
+func GetUserByName(names string) (model User, e error) {
+
+	return
 }
 
 type UserCoupon struct {

@@ -2,7 +2,7 @@ package model
 
 import (
 	"gorm.io/gorm"
-	"mall_go/global"
+
 	"time"
 )
 
@@ -44,19 +44,18 @@ type Theme struct {
 }
 
 func GetBannerById(id uint) (model Banner, e error) {
-	e = global.DBEngine.Preload("Items").First(&model, id).Error
+
 	return
 }
 func GetBannerByName(name string) (model Banner, e error) {
-	e = global.DBEngine.Preload("Items").Where("name = ?", name).First(&model).Error
+
 	return
 }
 func GetThemeWithSpu(name string) (model Theme, e error) {
-	e = global.DBEngine.Preload("SpuList").First(&model, "name=?", name).Error
 
 	return
 }
 func GetThemeByNames(names []string) (model []Theme, e error) {
-	e = global.DBEngine.Find(&model, "name in ?", names).Error
+
 	return
 }

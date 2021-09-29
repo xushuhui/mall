@@ -1,4 +1,4 @@
-package logic
+package biz
 
 type CategoryItem struct {
 	ID       int    `json:"id"`

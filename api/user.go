@@ -1,47 +1,23 @@
 package api
 
 import (
-	"mall_go/internal/logic"
+	"github.com/gofiber/fiber/v2"
+	"mall_go/internal/biz"
 	"mall_go/internal/request"
 	"mall_go/pkg/core"
-
-	"github.com/gin-gonic/gin"
 )
 
-/*
-
-登录
-
-URL:
-	/login
-
-POST参数：
-
-	"phone":"2" //手机号
-	"password": "1" //密码
-
-
-返回值：
-
-	"code": 0
-	"message": "ok"
-
-*/
-func Login(c *gin.Context) {
+func Login(c *fiber.Ctx) (err error) {
 	var req request.Login
 
-	if e := core.ParseRequest(c, &req); e != nil {
-
-		c.Error(e)
+	if err = core.ParseRequest(c, &req); err != nil {
 		return
 	}
 
-	data, e := logic.Login(req)
-	if e != nil {
-		c.Error(e)
+	data, err := biz.Login(req)
+	if err != nil {
 		return
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
 
 }

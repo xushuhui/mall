@@ -1,34 +1,32 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"mall_go/internal/logic"
+	"github.com/gofiber/fiber/v2"
+	"mall_go/internal/biz"
 	"mall_go/pkg/core"
 )
 
-func ActivityByName(c *gin.Context) {
+func ActivityByName(c *fiber.Ctx) error {
 
-	name := c.Param("name")
+	name := c.Params("name")
 
-	data, err := logic.BannerByName(name)
+	data, err := biz.ActivityByName(name)
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
 
 }
 
-func ActivityNameWithSpu(c *gin.Context) {
-	name := c.Param("name")
+func ActivityNameWithSpu(c *fiber.Ctx) error {
+	name := c.Params("name")
 
-	data, err := logic.BannerByName(name)
+	data, err := biz.BannerByName(name)
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
 
 }
