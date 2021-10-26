@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"mall_go/internal/biz"
-	"mall_go/internal/request"
-	"mall_go/pkg/core"
+	"mall-go/internal/biz"
+	"mall-go/internal/request"
+	"mall-go/pkg/core"
 )
 
 func Login(c *fiber.Ctx) (err error) {

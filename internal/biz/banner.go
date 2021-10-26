@@ -1,23 +1,23 @@
 package biz
 
 import (
-	"mall_go/internal/model"
+	"mall-go/internal/data"
 )
 
-func BannerById(id uint) (banner model.Banner, e error) {
-	banner, e = model.GetBannerById(id)
+func BannerById(id int) (banner data.Banner, err error) {
+	banner, err = data.GetBannerById(id)
 	return
 }
-func BannerByName(name string) (banner model.Banner, e error) {
-	banner, e = model.GetBannerByName(name)
+func BannerByName(name string) (banner data.Banner, err error) {
+	banner, err = data.GetBannerByName(name)
 	return
 }
-func ThemeNameWithSpu(name string) (theme model.Theme, e error) {
-	theme, e = model.GetThemeWithSpu(name)
+func ThemeNameWithSpu(name string) (theme data.Theme, err error) {
+	theme, err = data.GetThemeWithSpu(name)
 
 	return
 }
-func ThemeByNames(names []string) (theme []model.Theme, e error) {
-	theme, e = model.GetThemeByNames(names)
+func ThemeByNames(names []string) (theme []data.Theme, err error) {
+	theme, err = data.GetThemeByNames(names)
 	return
 }

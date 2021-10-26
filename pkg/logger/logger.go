@@ -3,7 +3,7 @@ package logger
 import (
 	"github.com/sirupsen/logrus"
 	"io"
-	"mall_go/pkg/utils"
+	"mall-go/pkg/utils"
 	"os"
 )
 
@@ -18,14 +18,14 @@ var (
 
 )
 
-func setFileOut() (f io.Writer, e error) {
-	e = os.MkdirAll(logDir, 777)
-	if e != nil {
+func setFileOut() (f io.Writer, err error) {
+	err = os.MkdirAll(logDir, 777)
+	if err != nil {
 		return
 	}
 	logFile := logDir + "app.log"
-	f, e = os.OpenFile(logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0777)
-	if e != nil {
+	f, err = os.OpenFile(logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0777)
+	if err != nil {
 		return
 	}
 
@@ -36,7 +36,7 @@ type Logger struct {
 	*logrus.Logger
 }
 
-func NewLogger(format, lvl string, reportCaller bool, savePath string) (l *Logger, e error) {
+func NewLogger(format, lvl string, reportCaller bool, savePath string) (l *Logger, err error) {
 	lrus := logrus.StandardLogger()
 
 	lrus.SetFormatter(Formatter[format])

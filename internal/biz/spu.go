@@ -1,12 +1,14 @@
 package biz
 
-import "mall_go/internal/model"
+import (
+	"mall-go/internal/data"
+)
 
-func SpuById(id uint) (spu model.Spu, err error) {
-	spu, err = model.GetSpu(id)
+func SpuById(id int) (spu data.Spu, err error) {
+	spu, err = data.GetSpuById(id)
 	return
 }
-func SpuByCategory(id uint) (spu []model.Spu, err error) {
-	spu, err = model.GetSpuByCategory(id)
+func SpuByCategory(id int) (spu []data.Spu, err error) {
+	spu, err = data.GetSpuByCategory(id)
 	return
 }

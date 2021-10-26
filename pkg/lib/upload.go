@@ -3,8 +3,8 @@ package lib
 import (
 	"io"
 	"io/ioutil"
-	"mall_go/global"
-	"mall_go/pkg/utils"
+
+	"mall-go/pkg/utils"
 	"mime/multipart"
 	"os"
 	"path"
@@ -30,11 +30,11 @@ func GetFileExt(name string) string {
 }
 
 func GetSavePath() string {
-	return global.AppSetting.UploadSavePath
+	return ""
 }
 
 func GetServerUrl() string {
-	return global.AppSetting.UploadServerUrl
+	return ""
 }
 
 func CheckSavePath(dst string) bool {
@@ -42,28 +42,12 @@ func CheckSavePath(dst string) bool {
 	return os.IsNotExist(e)
 }
 
-func CheckContainExt(t FileType, name string) bool {
-	ext := GetFileExt(name)
-	ext = strings.ToUpper(ext)
-	switch t {
-	case TypeImage:
-		for _, allowExt := range global.AppSetting.UploadImageAllowExts {
-			if strings.ToUpper(allowExt) == ext {
-				return true
-			}
-		}
-
-	}
-
-	return false
-}
-
 func CheckMaxSize(t FileType, f multipart.File) bool {
 	content, _ := ioutil.ReadAll(f)
 	size := len(content)
 	switch t {
 	case TypeImage:
-		if size >= global.AppSetting.UploadImageMaxSize*1024*1024 {
+		if size >= 10*1024*1024 {
 			return true
 		}
 	}

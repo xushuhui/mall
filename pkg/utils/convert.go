@@ -26,28 +26,28 @@ func BytesToUint32(from []byte) (to uint32) {
 	binary.Read(buffer, binary.BigEndian, &to)
 	return
 }
-func StringToInt(v string) (d int, e error) {
+func StringToInt(v string) (d int, err error) {
 	tmp, e := strconv.ParseInt(v, 10, 32)
 	if e != nil {
 		return
 	}
 	return int(tmp), e
 }
-func StringToUint(v string) (d uint, e error) {
+func StringToUint(v string) (d uint, err error) {
 	tmp, e := strconv.ParseUint(v, 10, 32)
 	if e != nil {
 		return
 	}
 	return uint(tmp), e
 }
-func StringToUint32(v string) (d uint32, e error) {
+func StringToUint32(v string) (d uint32, err error) {
 	tmp, e := strconv.ParseUint(v, 10, 32)
 	if e != nil {
 		return
 	}
 	return uint32(tmp), e
 }
-func StringToUint8(v string) (d uint8, e error) {
+func StringToUint8(v string) (d uint8, err error) {
 	tmp, e := strconv.ParseUint(v, 10, 8)
 	if e != nil {
 		return

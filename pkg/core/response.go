@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	co "mall_go/pkg/code"
+	co "mall-go/pkg/code"
 )
 
 // Error 数据返回通用 JSON 数据结构

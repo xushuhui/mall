@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"mall_go/internal/biz"
+	"mall-go/internal/biz"
 
-	"mall_go/pkg/core"
+	"mall-go/pkg/core"
 	"strings"
 )
 

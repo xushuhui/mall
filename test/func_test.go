@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"mall_go/pkg/utils"
+	"mall-go/pkg/utils"
 	"os"
 	"sort"
 	"testing"

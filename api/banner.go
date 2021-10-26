@@ -2,13 +2,13 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"mall_go/internal/biz"
-	"mall_go/pkg/core"
-	"mall_go/pkg/utils"
+	"mall-go/internal/biz"
+	"mall-go/pkg/core"
+	"mall-go/pkg/utils"
 )
 
 func BannerID(c *fiber.Ctx) error {
-	id, err := utils.StringToUint(c.Params("id"))
+	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 
 		return err

@@ -2,12 +2,12 @@ package api
 
 import (
 	"fmt"
-	"mall_go/internal/biz"
+	"mall-go/internal/biz"
 
 	"github.com/gofiber/fiber/v2"
 
-	"mall_go/pkg/core"
-	"mall_go/pkg/utils"
+	"mall-go/pkg/core"
+	"mall-go/pkg/utils"
 )
 
 func SaleExplainFixed(c *fiber.Ctx) error {
@@ -25,7 +25,7 @@ func TagType(c *fiber.Ctx) error {
 }
 func Detail(c *fiber.Ctx) error {
 
-	id, err := utils.StringToUint(c.Params("id"))
+	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 
 		return err
@@ -42,7 +42,7 @@ func Latest(c *fiber.Ctx) error {
 	return nil
 }
 func SpuByCategory(c *fiber.Ctx) (err error) {
-	id, err := utils.StringToUint(c.Params("id"))
+	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 
 		return

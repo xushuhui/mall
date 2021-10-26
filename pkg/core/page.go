@@ -3,7 +3,7 @@ package core
 import (
 	"github.com/gofiber/fiber/v2"
 
-	"mall_go/pkg/utils"
+	"mall-go/pkg/utils"
 )
 
 type Pager struct {

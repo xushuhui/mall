@@ -8,7 +8,7 @@ import (
 )
 
 // DecodeWeAppUserInfo 解密微信小程序用户信息
-func DecodeWeAppUserInfo(encryptedData string, sessionKey string, iv string) (result []byte, e error) {
+func DecodeWeAppUserInfo(encryptedData string, sessionKey string, iv string) (result []byte, err error) {
 	bytes, e := base64.StdEncoding.DecodeString(encryptedData)
 	if e != nil {
 		fmt.Println("encryptedData: ", encryptedData, "\n", e.Error())
