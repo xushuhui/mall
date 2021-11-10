@@ -41,11 +41,26 @@ func InitRoute(app *fiber.App) {
 	}
 	app.Get("/search", api.Search)
 	app.Get("/sale_explain/fixed", api.SaleExplainFixed)
-	app.Get("/category/grid/all", api.CategoryGrid)
-	app.Get("/category/all", api.CategoryAll)
+	category := app.Group("/category")
+	{
+		category.Get("/grid/all", api.CategoryGrid)
+		category.Get("/all", api.CategoryAll)
+	}
+
 	app.Get("/tag/type/:type", api.TagType)
 
 	//app.Use(middleware.Auth())
+	token := app.Group("/token")
+	{
+		token.Post("/", api.GetToken)
+		token.Post("/verify", api.VerifyToken)
+	}
+	user := app.Group("/user")
+	{
+		user.Get("/", api.GetToken)
+		user.Get("/verify", api.VerifyToken)
+	}
+
 	//需要登录的接口
 
 }

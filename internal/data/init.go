@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"mall-go/internal/conf"
-	"mall-go/internal/data/ent/model"
+	"mall-go/internal/data/model"
 	"mall-go/pkg/core"
 	"sync"
 )
