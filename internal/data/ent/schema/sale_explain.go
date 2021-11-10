@@ -2,6 +2,8 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 )
 
@@ -9,6 +11,11 @@ type SaleExplain struct {
 	ent.Schema
 }
 
+func (SaleExplain) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "sale_explain"},
+	}
+}
 func (SaleExplain) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int8("fixed").Comment(""),
@@ -16,8 +23,10 @@ func (SaleExplain) Fields() []ent.Field {
 		field.Int("spu_id").Comment(""),
 		field.Int("index").Comment(""),
 		field.Int("replace_id").Comment(""),
-		field.Time("create_time").Comment(""),
-		field.Time("delete_time").Comment(""),
-		field.Time("update_time").Comment(""),
+	}
+}
+func (SaleExplain) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
 	}
 }

@@ -1,42 +1,45 @@
 package core
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	co "mall-go/pkg/code"
+	"mall-go/pkg/errcode"
 )
 
-// Error 数据返回通用 JSON 数据结构
-type Error struct {
+/// Error 数据返回通用 JSON 数据结构
+type IError struct {
 	Code    int         `json:"code"`    // 错误码 ((0: 成功，1: 失败，>1: 错误码))
 	Message string      `json:"message"` // 提示信息
 	Data    interface{} `json:"data"`    // 返回数据 (业务接口定义具体数据结构)
 	Err     error       `json:"-"`
 }
-
-func (e Error) Error() (re string) {
-	return fmt.Sprintf("code=%v, Message=%v", e.Code, e.Message)
+type HttpError struct {
+	IError
+	Status int
 }
 
-func NewErrorCode(code int) (e Error) {
-	e = Error{
-		Code:    code,
-		Message: co.GetMsg(code),
+func (err IError) Error() (re string) {
+	return fmt.Sprintf("code=%v, Message=%v,Err=%v", err.Code, err.Message, err.Err)
+}
+
+func NewErrorCode(code int) (err error) {
+	err = HttpError{
+		NewIError(code, errcode.GetMsg(code)),
+		fiber.StatusBadRequest,
 	}
 	return
 }
-func NewErrorMessage(code int, message string) (e Error) {
-	e = Error{
-		Code:    code,
-		Message: message,
+func NewErrorMessage(code int, message string) (err error) {
+	err = HttpError{
+		NewIError(code, message),
+		fiber.StatusBadRequest,
 	}
 	return
 }
-func NewInvalidParamsError(message string) (e Error) {
-	return NewErrorMessage(co.InvalidParams, message)
+func NewInvalidParamsError(message string) (err error) {
+	return NewErrorMessage(errcode.InvalidParams, message)
 }
 
 func ValidateRequest(obj interface{}) error {
@@ -45,9 +48,19 @@ func ValidateRequest(obj interface{}) error {
 
 	if err != nil {
 		s := Translate(err.(validator.ValidationErrors))
-		return errors.New(s)
+		return NewInvalidParamsError(s)
 	}
 	return nil
+}
+func ParseQuery(c *fiber.Ctx, request interface{}) (err error) {
+	err = c.QueryParser(request)
+
+	if err != nil {
+		return err
+	}
+
+	err = ValidateRequest(request)
+	return
 }
 func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	err = c.BodyParser(request)
@@ -58,47 +71,40 @@ func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	err = ValidateRequest(request)
 	return
 }
-func FailResp(c *fiber.Ctx, code int) error {
-	return c.JSON(Error{
+
+func NewIError(code int, message string) IError {
+	return IError{
 		Code:    code,
-		Message: co.GetMsg(code),
-	})
+		Message: message,
+	}
 }
 
-func ErrorResp(c *fiber.Ctx, code int, msg string) error {
-	return c.JSON(Error{
-		Code:    code,
-		Message: msg,
-	})
+func NotFoundError(code int) error {
+
+	return HttpError{
+		NewIError(code, errcode.GetMsg(code)),
+		fiber.StatusNotFound,
+	}
 
 }
-func InvalidParamsResp(c *fiber.Ctx, msg string) error {
-
-	return c.JSON(Error{
-		Code:    co.InvalidParams,
-		Message: msg,
-	})
-
-}
-
 func SuccessResp(c *fiber.Ctx) error {
-	return c.JSON(Error{
+	return c.JSON(IError{
 		Code:    0,
-		Message: co.GetMsg(0),
+		Message: errcode.GetMsg(0),
 	})
 }
 func SetData(c *fiber.Ctx, data interface{}) error {
-	return c.JSON(Error{
+	return c.JSON(IError{
 		Code:    0,
-		Message: co.GetMsg(0),
+		Message: errcode.GetMsg(0),
 		Data:    data,
 	})
 }
 
 func SetPage(c *fiber.Ctx, list interface{}, totalRows int) error {
-	return c.JSON(Error{
+	return c.JSON(IError{
 		Code:    0,
-		Message: co.GetMsg(0),
+		Message: errcode.GetMsg(0),
 		Data: Pager{
 			Page:  GetPage(c),
 			Size:  GetSize(c),
@@ -107,17 +113,17 @@ func SetPage(c *fiber.Ctx, list interface{}, totalRows int) error {
 		},
 	})
 }
-func ServerError(c *fiber.Ctx, err error) error {
+func HandleServerError(c *fiber.Ctx, err error) error {
 
-	return c.JSON(Error{
-		Code:    co.ServerError,
-		Message: co.GetMsg(co.ServerError),
+	return c.JSON(IError{
+		Code:    errcode.ServerError,
+		Message: errcode.GetMsg(errcode.ServerError),
 		Err:     err,
 	})
 }
-func (e Error) HttpError(c *fiber.Ctx) error {
-	return c.JSON(Error{
-		Code:    e.Code,
-		Message: co.GetMsg(e.Code),
+func (err *HttpError) HandleHttpError(c *fiber.Ctx) error {
+
+	return c.Status(err.Status).JSON(IError{
+		Code: err.Code, Message: err.Message,
 	})
 }

@@ -1,4 +1,4 @@
-package code
+package errcode
 
 const (
 	SUCCESS = iota
