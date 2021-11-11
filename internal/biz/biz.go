@@ -3,8 +3,8 @@ package biz
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"github.com/xushuhui/goal/utils"
 	"mall-go/internal/data/model"
-	"mall-go/pkg/utils"
 )
 
 func LocalUser(c *fiber.Ctx) (user model.User) {

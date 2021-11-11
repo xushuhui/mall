@@ -4,12 +4,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/xushuhui/goal/core"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"mall-go/internal/conf"
 	"mall-go/internal/data"
 	"mall-go/internal/server"
-	"mall-go/pkg/core"
 )
 
 func errorHandler(c *fiber.Ctx, err error) error {

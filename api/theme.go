@@ -4,7 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"mall-go/internal/biz"
 
-	"mall-go/pkg/core"
+	"github.com/xushuhui/goal/core"
 	"strings"
 )
 

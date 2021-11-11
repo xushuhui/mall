@@ -4,7 +4,7 @@ import (
 	"io"
 	"io/ioutil"
 
-	"mall-go/pkg/utils"
+	"github.com/xushuhui/goal/utils"
 	"mime/multipart"
 	"os"
 	"path"

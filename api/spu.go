@@ -6,8 +6,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"mall-go/pkg/core"
-	"mall-go/pkg/utils"
+	"github.com/xushuhui/goal/core"
+	"github.com/xushuhui/goal/utils"
 )
 
 func SaleExplainFixed(c *fiber.Ctx) error {

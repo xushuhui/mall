@@ -3,7 +3,6 @@ package logger
 import (
 	"github.com/sirupsen/logrus"
 	"io"
-	"mall-go/pkg/utils"
 	"os"
 )
 
@@ -46,7 +45,7 @@ func NewLogger(format, lvl string, reportCaller bool, savePath string) (l *Logge
 	}
 	lrus.SetLevel(level)
 	lrus.SetReportCaller(reportCaller)
-	logDir = utils.LogDir(savePath)
+	logDir = "/"
 	l = &Logger{
 		lrus,
 	}

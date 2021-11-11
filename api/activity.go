@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/xushuhui/goal/core"
 	"mall-go/internal/biz"
-	"mall-go/pkg/core"
 )
 
 func ActivityByName(c *fiber.Ctx) error {

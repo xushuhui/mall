@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/xushuhui/goal/core"
+	"github.com/xushuhui/goal/utils"
 	"mall-go/internal/biz"
-	"mall-go/pkg/core"
-	"mall-go/pkg/utils"
 )
 
 func BannerID(c *fiber.Ctx) error {

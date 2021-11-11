@@ -3,9 +3,9 @@ package test
 import (
 	"encoding/csv"
 	"fmt"
+	"github.com/xushuhui/goal/utils"
 	"io"
 	"log"
-	"mall-go/pkg/utils"
 	"os"
 	"sort"
 	"testing"
