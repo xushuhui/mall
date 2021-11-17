@@ -1,36 +1,26 @@
 package data
 
+import (
+	"context"
+	"mall-go/internal/data/model"
+	"mall-go/internal/data/model/banner"
+)
+
 type Banner struct {
 }
 type Theme struct {
 }
 
-func GetBannerById(id int) (banner Banner, err error) {
+func GetBannerById(ctx context.Context, id int) (b *model.Banner, err error) {
+
+	b, err = GetDB().Banner.Query().Where(banner.ID(id)).First(ctx)
 	return
 }
-func GetBannerByName(name string) (banner Banner, err error) {
-	return
-}
-func GetThemeWithSpu(name string) (theme Theme, err error) {
-	return
-}
-func GetThemeByNames(names []string) (themes []Theme, err error) {
+func GetBannerByName(ctx context.Context, name string) (b *model.Banner, err error) {
+	b, err = GetDB().Banner.Query().Where(banner.Name(name)).First(ctx)
 	return
 }
 
-type User struct {
-}
-
-func GetAccountUser(phone string) (user User, err error) {
-	return
-}
-
-type Spu struct {
-}
-
-func GetSpuById(id int) (Spu Spu, err error) {
-	return
-}
-func GetSpuByCategory(id int) (Spus []Spu, err error) {
+func GetAccountUser(phone string) (user *model.User, err error) {
 	return
 }

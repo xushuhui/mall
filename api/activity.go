@@ -14,7 +14,7 @@ func ActivityByName(c *fiber.Ctx) error {
 func ActivityNameWithSpu(c *fiber.Ctx) error {
 	name := c.Params("name")
 
-	data, err := biz.BannerByName(name)
+	data, err := biz.BannerByName(c.Context(), name)
 	if err != nil {
 
 		return err

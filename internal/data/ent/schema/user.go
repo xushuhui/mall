@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -30,5 +31,10 @@ func (User) Fields() []ent.Field {
 func (User) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+func (User) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("user_coupon", UserCoupon.Type),
 	}
 }

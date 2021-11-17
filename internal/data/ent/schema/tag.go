@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -28,5 +29,10 @@ func (Tag) Fields() []ent.Field {
 func (Tag) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+func (Tag) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.From("spu", Spu.Type).Ref("tag"),
 	}
 }

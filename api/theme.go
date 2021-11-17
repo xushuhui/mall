@@ -11,8 +11,7 @@ import (
 func ThemeByNames(c *fiber.Ctx) (err error) {
 	names := c.Query("names")
 
-	nameSlice := strings.Split(names, ",")
-	data, err := biz.ThemeByNames(nameSlice)
+	data, err := biz.ThemeByNames(c.Context(), strings.Split(names, ","))
 	if err != nil {
 
 		return
@@ -24,7 +23,7 @@ func ThemeByNames(c *fiber.Ctx) (err error) {
 func ThemeNameWithSpu(c *fiber.Ctx) error {
 	name := c.Params("name")
 
-	data, err := biz.ThemeNameWithSpu(name)
+	data, err := biz.ThemeNameWithSpu(c.Context(), name)
 	if err != nil {
 
 		return err

@@ -13,7 +13,7 @@ func BannerID(c *fiber.Ctx) error {
 
 		return err
 	}
-	data, err := biz.BannerById(id)
+	data, err := biz.BannerById(c.Context(), id)
 	if err != nil {
 
 		return err
@@ -24,7 +24,7 @@ func BannerID(c *fiber.Ctx) error {
 func BannerName(c *fiber.Ctx) error {
 	name := c.Params("name")
 
-	data, err := biz.BannerByName(name)
+	data, err := biz.BannerByName(c.Context(), name)
 	if err != nil {
 
 		return err

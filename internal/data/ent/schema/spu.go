@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -39,5 +40,16 @@ func (Spu) Fields() []ent.Field {
 func (Spu) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+func (Spu) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("spu_img", SpuImg.Type),
+		edge.To("spu_detail_img", SpuDetailImg.Type),
+		edge.To("spec_key", SpecKey.Type).StorageKey(
+			edge.Table("spu_key"), edge.Columns("spu_id", "spec_key_id")),
+		edge.To("tag", Tag.Type).StorageKey(
+			edge.Table("spu_tag"), edge.Columns("spu_id", "tag_id")),
+		edge.From("theme", Theme.Type).Ref("spu"),
 	}
 }
