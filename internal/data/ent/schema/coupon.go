@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -16,6 +17,7 @@ func (Coupon) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "coupon"},
 	}
 }
+
 func (Coupon) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment(""),
@@ -33,8 +35,16 @@ func (Coupon) Fields() []ent.Field {
 		field.Int8("whole_store").Comment(""),
 	}
 }
+
 func (Coupon) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+
+func (Coupon) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("category", Category.Type).StorageKey(
+			edge.Table("coupon_category"), edge.Columns("coupon_id", "category_id")),
 	}
 }

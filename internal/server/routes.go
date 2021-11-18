@@ -1,12 +1,12 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"mall-go/api"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func InitRoute(app *fiber.App) {
-
 	app.Post("/login", api.Login)
 
 	banner := app.Group("/banner")
@@ -48,8 +48,12 @@ func InitRoute(app *fiber.App) {
 	}
 
 	app.Get("/tag/type/:type", api.TagType)
+	order := app.Group("/order")
+	{
+		order.Post("/", api.PlaceOrder)
+	}
 
-	//app.Use(middleware.Auth())
+	// app.Use(middleware.Auth())
 	token := app.Group("/token")
 	{
 		token.Post("/", api.GetToken)
@@ -61,6 +65,6 @@ func InitRoute(app *fiber.App) {
 		user.Get("/verify", api.VerifyToken)
 	}
 
-	//需要登录的接口
+	// 需要登录的接口
 
 }

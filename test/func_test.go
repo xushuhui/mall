@@ -3,7 +3,6 @@ package test
 import (
 	"sort"
 	"testing"
-	"time"
 )
 
 type Pair struct {
@@ -29,15 +28,28 @@ func sortMapByValue(m map[string]int) PairList {
 	sort.Sort(sort.Reverse(p))
 	return p
 }
-func TestFunc(t *testing.T) {
-	ts, _ := time.Parse("2006-01-02", "2021-10-11")
 
-	for i := 0; i < 24; i++ {
-		s := ts
-		ts = ts.Add(1 * time.Hour)
-		e := ts
-		t.Log(s, e)
+type Big struct {
+	small Small
+	bid   int
+}
+
+type Small struct {
+	sid int
+}
+
+func TestFunc(t *testing.T) {
+	b := Big{
+		bid: 1,
 	}
+	b2 := Big{
+		bid: 2,
+		small: Small{
+			sid: 2,
+		},
+	}
+	t.Log(b.small == Small{})
+	t.Log(b2.small == Small{})
 }
 
 //func write(data [][]string) {

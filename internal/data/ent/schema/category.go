@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -16,6 +17,7 @@ func (Category) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "category"},
 	}
 }
+
 func (Category) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").Comment(""),
@@ -29,8 +31,15 @@ func (Category) Fields() []ent.Field {
 		field.Int("level").Comment(""),
 	}
 }
+
 func (Category) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+
+func (Category) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.From("coupon", Coupon.Type).Ref("category"),
 	}
 }
