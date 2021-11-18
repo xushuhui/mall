@@ -36,3 +36,10 @@ func (SpecKey) Edges() []ent.Edge {
 		edge.From("spu", Spu.Type).Ref("spec_key"),
 	}
 }
+
+type Spec struct {
+	KeyId   int
+	Key     string
+	ValueId int
+	Value   string
+}

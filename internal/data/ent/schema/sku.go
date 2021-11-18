@@ -25,7 +25,7 @@ func (Sku) Fields() []ent.Field {
 		field.String("title").Comment(""),
 		field.Int("spu_id").Comment(""),
 
-		field.String("specs").Comment(""),
+		field.JSON("specs", []Spec{}).Comment(""),
 		field.String("code").Comment(""),
 		field.Int("stock").Comment(""),
 		field.Int("category_id").Comment(""),
