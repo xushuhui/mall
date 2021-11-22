@@ -2,6 +2,7 @@ package logic
 
 import (
 	"mall-go/internal/data"
+	"mall-go/internal/data/model"
 	"mall-go/pkg/enum"
 	"mall-go/pkg/utils"
 	"time"
@@ -10,14 +11,14 @@ import (
 )
 
 type CouponChecker struct {
-	Coupon   data.Coupon
-	discount float64
+	Coupon   *model.Coupon
+
 }
 
-func NewCouponChecker(coupon data.Coupon, discount float64) *CouponChecker {
+func NewCouponChecker(coupon *model.Coupon) *CouponChecker {
 	return &CouponChecker{
 		Coupon:   coupon,
-		discount: discount,
+	
 	}
 }
 
@@ -50,15 +51,24 @@ func (c *CouponChecker) CanBeUsed(skuOrderList []data.SkuOrder, serverTotalPrice
 func (c *CouponChecker) couponCanBeUsed(orderCategoryPrice float64) (err error) {
 	switch c.Coupon.Type {
 	case enum.FULL_MINUS:
+	case enum.FULL_OFF:
+		if c.Coupon.FullMoney > orderCategoryPrice {
+		err = core.ParamsError(core.InvalidParams)
+		return
+		}
 	case enum.NO_THRESHOLD_MINUS:
-		
+		return
+	default:
+		err = core.ParamsError(core.InvalidParams)
+
+		return
 	}
 	return
 }
 
 func  getSumByCategoryList(skuOrderList []data.SkuOrder, cids []int) (sum float64) {
 	for _, cid := range cids {
-		sum = sum + c.getSumByCategory(skuOrderList, cid)
+		sum = sum +getSumByCategory(skuOrderList, cid)
 	}
 	return
 }
@@ -72,25 +82,31 @@ func getSumByCategory(skuOrderList []data.SkuOrder, cid int) (sum float64) {
 	return
 }
 
-//private void couponCanBeUsed(BigDecimal orderCategoryPrice) {
-//switch (CouponType.toType(this.coupon.getType())){
-//case FULL_OFF:
-//case FULL_MINUS:
-//int compare = this.coupon.getFullMoney().compareTo(orderCategoryPrice);
-//if(compare > 0){
-//throw new ParameterException(40008);
-//}
-//break;
-//case NO_THRESHOLD_MINUS:
-//break;
-//default:
-//throw new ParameterException(40009);
-//}
-//}
-//
-
-//
 
 func (c *CouponChecker) FinalTotalPriceIsOk(orderFinalTotalPrice float64, serverTotalPrice float64) (err error) {
+	var serverFinalTotalPrice float64
+	switch c.Coupon.Type {
+	case enum.FULL_MINUS:
+	case enum.NO_THRESHOLD_MINUS:
+		serverFinalTotalPrice = serverTotalPrice - c.Coupon.Minus
+		if serverFinalTotalPrice <=0{
+			err = core.ParamsError(core.InvalidParams)
+			return
+		}
+		
+	case enum.FULL_OFF:
+		//todo 
+		serverFinalTotalPrice = serverTotalPrice * c.Coupon.Rate
+	
+	default:
+		err = core.ParamsError(core.InvalidParams)
+
+		return
+	}
+	if serverFinalTotalPrice != orderFinalTotalPrice{
+		err = core.ParamsError(core.InvalidParams)
+
+		return
+	}
 	return
 }

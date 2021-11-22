@@ -17,7 +17,7 @@ func PlaceOrder(c *fiber.Ctx) (err error) {
 	}
 
 	user := biz.LocalUser(c)
-	orderChecker, err := biz.OrderIsOk(user.ID, req)
+	orderChecker, err := biz.OrderIsOk(c.Context(),user.ID, req)
 	if err != nil {
 		return err
 	}

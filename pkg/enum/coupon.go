@@ -7,7 +7,7 @@ const (
 )
 //coupon_status
 const (
-	AVAILABLE = 1,// "未使用"), 
+	AVAILABLE = 1// "未使用"), 
 	USED = 2 //, "已使用"),
 	 EXPIRED = 3 //"过期");
 )

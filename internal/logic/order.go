@@ -2,6 +2,7 @@ package logic
 
 import (
 	"mall-go/internal/data"
+	"mall-go/internal/data/model"
 	"mall-go/internal/request"
 
 	"github.com/xushuhui/goal/core"
@@ -10,14 +11,14 @@ import (
 type (
 	OrderChecker struct {
 		orderDTO      request.PlaceOrder
-		serverSkuList []data.Sku
+		serverSkuList []*model.Sku
 		couponChecker CouponChecker
 		maxSkuLimit   int
 		orderSkuList  []data.OrderSku
 	}
 )
 
-func NewOrderChecker(req request.PlaceOrder, serverSkuList []data.Sku, checker CouponChecker, maxSkuLimit int) *OrderChecker {
+func NewOrderChecker(req request.PlaceOrder, serverSkuList []*model.Sku, checker CouponChecker, maxSkuLimit int) *OrderChecker {
 	return &OrderChecker{
 		orderDTO:      req,
 		serverSkuList: serverSkuList,
@@ -49,7 +50,8 @@ func (o *OrderChecker) IsOk() (err error) {
 		return
 	}
 	for i := 0; i < len(o.serverSkuList); i++ {
-		sku := o.serverSkuList[i]
+		skuModel := o.serverSkuList[i]
+		sku := data.Sku{skuModel}
 		skuInfoDTO := o.orderDTO.SkuInfoList[i]
 		err = containsSoldOutSku(sku)
 		if err != nil {

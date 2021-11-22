@@ -14,3 +14,6 @@ data:
 
 log:
   path: .
+
+app:
+  maxSkuLimit: 10

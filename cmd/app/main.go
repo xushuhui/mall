@@ -51,8 +51,9 @@ func initApp(c *conf.Config) *fiber.App {
 	return app
 }
 func main() {
-
+	
 	c := new(conf.Config)
+
 	yamlFile, err := ioutil.ReadFile("configs/config.yaml")
 	if err != nil {
 		panic(err)
@@ -63,6 +64,7 @@ func main() {
 	}
 
 	app := initApp(c)
+	conf.GlobalConfig = *c
 	app.Listen(c.Server.Http.Addr)
 
 }

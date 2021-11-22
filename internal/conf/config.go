@@ -2,10 +2,12 @@ package conf
 
 import "time"
 
+var GlobalConfig Config
 type Config struct {
 	Server Server
 	Data   Data
 	Log    Log
+	App App
 }
 type Server struct {
 	Http Http
@@ -29,4 +31,7 @@ type Redis struct {
 }
 type Log struct {
 	Path string
+}
+type App struct{
+	MaxSkuLimit int
 }
