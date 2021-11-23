@@ -19,7 +19,7 @@ func (SpecValue) Annotations() []schema.Annotation {
 func (SpecValue) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("value").Comment(""),
-		field.Int("spec_id").Comment(""),
+		field.Int64("spec_id").Comment(""),
 
 		field.String("extend").Comment(""),
 	}

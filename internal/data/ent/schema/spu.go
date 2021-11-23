@@ -21,8 +21,8 @@ func (Spu) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment(""),
 		field.String("subtitle").Comment(""),
-		field.Int("category_id").Comment(""),
-		field.Int("root_category_id").Comment(""),
+		field.Int64("category_id").Comment(""),
+		field.Int64("root_category_id").Comment(""),
 		field.Int8("online").Comment(""),
 
 		field.String("price").Comment("文本型价格，有时候SPU需要展示的是一个范围，或者自定义平均价格"),

@@ -22,7 +22,7 @@ func (BannerItem) Fields() []ent.Field {
 		field.String("keyword").Comment(""),
 		field.Int("type").Comment(""),
 
-		field.Int("banner_id").Comment(""),
+		field.Int64("banner_id").Comment(""),
 		field.String("name").Comment(""),
 	}
 }

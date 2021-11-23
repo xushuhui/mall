@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package mall;
+import "errors/errors.proto";
+
+option go_package = "mall-go/api/mall";
+
+enum ErrorReason {
+  option (errors.default_code) = 400;
+
+  Not_Found = 0 [ (errors.code) = 404 ];
+  Unauthorized = 1 [ (errors.code) = 401 ];
+  Forbidden = 2 [ (errors.code) = 403 ];
+  Internal_Server_Error = 3 [ (errors.code) = 500 ];
+  
+  Invalid_Params = 10000;
+  Invalid_Token = 10001;
+  Login_Fail = 10002;
+}

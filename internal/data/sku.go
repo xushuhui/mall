@@ -12,8 +12,8 @@ type Sku struct {
 }
 
 type OrderSku struct {
-	id          int
-	spuId       int
+	id          int64
+	spuId       int64
 	finalPrice  float64
 	singlePrice float64
 	specValues  []string
@@ -52,7 +52,7 @@ func (sku Sku) getSpecValueList() (val []string) {
 type SkuOrder struct {
 	ActualPrice float64
 	Count       int
-	CategoryId  int
+	CategoryId  int64
 }
 
 func NewSkuOrder(sku Sku, skuInfoDTO request.SkuInfo) SkuOrder {
@@ -66,7 +66,7 @@ func NewSkuOrder(sku Sku, skuInfoDTO request.SkuInfo) SkuOrder {
 func (s SkuOrder) GetTotalPrice() float64 {
 	return s.ActualPrice * float64(s.Count)
 }
-func GetSkuListByIds(ctx context.Context, ids []int) (skus []*model.Sku, err error) {
+func GetSkuListByIds(ctx context.Context, ids []int64) (skus []*model.Sku, err error) {
 	skus, err = GetDB().Sku.Query().Where(sku.IDIn(ids...)).All(ctx)
 	return
 }

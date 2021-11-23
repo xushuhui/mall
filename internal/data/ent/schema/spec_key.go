@@ -38,8 +38,8 @@ func (SpecKey) Edges() []ent.Edge {
 }
 
 type Spec struct {
-	KeyId   int
+	KeyId   int64
 	Key     string
-	ValueId int
+	ValueId int64
 	Value   string
 }

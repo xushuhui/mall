@@ -19,7 +19,7 @@ func (SpuDetailImg) Annotations() []schema.Annotation {
 func (SpuDetailImg) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("img").Comment(""),
-		field.Int("spu_id").Comment(""),
+		field.Int64("spu_id").Comment(""),
 		field.Int("index").Comment(""),
 	}
 }

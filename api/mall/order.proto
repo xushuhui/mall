@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package mall;
+
+import "google/api/annotations.proto";
+
+option go_package = "mall-go/api/mall";
+
+service Order {
+
+  rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderReply) {
+    option (google.api.http) = {
+      post : "/order"
+      body : "*"
+    };
+  }
+}
+message SkuInfo {
+  int64 id = 1;
+  int32 count = 2;
+}
+
+message OrderAddress {
+  string UserName = 1;
+  string Province = 2;
+  string City = 3;
+  string County = 4;
+  string Mobile = 5;
+  string NationCode = 6;
+  string PostalCode = 7;
+  string Detail = 8;
+}
+
+message PlaceOrderRequest {
+
+  int64 CouponId = 1;
+  double TotalPrice = 2;
+  double FinalTotalPrice = 3;
+  repeated SkuInfo SkuInfoList = 4;
+  OrderAddress Address = 5;
+}
+
+message PlaceOrderReply { int64 orderId = 1; }

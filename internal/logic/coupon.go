@@ -31,7 +31,7 @@ func (c *CouponChecker) IsOk() (err error) {
 
 func (c *CouponChecker) CanBeUsed(skuOrderList []data.SkuOrder, serverTotalPrice float64) (err error) {
 	var orderCategoryPrice float64
-	var cids []int
+	var cids []int64
 
 	if c.Coupon.WholeStore == 1 {
 		orderCategoryPrice = serverTotalPrice
@@ -64,14 +64,14 @@ func (c *CouponChecker) couponCanBeUsed(orderCategoryPrice float64) (err error) 
 	return
 }
 
-func getSumByCategoryList(skuOrderList []data.SkuOrder, cids []int) (sum float64) {
+func getSumByCategoryList(skuOrderList []data.SkuOrder, cids []int64) (sum float64) {
 	for _, cid := range cids {
 		sum = sum + getSumByCategory(skuOrderList, cid)
 	}
 	return
 }
 
-func getSumByCategory(skuOrderList []data.SkuOrder, cid int) (sum float64) {
+func getSumByCategory(skuOrderList []data.SkuOrder, cid int64) (sum float64) {
 	for _, v := range skuOrderList {
 		if v.CategoryId == cid {
 			sum = sum + v.GetTotalPrice()

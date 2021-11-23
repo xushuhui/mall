@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package mall;
+
+import "google/api/annotations.proto";
+
+option go_package = "mall-go/api/mall";
+
+// The greeting service definition.
+service Show {
+  // Sends a greeting
+  rpc GetBannerById(BannerByIdRequest) returns (BannerByIdReply) {
+    option (google.api.http) = {
+      get : "/banner/{id}"
+    };
+  }
+}
+
+message BannerByIdRequest { int64 id = 1; }
+
+
+message BannerByIdReply { 
+  int64 id = 1;
+  string name = 2;
+  string title = 3;
+  string img = 4;
+  string description = 5;
+  repeated BannerItem items=6;
+}
+message BannerItem {
+  int64 id=1;
+  string img=2;
+  string keyword=3;
+  int32 type=4;
+  string name=5;
+  int64 bannerId=6;
+
+}

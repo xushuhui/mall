@@ -18,9 +18,9 @@ func (SkuSpec) Annotations() []schema.Annotation {
 }
 func (SkuSpec) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("spu_id").Comment(""),
-		field.Int("sku_id").Comment(""),
-		field.Int("key_id").Comment(""),
-		field.Int("value_id").Comment(""),
+		field.Int64("spu_id").Comment(""),
+		field.Int64("sku_id").Comment(""),
+		field.Int64("key_id").Comment(""),
+		field.Int64("value_id").Comment(""),
 	}
 }

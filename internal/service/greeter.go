@@ -5,6 +5,7 @@ import (
 
 	v1 "mall-go/api/helloworld/v1"
 	"mall-go/internal/biz"
+
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -16,7 +17,6 @@ type GreeterService struct {
 	log *log.Helper
 }
 
-// NewGreeterService new a greeter service.
 func NewGreeterService(uc *biz.GreeterUsecase, logger log.Logger) *GreeterService {
 	return &GreeterService{uc: uc, log: log.NewHelper(logger)}
 }

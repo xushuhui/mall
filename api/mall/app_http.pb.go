@@ -2,7 +2,7 @@
 // versions:
 // protoc-gen-go-http v2.1.2
 
-package v1
+package mall
 
 import (
 	context "context"
@@ -17,54 +17,54 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-type GreeterHTTPServer interface {
-	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+type ShowHTTPServer interface {
+	GetBannerById(context.Context, *BannerByIdRequest) (*BannerByIdReply, error)
 }
 
-func RegisterGreeterHTTPServer(s *http.Server, srv GreeterHTTPServer) {
+func RegisterShowHTTPServer(s *http.Server, srv ShowHTTPServer) {
 	r := s.Route("/")
-	r.GET("/helloworld/{name}", _Greeter_SayHello0_HTTP_Handler(srv))
+	r.GET("/banner/{id}", _Show_GetBannerById0_HTTP_Handler(srv))
 }
 
-func _Greeter_SayHello0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context) error {
+func _Show_GetBannerById0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in HelloRequest
+		var in BannerByIdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/helloworld.v1.Greeter/SayHello")
+		http.SetOperation(ctx, "/mall.Show/GetBannerById")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.SayHello(ctx, req.(*HelloRequest))
+			return srv.GetBannerById(ctx, req.(*BannerByIdRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*HelloReply)
+		reply := out.(*BannerByIdReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-type GreeterHTTPClient interface {
-	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
+type ShowHTTPClient interface {
+	GetBannerById(ctx context.Context, req *BannerByIdRequest, opts ...http.CallOption) (rsp *BannerByIdReply, err error)
 }
 
-type GreeterHTTPClientImpl struct {
+type ShowHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewGreeterHTTPClient(client *http.Client) GreeterHTTPClient {
-	return &GreeterHTTPClientImpl{client}
+func NewShowHTTPClient(client *http.Client) ShowHTTPClient {
+	return &ShowHTTPClientImpl{client}
 }
 
-func (c *GreeterHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
-	var out HelloReply
-	pattern := "/helloworld/{name}"
+func (c *ShowHTTPClientImpl) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...http.CallOption) (*BannerByIdReply, error) {
+	var out BannerByIdReply
+	pattern := "/banner/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/helloworld.v1.Greeter/SayHello"))
+	opts = append(opts, http.Operation("/mall.Show/GetBannerById"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

@@ -23,13 +23,13 @@ func (Sku) Fields() []ent.Field {
 		field.Int8("online").Comment(""),
 		field.String("img").Comment(""),
 		field.String("title").Comment(""),
-		field.Int("spu_id").Comment(""),
+		field.Int64("spu_id").Comment(""),
 
 		field.JSON("specs", []Spec{}).Comment(""),
 		field.String("code").Comment(""),
 		field.Int("stock").Comment(""),
-		field.Int("category_id").Comment(""),
-		field.Int("root_category_id").Comment(""),
+		field.Int64("category_id").Comment(""),
+		field.Int64("root_category_id").Comment(""),
 	}
 }
 func (Sku) Mixin() []ent.Mixin {

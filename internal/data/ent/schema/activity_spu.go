@@ -11,8 +11,8 @@ type ActivitySpu struct {
 
 func (ActivitySpu) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("activity_id").Comment(""),
-		field.Int("spu_id").Comment(""),
+		field.Int64("activity_id").Comment(""),
+		field.Int64("spu_id").Comment(""),
 		field.Int8("participation").Comment(""),
 	}
 }
