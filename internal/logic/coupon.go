@@ -11,14 +11,12 @@ import (
 )
 
 type CouponChecker struct {
-	Coupon   *model.Coupon
-
+	Coupon *model.Coupon
 }
 
 func NewCouponChecker(coupon *model.Coupon) *CouponChecker {
 	return &CouponChecker{
-		Coupon:   coupon,
-	
+		Coupon: coupon,
 	}
 }
 
@@ -53,8 +51,8 @@ func (c *CouponChecker) couponCanBeUsed(orderCategoryPrice float64) (err error) 
 	case enum.FULL_MINUS:
 	case enum.FULL_OFF:
 		if c.Coupon.FullMoney > orderCategoryPrice {
-		err = core.ParamsError(core.InvalidParams)
-		return
+			err = core.ParamsError(core.InvalidParams)
+			return
 		}
 	case enum.NO_THRESHOLD_MINUS:
 		return
@@ -66,9 +64,9 @@ func (c *CouponChecker) couponCanBeUsed(orderCategoryPrice float64) (err error) 
 	return
 }
 
-func  getSumByCategoryList(skuOrderList []data.SkuOrder, cids []int) (sum float64) {
+func getSumByCategoryList(skuOrderList []data.SkuOrder, cids []int) (sum float64) {
 	for _, cid := range cids {
-		sum = sum +getSumByCategory(skuOrderList, cid)
+		sum = sum + getSumByCategory(skuOrderList, cid)
 	}
 	return
 }
@@ -82,28 +80,27 @@ func getSumByCategory(skuOrderList []data.SkuOrder, cid int) (sum float64) {
 	return
 }
 
-
 func (c *CouponChecker) FinalTotalPriceIsOk(orderFinalTotalPrice float64, serverTotalPrice float64) (err error) {
 	var serverFinalTotalPrice float64
 	switch c.Coupon.Type {
 	case enum.FULL_MINUS:
 	case enum.NO_THRESHOLD_MINUS:
 		serverFinalTotalPrice = serverTotalPrice - c.Coupon.Minus
-		if serverFinalTotalPrice <=0{
+		if serverFinalTotalPrice <= 0 {
 			err = core.ParamsError(core.InvalidParams)
 			return
 		}
-		
+
 	case enum.FULL_OFF:
-		//todo 
+		//todo
 		serverFinalTotalPrice = serverTotalPrice * c.Coupon.Rate
-	
+
 	default:
 		err = core.ParamsError(core.InvalidParams)
 
 		return
 	}
-	if serverFinalTotalPrice != orderFinalTotalPrice{
+	if serverFinalTotalPrice != orderFinalTotalPrice {
 		err = core.ParamsError(core.InvalidParams)
 
 		return

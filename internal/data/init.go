@@ -2,12 +2,13 @@ package data
 
 import (
 	"context"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/pkg/errors"
-	"github.com/xushuhui/goal/core"
 	"mall-go/internal/conf"
 	"mall-go/internal/data/model"
 	"sync"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/pkg/errors"
+	"github.com/xushuhui/goal/core"
 )
 
 var ds *DataSource

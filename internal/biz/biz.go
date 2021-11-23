@@ -1,20 +1,6 @@
 package biz
 
-import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gofiber/fiber/v2"
-	"github.com/xushuhui/goal/utils"
-	"mall-go/internal/data/model"
-)
+import "github.com/google/wire"
 
-func LocalUser(c *fiber.Ctx) (user model.User) {
-	local := c.Locals("user")
-	if local == nil {
-		return
-	}
-	jwtToken := local.(*jwt.Token)
-	claims := jwtToken.Claims.(jwt.MapClaims)
-	bytes, _ := utils.JSONEncode(claims["user"])
-	utils.JSONDecode(bytes, &user)
-	return
-}
+// ProviderSet is biz providers.
+var ProviderSet = wire.NewSet(NewGreeterUsecase)
