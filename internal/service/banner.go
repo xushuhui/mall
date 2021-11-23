@@ -10,11 +10,11 @@ import (
 
 type ShowService struct {
 	mall.UnimplementedShowServer
-	uc  *biz.ShowUsecase
+	uc  *biz.BannerUsecase
 	log *log.Helper
 }
 
-func NewShowService(uc *biz.ShowUsecase, logger log.Logger) *ShowService {
+func NewShowService(uc *biz.BannerUsecase, logger log.Logger) *ShowService {
 	return &ShowService{
 		uc:  uc,
 		log: log.NewHelper(logger),

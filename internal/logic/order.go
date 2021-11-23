@@ -51,7 +51,7 @@ func (o *OrderChecker) IsOk() (err error) {
 	}
 	for i := 0; i < len(o.serverSkuList); i++ {
 		skuModel := o.serverSkuList[i]
-		sku := data.Sku{skuModel}
+		sku := data.Sku{Sku: skuModel}
 		skuInfoDTO := o.orderDTO.SkuInfoList[i]
 		err = containsSoldOutSku(sku)
 		if err != nil {
