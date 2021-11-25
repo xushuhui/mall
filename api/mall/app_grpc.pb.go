@@ -19,7 +19,13 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShowClient interface {
 	// Sends a greeting
-	GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*BannerByIdReply, error)
+	GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Banner, error)
+	//
+	GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*Banner, error)
 }
 
 type showClient struct {
@@ -30,9 +36,54 @@ func NewShowClient(cc grpc.ClientConnInterface) ShowClient {
 	return &showClient{cc}
 }
 
-func (c *showClient) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*BannerByIdReply, error) {
-	out := new(BannerByIdReply)
+func (c *showClient) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error) {
+	out := new(Banner)
 	err := c.cc.Invoke(ctx, "/mall.Show/GetBannerById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *showClient) GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...grpc.CallOption) (*Banner, error) {
+	out := new(Banner)
+	err := c.cc.Invoke(ctx, "/mall.Show/GetBannerByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *showClient) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Banner, error) {
+	out := new(Banner)
+	err := c.cc.Invoke(ctx, "/mall.Show/GetThemeByNames", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *showClient) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*Banner, error) {
+	out := new(Banner)
+	err := c.cc.Invoke(ctx, "/mall.Show/GetThemeWithSpu", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *showClient) GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Banner, error) {
+	out := new(Banner)
+	err := c.cc.Invoke(ctx, "/mall.Show/GetActivityByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *showClient) GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*Banner, error) {
+	out := new(Banner)
+	err := c.cc.Invoke(ctx, "/mall.Show/GetActivityWithCoupon", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +95,13 @@ func (c *showClient) GetBannerById(ctx context.Context, in *BannerByIdRequest, o
 // for forward compatibility
 type ShowServer interface {
 	// Sends a greeting
-	GetBannerById(context.Context, *BannerByIdRequest) (*BannerByIdReply, error)
+	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
+	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
+	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Banner, error)
+	//
+	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*Banner, error)
+	GetActivityByName(context.Context, *ActivityByNameRequest) (*Banner, error)
+	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*Banner, error)
 	mustEmbedUnimplementedShowServer()
 }
 
@@ -52,8 +109,23 @@ type ShowServer interface {
 type UnimplementedShowServer struct {
 }
 
-func (UnimplementedShowServer) GetBannerById(context.Context, *BannerByIdRequest) (*BannerByIdReply, error) {
+func (UnimplementedShowServer) GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBannerById not implemented")
+}
+func (UnimplementedShowServer) GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBannerByName not implemented")
+}
+func (UnimplementedShowServer) GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Banner, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetThemeByNames not implemented")
+}
+func (UnimplementedShowServer) GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*Banner, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetThemeWithSpu not implemented")
+}
+func (UnimplementedShowServer) GetActivityByName(context.Context, *ActivityByNameRequest) (*Banner, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivityByName not implemented")
+}
+func (UnimplementedShowServer) GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*Banner, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivityWithCoupon not implemented")
 }
 func (UnimplementedShowServer) mustEmbedUnimplementedShowServer() {}
 
@@ -86,6 +158,96 @@ func _Show_GetBannerById_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Show_GetBannerByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BannerByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShowServer).GetBannerByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Show/GetBannerByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShowServer).GetBannerByName(ctx, req.(*BannerByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Show_GetThemeByNames_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ThemeByNamesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShowServer).GetThemeByNames(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Show/GetThemeByNames",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShowServer).GetThemeByNames(ctx, req.(*ThemeByNamesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Show_GetThemeWithSpu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ThemeWithSpuRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShowServer).GetThemeWithSpu(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Show/GetThemeWithSpu",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShowServer).GetThemeWithSpu(ctx, req.(*ThemeWithSpuRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Show_GetActivityByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivityByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShowServer).GetActivityByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Show/GetActivityByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShowServer).GetActivityByName(ctx, req.(*ActivityByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Show_GetActivityWithCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivityWithCouponRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShowServer).GetActivityWithCoupon(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Show/GetActivityWithCoupon",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShowServer).GetActivityWithCoupon(ctx, req.(*ActivityWithCouponRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Show_ServiceDesc is the grpc.ServiceDesc for Show service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -96,6 +258,26 @@ var Show_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBannerById",
 			Handler:    _Show_GetBannerById_Handler,
+		},
+		{
+			MethodName: "GetBannerByName",
+			Handler:    _Show_GetBannerByName_Handler,
+		},
+		{
+			MethodName: "GetThemeByNames",
+			Handler:    _Show_GetThemeByNames_Handler,
+		},
+		{
+			MethodName: "GetThemeWithSpu",
+			Handler:    _Show_GetThemeWithSpu_Handler,
+		},
+		{
+			MethodName: "GetActivityByName",
+			Handler:    _Show_GetActivityByName_Handler,
+		},
+		{
+			MethodName: "GetActivityWithCoupon",
+			Handler:    _Show_GetActivityWithCoupon_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

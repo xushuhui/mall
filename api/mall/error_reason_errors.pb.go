@@ -20,6 +20,15 @@ func ErrorNotFound(format string, args ...interface{}) *errors.Error {
 	return errors.New(404, ErrorReason_Not_Found.String(), fmt.Sprintf(format, args...))
 }
 
+func IsInvalidParams(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_Invalid_Params.String() && e.Code == 400
+}
+
+func ErrorInvalidParams(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ErrorReason_Invalid_Params.String(), fmt.Sprintf(format, args...))
+}
+
 func IsUnauthorized(err error) bool {
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_Unauthorized.String() && e.Code == 401
@@ -45,15 +54,6 @@ func IsInternalServerError(err error) bool {
 
 func ErrorInternalServerError(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_Internal_Server_Error.String(), fmt.Sprintf(format, args...))
-}
-
-func IsInvalidParams(err error) bool {
-	e := errors.FromError(err)
-	return e.Reason == ErrorReason_Invalid_Params.String() && e.Code == 400
-}
-
-func ErrorInvalidParams(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ErrorReason_Invalid_Params.String(), fmt.Sprintf(format, args...))
 }
 
 func IsInvalidToken(err error) bool {

@@ -18,12 +18,22 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type ShowHTTPServer interface {
-	GetBannerById(context.Context, *BannerByIdRequest) (*BannerByIdReply, error)
+	GetActivityByName(context.Context, *ActivityByNameRequest) (*Banner, error)
+	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*Banner, error)
+	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
+	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
+	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Banner, error)
+	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*Banner, error)
 }
 
 func RegisterShowHTTPServer(s *http.Server, srv ShowHTTPServer) {
 	r := s.Route("/")
-	r.GET("/banner/{id}", _Show_GetBannerById0_HTTP_Handler(srv))
+	r.GET("/banner/id/{id}", _Show_GetBannerById0_HTTP_Handler(srv))
+	r.GET("/banner/name/{name}", _Show_GetBannerByName0_HTTP_Handler(srv))
+	r.GET("/theme/by/names", _Show_GetThemeByNames0_HTTP_Handler(srv))
+	r.GET("/theme/name/{name}/with_spu", _Show_GetThemeWithSpu0_HTTP_Handler(srv))
+	r.GET("/activity/name/{name}", _Show_GetActivityByName0_HTTP_Handler(srv))
+	r.GET("/activity/name/{name}/with_coupon", _Show_GetActivityWithCoupon0_HTTP_Handler(srv))
 }
 
 func _Show_GetBannerById0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context) error {
@@ -43,13 +53,125 @@ func _Show_GetBannerById0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context
 		if err != nil {
 			return err
 		}
-		reply := out.(*BannerByIdReply)
+		reply := out.(*Banner)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Show_GetBannerByName0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in BannerByNameRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Show/GetBannerByName")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetBannerByName(ctx, req.(*BannerByNameRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Banner)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Show_GetThemeByNames0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ThemeByNamesRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Show/GetThemeByNames")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetThemeByNames(ctx, req.(*ThemeByNamesRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Banner)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Show_GetThemeWithSpu0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ThemeWithSpuRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Show/GetThemeWithSpu")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetThemeWithSpu(ctx, req.(*ThemeWithSpuRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Banner)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Show_GetActivityByName0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ActivityByNameRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Show/GetActivityByName")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetActivityByName(ctx, req.(*ActivityByNameRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Banner)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Show_GetActivityWithCoupon0_HTTP_Handler(srv ShowHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ActivityWithCouponRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Show/GetActivityWithCoupon")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetActivityWithCoupon(ctx, req.(*ActivityWithCouponRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Banner)
 		return ctx.Result(200, reply)
 	}
 }
 
 type ShowHTTPClient interface {
-	GetBannerById(ctx context.Context, req *BannerByIdRequest, opts ...http.CallOption) (rsp *BannerByIdReply, err error)
+	GetActivityByName(ctx context.Context, req *ActivityByNameRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetActivityWithCoupon(ctx context.Context, req *ActivityWithCouponRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetBannerById(ctx context.Context, req *BannerByIdRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetBannerByName(ctx context.Context, req *BannerByNameRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetThemeByNames(ctx context.Context, req *ThemeByNamesRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetThemeWithSpu(ctx context.Context, req *ThemeWithSpuRequest, opts ...http.CallOption) (rsp *Banner, err error)
 }
 
 type ShowHTTPClientImpl struct {
@@ -60,11 +182,76 @@ func NewShowHTTPClient(client *http.Client) ShowHTTPClient {
 	return &ShowHTTPClientImpl{client}
 }
 
-func (c *ShowHTTPClientImpl) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...http.CallOption) (*BannerByIdReply, error) {
-	var out BannerByIdReply
-	pattern := "/banner/{id}"
+func (c *ShowHTTPClientImpl) GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...http.CallOption) (*Banner, error) {
+	var out Banner
+	pattern := "/activity/name/{name}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Show/GetActivityByName"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ShowHTTPClientImpl) GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...http.CallOption) (*Banner, error) {
+	var out Banner
+	pattern := "/activity/name/{name}/with_coupon"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Show/GetActivityWithCoupon"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ShowHTTPClientImpl) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...http.CallOption) (*Banner, error) {
+	var out Banner
+	pattern := "/banner/id/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/mall.Show/GetBannerById"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ShowHTTPClientImpl) GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...http.CallOption) (*Banner, error) {
+	var out Banner
+	pattern := "/banner/name/{name}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Show/GetBannerByName"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ShowHTTPClientImpl) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...http.CallOption) (*Banner, error) {
+	var out Banner
+	pattern := "/theme/by/names"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Show/GetThemeByNames"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ShowHTTPClientImpl) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...http.CallOption) (*Banner, error) {
+	var out Banner
+	pattern := "/theme/name/{name}/with_spu"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Show/GetThemeWithSpu"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

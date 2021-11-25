@@ -1,7 +1,6 @@
 package server
 
 import (
-	v1 "mall-go/api/helloworld/v1"
 	"mall-go/api/mall"
 	"mall-go/internal/conf"
 	"mall-go/internal/service"
@@ -12,12 +11,13 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, s *service.ShowService,logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, s *service.ShowService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
 		),
 	}
+
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
 	}
@@ -28,7 +28,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, s *service.S
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
-	mall.RegisterShowHTTPServer(srv,s)
+
+	mall.RegisterShowHTTPServer(srv, s)
 	return srv
 }

@@ -2,9 +2,9 @@ package data
 
 import (
 	"context"
+	"mall-go/api/mall"
 	"mall-go/internal/data/model"
 	"mall-go/internal/data/model/sku"
-	"mall-go/internal/request"
 )
 
 type Sku struct {
@@ -17,12 +17,12 @@ type OrderSku struct {
 	finalPrice  float64
 	singlePrice float64
 	specValues  []string
-	count       int
+	count       int32
 	img         string
 	title       string
 }
 
-func NewOrderSku(sku Sku, skuInfoDTO request.SkuInfo) OrderSku {
+func NewOrderSku(sku Sku, skuInfoDTO *mall.SkuInfo) OrderSku {
 	return OrderSku{
 		id:          sku.ID,
 		spuId:       sku.SpuID,
@@ -51,11 +51,11 @@ func (sku Sku) getSpecValueList() (val []string) {
 
 type SkuOrder struct {
 	ActualPrice float64
-	Count       int
+	Count       int32
 	CategoryId  int64
 }
 
-func NewSkuOrder(sku Sku, skuInfoDTO request.SkuInfo) SkuOrder {
+func NewSkuOrder(sku Sku, skuInfoDTO *mall.SkuInfo) SkuOrder {
 	return SkuOrder{
 		ActualPrice: sku.GetActualPrice(),
 		Count:       skuInfoDTO.Count,

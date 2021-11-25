@@ -1,11 +1,9 @@
 package server
 
 import (
-	v1 "mall-go/api/helloworld/v1"
 	"mall-go/api/mall"
 	"mall-go/internal/conf"
 	"mall-go/internal/service"
-
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -13,7 +11,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.GreeterService,s *service.ShowService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, s *service.ShowService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -29,7 +27,7 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService,s *service.Sh
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterGreeterServer(srv, greeter)
-	mall.RegisterShowServer(srv,s)
+
+	mall.RegisterShowServer(srv, s)
 	return srv
 }

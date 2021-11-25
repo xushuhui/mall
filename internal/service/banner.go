@@ -10,19 +10,19 @@ import (
 
 type ShowService struct {
 	mall.UnimplementedShowServer
-	uc  *biz.BannerUsecase
+	bu  *biz.BannerUsecase
 	log *log.Helper
 }
 
 func NewShowService(uc *biz.BannerUsecase, logger log.Logger) *ShowService {
 	return &ShowService{
-		uc:  uc,
+		bu:  uc,
 		log: log.NewHelper(logger),
 	}
 }
 
-func (s *ShowService) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (*mall.BannerByIdReply, error) {
-	rv, err := s.uc.GetBannerById(ctx, in.Id)
+func (s *ShowService) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (*mall.Banner, error) {
+	rv, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (s *ShowService) GetBannerById(ctx context.Context, in *mall.BannerByIdRequ
 		}
 		items = append(items, item)
 	}
-	return &mall.BannerByIdReply{
+	return &mall.Banner{
 		Id:          rv.Id,
 		Name:        rv.Name,
 		Img:         rv.Img,

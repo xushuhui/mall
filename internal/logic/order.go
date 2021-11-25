@@ -1,16 +1,16 @@
 package logic
 
 import (
+	"mall-go/api/mall"
 	"mall-go/internal/data"
 	"mall-go/internal/data/model"
-	"mall-go/internal/request"
 
 	"github.com/xushuhui/goal/core"
 )
 
 type (
 	OrderChecker struct {
-		orderDTO      request.PlaceOrder
+		orderDTO      *mall.PlaceOrderRequest
 		serverSkuList []*model.Sku
 		couponChecker CouponChecker
 		maxSkuLimit   int
@@ -18,7 +18,7 @@ type (
 	}
 )
 
-func NewOrderChecker(req request.PlaceOrder, serverSkuList []*model.Sku, checker CouponChecker, maxSkuLimit int) *OrderChecker {
+func NewOrderChecker(req *mall.PlaceOrderRequest, serverSkuList []*model.Sku, checker CouponChecker, maxSkuLimit int) *OrderChecker {
 	return &OrderChecker{
 		orderDTO:      req,
 		serverSkuList: serverSkuList,
@@ -35,7 +35,7 @@ func (o *OrderChecker) GetLeaderTitle() string {
 	return o.serverSkuList[0].Title
 }
 
-func (o *OrderChecker) GetTotalCount() (totalCount int) {
+func (o *OrderChecker) GetTotalCount() (totalCount int32) {
 	for _, v := range o.orderDTO.SkuInfoList {
 		totalCount = totalCount + v.Count
 	}
@@ -103,7 +103,7 @@ func totalPriceIsOk(orderTotalPrice float64, serverTotalPrice float64) (err erro
 	return
 }
 
-func calculateSkuOrderPrice(skuInfoDTO request.SkuInfo, sku data.Sku) (price float64, err error) {
+func calculateSkuOrderPrice(skuInfoDTO *mall.SkuInfo, sku data.Sku) (price float64, err error) {
 	if skuInfoDTO.Count <= 0 {
 		err = core.ParamsError(core.InvalidParams)
 		return
@@ -126,15 +126,15 @@ func containsSoldOutSku(sku data.Sku) (err error) {
 	return
 }
 
-func beyondSkuStock(sku data.Sku, skuInfoDTO request.SkuInfo) (err error) {
-	if sku.Stock < skuInfoDTO.Count {
+func beyondSkuStock(sku data.Sku, skuInfoDTO *mall.SkuInfo) (err error) {
+	if sku.Stock < int(skuInfoDTO.Count) {
 		err = core.ParamsError(core.InvalidParams)
 	}
 	return
 }
 
-func (o *OrderChecker) beyondMaxSkuLimit(skuInfoDTO request.SkuInfo) (err error) {
-	if skuInfoDTO.Count > o.maxSkuLimit {
+func (o *OrderChecker) beyondMaxSkuLimit(skuInfoDTO *mall.SkuInfo) (err error) {
+	if int(skuInfoDTO.Count) > o.maxSkuLimit {
 		err = core.ParamsError(core.InvalidParams)
 	}
 	return
