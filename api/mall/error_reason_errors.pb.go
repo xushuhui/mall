@@ -11,6 +11,15 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
+func IsOk(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_Ok.String() && e.Code == 200
+}
+
+func ErrorOk(format string, args ...interface{}) *errors.Error {
+	return errors.New(200, ErrorReason_Ok.String(), fmt.Sprintf(format, args...))
+}
+
 func IsNotFound(err error) bool {
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_Not_Found.String() && e.Code == 404

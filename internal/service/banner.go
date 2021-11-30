@@ -8,20 +8,20 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-type ShowService struct {
-	mall.UnimplementedShowServer
+type AppService struct {
+	mall.UnimplementedAppServer
 	bu  *biz.BannerUsecase
 	log *log.Helper
 }
 
-func NewShowService(uc *biz.BannerUsecase, logger log.Logger) *ShowService {
-	return &ShowService{
+func NewAppService(uc *biz.BannerUsecase, logger log.Logger) *AppService {
+	return &AppService{
 		bu:  uc,
 		log: log.NewHelper(logger),
 	}
 }
 
-func (s *ShowService) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (*mall.Banner, error) {
+func (s *AppService) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (*mall.Banner, error) {
 	rv, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err

@@ -46,3 +46,6 @@ func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner,
 		Items:       items,
 	}, nil
 }
+func (r *bannerRepo) GetBannerByName(ctx context.Context, name string) (b biz.Banner, err error) {
+	return
+}

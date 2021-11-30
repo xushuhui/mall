@@ -8,13 +8,17 @@ type Theme struct {
 	
 }
 type ThemeRepo interface {
-	GetBannerById(ctx context.Context, id int64) (b Theme, err error)
+	GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error)
+	GetThemeWithSpu(ctx context.Context, name string) (t Theme, err error)
 }
 
 type ThemeUsecase struct {
 	repo ThemeRepo
 	log  *log.Helper
 }
-func NewThemeUsecase(){
-	
+func NewThemeUsecase(repo ThemeRepo, logger log.Logger) *ThemeUsecase {
+	return &ThemeUsecase{
+		repo: repo,
+		log:  log.NewHelper(logger),
+	}
 }

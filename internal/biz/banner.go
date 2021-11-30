@@ -24,6 +24,7 @@ type BannerItem struct {
 }
 type BannerRepo interface {
 	GetBannerById(ctx context.Context, id int64) (b Banner, err error)
+	GetBannerByName(ctx context.Context, name string) (b Banner, err error)
 }
 
 type BannerUsecase struct {
@@ -39,5 +40,9 @@ func NewBannerUsecase(repo BannerRepo, logger log.Logger) *BannerUsecase {
 }
 func (uc *BannerUsecase) GetBannerById(ctx context.Context, id int64) (b Banner, err error) {
 	b, err = uc.repo.GetBannerById(ctx, id)
+	return
+}
+func (uc *BannerUsecase) GetBannerByName(ctx context.Context, name string) (b Banner, err error) {
+	b, err = uc.repo.GetBannerByName(ctx, name)
 	return
 }
