@@ -6,13 +6,12 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-type orderRepo struct {
+type activityRepo struct {
 	data *Data
 	log  *log.Helper
 }
-
-func NewOrderRepo(data *Data, logger log.Logger) biz.OrderRepo {
-	return &orderRepo{
+func NewActivityRepo(data *Data, logger log.Logger) biz.ActivityRepo {
+	return &activityRepo{
 		data: data,
 		log:  log.NewHelper(logger),
 	}

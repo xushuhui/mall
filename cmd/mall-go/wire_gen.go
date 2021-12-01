@@ -27,7 +27,11 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	}
 	bannerRepo := data.NewBannerRepo(dataData, logger)
 	bannerUsecase := biz.NewBannerUsecase(bannerRepo, logger)
-	appService := service.NewAppService(bannerUsecase, logger)
+	themeRepo := data.NewThemeRepo(dataData, logger)
+	themeUsecase := biz.NewThemeUsecase(themeRepo, logger)
+	activityRepo := data.NewActivityRepo(dataData, logger)
+	activityUsecase := biz.NewActivityUsecase(activityRepo, logger)
+	appService := service.NewAppService(bannerUsecase, themeUsecase, activityUsecase, logger)
 	httpServer := server.NewHTTPServer(confServer, appService, logger)
 	grpcServer := server.NewGRPCServer(confServer, appService, logger)
 	app := newApp(logger, httpServer, grpcServer)

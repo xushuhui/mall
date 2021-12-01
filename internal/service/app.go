@@ -10,13 +10,21 @@ import (
 
 type AppService struct {
 	mall.UnimplementedAppServer
-	bu  *biz.BannerUsecase
+	bu *biz.BannerUsecase
+	tu *biz.ThemeUsecase
+	au *biz.ActivityUsecase
+
 	log *log.Helper
 }
 
-func NewAppService(uc *biz.BannerUsecase, logger log.Logger) *AppService {
+func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase,
+	logger log.Logger) *AppService {
+
 	return &AppService{
-		bu:  uc,
+		bu: bu,
+		tu: tu,
+		au: au,
+
 		log: log.NewHelper(logger),
 	}
 }
