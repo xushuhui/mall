@@ -11,7 +11,7 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, s *service.AppService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, as *service.AppService, cs *service.CouponService, os *service.OrderService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -29,6 +29,8 @@ func NewHTTPServer(c *conf.Server, s *service.AppService, logger log.Logger) *ht
 	}
 	srv := http.NewServer(opts...)
 
-	mall.RegisterAppHTTPServer(srv, s)
+	mall.RegisterAppHTTPServer(srv, as)
+	mall.RegisterCouponHTTPServer(srv, cs)
+	mall.RegisterOrderHTTPServer(srv, os)
 	return srv
 }

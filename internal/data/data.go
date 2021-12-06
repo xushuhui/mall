@@ -15,7 +15,7 @@ var ProviderSet = wire.NewSet(NewData, NewEntClient, NewBannerRepo,NewActivityRe
 // Data .
 type Data struct {
 	db  *model.Client
-
+	log  *log.Helper
 }
 
 func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
@@ -24,6 +24,7 @@ func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
 		conf.Database.Driver,
 		conf.Database.Source,
 	)
+	
 	if err != nil {
 		l.Fatalf("failed opening connection to db: %v", err)
 	}
@@ -38,5 +39,6 @@ func NewData(entClient *model.Client, logger log.Logger) (*Data, func(), error) 
 	}
 	return &Data{
 		db: entClient,
+		log: log.NewHelper(logger),
 	}, cleanup, nil
 }

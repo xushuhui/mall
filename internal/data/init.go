@@ -72,7 +72,7 @@ func WithTx(ctx context.Context, client *model.Client, fn func(tx *model.Tx) err
 	}
 	defer func() {
 		if v := recover(); v != nil {
-			tx.Rollback()
+			_ =tx.Rollback()
 			panic(v)
 		}
 	}()
