@@ -1,10 +1,8 @@
 package data
 
 import (
-	"context"
 	"mall-go/api/mall"
 	"mall-go/internal/data/model"
-	"mall-go/internal/data/model/sku"
 )
 
 type Sku struct {
@@ -65,8 +63,4 @@ func NewSkuOrder(sku Sku, skuInfoDTO *mall.SkuInfo) SkuOrder {
 
 func (s SkuOrder) GetTotalPrice() float64 {
 	return s.ActualPrice * float64(s.Count)
-}
-func GetSkuListByIds(ctx context.Context, ids []int64) (skus []*model.Sku, err error) {
-	skus, err = GetDB().Sku.Query().Where(sku.IDIn(ids...)).All(ctx)
-	return
 }

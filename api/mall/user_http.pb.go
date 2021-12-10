@@ -8,6 +8,7 @@ import (
 	context "context"
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,11 +20,15 @@ const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
 	CreateToken(context.Context, *CreateTokenRequest) (*CreateTokenReply, error)
+	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
+	VerifyToken(context.Context, *VerifyTokenRequest) (*CreateTokenReply, error)
 }
 
 func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r := s.Route("/")
 	r.POST("/token", _User_CreateToken0_HTTP_Handler(srv))
+	r.POST("/verify", _User_VerifyToken0_HTTP_Handler(srv))
+	r.PUT("/info", _User_UpdateInfo0_HTTP_Handler(srv))
 }
 
 func _User_CreateToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
@@ -45,8 +50,48 @@ func _User_CreateToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) 
 	}
 }
 
+func _User_VerifyToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in VerifyTokenRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/VerifyToken")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.VerifyToken(ctx, req.(*VerifyTokenRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*CreateTokenReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_UpdateInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateInfoRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/UpdateInfo")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateInfo(ctx, req.(*UpdateInfoRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
 type UserHTTPClient interface {
 	CreateToken(ctx context.Context, req *CreateTokenRequest, opts ...http.CallOption) (rsp *CreateTokenReply, err error)
+	UpdateInfo(ctx context.Context, req *UpdateInfoRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	VerifyToken(ctx context.Context, req *VerifyTokenRequest, opts ...http.CallOption) (rsp *CreateTokenReply, err error)
 }
 
 type UserHTTPClientImpl struct {
@@ -62,6 +107,32 @@ func (c *UserHTTPClientImpl) CreateToken(ctx context.Context, in *CreateTokenReq
 	pattern := "/token"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/mall.User/CreateToken"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/info"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.User/UpdateInfo"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...http.CallOption) (*CreateTokenReply, error) {
+	var out CreateTokenReply
+	pattern := "/verify"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.User/VerifyToken"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

@@ -12,17 +12,18 @@ type couponRepo struct {
 	data *Data
 	log  *log.Helper
 }
+
 func NewCouponRepo(data *Data, logger log.Logger) biz.CouponRepo {
 	return &couponRepo{
 		data: data,
 		log:  log.NewHelper(logger),
 	}
 }
-func (r *couponRepo)GetCouponById(ctx context.Context, id int) (c *model.Coupon, err error) {
+func (r *couponRepo) GetCouponById(ctx context.Context, id int) (c *model.Coupon, err error) {
 
 	return
 }
-func (r *couponRepo)GetUserCoupon(ctx context.Context, userId, couponId int) (c *model.UserCoupon, err error) {
+func (r *couponRepo) GetUserCoupon(ctx context.Context, userId, couponId int) (c *model.UserCoupon, err error) {
 
 	return
 }

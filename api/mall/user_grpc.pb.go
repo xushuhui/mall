@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,6 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
 	CreateToken(ctx context.Context, in *CreateTokenRequest, opts ...grpc.CallOption) (*CreateTokenReply, error)
+	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*CreateTokenReply, error)
+	UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userClient struct {
@@ -38,11 +41,31 @@ func (c *userClient) CreateToken(ctx context.Context, in *CreateTokenRequest, op
 	return out, nil
 }
 
+func (c *userClient) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*CreateTokenReply, error) {
+	out := new(CreateTokenReply)
+	err := c.cc.Invoke(ctx, "/mall.User/VerifyToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.User/UpdateInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
 	CreateToken(context.Context, *CreateTokenRequest) (*CreateTokenReply, error)
+	VerifyToken(context.Context, *VerifyTokenRequest) (*CreateTokenReply, error)
+	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -52,6 +75,12 @@ type UnimplementedUserServer struct {
 
 func (UnimplementedUserServer) CreateToken(context.Context, *CreateTokenRequest) (*CreateTokenReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateToken not implemented")
+}
+func (UnimplementedUserServer) VerifyToken(context.Context, *VerifyTokenRequest) (*CreateTokenReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
+}
+func (UnimplementedUserServer) UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInfo not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -84,6 +113,42 @@ func _User_CreateToken_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_VerifyToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).VerifyToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/VerifyToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).VerifyToken(ctx, req.(*VerifyTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UpdateInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/UpdateInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateInfo(ctx, req.(*UpdateInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +159,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateToken",
 			Handler:    _User_CreateToken_Handler,
+		},
+		{
+			MethodName: "VerifyToken",
+			Handler:    _User_VerifyToken_Handler,
+		},
+		{
+			MethodName: "UpdateInfo",
+			Handler:    _User_UpdateInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
