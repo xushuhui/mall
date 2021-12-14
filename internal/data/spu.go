@@ -1,8 +1,8 @@
 package data
 
 import (
+	"context"
 	"mall-go/internal/biz"
-	"mall-go/internal/data/model"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -18,9 +18,9 @@ func NewSpuRepo(data *Data, logger log.Logger) biz.SpuRepo {
 		log:  log.NewHelper(logger),
 	}
 }
-func GetSpuById(id int) (Spu *model.Spu, err error) {
+func (r *spuRepo) GetSpuById(ctx context.Context, id int) (Spu biz.Spu, err error) {
 	return
 }
-func GetSpuByCategory(id int) (Spus []*model.Spu, err error) {
+func (r *spuRepo) GetSpuByCategory(ctx context.Context, id int) (Spus []biz.Spu, err error) {
 	return
 }

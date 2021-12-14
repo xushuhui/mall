@@ -10,6 +10,7 @@ type activityRepo struct {
 	data *Data
 	log  *log.Helper
 }
+
 func NewActivityRepo(data *Data, logger log.Logger) biz.ActivityRepo {
 	return &activityRepo{
 		data: data,

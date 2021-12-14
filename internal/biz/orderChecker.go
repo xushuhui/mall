@@ -1,9 +1,7 @@
-package logic
+package biz
 
 import (
 	"mall-go/api/mall"
-	"mall-go/internal/data"
-	"mall-go/internal/data/model"
 
 	"github.com/xushuhui/goal/core"
 )
@@ -11,14 +9,14 @@ import (
 type (
 	OrderChecker struct {
 		orderDTO      *mall.PlaceOrderRequest
-		serverSkuList []*model.Sku
+		serverSkuList []Sku
 		couponChecker CouponChecker
 		maxSkuLimit   int
-		orderSkuList  []data.OrderSku
+		orderSkuList  []OrderSku
 	}
 )
 
-func NewOrderChecker(req *mall.PlaceOrderRequest, serverSkuList []*model.Sku, checker CouponChecker, maxSkuLimit int) *OrderChecker {
+func NewOrderChecker(req *mall.PlaceOrderRequest, serverSkuList []Sku, checker CouponChecker, maxSkuLimit int) *OrderChecker {
 	return &OrderChecker{
 		orderDTO:      req,
 		serverSkuList: serverSkuList,
@@ -44,14 +42,14 @@ func (o *OrderChecker) GetTotalCount() (totalCount int32) {
 
 func (o *OrderChecker) IsOk() (err error) {
 	var serverTotalPrice float64
-	var skuOrderList []data.SkuOrder
+	var skuOrderList []SkuOrder
 	err = skuNotOnSale(len(o.orderDTO.SkuInfoList), len(o.serverSkuList))
 	if err != nil {
 		return
 	}
 	for i := 0; i < len(o.serverSkuList); i++ {
-		skuModel := o.serverSkuList[i]
-		sku := data.Sku{Sku: skuModel}
+		sku := o.serverSkuList[i]
+
 		skuInfoDTO := o.orderDTO.SkuInfoList[i]
 		err = containsSoldOutSku(sku)
 		if err != nil {
@@ -70,9 +68,9 @@ func (o *OrderChecker) IsOk() (err error) {
 			return err
 		}
 		serverTotalPrice = serverTotalPrice + price
-		o.orderSkuList = append(o.orderSkuList, data.NewOrderSku(sku, skuInfoDTO))
+		o.orderSkuList = append(o.orderSkuList, NewOrderSku(sku, skuInfoDTO))
 
-		skuOrderList = append(skuOrderList, data.NewSkuOrder(sku, skuInfoDTO))
+		skuOrderList = append(skuOrderList, NewSkuOrder(sku, skuInfoDTO))
 	}
 	err = totalPriceIsOk(o.orderDTO.TotalPrice, serverTotalPrice)
 	if err != nil {
@@ -103,7 +101,7 @@ func totalPriceIsOk(orderTotalPrice float64, serverTotalPrice float64) (err erro
 	return
 }
 
-func calculateSkuOrderPrice(skuInfoDTO *mall.SkuInfo, sku data.Sku) (price float64, err error) {
+func calculateSkuOrderPrice(skuInfoDTO *mall.SkuInfo, sku Sku) (price float64, err error) {
 	if skuInfoDTO.Count <= 0 {
 		err = core.ParamsError(core.InvalidParams)
 		return
@@ -119,14 +117,14 @@ func skuNotOnSale(count1, count2 int) (err error) {
 	return
 }
 
-func containsSoldOutSku(sku data.Sku) (err error) {
+func containsSoldOutSku(sku Sku) (err error) {
 	if sku.Stock == 0 {
 		err = core.ParamsError(core.InvalidParams)
 	}
 	return
 }
 
-func beyondSkuStock(sku data.Sku, skuInfoDTO *mall.SkuInfo) (err error) {
+func beyondSkuStock(sku Sku, skuInfoDTO *mall.SkuInfo) (err error) {
 	if sku.Stock < int(skuInfoDTO.Count) {
 		err = core.ParamsError(core.InvalidParams)
 	}

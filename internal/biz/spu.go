@@ -32,16 +32,4 @@ func NewSpuUsecase(repo SpuRepo, logger log.Logger) *SpuUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
-type SkuRepo interface {
 
-}
-type SkuUsecase struct {
-	repo SkuRepo
-	log  *log.Helper
-}
-func NewSkuUsecase(repo SkuRepo, logger log.Logger) *SkuUsecase {
-	return &SkuUsecase{
-		repo: repo,
-		log:  log.NewHelper(logger),
-	}
-}

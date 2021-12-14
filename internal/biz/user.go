@@ -1,7 +1,9 @@
 package biz
 
 import "github.com/go-kratos/kratos/v2/log"
-
+type User struct {
+	
+}
 type UserRepo interface {
 }
 type UserUsecase struct {

@@ -1,8 +1,6 @@
-package logic
+package biz
 
 import (
-	"mall-go/internal/data"
-	"mall-go/internal/data/model"
 	"mall-go/pkg/enum"
 	"mall-go/pkg/utils"
 	"time"
@@ -11,10 +9,10 @@ import (
 )
 
 type CouponChecker struct {
-	Coupon *model.Coupon
+	Coupon
 }
 
-func NewCouponChecker(coupon *model.Coupon) *CouponChecker {
+func NewCouponChecker(coupon Coupon) *CouponChecker {
 	return &CouponChecker{
 		Coupon: coupon,
 	}
@@ -29,15 +27,15 @@ func (c *CouponChecker) IsOk() (err error) {
 	return
 }
 
-func (c *CouponChecker) CanBeUsed(skuOrderList []data.SkuOrder, serverTotalPrice float64) (err error) {
+func (c *CouponChecker) CanBeUsed(skuOrderList []SkuOrder, serverTotalPrice float64) (err error) {
 	var orderCategoryPrice float64
 	var cids []int64
 
 	if c.Coupon.WholeStore == 1 {
 		orderCategoryPrice = serverTotalPrice
 	} else {
-		for _, v := range c.Coupon.Edges.Category {
-			cids = append(cids, v.ID)
+		for _, v := range c.Coupon.Category {
+			cids = append(cids, v.Id)
 		}
 		orderCategoryPrice = getSumByCategoryList(skuOrderList, cids)
 	}
@@ -64,14 +62,14 @@ func (c *CouponChecker) couponCanBeUsed(orderCategoryPrice float64) (err error) 
 	return
 }
 
-func getSumByCategoryList(skuOrderList []data.SkuOrder, cids []int64) (sum float64) {
+func getSumByCategoryList(skuOrderList []SkuOrder, cids []int64) (sum float64) {
 	for _, cid := range cids {
 		sum = sum + getSumByCategory(skuOrderList, cid)
 	}
 	return
 }
 
-func getSumByCategory(skuOrderList []data.SkuOrder, cid int64) (sum float64) {
+func getSumByCategory(skuOrderList []SkuOrder, cid int64) (sum float64) {
 	for _, v := range skuOrderList {
 		if v.CategoryId == cid {
 			sum = sum + v.GetTotalPrice()
