@@ -6,28 +6,31 @@ type Spec struct {
 	Value string `json:"value"`
 }
 type Sku struct {
-	Id int64 
-	
+	Id int64
 	DiscountPrice float64
-
 	Price float64
-
-	Specs []*Spec
+	Specs  []*Spec
 	Online int8 `json:"online,omitempty"`
-
 	Img string `json:"img,omitempty"`
-
 	Title string `json:"title,omitempty"`
-	
 	SpuID int64 `json:"spu_id,omitempty"`
-	
 	Code string `json:"code,omitempty"`
-
 	Stock int `json:"stock,omitempty"`
-
 	CategoryID int64 `json:"category_id,omitempty"`
-	
 	RootCategoryID int64 `json:"root_category_id,omitempty"`
+}
+func (sku *Sku) GetActualPrice() float64 {
+	if sku.DiscountPrice != 0 {
+		return sku.DiscountPrice
+	}
+	return sku.Price
+}
+
+func (sku *Sku) getSpecValueList() (val []string) {
+	for _, v := range sku.Specs {
+		val = append(val, v.Value)
+	}
+	return
 }
 type SkuRepo interface {
 }
@@ -44,16 +47,3 @@ func NewSkuUsecase(repo SkuRepo, logger log.Logger) *SkuUsecase {
 }
 
 
-func (sku *Sku) GetActualPrice() float64 {
-	if sku.DiscountPrice != 0 {
-		return sku.DiscountPrice
-	}
-	return sku.Price
-}
-
-func (sku *Sku) getSpecValueList() (val []string) {
-	for _, v := range sku.Specs {
-		val = append(val, v.Value)
-	}
-	return
-}

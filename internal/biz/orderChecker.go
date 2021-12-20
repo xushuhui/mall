@@ -10,13 +10,13 @@ type (
 	OrderChecker struct {
 		orderDTO      *mall.PlaceOrderRequest
 		serverSkuList []Sku
-		couponChecker CouponChecker
+		couponChecker *CouponChecker
 		maxSkuLimit   int
 		orderSkuList  []OrderSku
 	}
 )
 
-func NewOrderChecker(req *mall.PlaceOrderRequest, serverSkuList []Sku, checker CouponChecker, maxSkuLimit int) *OrderChecker {
+func NewOrderChecker(req *mall.PlaceOrderRequest, serverSkuList []Sku, checker *CouponChecker, maxSkuLimit int) *OrderChecker {
 	return &OrderChecker{
 		orderDTO:      req,
 		serverSkuList: serverSkuList,
@@ -76,7 +76,7 @@ func (o *OrderChecker) IsOk() (err error) {
 	if err != nil {
 		return err
 	}
-	if o.couponChecker != (CouponChecker{}) {
+	if o.couponChecker != nil {
 		err = o.couponChecker.IsOk()
 		if err != nil {
 			return err

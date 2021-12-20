@@ -51,8 +51,8 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 		Online:         po.Online,
 	}
 	return biz.ThemeSpu{
-		theme,
-		spuList,
+		Theme:theme,
+		SpuList:spuList,
 	}, nil
 }
 func (r *themeRepo) GetThemeByNames(ctx context.Context, names []string) (themes []biz.Theme, err error) {

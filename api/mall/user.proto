@@ -7,13 +7,13 @@ import "google/protobuf/empty.proto";
 option go_package = "mall-go/api/mall";
 
 service User{
-    rpc CreateToken(CreateTokenRequest) returns (CreateTokenReply) {
+    rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenReply) {
         option (google.api.http) = {
           post : "/token"
           body : "*"
         };
       }
-      rpc VerifyToken(VerifyTokenRequest) returns (CreateTokenReply) {
+      rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenReply) {
         option (google.api.http) = {
           post : "/verify"
           body : "*"
@@ -26,7 +26,7 @@ service User{
         };
       }
 }
-message CreateTokenRequest{
+message GenerateTokenRequest{
   string account=1;
   string password=2;
 }
@@ -39,6 +39,6 @@ message UpdateInfoRequest{
 message VerifyTokenReply{
     bool isValid = 1;
 }
-message CreateTokenReply{
+message GenerateTokenReply{
     string token = 1;
 }
