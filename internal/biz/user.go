@@ -8,6 +8,8 @@ import (
 
 type User struct {
 }
+
+
 type UserRepo interface {
 	GenerateToken(ctx context.Context, account string) (token string, err error)
 	VerifyToken(ctx context.Context, token string) (isValid bool, err error)
