@@ -31,6 +31,7 @@ func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.Activity
 }
 
 func (s *AppService) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (*mall.Banner, error) {
+
 	rv, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err

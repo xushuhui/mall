@@ -31,3 +31,11 @@ func (BannerItem) Mixin() []ent.Mixin {
 		TimeMixin{},
 	}
 }
+
+// func (BannerItem) Edges() []ent.Edge {
+// 	return []ent.Edge{
+// 		edge.From("banner", Banner.Type).
+// 			Ref("banner_item"),
+
+// 	}
+// }

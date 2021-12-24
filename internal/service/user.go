@@ -21,7 +21,7 @@ func NewUserService(uu *biz.UserUsecase, logger log.Logger) *UserService {
 		log: log.NewHelper(logger),
 	}
 }
-func (s *UserService) CreateToken(ctx context.Context, in *mall.CreateTokenRequest) (out *mall.CreateTokenReply, err error) {
+func (s *UserService) GenerateToken(ctx context.Context, in *mall.GenerateTokenRequest) (out *mall.GenerateTokenReply, err error) {
 	return
 }
 func (s *UserService) VerifyToken(ctx context.Context, in *mall.VerifyTokenRequest) (out *mall.VerifyTokenReply, err error) {

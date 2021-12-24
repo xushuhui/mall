@@ -19,33 +19,33 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
-	CreateToken(context.Context, *CreateTokenRequest) (*CreateTokenReply, error)
+	GenerateToken(context.Context, *GenerateTokenRequest) (*GenerateTokenReply, error)
 	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
-	VerifyToken(context.Context, *VerifyTokenRequest) (*CreateTokenReply, error)
+	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
 }
 
 func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r := s.Route("/")
-	r.POST("/token", _User_CreateToken0_HTTP_Handler(srv))
+	r.POST("/token", _User_GenerateToken0_HTTP_Handler(srv))
 	r.POST("/verify", _User_VerifyToken0_HTTP_Handler(srv))
 	r.PUT("/info", _User_UpdateInfo0_HTTP_Handler(srv))
 }
 
-func _User_CreateToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _User_GenerateToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CreateTokenRequest
+		var in GenerateTokenRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/mall.User/CreateToken")
+		http.SetOperation(ctx, "/mall.User/GenerateToken")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateToken(ctx, req.(*CreateTokenRequest))
+			return srv.GenerateToken(ctx, req.(*GenerateTokenRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*CreateTokenReply)
+		reply := out.(*GenerateTokenReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -64,7 +64,7 @@ func _User_VerifyToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) 
 		if err != nil {
 			return err
 		}
-		reply := out.(*CreateTokenReply)
+		reply := out.(*VerifyTokenReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -89,9 +89,9 @@ func _User_UpdateInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) e
 }
 
 type UserHTTPClient interface {
-	CreateToken(ctx context.Context, req *CreateTokenRequest, opts ...http.CallOption) (rsp *CreateTokenReply, err error)
+	GenerateToken(ctx context.Context, req *GenerateTokenRequest, opts ...http.CallOption) (rsp *GenerateTokenReply, err error)
 	UpdateInfo(ctx context.Context, req *UpdateInfoRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	VerifyToken(ctx context.Context, req *VerifyTokenRequest, opts ...http.CallOption) (rsp *CreateTokenReply, err error)
+	VerifyToken(ctx context.Context, req *VerifyTokenRequest, opts ...http.CallOption) (rsp *VerifyTokenReply, err error)
 }
 
 type UserHTTPClientImpl struct {
@@ -102,11 +102,11 @@ func NewUserHTTPClient(client *http.Client) UserHTTPClient {
 	return &UserHTTPClientImpl{client}
 }
 
-func (c *UserHTTPClientImpl) CreateToken(ctx context.Context, in *CreateTokenRequest, opts ...http.CallOption) (*CreateTokenReply, error) {
-	var out CreateTokenReply
+func (c *UserHTTPClientImpl) GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...http.CallOption) (*GenerateTokenReply, error) {
+	var out GenerateTokenReply
 	pattern := "/token"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/CreateToken"))
+	opts = append(opts, http.Operation("/mall.User/GenerateToken"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -128,8 +128,8 @@ func (c *UserHTTPClientImpl) UpdateInfo(ctx context.Context, in *UpdateInfoReque
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...http.CallOption) (*CreateTokenReply, error) {
-	var out CreateTokenReply
+func (c *UserHTTPClientImpl) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...http.CallOption) (*VerifyTokenReply, error) {
+	var out VerifyTokenReply
 	pattern := "/verify"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/mall.User/VerifyToken"))

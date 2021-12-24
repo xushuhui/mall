@@ -33,6 +33,6 @@ func (Banner) Mixin() []ent.Mixin {
 }
 func (Banner) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("item", BannerItem.Type),
+		edge.To("banner_item", BannerItem.Type),
 	}
 }
