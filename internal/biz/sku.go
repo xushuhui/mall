@@ -10,14 +10,14 @@ type Sku struct {
 	DiscountPrice float64
 	Price float64
 	Specs  []*Spec
-	Online int8 `json:"online,omitempty"`
-	Img string `json:"img,omitempty"`
-	Title string `json:"title,omitempty"`
-	SpuID int64 `json:"spu_id,omitempty"`
-	Code string `json:"code,omitempty"`
-	Stock int `json:"stock,omitempty"`
-	CategoryID int64 `json:"category_id,omitempty"`
-	RootCategoryID int64 `json:"root_category_id,omitempty"`
+	Online int8 `json:"online"`
+	Img string `json:"img"`
+	Title string `json:"title"`
+	SpuID int64 `json:"spu_id"`
+	Code string `json:"code"`
+	Stock int `json:"stock"`
+	CategoryID int64 `json:"category_id"`
+	RootCategoryID int64 `json:"root_category_id"`
 }
 func (sku *Sku) GetActualPrice() float64 {
 	if sku.DiscountPrice != 0 {

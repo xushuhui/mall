@@ -29,7 +29,7 @@ func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
 	if err != nil {
 		l.Fatalf("failed opening connection to db: %v", err)
 	}
-	client.Debug()
+	client = client.Debug()
 
 	// if err := client.Schema.Create(context.Background(), migrate.WithForeignKeys(false)); err != nil {
 	// 	l.Fatalf("failed creating schema resources: %v", err)

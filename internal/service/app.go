@@ -45,7 +45,6 @@ func (s *AppService) GetBannerById(ctx context.Context, in *mall.BannerByIdReque
 			Img:      v.Img,
 			Keyword:  v.Keyword,
 			Type:     int32(v.Type),
-			BannerId: v.BannerID,
 		}
 		items = append(items, item)
 	}
@@ -72,7 +71,7 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *mall.BannerByNameR
 			Img:      v.Img,
 			Keyword:  v.Keyword,
 			Type:     int32(v.Type),
-			BannerId: v.BannerID,
+			
 		}
 		items = append(items, item)
 	}

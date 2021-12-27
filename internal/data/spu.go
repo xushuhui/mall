@@ -18,9 +18,9 @@ func NewSpuRepo(data *Data, logger log.Logger) biz.SpuRepo {
 		log:  log.NewHelper(logger),
 	}
 }
-func (r *spuRepo) GetSpuById(ctx context.Context, id int) (Spu biz.Spu, err error) {
+func (r *spuRepo) GetSpuById(ctx context.Context, id int64) (Spu biz.Spu, err error) {
 	return
 }
-func (r *spuRepo) GetSpuByCategory(ctx context.Context, id int) (Spus []biz.Spu, err error) {
+func (r *spuRepo) GetSpuByCategory(ctx context.Context, id int64) (Spus []biz.Spu, err error) {
 	return
 }
