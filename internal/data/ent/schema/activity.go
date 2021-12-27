@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -33,5 +34,11 @@ func (Activity) Fields() []ent.Field {
 func (Activity) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+func (Activity) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("spu", Spu.Type).StorageKey(
+			edge.Table("activity_spu"), edge.Columns("activity_id", "spu_id")),
 	}
 }

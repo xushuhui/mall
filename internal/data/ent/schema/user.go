@@ -35,6 +35,8 @@ func (User) Mixin() []ent.Mixin {
 }
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("user_coupon", UserCoupon.Type),
+	
+		
+		edge.To("order", Order.Type),
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -19,15 +20,10 @@ func (Order) Annotations() []schema.Annotation {
 func (Order) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("order_no").Comment(""),
-		field.Int("user_id").Comment("user表外键"),
+		field.Int64("user_id").Optional().Comment("user表外键"),
 		field.Float("total_price").Comment(""),
 		field.Int("total_count").Comment(""),
-
-		field.String("snap_img").Comment(""),
-		field.String("snap_title").Comment(""),
-		field.String("snap_items").Comment(""),
-		field.String("snap_address").Comment(""),
-		field.String("prepay_id").Comment(""),
+	
 		field.Float("final_total_price").Comment(""),
 		field.Int8("status").Comment(""),
 	}
@@ -35,5 +31,10 @@ func (Order) Fields() []ent.Field {
 func (Order) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+func (Order) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.From("user", User.Type).Ref("order").Unique().Field("user_id"),
 	}
 }

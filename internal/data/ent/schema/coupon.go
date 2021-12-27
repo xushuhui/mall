@@ -46,5 +46,8 @@ func (Coupon) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("category", Category.Type).StorageKey(
 			edge.Table("coupon_category"), edge.Columns("coupon_id", "category_id")),
+			
+			
 	}
 }
+
