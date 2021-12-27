@@ -2,7 +2,6 @@ package data
 
 import (
 	"context"
-	"fmt"
 	"mall-go/internal/biz"
 	"mall-go/internal/data/model/banner"
 
@@ -21,26 +20,20 @@ func NewBannerRepo(data *Data, logger log.Logger) biz.BannerRepo {
 	}
 }
 func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner, err error) {
-	po, err := r.data.db.Banner.Query().Where(banner.ID(id)).First(ctx)
+	po, err := r.data.db.Banner.Query().Where(banner.ID(id)).WithBannerItem().First(ctx)
 	if err != nil {
 		return
 	}
 
-
-	
-	is,_ := po.QueryBannerItem().All(ctx)
-	fmt.Println(po,is)
 	var items []biz.BannerItem
-
-	for _, v := range is {
-
+	for _, v := range po.Edges.BannerItem {
+		
 		item := biz.BannerItem{
-			ID:       v.ID,
-			Name:     v.Name,
-			Img:      v.Img,
-			Keyword:  v.Keyword,
-			Type:     v.Type,
-			BannerID: v.BannerID,
+			ID:      v.ID,
+			Name:    v.Name,
+			Img:     v.Img,
+			Keyword: v.Keyword,
+			Type:    v.Type,
 		}
 		items = append(items, item)
 	}
@@ -50,9 +43,9 @@ func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner,
 		Title:       po.Title,
 		Description: po.Description,
 		Img:         po.Description,
-		Items: items,
+		Items:       items,
 	}, nil
-	
+
 }
 func (r *bannerRepo) GetBannerByName(ctx context.Context, name string) (b biz.Banner, err error) {
 	po, err := r.data.db.Banner.Query().Where(banner.Name(name)).WithBannerItem().First(ctx)
@@ -63,12 +56,11 @@ func (r *bannerRepo) GetBannerByName(ctx context.Context, name string) (b biz.Ba
 	for _, v := range po.Edges.BannerItem {
 
 		item := biz.BannerItem{
-			ID:       v.ID,
-			Name:     v.Name,
-			Img:      v.Img,
-			Keyword:  v.Keyword,
-			Type:     v.Type,
-			BannerID: v.BannerID,
+			ID:      v.ID,
+			Name:    v.Name,
+			Img:     v.Img,
+			Keyword: v.Keyword,
+			Type:    v.Type,
 		}
 		items = append(items, item)
 	}

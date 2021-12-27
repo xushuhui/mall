@@ -20,7 +20,7 @@ type BannerItem struct {
 	Keyword  string `json:"keyword"`
 	Type     int    `json:"type"`
 	Name     string `json:"name"`
-	BannerID int64  `json:"banner_id"`
+
 }
 type BannerRepo interface {
 	GetBannerById(ctx context.Context, id int64) (b Banner, err error)
