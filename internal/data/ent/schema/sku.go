@@ -23,7 +23,7 @@ func (Sku) Fields() []ent.Field {
 		field.Int8("online").Comment(""),
 		field.String("img").Comment(""),
 		field.String("title").Comment(""),
-		field.Int64("spu_id").Comment(""),
+		field.Int64("spu_id").Optional().Comment(""),
 
 		field.JSON("specs", []Spec{}).Comment(""),
 		field.String("code").Comment(""),

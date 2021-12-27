@@ -30,7 +30,7 @@ func (Coupon) Fields() []ent.Field {
 		field.Int("type").Comment("1. 满减券 2.折扣券 3.无门槛券 4.满金额折扣券"),
 
 		field.Int("valitiy").Comment(""),
-		field.Int("activity_id").Comment(""),
+		field.Int64("activity_id").Optional().Comment(""),
 		field.String("remark").Comment(""),
 		field.Int8("whole_store").Comment(""),
 	}
@@ -46,8 +46,8 @@ func (Coupon) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("category", Category.Type).StorageKey(
 			edge.Table("coupon_category"), edge.Columns("coupon_id", "category_id")),
-			
-			
+
+		edge.From("activity", Activity.Type).
+			Ref("coupon").Unique().Field("activity_id"),
 	}
 }
-

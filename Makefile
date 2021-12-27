@@ -49,6 +49,11 @@ build:
 generate:
 	go generate ./...
 
+.PHONY: ent
+ent:
+	go generate ./internal/data/ent
+
+
 .PHONY: all
 # generate all
 all:

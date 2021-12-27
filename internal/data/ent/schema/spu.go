@@ -44,6 +44,7 @@ func (Spu) Mixin() []ent.Mixin {
 }
 func (Spu) Edges() []ent.Edge {
 	return []ent.Edge{
+		edge.To("sale_explain", SaleExplain.Type),
 		edge.To("spu_img", SpuImg.Type),
 		edge.To("spu_detail_img", SpuDetailImg.Type),
 		edge.To("spec_key", SpecKey.Type).StorageKey(
@@ -51,5 +52,6 @@ func (Spu) Edges() []ent.Edge {
 		edge.To("tag", Tag.Type).StorageKey(
 			edge.Table("spu_tag"), edge.Columns("spu_id", "tag_id")),
 		edge.From("theme", Theme.Type).Ref("spu"),
+		edge.From("activity", Activity.Type).Ref("spu"),
 	}
 }
