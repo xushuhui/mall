@@ -40,5 +40,7 @@ func (Activity) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("spu", Spu.Type).StorageKey(
 			edge.Table("activity_spu"), edge.Columns("activity_id", "spu_id")),
+			edge.To("coupon", Coupon.Type).StorageKey(
+				edge.Table("activity_coupon"), edge.Columns("activity_id", "coupon_id")),
 	}
 }

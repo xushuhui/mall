@@ -20,12 +20,10 @@ func (User) Annotations() []schema.Annotation {
 func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("openid").Comment(""),
-		field.String("nickname").Comment(""),
-		field.Int("unify_uid").Comment(""),
 		field.String("email").Comment(""),
 		field.String("password").Comment(""),
 		field.String("mobile").Comment(""),
-		field.String("wx_profile").Comment(""),
+		field.Int8("status").Default(1).Comment(""),
 	}
 }
 func (User) Mixin() []ent.Mixin {
@@ -38,5 +36,6 @@ func (User) Edges() []ent.Edge {
 	
 		
 		edge.To("order", Order.Type),
+		edge.To("refund", Refund.Type),
 	}
 }

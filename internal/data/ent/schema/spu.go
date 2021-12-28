@@ -32,7 +32,7 @@ func (Spu) Fields() []ent.Field {
 		field.String("discount_price").Comment(""),
 		field.String("description").Comment(""),
 		field.String("tags").Comment(""),
-		field.Int8("is_test").Comment(""),
+		
 		field.String("spu_theme_img").Comment(""),
 		field.String("for_theme_img").Comment(""),
 	}

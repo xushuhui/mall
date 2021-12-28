@@ -20,22 +20,22 @@ func ErrorOk(format string, args ...interface{}) *errors.Error {
 	return errors.New(200, ErrorReason_Ok.String(), fmt.Sprintf(format, args...))
 }
 
-func IsNotFound(err error) bool {
+func IsNotfound(err error) bool {
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_Not_Found.String() && e.Code == 404
+	return e.Reason == ErrorReason_NotFound.String() && e.Code == 404
 }
 
-func ErrorNotFound(format string, args ...interface{}) *errors.Error {
-	return errors.New(404, ErrorReason_Not_Found.String(), fmt.Sprintf(format, args...))
+func ErrorNotfound(format string, args ...interface{}) *errors.Error {
+	return errors.New(404, ErrorReason_NotFound.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInvalidParams(err error) bool {
+func IsInvalidparams(err error) bool {
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_Invalid_Params.String() && e.Code == 400
+	return e.Reason == ErrorReason_InvalidParams.String() && e.Code == 400
 }
 
-func ErrorInvalidParams(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ErrorReason_Invalid_Params.String(), fmt.Sprintf(format, args...))
+func ErrorInvalidparams(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ErrorReason_InvalidParams.String(), fmt.Sprintf(format, args...))
 }
 
 func IsUnauthorized(err error) bool {
@@ -56,29 +56,20 @@ func ErrorForbidden(format string, args ...interface{}) *errors.Error {
 	return errors.New(403, ErrorReason_Forbidden.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInternalServerError(err error) bool {
+func IsInternalservererror(err error) bool {
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_Internal_Server_Error.String() && e.Code == 500
+	return e.Reason == ErrorReason_InternalServerError.String() && e.Code == 500
 }
 
-func ErrorInternalServerError(format string, args ...interface{}) *errors.Error {
-	return errors.New(500, ErrorReason_Internal_Server_Error.String(), fmt.Sprintf(format, args...))
+func ErrorInternalservererror(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, ErrorReason_InternalServerError.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInvalidToken(err error) bool {
+func IsInvalidtoken(err error) bool {
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_Invalid_Token.String() && e.Code == 400
+	return e.Reason == ErrorReason_InvalidToken.String() && e.Code == 400
 }
 
-func ErrorInvalidToken(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ErrorReason_Invalid_Token.String(), fmt.Sprintf(format, args...))
-}
-
-func IsLoginFail(err error) bool {
-	e := errors.FromError(err)
-	return e.Reason == ErrorReason_Login_Fail.String() && e.Code == 400
-}
-
-func ErrorLoginFail(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ErrorReason_Login_Fail.String(), fmt.Sprintf(format, args...))
+func ErrorInvalidtoken(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ErrorReason_InvalidToken.String(), fmt.Sprintf(format, args...))
 }

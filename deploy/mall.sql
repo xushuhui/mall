@@ -13,7 +13,7 @@
 
 -- 导出  表 mall.activity 结构
 CREATE TABLE IF NOT EXISTS `activity` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `start_time` datetime(3) NOT NULL,
@@ -37,9 +37,9 @@ INSERT INTO `activity` (`id`, `title`, `description`, `start_time`, `end_time`, 
 
 -- 导出  表 mall.activity_category 结构
 CREATE TABLE IF NOT EXISTS `activity_category` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `category_id` int unsigned NOT NULL,
-  `activity_id` int NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` bigint unsigned NOT NULL,
+  `activity_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -61,9 +61,9 @@ INSERT INTO `activity_category` (`id`, `category_id`, `activity_id`) VALUES
 
 -- 导出  表 mall.activity_coupon 结构
 CREATE TABLE IF NOT EXISTS `activity_coupon` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `coupon_id` int unsigned NOT NULL,
-  `activity_id` int unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `coupon_id` bigint unsigned NOT NULL,
+  `activity_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -83,10 +83,9 @@ INSERT INTO `activity_coupon` (`id`, `coupon_id`, `activity_id`) VALUES
 
 -- 导出  表 mall.activity_spu 结构
 CREATE TABLE IF NOT EXISTS `activity_spu` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `activity_id` int unsigned NOT NULL,
-  `spu_id` int unsigned NOT NULL,
-  `participation` tinyint unsigned DEFAULT '0',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `activity_id` bigint unsigned NOT NULL,
+  `spu_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -96,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `activity_spu` (
 
 -- 导出  表 mall.banner 结构
 CREATE TABLE IF NOT EXISTS `banner` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
@@ -116,14 +115,14 @@ INSERT INTO `banner` (`id`, `name`, `description`, `create_time`, `update_time`,
 
 -- 导出  表 mall.banner_item 结构
 CREATE TABLE IF NOT EXISTS `banner_item` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `keyword` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `type` smallint unsigned NOT NULL DEFAULT '0',
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
-  `banner_id` int unsigned NOT NULL,
+  `banner_id` bigint unsigned NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -141,7 +140,7 @@ INSERT INTO `banner_item` (`id`, `img`, `keyword`, `type`, `create_time`, `updat
 
 -- 导出  表 mall.brand 结构
 CREATE TABLE IF NOT EXISTS `brand` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -174,18 +173,18 @@ INSERT INTO `brand` (`id`, `name`, `description`, `create_time`, `update_time`, 
 
 -- 导出  表 mall.category 结构
 CREATE TABLE IF NOT EXISTS `category` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
-  `is_root` tinyint unsigned NOT NULL DEFAULT '0',
-  `parent_id` int unsigned DEFAULT NULL,
+  `is_root` tinyint  NOT NULL DEFAULT '0',
+  `parent_id` bigint unsigned DEFAULT NULL,
   `img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `index` int unsigned DEFAULT NULL,
-  `online` int unsigned DEFAULT '1',
-  `level` int unsigned DEFAULT NULL,
+  `index` tinyint  DEFAULT NULL,
+  `online` tinyint  DEFAULT '1',
+  `level` tinyint  DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -235,7 +234,7 @@ INSERT INTO `category` (`id`, `name`, `description`, `create_time`, `update_time
 
 -- 导出  表 mall.coupon 结构
 CREATE TABLE IF NOT EXISTS `coupon` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `end_time` datetime DEFAULT NULL,
@@ -247,8 +246,8 @@ CREATE TABLE IF NOT EXISTS `coupon` (
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
-  `valitiy` int unsigned DEFAULT NULL,
-  `activity_id` int unsigned DEFAULT NULL,
+  `valitiy` int  DEFAULT NULL,
+  `activity_id` bigint unsigned DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `whole_store` tinyint unsigned DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
@@ -266,9 +265,9 @@ INSERT INTO `coupon` (`id`, `title`, `start_time`, `end_time`, `description`, `f
 
 -- 导出  表 mall.coupon_category 结构
 CREATE TABLE IF NOT EXISTS `coupon_category` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `category_id` int unsigned NOT NULL,
-  `coupon_id` int unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` bigint unsigned NOT NULL,
+  `coupon_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -285,13 +284,13 @@ INSERT INTO `coupon_category` (`id`, `category_id`, `coupon_id`) VALUES
 
 -- 导出  表 mall.coupon_template 结构
 CREATE TABLE IF NOT EXISTS `coupon_template` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `full_money` decimal(10,2) DEFAULT NULL,
   `minus` decimal(10,2) DEFAULT NULL,
   `discount` decimal(10,2) DEFAULT NULL COMMENT '国内多是打折，国外多是百分比 off',
-  `type` smallint NOT NULL COMMENT '1. 满减券 2.折扣券 3.无门槛券 4.满金额折扣券',
+  `type` tinyint NOT NULL COMMENT '1. 满减券 2.折扣券 3.无门槛券 4.满金额折扣券',
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
@@ -312,7 +311,7 @@ INSERT INTO `coupon_template` (`id`, `title`, `description`, `full_money`, `minu
 
 -- 导出  表 mall.coupon_type 结构
 CREATE TABLE IF NOT EXISTS `coupon_type` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `code` int NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -328,15 +327,15 @@ CREATE TABLE IF NOT EXISTS `coupon_type` (
 
 -- 导出  表 mall.grid_category 结构
 CREATE TABLE IF NOT EXISTS `grid_category` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
-  `root_category_id` int DEFAULT NULL,
+  `category_id` bigint unsigned DEFAULT NULL,
+  `root_category_id` bigint unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -353,37 +352,64 @@ INSERT INTO `grid_category` (`id`, `title`, `img`, `name`, `create_time`, `updat
 
 -- 导出  表 mall.order 结构
 CREATE TABLE IF NOT EXISTS `order` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `user_id` int unsigned DEFAULT NULL COMMENT 'user表外键',
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'user表外键',
   `total_price` decimal(10,2) DEFAULT '0.00',
-  `total_count` int unsigned DEFAULT '0',
+  `total_count` bigint unsigned DEFAULT '0',
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  `snap_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `snap_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `snap_items` json DEFAULT NULL,
-  `snap_address` json DEFAULT NULL,
-  `prepay_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+ 
   `final_total_price` decimal(10,2) DEFAULT NULL,
   `status` tinyint unsigned DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uni_order_no` (`order_no`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE IF NOT EXISTS `order_snap` (
+  
+  `order_id` bigint unsigned DEFAULT NULL ,
+`snap_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `snap_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `snap_items` json DEFAULT NULL,
+  `snap_address` json DEFAULT NULL,
+  `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
+  `delete_time` datetime(3) DEFAULT NULL,
+  `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+
+  PRIMARY KEY (`order_id`) USING BTREE
+  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `order_sub` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'user表外键',
+  `price` decimal(10,2) DEFAULT '0.00',
+  `count` bigint unsigned DEFAULT '0',
+  `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
+  `delete_time` datetime(3) DEFAULT NULL,
+  `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+ 
+  `total_price` decimal(10,2) DEFAULT NULL,
+
+  `status` tinyint unsigned DEFAULT '1',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uni_order_no` (`order_no`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- 正在导出表  mall.order 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 
 -- 导出  表 mall.sale_explain 结构
 CREATE TABLE IF NOT EXISTS `sale_explain` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `fixed` tinyint unsigned DEFAULT '0',
   `text` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `spu_id` int DEFAULT NULL,
-  `index` int unsigned DEFAULT NULL,
-  `replace_id` int unsigned DEFAULT NULL,
+  `spu_id` bigint unsigned DEFAULT NULL,
+  `index` int DEFAULT NULL,
+  `replace_id` bigint unsigned DEFAULT NULL,
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -401,21 +427,21 @@ INSERT INTO `sale_explain` (`id`, `fixed`, `text`, `spu_id`, `index`, `replace_i
 
 -- 导出  表 mall.sku 结构
 CREATE TABLE IF NOT EXISTS `sku` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `price` decimal(10,2) unsigned NOT NULL,
   `discount_price` decimal(10,2) unsigned DEFAULT NULL,
-  `online` tinyint unsigned NOT NULL DEFAULT '1',
+  `online` tinyint  NOT NULL DEFAULT '1',
   `img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `spu_id` int unsigned NOT NULL,
+  `spu_id` bigint unsigned NOT NULL,
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
   `specs` json DEFAULT NULL,
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `stock` int unsigned NOT NULL DEFAULT '0',
-  `category_id` int unsigned DEFAULT NULL,
-  `root_category_id` int unsigned DEFAULT NULL,
+  `category_id` bigint unsigned DEFAULT NULL,
+  `root_category_id` bigint unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -477,11 +503,11 @@ INSERT INTO `sku` (`id`, `price`, `discount_price`, `online`, `img`, `title`, `s
 
 -- 导出  表 mall.sku_spec 结构
 CREATE TABLE IF NOT EXISTS `sku_spec` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `spu_id` int unsigned NOT NULL,
-  `sku_id` int unsigned NOT NULL,
-  `key_id` int unsigned NOT NULL,
-  `value_id` int unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `spu_id` bigint unsigned NOT NULL,
+  `sku_id` bigint unsigned NOT NULL,
+  `key_id` bigint unsigned NOT NULL,
+  `value_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -552,10 +578,10 @@ INSERT INTO `sku_spec` (`id`, `spu_id`, `sku_id`, `key_id`, `value_id`) VALUES
 
 -- 导出  表 mall.spec_key 结构
 CREATE TABLE IF NOT EXISTS `spec_key` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `unit` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `standard` tinyint unsigned NOT NULL DEFAULT '0',
+  `standard` tinyint  NOT NULL DEFAULT '0',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `delete_time` datetime DEFAULT NULL,
@@ -578,9 +604,9 @@ INSERT INTO `spec_key` (`id`, `name`, `unit`, `standard`, `create_time`, `update
 
 -- 导出  表 mall.spec_value 结构
 CREATE TABLE IF NOT EXISTS `spec_value` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `spec_id` int unsigned NOT NULL,
+  `spec_id` bigint unsigned NOT NULL,
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
@@ -640,23 +666,23 @@ INSERT INTO `spec_value` (`id`, `value`, `spec_id`, `create_time`, `update_time`
 
 -- 导出  表 mall.spu 结构
 CREATE TABLE IF NOT EXISTS `spu` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `subtitle` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `category_id` int unsigned NOT NULL,
-  `root_category_id` int DEFAULT NULL,
+  `category_id` bigint unsigned NOT NULL,
+  `root_category_id` bigint unsigned DEFAULT NULL,
   `online` tinyint unsigned NOT NULL DEFAULT '1',
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
   `price` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文本型价格，有时候SPU需要展示的是一个范围，或者自定义平均价格',
-  `sketch_spec_id` int unsigned DEFAULT NULL COMMENT '某种规格可以直接附加单品图片',
-  `default_sku_id` int DEFAULT NULL COMMENT '默认选中的sku',
+  `sketch_spec_id` bigint unsigned DEFAULT NULL COMMENT '某种规格可以直接附加单品图片',
+  `default_sku_id` bigint unsigned DEFAULT NULL COMMENT '默认选中的sku',
   `img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `discount_price` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `tags` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `is_test` tinyint unsigned DEFAULT '0',
+  
   `spu_theme_img` json DEFAULT NULL,
   `for_theme_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -688,10 +714,10 @@ INSERT INTO `spu` (`id`, `title`, `subtitle`, `category_id`, `root_category_id`,
 
 -- 导出  表 mall.spu_detail_img 结构
 CREATE TABLE IF NOT EXISTS `spu_detail_img` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `spu_id` int unsigned DEFAULT NULL,
-  `index` int unsigned NOT NULL,
+  `spu_id` bigint unsigned DEFAULT NULL,
+  `index` int  NOT NULL,
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) DEFAULT NULL,
@@ -709,9 +735,9 @@ INSERT INTO `spu_detail_img` (`id`, `img`, `spu_id`, `index`, `create_time`, `up
 
 -- 导出  表 mall.spu_img 结构
 CREATE TABLE IF NOT EXISTS `spu_img` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `spu_id` int unsigned DEFAULT NULL,
+  `spu_id` bigint unsigned DEFAULT NULL,
   `delete_time` datetime(3) DEFAULT NULL,
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
@@ -766,9 +792,9 @@ INSERT INTO `spu_img` (`id`, `img`, `spu_id`, `delete_time`, `update_time`, `cre
 
 -- 导出  表 mall.spu_key 结构
 CREATE TABLE IF NOT EXISTS `spu_key` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `spu_id` int unsigned NOT NULL,
-  `spec_key_id` int unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `spu_id` bigint unsigned NOT NULL,
+  `spec_key_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -805,9 +831,9 @@ INSERT INTO `spu_key` (`id`, `spu_id`, `spec_key_id`) VALUES
 
 -- 导出  表 mall.spu_tag 结构
 CREATE TABLE IF NOT EXISTS `spu_tag` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `spu_id` int unsigned NOT NULL,
-  `tag_id` int unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `spu_id` bigint unsigned NOT NULL,
+  `tag_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -823,7 +849,7 @@ INSERT INTO `spu_tag` (`id`, `spu_id`, `tag_id`) VALUES
 
 -- 导出  表 mall.tag 结构
 CREATE TABLE IF NOT EXISTS `tag` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '中文限制6个，英文限制12个，由逻辑层控制',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -859,7 +885,7 @@ INSERT INTO `tag` (`id`, `title`, `description`, `update_time`, `delete_time`, `
 
 -- 导出  表 mall.theme 结构
 CREATE TABLE IF NOT EXISTS `theme` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -888,9 +914,9 @@ INSERT INTO `theme` (`id`, `title`, `description`, `name`, `create_time`, `tpl_n
 
 -- 导出  表 mall.theme_spu 结构
 CREATE TABLE IF NOT EXISTS `theme_spu` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `theme_id` int unsigned NOT NULL,
-  `spu_id` int unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `theme_id` bigint unsigned NOT NULL,
+  `spu_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -948,7 +974,7 @@ INSERT INTO `theme_spu` (`id`, `theme_id`, `spu_id`) VALUES
 
 -- 导出  表 mall.user 结构
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `openid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `nickname` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `unify_uid` int DEFAULT NULL,
@@ -992,12 +1018,12 @@ INSERT INTO `user` (`id`, `openid`, `nickname`, `unify_uid`, `email`, `password`
 
 -- 导出  表 mall.user_coupon 结构
 CREATE TABLE IF NOT EXISTS `user_coupon` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
-  `coupon_id` int unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `coupon_id` bigint unsigned NOT NULL,
   `status` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '1:未使用，2：已使用， 3：已过期',
   `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3),
-  `order_id` int unsigned DEFAULT NULL,
+  `order_id` bigint unsigned DEFAULT NULL,
   `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_user_coupon` (`user_id`,`coupon_id`) USING BTREE

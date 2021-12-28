@@ -48,6 +48,6 @@ func (Coupon) Edges() []ent.Edge {
 			edge.Table("coupon_category"), edge.Columns("coupon_id", "category_id")),
 
 		edge.From("activity", Activity.Type).
-			Ref("coupon").Unique().Field("activity_id"),
+			Ref("coupon"),
 	}
 }

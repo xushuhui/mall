@@ -8,13 +8,13 @@ option go_package = "mall-go/api/mall";
 enum ErrorReason {
   option (errors.default_code) = 400;
   Ok = 0[ (errors.code) = 200 ];
-  Not_Found = 1 [ (errors.code) = 404 ];
-  Invalid_Params = 2[(errors.code) = 400 ];
+  NotFound = 1 [ (errors.code) = 404 ];
+  InvalidParams = 2[(errors.code) = 400 ];
   Unauthorized = 3 [ (errors.code) = 401 ];
   Forbidden = 4 [ (errors.code) = 403 ];
-  Internal_Server_Error = 5 [ (errors.code) = 500 ];
+  InternalServerError = 5 [ (errors.code) = 500 ];
   
 
-  Invalid_Token = 10001;
-  Login_Fail = 10002;
+  InvalidToken = 10001;
+           
 }

@@ -24,7 +24,7 @@ func NewOrderRepo(data *Data, logger log.Logger) biz.OrderRepo {
 func (r *orderRepo) GetOrderById(ctx context.Context, id int64) (o biz.Order, err error) {
 	po, err := r.data.db.Order.Query().Where(order.ID(id)).First(ctx)
 	if model.IsNotFound(err) {
-		err = mall.ErrorNotFound("banner")
+		err = mall.ErrorNotfound("order")
 		return
 	}
 	if err != nil {
@@ -36,5 +36,17 @@ func (r *orderRepo) GetOrderById(ctx context.Context, id int64) (o biz.Order, er
 	}, nil
 }
 func (r *orderRepo) GetOrderByOrderNo(ctx context.Context, orderNo string) (o biz.Order, err error) {
-	return
+	po, err := r.data.db.Order.Query().Where(order.OrderNo(orderNo)).First(ctx)
+	if model.IsNotFound(err) {
+		err = mall.ErrorNotfound("order")
+		return
+	}
+
+	if err != nil {
+		return
+	}
+
+	return biz.Order{
+		Id: po.ID,
+	}, nil
 }
