@@ -1,0 +1,10 @@
+{
+    "protoc": {
+        "path": "/user/local/bin/protoc",
+        "compile_on_save": false,
+        "options": [
+            "--proto_path=${workspaceRoot}/third_party",
+            "--proto_path=${env.GOPATH}/src"
+        ]
+    }
+}

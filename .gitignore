@@ -31,7 +31,7 @@ Thumbs.db
 bin/
 
 # Develop tools
-.vscode/
+
 .idea/
 *.swp
 internal/data/model
