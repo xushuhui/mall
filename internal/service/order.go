@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"mall-go/api/mall"
 	"mall-go/internal/biz"
 
@@ -12,9 +13,14 @@ type OrderService struct {
 	ou  *biz.OrderUsecase
 	log *log.Helper
 }
-func NewOrderService(ou *biz.OrderUsecase,logger log.Logger) *OrderService {
+
+func NewOrderService(ou *biz.OrderUsecase, logger log.Logger) *OrderService {
 	return &OrderService{
-		ou:ou,
+		ou:  ou,
 		log: log.NewHelper(logger),
 	}
+}
+func (s *OrderService) PlaceOrder(ctx context.Context, in *mall.PlaceOrderRequest) (out *mall.PlaceOrderReply, err error) {
+
+	return
 }

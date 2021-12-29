@@ -3,7 +3,7 @@ syntax = "proto3";
 package mall;
 
 import "google/api/annotations.proto";
-
+import "api/mall/common.proto";
 option go_package = "mall-go/api/mall";
 
 service Order {
@@ -32,7 +32,6 @@ message OrderAddress {
 }
 
 message PlaceOrderRequest {
-
   int64 CouponId = 1;
   double TotalPrice = 2;
   double FinalTotalPrice = 3;
@@ -41,3 +40,11 @@ message PlaceOrderRequest {
 }
 
 message PlaceOrderReply { int64 orderId = 1; }
+message ListUserOrdersRequest {
+  PageRequest page = 1;
+  int32 Status = 3;
+}
+message ListUserOrdersReply {
+  PageReply PageReply = 1;
+  int32 Status = 3;
+}

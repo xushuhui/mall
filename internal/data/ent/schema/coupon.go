@@ -2,20 +2,12 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
 type Coupon struct {
 	ent.Schema
-}
-
-func (Coupon) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "coupon"},
-	}
 }
 
 func (Coupon) Fields() []ent.Field {

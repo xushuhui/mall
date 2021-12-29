@@ -2,8 +2,6 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
@@ -12,11 +10,6 @@ type BannerItem struct {
 	ent.Schema
 }
 
-func (BannerItem) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "banner_item"},
-	}
-}
 func (BannerItem) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("img").Comment(""),

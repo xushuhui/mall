@@ -16,7 +16,7 @@ func (UserPointDetail) Annotations() []schema.Annotation {
 }
 func (UserPointDetail) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("id").Unique().Immutable().Comment(""),
+		field.Int64("user_id").Comment(""),
 		field.Int("value").Comment(""),
 		
 	}

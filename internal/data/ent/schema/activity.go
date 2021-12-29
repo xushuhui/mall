@@ -2,8 +2,6 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
@@ -12,11 +10,6 @@ type Activity struct {
 	ent.Schema
 }
 
-func (Activity) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "activity"},
-	}
-}
 func (Activity) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment(""),
@@ -40,7 +33,7 @@ func (Activity) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("spu", Spu.Type).StorageKey(
 			edge.Table("activity_spu"), edge.Columns("activity_id", "spu_id")),
-			edge.To("coupon", Coupon.Type).StorageKey(
-				edge.Table("activity_coupon"), edge.Columns("activity_id", "coupon_id")),
+		edge.To("coupon", Coupon.Type).StorageKey(
+			edge.Table("activity_coupon"), edge.Columns("activity_id", "coupon_id")),
 	}
 }

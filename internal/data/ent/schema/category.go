@@ -2,20 +2,12 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
 type Category struct {
 	ent.Schema
-}
-
-func (Category) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "category"},
-	}
 }
 
 func (Category) Fields() []ent.Field {
@@ -42,6 +34,6 @@ func (Category) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("coupon", Coupon.Type).Ref("category"),
 		edge.To("children", Category.Type).From("parent").
-		Unique().Field("parent_id"),
+			Unique().Field("parent_id"),
 	}
 }
