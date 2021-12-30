@@ -56,20 +56,29 @@ func ErrorForbidden(format string, args ...interface{}) *errors.Error {
 	return errors.New(403, ErrorReason_Forbidden.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInternalservererror(err error) bool {
+func IsInternalserver(err error) bool {
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_InternalServerError.String() && e.Code == 500
+	return e.Reason == ErrorReason_InternalServer.String() && e.Code == 500
 }
 
-func ErrorInternalservererror(format string, args ...interface{}) *errors.Error {
-	return errors.New(500, ErrorReason_InternalServerError.String(), fmt.Sprintf(format, args...))
+func ErrorInternalserver(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, ErrorReason_InternalServer.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInvalidtoken(err error) bool {
+func IsLoginfail(err error) bool {
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_InvalidToken.String() && e.Code == 400
+	return e.Reason == ErrorReason_LoginFail.String() && e.Code == 400
 }
 
-func ErrorInvalidtoken(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ErrorReason_InvalidToken.String(), fmt.Sprintf(format, args...))
+func ErrorLoginfail(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ErrorReason_LoginFail.String(), fmt.Sprintf(format, args...))
+}
+
+func IsToken(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_Token.String() && e.Code == 400
+}
+
+func ErrorToken(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, ErrorReason_Token.String(), fmt.Sprintf(format, args...))
 }

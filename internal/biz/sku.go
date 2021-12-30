@@ -7,9 +7,9 @@ type Spec struct {
 }
 type Sku struct {
 	Id int64
-	DiscountPrice float64
-	Price float64
-	Specs  []*Spec
+	DiscountPrice float64 `json:"discount_price"`
+	Price float64 `json:"price"`
+	Specs  []*Spec `json:"specs"`
 	Online int8 `json:"online"`
 	Img string `json:"img"`
 	Title string `json:"title"`

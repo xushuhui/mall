@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceRoot}/cmd/mall-go",
+            "program": "${workspaceRoot}/cmd/server",
             "args": [],
         }
     ]

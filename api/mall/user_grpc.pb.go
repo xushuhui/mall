@@ -19,10 +19,15 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...grpc.CallOption) (*GenerateTokenReply, error)
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
 	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenReply, error)
 	UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SetDefaultAddr(ctx context.Context, in *SetDefaultAddrRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userClient struct {
@@ -33,9 +38,9 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...grpc.CallOption) (*GenerateTokenReply, error) {
-	out := new(GenerateTokenReply)
-	err := c.cc.Invoke(ctx, "/mall.User/GenerateToken", in, out, opts...)
+func (c *userClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
+	out := new(LoginReply)
+	err := c.cc.Invoke(ctx, "/mall.User/Login", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,14 +74,64 @@ func (c *userClient) Charge(ctx context.Context, in *ChargeRequest, opts ...grpc
 	return out, nil
 }
 
+func (c *userClient) CreateAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.User/CreateAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.User/ListAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.User/GetAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) SetDefaultAddr(ctx context.Context, in *SetDefaultAddrRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.User/SetDefaultAddr", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.User/DeleteAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	GenerateToken(context.Context, *GenerateTokenRequest) (*GenerateTokenReply, error)
+	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
 	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
 	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
+	CreateAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error)
+	SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error)
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -84,8 +139,8 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) GenerateToken(context.Context, *GenerateTokenRequest) (*GenerateTokenReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GenerateToken not implemented")
+func (UnimplementedUserServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
 func (UnimplementedUserServer) VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
@@ -95,6 +150,21 @@ func (UnimplementedUserServer) UpdateInfo(context.Context, *UpdateInfoRequest) (
 }
 func (UnimplementedUserServer) Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Charge not implemented")
+}
+func (UnimplementedUserServer) CreateAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAddress not implemented")
+}
+func (UnimplementedUserServer) ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAddress not implemented")
+}
+func (UnimplementedUserServer) GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAddress not implemented")
+}
+func (UnimplementedUserServer) SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetDefaultAddr not implemented")
+}
+func (UnimplementedUserServer) DeleteAddress(context.Context, *DeleteAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAddress not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -109,20 +179,20 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 	s.RegisterService(&User_ServiceDesc, srv)
 }
 
-func _User_GenerateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GenerateTokenRequest)
+func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).GenerateToken(ctx, in)
+		return srv.(UserServer).Login(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mall.User/GenerateToken",
+		FullMethod: "/mall.User/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GenerateToken(ctx, req.(*GenerateTokenRequest))
+		return srv.(UserServer).Login(ctx, req.(*LoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -181,6 +251,96 @@ func _User_Charge_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_CreateAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).CreateAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/CreateAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).CreateAddress(ctx, req.(*CreateAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/ListAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListAddress(ctx, req.(*CreateAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/GetAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetAddress(ctx, req.(*GetAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_SetDefaultAddr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetDefaultAddrRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SetDefaultAddr(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/SetDefaultAddr",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SetDefaultAddr(ctx, req.(*SetDefaultAddrRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_DeleteAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).DeleteAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/DeleteAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).DeleteAddress(ctx, req.(*DeleteAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -189,8 +349,8 @@ var User_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GenerateToken",
-			Handler:    _User_GenerateToken_Handler,
+			MethodName: "Login",
+			Handler:    _User_Login_Handler,
 		},
 		{
 			MethodName: "VerifyToken",
@@ -203,6 +363,26 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Charge",
 			Handler:    _User_Charge_Handler,
+		},
+		{
+			MethodName: "CreateAddress",
+			Handler:    _User_CreateAddress_Handler,
+		},
+		{
+			MethodName: "ListAddress",
+			Handler:    _User_ListAddress_Handler,
+		},
+		{
+			MethodName: "GetAddress",
+			Handler:    _User_GetAddress_Handler,
+		},
+		{
+			MethodName: "SetDefaultAddr",
+			Handler:    _User_SetDefaultAddr_Handler,
+		},
+		{
+			MethodName: "DeleteAddress",
+			Handler:    _User_DeleteAddress_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

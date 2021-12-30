@@ -4,6 +4,7 @@ package mall;
 
 import "google/api/annotations.proto";
 import "api/mall/common.proto";
+import "google/protobuf/empty.proto";
 option go_package = "mall-go/api/mall";
 
 service Order {
@@ -14,6 +15,30 @@ service Order {
       body : "*"
     };
   }
+  rpc ListUserOrder(ListUserOrdersRequest) returns (ListUserOrdersReply) {
+    option (google.api.http) = {
+      get : "/orders"
+     
+    };
+  }
+  rpc GetOrder(GetOrderRequest) returns (PlaceOrderReply) {
+    option (google.api.http) = {
+      get : "/order/{id}"
+     
+    };
+  }
+  rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put : "/order/cancel/{id}"
+      body : "*"
+    };
+  }
+}
+message CancelOrderRequest{
+  int64 id = 1;
+}
+message GetOrderRequest{
+  int64 id = 1;
 }
 message SkuInfo {
   int64 id = 1;

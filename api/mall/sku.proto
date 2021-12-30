@@ -6,77 +6,77 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 option go_package = "mall-go/api/mall";
 
-service Sku{
-    rpc GetSaleExplain(google.protobuf.Empty) returns (SaleExplains) {
-        option (google.api.http) = {
-          get : "/sale_explain/fixed"
-        };
-      }
-      rpc Search(SearchRequest) returns (SpuPage) {
-        option (google.api.http) = {
-          get : "/search"
-        };
-      }
-      rpc GetSpuById(SpuByIdRequest) returns (SpuDetail) {
-        option (google.api.http) = {
-          get : "/spu/id/{id}/detail"
-        };
-      }
-      rpc GetSpuLatest(google.protobuf.Empty) returns (SpuPage) {
-        option (google.api.http) = {
-          get : "/spu/latest"
-        };
-      }
-      rpc GetSpuByCategory(SpuByCategoryRequest) returns (SpuPage) {
-        option (google.api.http) = {
-          get : "/spu/by/category/{id}"
-        };
-      }
+service Sku {
+  rpc GetSaleExplain(google.protobuf.Empty) returns (SaleExplains) {
+    option (google.api.http) = {
+      get : "/sale_explain/fixed"
+    };
+  }
+  rpc Search(SearchRequest) returns (SpuPage) {
+    option (google.api.http) = {
+      get : "/search"
+    };
+  }
+  rpc GetSpuById(SpuByIdRequest) returns (SpuDetail) {
+    option (google.api.http) = {
+      get : "/spu/id/{id}/detail"
+    };
+  }
+  rpc GetSpuLatest(google.protobuf.Empty) returns (SpuPage) {
+    option (google.api.http) = {
+      get : "/spu/latest"
+    };
+  }
+  rpc GetSpuByCategory(SpuByCategoryRequest) returns (SpuPage) {
+    option (google.api.http) = {
+      get : "/spu/by/category/{id}"
+    };
+  }
 }
 message SearchRequest {
-    string keyword = 1;
-    int32 page = 2;
-    int32 size = 3;
+  string keyword = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+message SpuByIdRequest { int64 id = 1; }
+message SpuByCategoryRequest { int64 id = 1; }
+message SpuDetail {
+  message Specs {
+    uint32 key_id = 1;
+    string key = 2;
+    uint32 value_id = 3;
+    string value = 4;
   }
-  
-  message SpuByIdRequest { int64 id = 1; }
-  message SpuByCategoryRequest { int64 id = 1; }
-  message SpuDetail{
-    message Specs {
-      uint32 key_id = 1;
-      string key = 2;
-      uint32 value_id = 3;
-      string value = 4;
-  }
-  
+
   message SkuList {
-      int64 id = 1;
-      double price = 2;
-      double discount_price = 3;
-      bool online = 4;
-      string img = 5;
-      string title = 6;
-      int64 spu_id = 7;
-      int64 category_id = 8;
-      int64 root_category_id = 9;
-      repeated Specs specs = 10;
-      string code = 11;
-      uint32 stock = 12;
+    int64 id = 1;
+    double price = 2;
+    double discount_price = 3;
+    bool online = 4;
+    string img = 5;
+    string title = 6;
+    int64 spu_id = 7;
+    int64 category_id = 8;
+    int64 root_category_id = 9;
+    repeated Specs specs = 10;
+    string code = 11;
+    uint32 stock = 12;
   }
-  
+
   message SpuImgList {
     int64 id = 1;
-      string img = 2;
-      int64 spu_id = 3;
+    string img = 2;
+    int64 spu_id = 3;
   }
-  
+
   message SpuDetailImgList {
     int64 id = 1;
-      string img = 2;
-      int64 spu_id = 3;
-      uint32 index = 4;
+    string img = 2;
+    int64 spu_id = 3;
+    uint32 index = 4;
   }
-  
+
   int64 id = 1;
   string title = 2;
   string subtitle = 3;
@@ -94,52 +94,52 @@ message SearchRequest {
   repeated SpuDetailImgList spu_detail_img_list = 16;
   int64 sketch_spec_id = 17;
   int64 default_sku_id = 18;
-  }
-  message Spu {
+}
+message Spu {
+  int64 id = 1;
+  string title = 2;
+  string subtitle = 3;
+  int64 category_id = 4;
+  int64 root_category_id = 5;
+  string price = 6;
+  string img = 7;
+  string for_theme_img = 8;
+  string description = 9;
+  string discount_price = 10;
+  string tags = 11;
+  int32 online = 13;
+}
+message SpuPage {
+
+  message Items {
     int64 id = 1;
     string title = 2;
     string subtitle = 3;
-    int64 category_id = 4;
-    int64 root_category_id = 5;
+    string img = 4;
+    string for_theme_img = 5;
     string price = 6;
-    string img = 7;
-    string for_theme_img = 8;
-    string description = 9;
-    string discount_price = 10;
-    string tags = 11;
-    int32 online = 13;
+    string discount_price = 7;
+    string description = 8;
+    string tags = 9;
+    string sketch_spec_id = 10;
+    uint32 max_purchase_quantity = 11;
+    uint32 min_purchase_quantity = 12;
   }
-  message SpuPage {
 
-    message Items {
-      int64 id = 1;
-      string title = 2;
-      string subtitle = 3;
-      string img = 4;
-      string for_theme_img = 5;
-      string price = 6;
-      string discount_price = 7;
-      string description = 8;
-      string tags = 9;
-      string sketch_spec_id = 10;
-      uint32 max_purchase_quantity = 11;
-      uint32 min_purchase_quantity = 12;
-    }
-  
-    uint32 total = 1;
-    uint32 count = 2;
-    uint32 page = 3;
-    uint32 total_page = 4;
-    repeated Items items = 5;
+  uint32 total = 1;
+  uint32 count = 2;
+  uint32 page = 3;
+  uint32 total_page = 4;
+  repeated Items items = 5;
+}
+message SaleExplains {
+  message SaleExplain {
+    int64 id = 1;
+    bool fixed = 2;
+    string text = 3;
+    int64 spu_id = 4;
+    int32 index = 5;
+    int64 replace_id = 6;
   }
-  message SaleExplains {
-    message SaleExplain {
-      int64 id = 1;
-      bool fixed = 2;
-      string text = 3;
-      int64 spu_id = 4;
-      int32 index = 5;
-      int64 replace_id = 6;
-    }
-    repeated SaleExplain sale_explain = 1;
-  }
+  repeated SaleExplain sale_explain = 1;
+}

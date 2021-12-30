@@ -20,34 +20,44 @@ const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
 	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
-	GenerateToken(context.Context, *GenerateTokenRequest) (*GenerateTokenReply, error)
+	CreateAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*emptypb.Empty, error)
+	GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error)
+	ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	Login(context.Context, *LoginRequest) (*LoginReply, error)
+	SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error)
 	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
 	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
 }
 
 func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r := s.Route("/")
-	r.POST("/token", _User_GenerateToken0_HTTP_Handler(srv))
+	r.POST("/login", _User_Login0_HTTP_Handler(srv))
 	r.POST("/verify", _User_VerifyToken0_HTTP_Handler(srv))
 	r.PUT("/info", _User_UpdateInfo0_HTTP_Handler(srv))
 	r.POST("/charge", _User_Charge0_HTTP_Handler(srv))
+	r.POST("/address", _User_CreateAddress0_HTTP_Handler(srv))
+	r.GET("/addresses", _User_ListAddress0_HTTP_Handler(srv))
+	r.GET("/address/{id}", _User_GetAddress0_HTTP_Handler(srv))
+	r.PUT("/address/{id}/default", _User_SetDefaultAddr0_HTTP_Handler(srv))
+	r.DELETE("/address/{id}", _User_DeleteAddress0_HTTP_Handler(srv))
 }
 
-func _User_GenerateToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _User_Login0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GenerateTokenRequest
+		var in LoginRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/mall.User/GenerateToken")
+		http.SetOperation(ctx, "/mall.User/Login")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GenerateToken(ctx, req.(*GenerateTokenRequest))
+			return srv.Login(ctx, req.(*LoginRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GenerateTokenReply)
+		reply := out.(*LoginReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -109,9 +119,118 @@ func _User_Charge0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error
 	}
 }
 
+func _User_CreateAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateAddressRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/CreateAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateAddress(ctx, req.(*CreateAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/ListAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListAddress(ctx, req.(*CreateAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_GetAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/GetAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetAddress(ctx, req.(*GetAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_SetDefaultAddr0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SetDefaultAddrRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/SetDefaultAddr")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SetDefaultAddr(ctx, req.(*SetDefaultAddrRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_DeleteAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/DeleteAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteAddress(ctx, req.(*DeleteAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
 type UserHTTPClient interface {
 	Charge(ctx context.Context, req *ChargeRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	GenerateToken(ctx context.Context, req *GenerateTokenRequest, opts ...http.CallOption) (rsp *GenerateTokenReply, err error)
+	CreateAddress(ctx context.Context, req *CreateAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	DeleteAddress(ctx context.Context, req *DeleteAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	GetAddress(ctx context.Context, req *GetAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	ListAddress(ctx context.Context, req *CreateAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
+	SetDefaultAddr(ctx context.Context, req *SetDefaultAddrRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	UpdateInfo(ctx context.Context, req *UpdateInfoRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	VerifyToken(ctx context.Context, req *VerifyTokenRequest, opts ...http.CallOption) (rsp *VerifyTokenReply, err error)
 }
@@ -137,13 +256,78 @@ func (c *UserHTTPClientImpl) Charge(ctx context.Context, in *ChargeRequest, opts
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...http.CallOption) (*GenerateTokenReply, error) {
-	var out GenerateTokenReply
-	pattern := "/token"
+func (c *UserHTTPClientImpl) CreateAddress(ctx context.Context, in *CreateAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/GenerateToken"))
+	opts = append(opts, http.Operation("/mall.User/CreateAddress"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.User/DeleteAddress"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.User/GetAddress"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) ListAddress(ctx context.Context, in *CreateAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/addresses"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.User/ListAddress"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginReply, error) {
+	var out LoginReply
+	pattern := "/login"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.User/Login"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) SetDefaultAddr(ctx context.Context, in *SetDefaultAddrRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address/{id}/default"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.User/SetDefaultAddr"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

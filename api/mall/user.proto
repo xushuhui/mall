@@ -7,9 +7,9 @@ import "google/protobuf/empty.proto";
 option go_package = "mall-go/api/mall";
 
 service User{
-    rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenReply) {
+    rpc Login(LoginRequest) returns (LoginReply) {
         option (google.api.http) = {
-          post : "/token"
+          post : "/login"
           body : "*"
         };
       }
@@ -31,8 +31,38 @@ service User{
           body : "*"
         };
       }
+      rpc CreateAddress(CreateAddressRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+          post : "/address"
+          body : "*"
+        };
+      }
+      rpc ListAddress(CreateAddressRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+          get : "/addresses"
+        
+        };
+      }
+      rpc GetAddress(GetAddressRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+          get : "/address/{id}"
+         
+        };
+      }
+      rpc SetDefaultAddr(SetDefaultAddrRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+          put : "/address/{id}/default"
+          body : "*"
+        };
+      }
+      rpc DeleteAddress(DeleteAddressRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+          delete : "/address/{id}"
+         
+        };
+      }
 }
-message GenerateTokenRequest{
+message LoginRequest{
   string account=1;
   string password=2;
 }
@@ -45,10 +75,22 @@ message UpdateInfoRequest{
 message VerifyTokenReply{
     bool isValid = 1;
 }
-message GenerateTokenReply{
+message LoginReply{
     string token = 1;
 }
 message ChargeRequest{
     int64 amount = 2;
     int32 payWay=1;
+}
+message CreateAddressRequest{
+
+}
+message DeleteAddressRequest{
+  int64 id=1;
+}
+message GetAddressRequest{
+  int64 id=1;
+}
+message SetDefaultAddrRequest{
+  int64 id=1;
 }

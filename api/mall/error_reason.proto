@@ -12,9 +12,9 @@ enum ErrorReason {
   InvalidParams = 2[(errors.code) = 400 ];
   Unauthorized = 3 [ (errors.code) = 401 ];
   Forbidden = 4 [ (errors.code) = 403 ];
-  InternalServerError = 5 [ (errors.code) = 500 ];
+  InternalServer = 5 [ (errors.code) = 500 ];
   
 
-  InvalidToken = 10001;
-           
+  LoginFail = 10001;
+  Token=10002;         
 }

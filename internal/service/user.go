@@ -21,12 +21,22 @@ func NewUserService(uu *biz.UserUsecase, logger log.Logger) *UserService {
 		log: log.NewHelper(logger),
 	}
 }
-func (s *UserService) GenerateToken(ctx context.Context, in *mall.GenerateTokenRequest) (out *mall.GenerateTokenReply, err error) {
-	return
+func (s *UserService) Login(ctx context.Context, in *mall.LoginRequest) (out *mall.LoginReply, err error) {
+	
+	return s.uu.Login(ctx, in.Account)
 }
 func (s *UserService) VerifyToken(ctx context.Context, in *mall.VerifyTokenRequest) (out *mall.VerifyTokenReply, err error) {
 	return
 }
 func (s *UserService) UpdateInfo(ctx context.Context, in *mall.UpdateInfoRequest) (out *emptypb.Empty, err error) {
+	return
+}
+func (s *UserService) ListAddress(ctx context.Context, in *mall.LoginRequest) (out *mall.LoginReply, err error) {
+	return
+}
+func (s *UserService) GetAddress(ctx context.Context, in *mall.LoginRequest) (out *mall.LoginReply, err error) {
+	return
+}
+func (s *UserService) SetDefaultAddr(ctx context.Context, in *mall.LoginRequest) (out *mall.LoginReply, err error) {
 	return
 }

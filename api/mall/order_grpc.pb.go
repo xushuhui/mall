@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,6 +20,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderClient interface {
 	PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...grpc.CallOption) (*PlaceOrderReply, error)
+	ListUserOrder(ctx context.Context, in *ListUserOrdersRequest, opts ...grpc.CallOption) (*ListUserOrdersReply, error)
+	GetOrder(ctx context.Context, in *GetOrderRequest, opts ...grpc.CallOption) (*PlaceOrderReply, error)
+	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type orderClient struct {
@@ -38,11 +42,41 @@ func (c *orderClient) PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opt
 	return out, nil
 }
 
+func (c *orderClient) ListUserOrder(ctx context.Context, in *ListUserOrdersRequest, opts ...grpc.CallOption) (*ListUserOrdersReply, error) {
+	out := new(ListUserOrdersReply)
+	err := c.cc.Invoke(ctx, "/mall.Order/ListUserOrder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderClient) GetOrder(ctx context.Context, in *GetOrderRequest, opts ...grpc.CallOption) (*PlaceOrderReply, error) {
+	out := new(PlaceOrderReply)
+	err := c.cc.Invoke(ctx, "/mall.Order/GetOrder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderClient) CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Order/CancelOrder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServer is the server API for Order service.
 // All implementations must embed UnimplementedOrderServer
 // for forward compatibility
 type OrderServer interface {
 	PlaceOrder(context.Context, *PlaceOrderRequest) (*PlaceOrderReply, error)
+	ListUserOrder(context.Context, *ListUserOrdersRequest) (*ListUserOrdersReply, error)
+	GetOrder(context.Context, *GetOrderRequest) (*PlaceOrderReply, error)
+	CancelOrder(context.Context, *CancelOrderRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedOrderServer()
 }
 
@@ -52,6 +86,15 @@ type UnimplementedOrderServer struct {
 
 func (UnimplementedOrderServer) PlaceOrder(context.Context, *PlaceOrderRequest) (*PlaceOrderReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PlaceOrder not implemented")
+}
+func (UnimplementedOrderServer) ListUserOrder(context.Context, *ListUserOrdersRequest) (*ListUserOrdersReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserOrder not implemented")
+}
+func (UnimplementedOrderServer) GetOrder(context.Context, *GetOrderRequest) (*PlaceOrderReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrder not implemented")
+}
+func (UnimplementedOrderServer) CancelOrder(context.Context, *CancelOrderRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelOrder not implemented")
 }
 func (UnimplementedOrderServer) mustEmbedUnimplementedOrderServer() {}
 
@@ -84,6 +127,60 @@ func _Order_PlaceOrder_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Order_ListUserOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserOrdersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServer).ListUserOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Order/ListUserOrder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServer).ListUserOrder(ctx, req.(*ListUserOrdersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Order_GetOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServer).GetOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Order/GetOrder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServer).GetOrder(ctx, req.(*GetOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Order_CancelOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServer).CancelOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Order/CancelOrder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServer).CancelOrder(ctx, req.(*CancelOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Order_ServiceDesc is the grpc.ServiceDesc for Order service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +191,18 @@ var Order_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PlaceOrder",
 			Handler:    _Order_PlaceOrder_Handler,
+		},
+		{
+			MethodName: "ListUserOrder",
+			Handler:    _Order_ListUserOrder_Handler,
+		},
+		{
+			MethodName: "GetOrder",
+			Handler:    _Order_GetOrder_Handler,
+		},
+		{
+			MethodName: "CancelOrder",
+			Handler:    _Order_CancelOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
