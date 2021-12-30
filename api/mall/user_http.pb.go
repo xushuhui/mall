@@ -19,6 +19,7 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
+	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
 	GenerateToken(context.Context, *GenerateTokenRequest) (*GenerateTokenReply, error)
 	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
 	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
@@ -29,6 +30,7 @@ func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r.POST("/token", _User_GenerateToken0_HTTP_Handler(srv))
 	r.POST("/verify", _User_VerifyToken0_HTTP_Handler(srv))
 	r.PUT("/info", _User_UpdateInfo0_HTTP_Handler(srv))
+	r.POST("/charge", _User_Charge0_HTTP_Handler(srv))
 }
 
 func _User_GenerateToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
@@ -88,7 +90,27 @@ func _User_UpdateInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) e
 	}
 }
 
+func _User_Charge0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ChargeRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.User/Charge")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Charge(ctx, req.(*ChargeRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
 type UserHTTPClient interface {
+	Charge(ctx context.Context, req *ChargeRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	GenerateToken(ctx context.Context, req *GenerateTokenRequest, opts ...http.CallOption) (rsp *GenerateTokenReply, err error)
 	UpdateInfo(ctx context.Context, req *UpdateInfoRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	VerifyToken(ctx context.Context, req *VerifyTokenRequest, opts ...http.CallOption) (rsp *VerifyTokenReply, err error)
@@ -100,6 +122,19 @@ type UserHTTPClientImpl struct {
 
 func NewUserHTTPClient(client *http.Client) UserHTTPClient {
 	return &UserHTTPClientImpl{client}
+}
+
+func (c *UserHTTPClientImpl) Charge(ctx context.Context, in *ChargeRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/charge"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.User/Charge"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *UserHTTPClientImpl) GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...http.CallOption) (*GenerateTokenReply, error) {

@@ -22,6 +22,7 @@ type UserClient interface {
 	GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...grpc.CallOption) (*GenerateTokenReply, error)
 	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenReply, error)
 	UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userClient struct {
@@ -59,6 +60,15 @@ func (c *userClient) UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts
 	return out, nil
 }
 
+func (c *userClient) Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.User/Charge", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -66,6 +76,7 @@ type UserServer interface {
 	GenerateToken(context.Context, *GenerateTokenRequest) (*GenerateTokenReply, error)
 	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
 	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
+	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -81,6 +92,9 @@ func (UnimplementedUserServer) VerifyToken(context.Context, *VerifyTokenRequest)
 }
 func (UnimplementedUserServer) UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateInfo not implemented")
+}
+func (UnimplementedUserServer) Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Charge not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -149,6 +163,24 @@ func _User_UpdateInfo_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_Charge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChargeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Charge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.User/Charge",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Charge(ctx, req.(*ChargeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -167,6 +199,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateInfo",
 			Handler:    _User_UpdateInfo_Handler,
+		},
+		{
+			MethodName: "Charge",
+			Handler:    _User_Charge_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

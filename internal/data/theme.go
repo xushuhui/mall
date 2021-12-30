@@ -27,7 +27,7 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 	spuList := make([]*biz.Spu, 0)
 	for _, v := range po.Edges.Spu {
 
-		item := &biz.Spu{
+		spuList = append(spuList, &biz.Spu{
 			Id:             v.ID,
 			Title:          v.Title,
 			Price:          v.Price,
@@ -35,8 +35,8 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 			CategoryId:     v.CategoryID,
 			RootCategoryId: v.RootCategoryID,
 			Img:            v.Img,
-		}
-		spuList = append(spuList, item)
+			Online:         int32(po.Online),
+		})
 	}
 	theme := biz.Theme{
 		Id:             po.ID,
@@ -44,11 +44,10 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 		Title:          po.Title,
 		Description:    po.Description,
 		EntranceImg:    po.EntranceImg,
-		Extend:         po.Extend,
 		InternalTopImg: po.InternalTopImg,
 		TitleImg:       po.TitleImg,
 		TplName:        po.TplName,
-		Online:         po.Online,
+		Online:         int32(po.Online),
 	}
 	return biz.ThemeSpu{
 		Theme:   theme,
@@ -62,16 +61,16 @@ func (r *themeRepo) GetThemeByNames(ctx context.Context, names []string) (themes
 	}
 	for _, po := range pos {
 		themes = append(themes, biz.Theme{
-			Id:             po.ID,
-			Name:           po.Name,
-			Title:          po.Title,
-			Description:    po.Description,
-			EntranceImg:    po.EntranceImg,
-			Extend:         po.Extend,
+			Id:          po.ID,
+			Name:        po.Name,
+			Title:       po.Title,
+			Description: po.Description,
+			EntranceImg: po.EntranceImg,
+
 			InternalTopImg: po.InternalTopImg,
 			TitleImg:       po.TitleImg,
 			TplName:        po.TplName,
-			Online:         po.Online,
+			Online:         int32(po.Online),
 		})
 	}
 	return themes, nil

@@ -2,8 +2,6 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
@@ -12,17 +10,13 @@ type Spu struct {
 	ent.Schema
 }
 
-func (Spu) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "spu"},
-	}
-}
 func (Spu) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment(""),
 		field.String("subtitle").Comment(""),
 		field.Int64("category_id").Comment(""),
 		field.Int64("root_category_id").Comment(""),
+
 		field.Int8("online").Comment(""),
 
 		field.String("price").Comment("文本型价格，有时候SPU需要展示的是一个范围，或者自定义平均价格"),
@@ -32,7 +26,7 @@ func (Spu) Fields() []ent.Field {
 		field.String("discount_price").Comment(""),
 		field.String("description").Comment(""),
 		field.String("tags").Comment(""),
-		
+
 		field.String("spu_theme_img").Comment(""),
 		field.String("for_theme_img").Comment(""),
 	}
@@ -53,5 +47,6 @@ func (Spu) Edges() []ent.Edge {
 			edge.Table("spu_tag"), edge.Columns("spu_id", "tag_id")),
 		edge.From("theme", Theme.Type).Ref("spu"),
 		edge.From("activity", Activity.Type).Ref("spu"),
+		edge.From("brand", Brand.Type).Ref("spu"),
 	}
 }

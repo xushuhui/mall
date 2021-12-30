@@ -12,11 +12,11 @@ type Theme struct {
 	Description    string ` json:"description,omitempty"`
 	Name           string ` json:"name,omitempty"`
 	EntranceImg    string ` json:"entrance_img,omitempty"`
-	Extend         string ` json:"extend,omitempty"`
+	
 	InternalTopImg string ` json:"internal_top_img,omitempty"`
 	TitleImg       string `json:"title_img,omitempty"`
 	TplName        string ` json:"tpl_name,omitempty"`
-	Online         int8   `json:"online,omitempty"`
+	Online         int32   `json:"online,omitempty"`
 }
 type ThemeSpu struct {
 	Theme

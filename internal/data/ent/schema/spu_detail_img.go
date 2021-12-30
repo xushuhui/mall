@@ -31,8 +31,6 @@ func (SpuDetailImg) Mixin() []ent.Mixin {
 }
 func (SpuDetailImg) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("spu", Spu.Type).
-			Ref("spu_detail_img").
-			Unique().Field("spu_id"),
+		edge.From("spu", Spu.Type).Ref("spu_detail_img").Unique().Field("spu_id"),
 	}
 }

@@ -16,7 +16,7 @@ type Spu struct {
 	DiscountPrice  string ` json:"discount_price,omitempty"`
 	Tags           string ` json:"tags,omitempty"`
 
-	Online         bool   `json:"online,omitempty"`
+	Online         int32   `json:"online,omitempty"`
 }
 
 type SpuRepo interface {

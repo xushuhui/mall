@@ -4,6 +4,7 @@ import (
 	"context"
 	"mall-go/api/mall"
 	"mall-go/internal/biz"
+	"strings"
 
 	"github.com/go-kratos/kratos/v2/log"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -40,11 +41,11 @@ func (s *AppService) GetBannerById(ctx context.Context, in *mall.BannerByIdReque
 	for _, v := range rv.Items {
 
 		item := &mall.BannerItem{
-			Id:       v.ID,
-			Name:     v.Name,
-			Img:      v.Img,
-			Keyword:  v.Keyword,
-			Type:     int32(v.Type),
+			Id:      v.ID,
+			Name:    v.Name,
+			Img:     v.Img,
+			Keyword: v.Keyword,
+			Type:    int32(v.Type),
 		}
 		items = append(items, item)
 	}
@@ -66,12 +67,11 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *mall.BannerByNameR
 	for _, v := range rv.Items {
 
 		item := &mall.BannerItem{
-			Id:       v.ID,
-			Name:     v.Name,
-			Img:      v.Img,
-			Keyword:  v.Keyword,
-			Type:     int32(v.Type),
-			
+			Id:      v.ID,
+			Name:    v.Name,
+			Img:     v.Img,
+			Keyword: v.Keyword,
+			Type:    int32(v.Type),
 		}
 		items = append(items, item)
 	}
@@ -85,7 +85,8 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *mall.BannerByNameR
 	}, nil
 }
 func (s *AppService) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRequest) (out *mall.Themes, err error) {
-	rv, err := s.tu.GetThemeByNames(ctx, in.Names)
+	names := strings.Split(in.Names, ",")
+	rv, err := s.tu.GetThemeByNames(ctx, names)
 	if err != nil {
 		return
 	}
@@ -97,6 +98,7 @@ func (s *AppService) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesR
 			EntranceImg: v.EntranceImg,
 			Title:       v.Title,
 			Description: v.Description,
+			Online:      v.Online,
 		}
 		themes = append(themes, theme)
 	}
@@ -111,12 +113,33 @@ func (s *AppService) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuR
 	if err != nil {
 		return
 	}
+	var items []*mall.Spu
+	for _, v := range rv.SpuList {
+
+		item := &mall.Spu{
+			Id:             v.Id,
+			Title:          v.Title,
+			Subtitle:       v.Subtitle,
+			CategoryId:     v.CategoryId,
+			RootCategoryId: v.RootCategoryId,
+
+			Img:           v.Img,
+			Price:         v.Price,
+			DiscountPrice: v.DiscountPrice,
+			Tags:          v.Tags,
+			Online:        v.Online,
+			ForThemeImg:   v.ForThemeImg,
+		}
+		items = append(items, item)
+	}
 	out = &mall.ThemeSpu{
 		Id:          rv.Id,
 		Name:        rv.Name,
 		EntranceImg: rv.EntranceImg,
 		Title:       rv.Title,
 		Description: rv.Description,
+		Online:      rv.Online,
+		SpuList:     items,
 	}
 	return
 }

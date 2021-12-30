@@ -88,7 +88,7 @@ message SearchRequest {
   string description = 9;
   string discount_price = 10;
   string tags = 11;
-  bool online = 13;
+  int32 online = 13;
   repeated SkuList sku_list = 14;
   repeated SpuImgList spu_img_list = 15;
   repeated SpuDetailImgList spu_detail_img_list = 16;
@@ -107,7 +107,7 @@ message SearchRequest {
     string description = 9;
     string discount_price = 10;
     string tags = 11;
-    bool online = 13;
+    int32 online = 13;
   }
   message SpuPage {
 

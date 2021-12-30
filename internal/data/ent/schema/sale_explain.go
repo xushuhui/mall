@@ -2,8 +2,6 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
@@ -12,11 +10,6 @@ type SaleExplain struct {
 	ent.Schema
 }
 
-func (SaleExplain) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "sale_explain"},
-	}
-}
 func (SaleExplain) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int8("fixed").Comment(""),
@@ -34,8 +27,6 @@ func (SaleExplain) Mixin() []ent.Mixin {
 
 func (SaleExplain) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("spu", Spu.Type).
-			Ref("sale_explain").
-			Unique().Field("spu_id"),
+		edge.From("spu", Spu.Type).Ref("sale_explain").Unique().Field("spu_id"),
 	}
 }

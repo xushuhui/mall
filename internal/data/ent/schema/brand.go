@@ -2,6 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -18,5 +19,10 @@ func (Brand) Fields() []ent.Field {
 func (Brand) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
+	}
+}
+func (Brand) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("spu", Spu.Type),
 	}
 }

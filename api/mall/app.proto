@@ -64,7 +64,7 @@ service App {
 
 message BannerByIdRequest { int64 id = 1; }
 message BannerByNameRequest { string name = 1; }
-message ThemeByNamesRequest { repeated string names = 1; }
+message ThemeByNamesRequest { string names = 1; }
 message ThemeWithSpuRequest { string name = 1; }
 message ActivityByNameRequest { string name = 1; }
 message ActivityWithCouponRequest { string name = 1; }
@@ -111,11 +111,11 @@ message Theme {
   string description = 3;
   string name = 4;
   string entrance_img = 5;
-  string extend = 6;
+
   string internal_top_img = 7;
   string title_img = 8;
   string tpl_name = 9;
-  bool online = 10;
+  int32 online = 10;
 }
 message ThemeSpu {
   int64 id = 1;
@@ -123,11 +123,11 @@ message ThemeSpu {
   string description = 3;
   string name = 4;
   string entrance_img = 5;
-  string extend = 6;
+
   string internal_top_img = 7;
   string title_img = 8;
   string tpl_name = 9;
-  bool online = 10;
+  int32 online = 10;
   repeated Spu spu_list = 11;
 }
 

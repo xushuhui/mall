@@ -25,6 +25,12 @@ service User{
           body : "*"
         };
       }
+      rpc Charge(ChargeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+          post : "/charge"
+          body : "*"
+        };
+      }
 }
 message GenerateTokenRequest{
   string account=1;
@@ -41,4 +47,8 @@ message VerifyTokenReply{
 }
 message GenerateTokenReply{
     string token = 1;
+}
+message ChargeRequest{
+    int64 amount = 2;
+    int32 payWay=1;
 }

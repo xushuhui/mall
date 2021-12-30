@@ -2,8 +2,6 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
@@ -12,14 +10,10 @@ type Refund struct {
 	ent.Schema
 }
 
-func (Refund) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "refund"},
-	}
-}
 func (Refund) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("refund_no").Comment(""),
+		field.String("transaction_id").Comment("支付平台流水号"),
 		field.Int64("user_id").Optional().Comment("user表外键"),
 		field.String("reason").Comment(""),
 		field.Int64("order_id").Optional(),
