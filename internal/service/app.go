@@ -144,7 +144,21 @@ func (s *AppService) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuR
 	return
 }
 func (s *AppService) GetActivityByName(ctx context.Context, in *mall.ActivityByNameRequest) (out *mall.Activity, err error) {
-	return
+
+	rv, err := s.au.GetActivityByName(ctx, in.Name)
+	if err != nil {
+		return
+	}
+
+	return &mall.Activity{
+		Id:          rv.Id,
+		Title:       rv.Title,
+		EntranceImg: rv.EntranceImg,
+		Online:      rv.Online,
+		Remark:      rv.Remark,
+		StartTime:   rv.StartTime,
+		EndTime:     rv.EndTime,
+	}, nil
 }
 func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *mall.ActivityWithCouponRequest) (out *mall.ActivityCoupon, err error) {
 	return

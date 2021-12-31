@@ -1044,7 +1044,7 @@ type Activity struct {
 	unknownFields protoimpl.UnknownFields
 
 	Id          uint32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Title       string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Title       string `protobuf:"bytes,2,opt,name=Title,proto3" json:"title,omitempty"`
 	EntranceImg string `protobuf:"bytes,3,opt,name=entrance_img,json=entranceImg,proto3" json:"entrance_img,omitempty"`
 	Online      bool   `protobuf:"varint,4,opt,name=online,proto3" json:"online,omitempty"`
 	Remark      string `protobuf:"bytes,5,opt,name=remark,proto3" json:"remark,omitempty"`
