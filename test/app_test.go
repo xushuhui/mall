@@ -23,6 +23,16 @@ func TestGetBannerById(t *testing.T) {
 	assert.Equal(t, reply.Id, int64(1))
 
 }
+func TestGetBannerByName(t *testing.T) {
+
+	reply, err := appClient.GetBannerByName(context.Background(), &mall.BannerByNameRequest{Name: "b-1"})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.Equal(t, reply.Name, "b-1")
+
+}
 func TestMain(m *testing.M) {
 	var err error
 	conn, err := transhttp.NewClient(
