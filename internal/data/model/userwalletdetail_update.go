@@ -60,14 +60,14 @@ func (uwdu *UserWalletDetailUpdate) SetDescription(s string) *UserWalletDetailUp
 }
 
 // SetOp sets the "op" field.
-func (uwdu *UserWalletDetailUpdate) SetOp(i int8) *UserWalletDetailUpdate {
+func (uwdu *UserWalletDetailUpdate) SetOp(i int) *UserWalletDetailUpdate {
 	uwdu.mutation.ResetOp()
 	uwdu.mutation.SetOp(i)
 	return uwdu
 }
 
 // SetNillableOp sets the "op" field if the given value is not nil.
-func (uwdu *UserWalletDetailUpdate) SetNillableOp(i *int8) *UserWalletDetailUpdate {
+func (uwdu *UserWalletDetailUpdate) SetNillableOp(i *int) *UserWalletDetailUpdate {
 	if i != nil {
 		uwdu.SetOp(*i)
 	}
@@ -75,7 +75,7 @@ func (uwdu *UserWalletDetailUpdate) SetNillableOp(i *int8) *UserWalletDetailUpda
 }
 
 // AddOp adds i to the "op" field.
-func (uwdu *UserWalletDetailUpdate) AddOp(i int8) *UserWalletDetailUpdate {
+func (uwdu *UserWalletDetailUpdate) AddOp(i int) *UserWalletDetailUpdate {
 	uwdu.mutation.AddOp(i)
 	return uwdu
 }
@@ -107,14 +107,14 @@ func (uwdu *UserWalletDetailUpdate) AddValue(i int) *UserWalletDetailUpdate {
 }
 
 // SetType sets the "type" field.
-func (uwdu *UserWalletDetailUpdate) SetType(i int8) *UserWalletDetailUpdate {
+func (uwdu *UserWalletDetailUpdate) SetType(i int) *UserWalletDetailUpdate {
 	uwdu.mutation.ResetType()
 	uwdu.mutation.SetType(i)
 	return uwdu
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (uwdu *UserWalletDetailUpdate) SetNillableType(i *int8) *UserWalletDetailUpdate {
+func (uwdu *UserWalletDetailUpdate) SetNillableType(i *int) *UserWalletDetailUpdate {
 	if i != nil {
 		uwdu.SetType(*i)
 	}
@@ -122,7 +122,7 @@ func (uwdu *UserWalletDetailUpdate) SetNillableType(i *int8) *UserWalletDetailUp
 }
 
 // AddType adds i to the "type" field.
-func (uwdu *UserWalletDetailUpdate) AddType(i int8) *UserWalletDetailUpdate {
+func (uwdu *UserWalletDetailUpdate) AddType(i int) *UserWalletDetailUpdate {
 	uwdu.mutation.AddType(i)
 	return uwdu
 }
@@ -242,14 +242,14 @@ func (uwdu *UserWalletDetailUpdate) sqlSave(ctx context.Context) (n int, err err
 	}
 	if value, ok := uwdu.mutation.GetOp(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldOp,
 		})
 	}
 	if value, ok := uwdu.mutation.AddedOp(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldOp,
 		})
@@ -284,14 +284,14 @@ func (uwdu *UserWalletDetailUpdate) sqlSave(ctx context.Context) (n int, err err
 	}
 	if value, ok := uwdu.mutation.GetType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldType,
 		})
 	}
 	if value, ok := uwdu.mutation.AddedType(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldType,
 		})
@@ -348,14 +348,14 @@ func (uwduo *UserWalletDetailUpdateOne) SetDescription(s string) *UserWalletDeta
 }
 
 // SetOp sets the "op" field.
-func (uwduo *UserWalletDetailUpdateOne) SetOp(i int8) *UserWalletDetailUpdateOne {
+func (uwduo *UserWalletDetailUpdateOne) SetOp(i int) *UserWalletDetailUpdateOne {
 	uwduo.mutation.ResetOp()
 	uwduo.mutation.SetOp(i)
 	return uwduo
 }
 
 // SetNillableOp sets the "op" field if the given value is not nil.
-func (uwduo *UserWalletDetailUpdateOne) SetNillableOp(i *int8) *UserWalletDetailUpdateOne {
+func (uwduo *UserWalletDetailUpdateOne) SetNillableOp(i *int) *UserWalletDetailUpdateOne {
 	if i != nil {
 		uwduo.SetOp(*i)
 	}
@@ -363,7 +363,7 @@ func (uwduo *UserWalletDetailUpdateOne) SetNillableOp(i *int8) *UserWalletDetail
 }
 
 // AddOp adds i to the "op" field.
-func (uwduo *UserWalletDetailUpdateOne) AddOp(i int8) *UserWalletDetailUpdateOne {
+func (uwduo *UserWalletDetailUpdateOne) AddOp(i int) *UserWalletDetailUpdateOne {
 	uwduo.mutation.AddOp(i)
 	return uwduo
 }
@@ -395,14 +395,14 @@ func (uwduo *UserWalletDetailUpdateOne) AddValue(i int) *UserWalletDetailUpdateO
 }
 
 // SetType sets the "type" field.
-func (uwduo *UserWalletDetailUpdateOne) SetType(i int8) *UserWalletDetailUpdateOne {
+func (uwduo *UserWalletDetailUpdateOne) SetType(i int) *UserWalletDetailUpdateOne {
 	uwduo.mutation.ResetType()
 	uwduo.mutation.SetType(i)
 	return uwduo
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (uwduo *UserWalletDetailUpdateOne) SetNillableType(i *int8) *UserWalletDetailUpdateOne {
+func (uwduo *UserWalletDetailUpdateOne) SetNillableType(i *int) *UserWalletDetailUpdateOne {
 	if i != nil {
 		uwduo.SetType(*i)
 	}
@@ -410,7 +410,7 @@ func (uwduo *UserWalletDetailUpdateOne) SetNillableType(i *int8) *UserWalletDeta
 }
 
 // AddType adds i to the "type" field.
-func (uwduo *UserWalletDetailUpdateOne) AddType(i int8) *UserWalletDetailUpdateOne {
+func (uwduo *UserWalletDetailUpdateOne) AddType(i int) *UserWalletDetailUpdateOne {
 	uwduo.mutation.AddType(i)
 	return uwduo
 }
@@ -554,14 +554,14 @@ func (uwduo *UserWalletDetailUpdateOne) sqlSave(ctx context.Context) (_node *Use
 	}
 	if value, ok := uwduo.mutation.GetOp(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldOp,
 		})
 	}
 	if value, ok := uwduo.mutation.AddedOp(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldOp,
 		})
@@ -596,14 +596,14 @@ func (uwduo *UserWalletDetailUpdateOne) sqlSave(ctx context.Context) (_node *Use
 	}
 	if value, ok := uwduo.mutation.GetType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldType,
 		})
 	}
 	if value, ok := uwduo.mutation.AddedType(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldType,
 		})

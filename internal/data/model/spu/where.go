@@ -143,7 +143,7 @@ func RootCategoryID(v int64) predicate.Spu {
 }
 
 // Online applies equality check predicate on the "online" field. It's identical to OnlineEQ.
-func Online(v int8) predicate.Spu {
+func Online(v int) predicate.Spu {
 	return predicate.Spu(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOnline), v))
 	})
@@ -829,21 +829,21 @@ func RootCategoryIDLTE(v int64) predicate.Spu {
 }
 
 // OnlineEQ applies the EQ predicate on the "online" field.
-func OnlineEQ(v int8) predicate.Spu {
+func OnlineEQ(v int) predicate.Spu {
 	return predicate.Spu(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineNEQ applies the NEQ predicate on the "online" field.
-func OnlineNEQ(v int8) predicate.Spu {
+func OnlineNEQ(v int) predicate.Spu {
 	return predicate.Spu(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineIn applies the In predicate on the "online" field.
-func OnlineIn(vs ...int8) predicate.Spu {
+func OnlineIn(vs ...int) predicate.Spu {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -860,7 +860,7 @@ func OnlineIn(vs ...int8) predicate.Spu {
 }
 
 // OnlineNotIn applies the NotIn predicate on the "online" field.
-func OnlineNotIn(vs ...int8) predicate.Spu {
+func OnlineNotIn(vs ...int) predicate.Spu {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -877,28 +877,28 @@ func OnlineNotIn(vs ...int8) predicate.Spu {
 }
 
 // OnlineGT applies the GT predicate on the "online" field.
-func OnlineGT(v int8) predicate.Spu {
+func OnlineGT(v int) predicate.Spu {
 	return predicate.Spu(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineGTE applies the GTE predicate on the "online" field.
-func OnlineGTE(v int8) predicate.Spu {
+func OnlineGTE(v int) predicate.Spu {
 	return predicate.Spu(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineLT applies the LT predicate on the "online" field.
-func OnlineLT(v int8) predicate.Spu {
+func OnlineLT(v int) predicate.Spu {
 	return predicate.Spu(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineLTE applies the LTE predicate on the "online" field.
-func OnlineLTE(v int8) predicate.Spu {
+func OnlineLTE(v int) predicate.Spu {
 	return predicate.Spu(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldOnline), v))
 	})

@@ -157,7 +157,7 @@ func OrderSubID(v int64) predicate.Refund {
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int8) predicate.Refund {
+func Status(v int) predicate.Refund {
 	return predicate.Refund(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
@@ -981,21 +981,21 @@ func OrderSubIDNotNil() predicate.Refund {
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int8) predicate.Refund {
+func StatusEQ(v int) predicate.Refund {
 	return predicate.Refund(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int8) predicate.Refund {
+func StatusNEQ(v int) predicate.Refund {
 	return predicate.Refund(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStatus), v))
 	})
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int8) predicate.Refund {
+func StatusIn(vs ...int) predicate.Refund {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1012,7 +1012,7 @@ func StatusIn(vs ...int8) predicate.Refund {
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int8) predicate.Refund {
+func StatusNotIn(vs ...int) predicate.Refund {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1029,28 +1029,28 @@ func StatusNotIn(vs ...int8) predicate.Refund {
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int8) predicate.Refund {
+func StatusGT(v int) predicate.Refund {
 	return predicate.Refund(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldStatus), v))
 	})
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int8) predicate.Refund {
+func StatusGTE(v int) predicate.Refund {
 	return predicate.Refund(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldStatus), v))
 	})
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int8) predicate.Refund {
+func StatusLT(v int) predicate.Refund {
 	return predicate.Refund(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldStatus), v))
 	})
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int8) predicate.Refund {
+func StatusLTE(v int) predicate.Refund {
 	return predicate.Refund(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldStatus), v))
 	})

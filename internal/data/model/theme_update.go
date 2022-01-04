@@ -103,14 +103,14 @@ func (tu *ThemeUpdate) SetTitleImg(s string) *ThemeUpdate {
 }
 
 // SetOnline sets the "online" field.
-func (tu *ThemeUpdate) SetOnline(i int8) *ThemeUpdate {
+func (tu *ThemeUpdate) SetOnline(i int) *ThemeUpdate {
 	tu.mutation.ResetOnline()
 	tu.mutation.SetOnline(i)
 	return tu
 }
 
 // AddOnline adds i to the "online" field.
-func (tu *ThemeUpdate) AddOnline(i int8) *ThemeUpdate {
+func (tu *ThemeUpdate) AddOnline(i int) *ThemeUpdate {
 	tu.mutation.AddOnline(i)
 	return tu
 }
@@ -315,14 +315,14 @@ func (tu *ThemeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tu.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: theme.FieldOnline,
 		})
 	}
 	if value, ok := tu.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: theme.FieldOnline,
 		})
@@ -475,14 +475,14 @@ func (tuo *ThemeUpdateOne) SetTitleImg(s string) *ThemeUpdateOne {
 }
 
 // SetOnline sets the "online" field.
-func (tuo *ThemeUpdateOne) SetOnline(i int8) *ThemeUpdateOne {
+func (tuo *ThemeUpdateOne) SetOnline(i int) *ThemeUpdateOne {
 	tuo.mutation.ResetOnline()
 	tuo.mutation.SetOnline(i)
 	return tuo
 }
 
 // AddOnline adds i to the "online" field.
-func (tuo *ThemeUpdateOne) AddOnline(i int8) *ThemeUpdateOne {
+func (tuo *ThemeUpdateOne) AddOnline(i int) *ThemeUpdateOne {
 	tuo.mutation.AddOnline(i)
 	return tuo
 }
@@ -711,14 +711,14 @@ func (tuo *ThemeUpdateOne) sqlSave(ctx context.Context) (_node *Theme, err error
 	}
 	if value, ok := tuo.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: theme.FieldOnline,
 		})
 	}
 	if value, ok := tuo.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: theme.FieldOnline,
 		})

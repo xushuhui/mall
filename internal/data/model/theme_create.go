@@ -112,7 +112,7 @@ func (tc *ThemeCreate) SetTitleImg(s string) *ThemeCreate {
 }
 
 // SetOnline sets the "online" field.
-func (tc *ThemeCreate) SetOnline(i int8) *ThemeCreate {
+func (tc *ThemeCreate) SetOnline(i int) *ThemeCreate {
 	tc.mutation.SetOnline(i)
 	return tc
 }
@@ -365,7 +365,7 @@ func (tc *ThemeCreate) createSpec() (*Theme, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tc.mutation.Online(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: theme.FieldOnline,
 		})

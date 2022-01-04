@@ -154,7 +154,7 @@ func (s *AppService) GetActivityByName(ctx context.Context, in *mall.ActivityByN
 		Id:          rv.Id,
 		Title:       rv.Title,
 		EntranceImg: rv.EntranceImg,
-		Online:      rv.Online,
+		Online:      int32(rv.Online),
 		Remark:      rv.Remark,
 		StartTime:   rv.StartTime,
 		EndTime:     rv.EndTime,

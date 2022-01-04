@@ -121,7 +121,7 @@ func Description(v string) predicate.UserWalletDetail {
 }
 
 // Op applies equality check predicate on the "op" field. It's identical to OpEQ.
-func Op(v int8) predicate.UserWalletDetail {
+func Op(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOp), v))
 	})
@@ -142,7 +142,7 @@ func Value(v int) predicate.UserWalletDetail {
 }
 
 // Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
-func Type(v int8) predicate.UserWalletDetail {
+func Type(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldType), v))
 	})
@@ -502,21 +502,21 @@ func DescriptionContainsFold(v string) predicate.UserWalletDetail {
 }
 
 // OpEQ applies the EQ predicate on the "op" field.
-func OpEQ(v int8) predicate.UserWalletDetail {
+func OpEQ(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOp), v))
 	})
 }
 
 // OpNEQ applies the NEQ predicate on the "op" field.
-func OpNEQ(v int8) predicate.UserWalletDetail {
+func OpNEQ(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldOp), v))
 	})
 }
 
 // OpIn applies the In predicate on the "op" field.
-func OpIn(vs ...int8) predicate.UserWalletDetail {
+func OpIn(vs ...int) predicate.UserWalletDetail {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -533,7 +533,7 @@ func OpIn(vs ...int8) predicate.UserWalletDetail {
 }
 
 // OpNotIn applies the NotIn predicate on the "op" field.
-func OpNotIn(vs ...int8) predicate.UserWalletDetail {
+func OpNotIn(vs ...int) predicate.UserWalletDetail {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -550,28 +550,28 @@ func OpNotIn(vs ...int8) predicate.UserWalletDetail {
 }
 
 // OpGT applies the GT predicate on the "op" field.
-func OpGT(v int8) predicate.UserWalletDetail {
+func OpGT(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldOp), v))
 	})
 }
 
 // OpGTE applies the GTE predicate on the "op" field.
-func OpGTE(v int8) predicate.UserWalletDetail {
+func OpGTE(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldOp), v))
 	})
 }
 
 // OpLT applies the LT predicate on the "op" field.
-func OpLT(v int8) predicate.UserWalletDetail {
+func OpLT(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldOp), v))
 	})
 }
 
 // OpLTE applies the LTE predicate on the "op" field.
-func OpLTE(v int8) predicate.UserWalletDetail {
+func OpLTE(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldOp), v))
 	})
@@ -730,21 +730,21 @@ func ValueLTE(v int) predicate.UserWalletDetail {
 }
 
 // TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v int8) predicate.UserWalletDetail {
+func TypeEQ(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldType), v))
 	})
 }
 
 // TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v int8) predicate.UserWalletDetail {
+func TypeNEQ(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldType), v))
 	})
 }
 
 // TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...int8) predicate.UserWalletDetail {
+func TypeIn(vs ...int) predicate.UserWalletDetail {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -761,7 +761,7 @@ func TypeIn(vs ...int8) predicate.UserWalletDetail {
 }
 
 // TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...int8) predicate.UserWalletDetail {
+func TypeNotIn(vs ...int) predicate.UserWalletDetail {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -778,28 +778,28 @@ func TypeNotIn(vs ...int8) predicate.UserWalletDetail {
 }
 
 // TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v int8) predicate.UserWalletDetail {
+func TypeGT(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldType), v))
 	})
 }
 
 // TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v int8) predicate.UserWalletDetail {
+func TypeGTE(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldType), v))
 	})
 }
 
 // TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v int8) predicate.UserWalletDetail {
+func TypeLT(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldType), v))
 	})
 }
 
 // TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v int8) predicate.UserWalletDetail {
+func TypeLTE(v int) predicate.UserWalletDetail {
 	return predicate.UserWalletDetail(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldType), v))
 	})

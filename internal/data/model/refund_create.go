@@ -124,7 +124,7 @@ func (rc *RefundCreate) SetNillableOrderSubID(i *int64) *RefundCreate {
 }
 
 // SetStatus sets the "status" field.
-func (rc *RefundCreate) SetStatus(i int8) *RefundCreate {
+func (rc *RefundCreate) SetStatus(i int) *RefundCreate {
 	rc.mutation.SetStatus(i)
 	return rc
 }
@@ -328,7 +328,7 @@ func (rc *RefundCreate) createSpec() (*Refund, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := rc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: refund.FieldStatus,
 		})

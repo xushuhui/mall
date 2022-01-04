@@ -6,13 +6,13 @@ import (
 )
 
 type Activity struct {
-	Id             uint32
+	Id             int64
 	Title          string
 	Description    string
 	StartTime      string
 	EndTime        string
 	Remark         string
-	Online         bool
+	Online         int
 	EntranceImg    string
 	InternalTopImg string
 }

@@ -67,14 +67,14 @@ func (cu *CategoryUpdate) SetDescription(s string) *CategoryUpdate {
 }
 
 // SetIsRoot sets the "is_root" field.
-func (cu *CategoryUpdate) SetIsRoot(i int8) *CategoryUpdate {
+func (cu *CategoryUpdate) SetIsRoot(i int) *CategoryUpdate {
 	cu.mutation.ResetIsRoot()
 	cu.mutation.SetIsRoot(i)
 	return cu
 }
 
 // AddIsRoot adds i to the "is_root" field.
-func (cu *CategoryUpdate) AddIsRoot(i int8) *CategoryUpdate {
+func (cu *CategoryUpdate) AddIsRoot(i int) *CategoryUpdate {
 	cu.mutation.AddIsRoot(i)
 	return cu
 }
@@ -349,14 +349,14 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.IsRoot(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: category.FieldIsRoot,
 		})
 	}
 	if value, ok := cu.mutation.AddedIsRoot(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: category.FieldIsRoot,
 		})
@@ -611,14 +611,14 @@ func (cuo *CategoryUpdateOne) SetDescription(s string) *CategoryUpdateOne {
 }
 
 // SetIsRoot sets the "is_root" field.
-func (cuo *CategoryUpdateOne) SetIsRoot(i int8) *CategoryUpdateOne {
+func (cuo *CategoryUpdateOne) SetIsRoot(i int) *CategoryUpdateOne {
 	cuo.mutation.ResetIsRoot()
 	cuo.mutation.SetIsRoot(i)
 	return cuo
 }
 
 // AddIsRoot adds i to the "is_root" field.
-func (cuo *CategoryUpdateOne) AddIsRoot(i int8) *CategoryUpdateOne {
+func (cuo *CategoryUpdateOne) AddIsRoot(i int) *CategoryUpdateOne {
 	cuo.mutation.AddIsRoot(i)
 	return cuo
 }
@@ -917,14 +917,14 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 	}
 	if value, ok := cuo.mutation.IsRoot(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: category.FieldIsRoot,
 		})
 	}
 	if value, ok := cuo.mutation.AddedIsRoot(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: category.FieldIsRoot,
 		})

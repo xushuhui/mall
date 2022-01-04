@@ -115,7 +115,7 @@ func DeleteTime(v time.Time) predicate.SaleExplain {
 }
 
 // Fixed applies equality check predicate on the "fixed" field. It's identical to FixedEQ.
-func Fixed(v int8) predicate.SaleExplain {
+func Fixed(v int) predicate.SaleExplain {
 	return predicate.SaleExplain(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFixed), v))
 	})
@@ -392,21 +392,21 @@ func DeleteTimeNotNil() predicate.SaleExplain {
 }
 
 // FixedEQ applies the EQ predicate on the "fixed" field.
-func FixedEQ(v int8) predicate.SaleExplain {
+func FixedEQ(v int) predicate.SaleExplain {
 	return predicate.SaleExplain(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFixed), v))
 	})
 }
 
 // FixedNEQ applies the NEQ predicate on the "fixed" field.
-func FixedNEQ(v int8) predicate.SaleExplain {
+func FixedNEQ(v int) predicate.SaleExplain {
 	return predicate.SaleExplain(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldFixed), v))
 	})
 }
 
 // FixedIn applies the In predicate on the "fixed" field.
-func FixedIn(vs ...int8) predicate.SaleExplain {
+func FixedIn(vs ...int) predicate.SaleExplain {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -423,7 +423,7 @@ func FixedIn(vs ...int8) predicate.SaleExplain {
 }
 
 // FixedNotIn applies the NotIn predicate on the "fixed" field.
-func FixedNotIn(vs ...int8) predicate.SaleExplain {
+func FixedNotIn(vs ...int) predicate.SaleExplain {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -440,28 +440,28 @@ func FixedNotIn(vs ...int8) predicate.SaleExplain {
 }
 
 // FixedGT applies the GT predicate on the "fixed" field.
-func FixedGT(v int8) predicate.SaleExplain {
+func FixedGT(v int) predicate.SaleExplain {
 	return predicate.SaleExplain(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldFixed), v))
 	})
 }
 
 // FixedGTE applies the GTE predicate on the "fixed" field.
-func FixedGTE(v int8) predicate.SaleExplain {
+func FixedGTE(v int) predicate.SaleExplain {
 	return predicate.SaleExplain(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldFixed), v))
 	})
 }
 
 // FixedLT applies the LT predicate on the "fixed" field.
-func FixedLT(v int8) predicate.SaleExplain {
+func FixedLT(v int) predicate.SaleExplain {
 	return predicate.SaleExplain(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldFixed), v))
 	})
 }
 
 // FixedLTE applies the LTE predicate on the "fixed" field.
-func FixedLTE(v int8) predicate.SaleExplain {
+func FixedLTE(v int) predicate.SaleExplain {
 	return predicate.SaleExplain(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldFixed), v))
 	})

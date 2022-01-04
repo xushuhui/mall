@@ -80,14 +80,14 @@ func (ucu *UserCouponUpdate) AddCouponID(i int64) *UserCouponUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (ucu *UserCouponUpdate) SetStatus(i int8) *UserCouponUpdate {
+func (ucu *UserCouponUpdate) SetStatus(i int) *UserCouponUpdate {
 	ucu.mutation.ResetStatus()
 	ucu.mutation.SetStatus(i)
 	return ucu
 }
 
 // AddStatus adds i to the "status" field.
-func (ucu *UserCouponUpdate) AddStatus(i int8) *UserCouponUpdate {
+func (ucu *UserCouponUpdate) AddStatus(i int) *UserCouponUpdate {
 	ucu.mutation.AddStatus(i)
 	return ucu
 }
@@ -241,14 +241,14 @@ func (ucu *UserCouponUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ucu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: usercoupon.FieldStatus,
 		})
 	}
 	if value, ok := ucu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: usercoupon.FieldStatus,
 		})
@@ -339,14 +339,14 @@ func (ucuo *UserCouponUpdateOne) AddCouponID(i int64) *UserCouponUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (ucuo *UserCouponUpdateOne) SetStatus(i int8) *UserCouponUpdateOne {
+func (ucuo *UserCouponUpdateOne) SetStatus(i int) *UserCouponUpdateOne {
 	ucuo.mutation.ResetStatus()
 	ucuo.mutation.SetStatus(i)
 	return ucuo
 }
 
 // AddStatus adds i to the "status" field.
-func (ucuo *UserCouponUpdateOne) AddStatus(i int8) *UserCouponUpdateOne {
+func (ucuo *UserCouponUpdateOne) AddStatus(i int) *UserCouponUpdateOne {
 	ucuo.mutation.AddStatus(i)
 	return ucuo
 }
@@ -524,14 +524,14 @@ func (ucuo *UserCouponUpdateOne) sqlSave(ctx context.Context) (_node *UserCoupon
 	}
 	if value, ok := ucuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: usercoupon.FieldStatus,
 		})
 	}
 	if value, ok := ucuo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: usercoupon.FieldStatus,
 		})

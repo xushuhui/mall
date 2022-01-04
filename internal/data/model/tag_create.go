@@ -76,13 +76,13 @@ func (tc *TagCreate) SetDescription(s string) *TagCreate {
 }
 
 // SetHighlight sets the "highlight" field.
-func (tc *TagCreate) SetHighlight(i int8) *TagCreate {
+func (tc *TagCreate) SetHighlight(i int) *TagCreate {
 	tc.mutation.SetHighlight(i)
 	return tc
 }
 
 // SetType sets the "type" field.
-func (tc *TagCreate) SetType(i int8) *TagCreate {
+func (tc *TagCreate) SetType(i int) *TagCreate {
 	tc.mutation.SetType(i)
 	return tc
 }
@@ -272,7 +272,7 @@ func (tc *TagCreate) createSpec() (*Tag, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tc.mutation.Highlight(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldHighlight,
 		})
@@ -280,7 +280,7 @@ func (tc *TagCreate) createSpec() (*Tag, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tc.mutation.GetType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldType,
 		})

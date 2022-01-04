@@ -67,14 +67,14 @@ func (sku *SpecKeyUpdate) SetUnit(s string) *SpecKeyUpdate {
 }
 
 // SetStandard sets the "standard" field.
-func (sku *SpecKeyUpdate) SetStandard(i int8) *SpecKeyUpdate {
+func (sku *SpecKeyUpdate) SetStandard(i int) *SpecKeyUpdate {
 	sku.mutation.ResetStandard()
 	sku.mutation.SetStandard(i)
 	return sku
 }
 
 // AddStandard adds i to the "standard" field.
-func (sku *SpecKeyUpdate) AddStandard(i int8) *SpecKeyUpdate {
+func (sku *SpecKeyUpdate) AddStandard(i int) *SpecKeyUpdate {
 	sku.mutation.AddStandard(i)
 	return sku
 }
@@ -243,14 +243,14 @@ func (sku *SpecKeyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sku.mutation.Standard(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: speckey.FieldStandard,
 		})
 	}
 	if value, ok := sku.mutation.AddedStandard(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: speckey.FieldStandard,
 		})
@@ -374,14 +374,14 @@ func (skuo *SpecKeyUpdateOne) SetUnit(s string) *SpecKeyUpdateOne {
 }
 
 // SetStandard sets the "standard" field.
-func (skuo *SpecKeyUpdateOne) SetStandard(i int8) *SpecKeyUpdateOne {
+func (skuo *SpecKeyUpdateOne) SetStandard(i int) *SpecKeyUpdateOne {
 	skuo.mutation.ResetStandard()
 	skuo.mutation.SetStandard(i)
 	return skuo
 }
 
 // AddStandard adds i to the "standard" field.
-func (skuo *SpecKeyUpdateOne) AddStandard(i int8) *SpecKeyUpdateOne {
+func (skuo *SpecKeyUpdateOne) AddStandard(i int) *SpecKeyUpdateOne {
 	skuo.mutation.AddStandard(i)
 	return skuo
 }
@@ -574,14 +574,14 @@ func (skuo *SpecKeyUpdateOne) sqlSave(ctx context.Context) (_node *SpecKey, err 
 	}
 	if value, ok := skuo.mutation.Standard(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: speckey.FieldStandard,
 		})
 	}
 	if value, ok := skuo.mutation.AddedStandard(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: speckey.FieldStandard,
 		})

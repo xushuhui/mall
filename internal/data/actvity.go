@@ -34,13 +34,13 @@ func (r *activityRepo) GetActivityByName(ctx context.Context, name string) (a bi
 	}
 
 	return biz.Activity{
-		Id:             uint32(po.ID),
+		Id:             po.ID,
 		Title:          po.Title,
 		Description:    po.Description,
 		StartTime:      utils.TimeBecomeString(po.StartTime),
 		EndTime:        utils.TimeBecomeString(po.EndTime),
 		Remark:         po.Remark,
-		Online:         utils.Int8Bool(po.Online),
+		Online:         po.Online,
 		EntranceImg:    po.EntranceImg,
 		InternalTopImg: po.InternalTopImg,
 	}, nil

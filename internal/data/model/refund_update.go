@@ -147,14 +147,14 @@ func (ru *RefundUpdate) ClearOrderSubID() *RefundUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (ru *RefundUpdate) SetStatus(i int8) *RefundUpdate {
+func (ru *RefundUpdate) SetStatus(i int) *RefundUpdate {
 	ru.mutation.ResetStatus()
 	ru.mutation.SetStatus(i)
 	return ru
 }
 
 // AddStatus adds i to the "status" field.
-func (ru *RefundUpdate) AddStatus(i int8) *RefundUpdate {
+func (ru *RefundUpdate) AddStatus(i int) *RefundUpdate {
 	ru.mutation.AddStatus(i)
 	return ru
 }
@@ -339,14 +339,14 @@ func (ru *RefundUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ru.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: refund.FieldStatus,
 		})
 	}
 	if value, ok := ru.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: refund.FieldStatus,
 		})
@@ -524,14 +524,14 @@ func (ruo *RefundUpdateOne) ClearOrderSubID() *RefundUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (ruo *RefundUpdateOne) SetStatus(i int8) *RefundUpdateOne {
+func (ruo *RefundUpdateOne) SetStatus(i int) *RefundUpdateOne {
 	ruo.mutation.ResetStatus()
 	ruo.mutation.SetStatus(i)
 	return ruo
 }
 
 // AddStatus adds i to the "status" field.
-func (ruo *RefundUpdateOne) AddStatus(i int8) *RefundUpdateOne {
+func (ruo *RefundUpdateOne) AddStatus(i int) *RefundUpdateOne {
 	ruo.mutation.AddStatus(i)
 	return ruo
 }
@@ -740,14 +740,14 @@ func (ruo *RefundUpdateOne) sqlSave(ctx context.Context) (_node *Refund, err err
 	}
 	if value, ok := ruo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: refund.FieldStatus,
 		})
 	}
 	if value, ok := ruo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: refund.FieldStatus,
 		})

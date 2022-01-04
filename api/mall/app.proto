@@ -148,19 +148,19 @@ message BannerItem {
   int64 bannerId = 6;
 }
 message Activity {
-  uint32 id = 1;
+  int64 id = 1;
   string title = 2;
   string entrance_img = 3;
-  bool online = 4;
+  int32 online = 4;
   string remark = 5;
   string start_time = 6;
   string end_time = 7;
 }
 message ActivityCoupon {
-  uint32 id = 1;
+  int64 id = 1;
   string title = 2;
   string entrance_img = 3;
-  bool online = 4;
+  int32 online = 4;
   string remark = 5;
   string start_time = 6;
   string end_time = 7;

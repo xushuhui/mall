@@ -28,7 +28,7 @@ type UserFavor struct {
 	SpuID int64 `json:"spu_id,omitempty"`
 	// Status holds the value of the "status" field.
 	// 1收藏 0取消收藏
-	Status int8 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -95,7 +95,7 @@ func (uf *UserFavor) assignValues(columns []string, values []interface{}) error 
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				uf.Status = int8(value.Int64)
+				uf.Status = int(value.Int64)
 			}
 		}
 	}

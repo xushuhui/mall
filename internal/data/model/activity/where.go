@@ -150,7 +150,7 @@ func Remark(v string) predicate.Activity {
 }
 
 // Online applies equality check predicate on the "online" field. It's identical to OnlineEQ.
-func Online(v int8) predicate.Activity {
+func Online(v int) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOnline), v))
 	})
@@ -905,21 +905,21 @@ func RemarkContainsFold(v string) predicate.Activity {
 }
 
 // OnlineEQ applies the EQ predicate on the "online" field.
-func OnlineEQ(v int8) predicate.Activity {
+func OnlineEQ(v int) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineNEQ applies the NEQ predicate on the "online" field.
-func OnlineNEQ(v int8) predicate.Activity {
+func OnlineNEQ(v int) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineIn applies the In predicate on the "online" field.
-func OnlineIn(vs ...int8) predicate.Activity {
+func OnlineIn(vs ...int) predicate.Activity {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -936,7 +936,7 @@ func OnlineIn(vs ...int8) predicate.Activity {
 }
 
 // OnlineNotIn applies the NotIn predicate on the "online" field.
-func OnlineNotIn(vs ...int8) predicate.Activity {
+func OnlineNotIn(vs ...int) predicate.Activity {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -953,28 +953,28 @@ func OnlineNotIn(vs ...int8) predicate.Activity {
 }
 
 // OnlineGT applies the GT predicate on the "online" field.
-func OnlineGT(v int8) predicate.Activity {
+func OnlineGT(v int) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineGTE applies the GTE predicate on the "online" field.
-func OnlineGTE(v int8) predicate.Activity {
+func OnlineGTE(v int) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineLT applies the LT predicate on the "online" field.
-func OnlineLT(v int8) predicate.Activity {
+func OnlineLT(v int) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineLTE applies the LTE predicate on the "online" field.
-func OnlineLTE(v int8) predicate.Activity {
+func OnlineLTE(v int) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldOnline), v))
 	})

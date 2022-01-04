@@ -20,7 +20,7 @@ func (UserCoupon) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("user_id").Comment(""),
 		field.Int64("coupon_id").Comment(""),
-		field.Int8("status").Comment("1:未使用，2：已使用， 3：已过期"),
+		field.Int("status").Comment("1:未使用，2：已使用， 3：已过期"),
 
 		field.Int("order_id").Comment(""),
 	}

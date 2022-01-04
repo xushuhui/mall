@@ -23,7 +23,7 @@ func (User) Fields() []ent.Field {
 		field.String("email").Comment(""),
 		field.String("password").Comment(""),
 		field.String("mobile").Comment(""),
-		field.Int8("status").Default(1).Comment(""),
+		field.Int("status").Default(1).Comment(""),
 	}
 }
 func (User) Mixin() []ent.Mixin {
@@ -33,8 +33,7 @@ func (User) Mixin() []ent.Mixin {
 }
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
-	
-		
+
 		edge.To("order", Order.Type),
 		edge.To("refund", Refund.Type),
 	}

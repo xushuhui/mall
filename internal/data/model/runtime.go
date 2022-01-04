@@ -417,7 +417,7 @@ func init() {
 	// userDescStatus is the schema descriptor for status field.
 	userDescStatus := userFields[4].Descriptor()
 	// user.DefaultStatus holds the default value on creation for the status field.
-	user.DefaultStatus = userDescStatus.Default.(int8)
+	user.DefaultStatus = userDescStatus.Default.(int)
 	usercouponMixin := schema.UserCoupon{}.Mixin()
 	usercouponMixinFields0 := usercouponMixin[0].Fields()
 	_ = usercouponMixinFields0
@@ -451,7 +451,7 @@ func init() {
 	// userfavorDescStatus is the schema descriptor for status field.
 	userfavorDescStatus := userfavorFields[2].Descriptor()
 	// userfavor.DefaultStatus holds the default value on creation for the status field.
-	userfavor.DefaultStatus = userfavorDescStatus.Default.(int8)
+	userfavor.DefaultStatus = userfavorDescStatus.Default.(int)
 	userinfoMixin := schema.UserInfo{}.Mixin()
 	userinfoMixinFields0 := userinfoMixin[0].Fields()
 	_ = userinfoMixinFields0
@@ -530,9 +530,9 @@ func init() {
 	// userwalletdetailDescOp is the schema descriptor for op field.
 	userwalletdetailDescOp := userwalletdetailFields[1].Descriptor()
 	// userwalletdetail.DefaultOp holds the default value on creation for the op field.
-	userwalletdetail.DefaultOp = userwalletdetailDescOp.Default.(int8)
+	userwalletdetail.DefaultOp = userwalletdetailDescOp.Default.(int)
 	// userwalletdetailDescType is the schema descriptor for type field.
 	userwalletdetailDescType := userwalletdetailFields[4].Descriptor()
 	// userwalletdetail.DefaultType holds the default value on creation for the type field.
-	userwalletdetail.DefaultType = userwalletdetailDescType.Default.(int8)
+	userwalletdetail.DefaultType = userwalletdetailDescType.Default.(int)
 }

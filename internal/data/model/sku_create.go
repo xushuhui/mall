@@ -76,7 +76,7 @@ func (sc *SkuCreate) SetDiscountPrice(f float64) *SkuCreate {
 }
 
 // SetOnline sets the "online" field.
-func (sc *SkuCreate) SetOnline(i int8) *SkuCreate {
+func (sc *SkuCreate) SetOnline(i int) *SkuCreate {
 	sc.mutation.SetOnline(i)
 	return sc
 }
@@ -325,7 +325,7 @@ func (sc *SkuCreate) createSpec() (*Sku, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := sc.mutation.Online(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sku.FieldOnline,
 		})

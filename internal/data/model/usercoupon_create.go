@@ -75,7 +75,7 @@ func (ucc *UserCouponCreate) SetCouponID(i int64) *UserCouponCreate {
 }
 
 // SetStatus sets the "status" field.
-func (ucc *UserCouponCreate) SetStatus(i int8) *UserCouponCreate {
+func (ucc *UserCouponCreate) SetStatus(i int) *UserCouponCreate {
 	ucc.mutation.SetStatus(i)
 	return ucc
 }
@@ -256,7 +256,7 @@ func (ucc *UserCouponCreate) createSpec() (*UserCoupon, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := ucc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: usercoupon.FieldStatus,
 		})

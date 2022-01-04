@@ -26,7 +26,7 @@ type UserPoint struct {
 	// Value holds the value of the "value" field.
 	Value int `json:"value,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -87,7 +87,7 @@ func (up *UserPoint) assignValues(columns []string, values []interface{}) error 
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				up.Status = int8(value.Int64)
+				up.Status = int(value.Int64)
 			}
 		}
 	}

@@ -14,7 +14,7 @@ func (SpecKey) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").Comment(""),
 		field.String("unit").Comment(""),
-		field.Int8("standard").Comment(""),
+		field.Int("standard").Comment(""),
 
 		field.String("description").Comment(""),
 	}

@@ -192,7 +192,7 @@ func Remark(v string) predicate.Coupon {
 }
 
 // WholeStore applies equality check predicate on the "whole_store" field. It's identical to WholeStoreEQ.
-func WholeStore(v int8) predicate.Coupon {
+func WholeStore(v int) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWholeStore), v))
 	})
@@ -1396,21 +1396,21 @@ func RemarkContainsFold(v string) predicate.Coupon {
 }
 
 // WholeStoreEQ applies the EQ predicate on the "whole_store" field.
-func WholeStoreEQ(v int8) predicate.Coupon {
+func WholeStoreEQ(v int) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWholeStore), v))
 	})
 }
 
 // WholeStoreNEQ applies the NEQ predicate on the "whole_store" field.
-func WholeStoreNEQ(v int8) predicate.Coupon {
+func WholeStoreNEQ(v int) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldWholeStore), v))
 	})
 }
 
 // WholeStoreIn applies the In predicate on the "whole_store" field.
-func WholeStoreIn(vs ...int8) predicate.Coupon {
+func WholeStoreIn(vs ...int) predicate.Coupon {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1427,7 +1427,7 @@ func WholeStoreIn(vs ...int8) predicate.Coupon {
 }
 
 // WholeStoreNotIn applies the NotIn predicate on the "whole_store" field.
-func WholeStoreNotIn(vs ...int8) predicate.Coupon {
+func WholeStoreNotIn(vs ...int) predicate.Coupon {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1444,28 +1444,28 @@ func WholeStoreNotIn(vs ...int8) predicate.Coupon {
 }
 
 // WholeStoreGT applies the GT predicate on the "whole_store" field.
-func WholeStoreGT(v int8) predicate.Coupon {
+func WholeStoreGT(v int) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldWholeStore), v))
 	})
 }
 
 // WholeStoreGTE applies the GTE predicate on the "whole_store" field.
-func WholeStoreGTE(v int8) predicate.Coupon {
+func WholeStoreGTE(v int) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldWholeStore), v))
 	})
 }
 
 // WholeStoreLT applies the LT predicate on the "whole_store" field.
-func WholeStoreLT(v int8) predicate.Coupon {
+func WholeStoreLT(v int) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldWholeStore), v))
 	})
 }
 
 // WholeStoreLTE applies the LTE predicate on the "whole_store" field.
-func WholeStoreLTE(v int8) predicate.Coupon {
+func WholeStoreLTE(v int) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldWholeStore), v))
 	})

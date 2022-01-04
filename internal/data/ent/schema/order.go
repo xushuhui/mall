@@ -19,8 +19,7 @@ func (Order) Fields() []ent.Field {
 		field.Int("total_count").Comment(""),
 
 		field.Float("final_total_price").Comment(""),
-		field.Int8("status").Comment(""),
-
+		field.Int("status").Comment(""),
 	}
 }
 func (Order) Mixin() []ent.Mixin {

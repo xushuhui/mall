@@ -67,27 +67,27 @@ func (tu *TagUpdate) SetDescription(s string) *TagUpdate {
 }
 
 // SetHighlight sets the "highlight" field.
-func (tu *TagUpdate) SetHighlight(i int8) *TagUpdate {
+func (tu *TagUpdate) SetHighlight(i int) *TagUpdate {
 	tu.mutation.ResetHighlight()
 	tu.mutation.SetHighlight(i)
 	return tu
 }
 
 // AddHighlight adds i to the "highlight" field.
-func (tu *TagUpdate) AddHighlight(i int8) *TagUpdate {
+func (tu *TagUpdate) AddHighlight(i int) *TagUpdate {
 	tu.mutation.AddHighlight(i)
 	return tu
 }
 
 // SetType sets the "type" field.
-func (tu *TagUpdate) SetType(i int8) *TagUpdate {
+func (tu *TagUpdate) SetType(i int) *TagUpdate {
 	tu.mutation.ResetType()
 	tu.mutation.SetType(i)
 	return tu
 }
 
 // AddType adds i to the "type" field.
-func (tu *TagUpdate) AddType(i int8) *TagUpdate {
+func (tu *TagUpdate) AddType(i int) *TagUpdate {
 	tu.mutation.AddType(i)
 	return tu
 }
@@ -250,28 +250,28 @@ func (tu *TagUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tu.mutation.Highlight(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldHighlight,
 		})
 	}
 	if value, ok := tu.mutation.AddedHighlight(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldHighlight,
 		})
 	}
 	if value, ok := tu.mutation.GetType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldType,
 		})
 	}
 	if value, ok := tu.mutation.AddedType(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldType,
 		})
@@ -388,27 +388,27 @@ func (tuo *TagUpdateOne) SetDescription(s string) *TagUpdateOne {
 }
 
 // SetHighlight sets the "highlight" field.
-func (tuo *TagUpdateOne) SetHighlight(i int8) *TagUpdateOne {
+func (tuo *TagUpdateOne) SetHighlight(i int) *TagUpdateOne {
 	tuo.mutation.ResetHighlight()
 	tuo.mutation.SetHighlight(i)
 	return tuo
 }
 
 // AddHighlight adds i to the "highlight" field.
-func (tuo *TagUpdateOne) AddHighlight(i int8) *TagUpdateOne {
+func (tuo *TagUpdateOne) AddHighlight(i int) *TagUpdateOne {
 	tuo.mutation.AddHighlight(i)
 	return tuo
 }
 
 // SetType sets the "type" field.
-func (tuo *TagUpdateOne) SetType(i int8) *TagUpdateOne {
+func (tuo *TagUpdateOne) SetType(i int) *TagUpdateOne {
 	tuo.mutation.ResetType()
 	tuo.mutation.SetType(i)
 	return tuo
 }
 
 // AddType adds i to the "type" field.
-func (tuo *TagUpdateOne) AddType(i int8) *TagUpdateOne {
+func (tuo *TagUpdateOne) AddType(i int) *TagUpdateOne {
 	tuo.mutation.AddType(i)
 	return tuo
 }
@@ -595,28 +595,28 @@ func (tuo *TagUpdateOne) sqlSave(ctx context.Context) (_node *Tag, err error) {
 	}
 	if value, ok := tuo.mutation.Highlight(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldHighlight,
 		})
 	}
 	if value, ok := tuo.mutation.AddedHighlight(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldHighlight,
 		})
 	}
 	if value, ok := tuo.mutation.GetType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldType,
 		})
 	}
 	if value, ok := tuo.mutation.AddedType(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: tag.FieldType,
 		})

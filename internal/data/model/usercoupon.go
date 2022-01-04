@@ -28,7 +28,7 @@ type UserCoupon struct {
 	CouponID int64 `json:"coupon_id,omitempty"`
 	// Status holds the value of the "status" field.
 	// 1:未使用，2：已使用， 3：已过期
-	Status int8 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 	// OrderID holds the value of the "order_id" field.
 	OrderID int `json:"order_id,omitempty"`
 }
@@ -97,7 +97,7 @@ func (uc *UserCoupon) assignValues(columns []string, values []interface{}) error
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				uc.Status = int8(value.Int64)
+				uc.Status = int(value.Int64)
 			}
 		case usercoupon.FieldOrderID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

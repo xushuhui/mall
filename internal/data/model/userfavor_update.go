@@ -80,14 +80,14 @@ func (ufu *UserFavorUpdate) AddSpuID(i int64) *UserFavorUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (ufu *UserFavorUpdate) SetStatus(i int8) *UserFavorUpdate {
+func (ufu *UserFavorUpdate) SetStatus(i int) *UserFavorUpdate {
 	ufu.mutation.ResetStatus()
 	ufu.mutation.SetStatus(i)
 	return ufu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ufu *UserFavorUpdate) SetNillableStatus(i *int8) *UserFavorUpdate {
+func (ufu *UserFavorUpdate) SetNillableStatus(i *int) *UserFavorUpdate {
 	if i != nil {
 		ufu.SetStatus(*i)
 	}
@@ -95,7 +95,7 @@ func (ufu *UserFavorUpdate) SetNillableStatus(i *int8) *UserFavorUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (ufu *UserFavorUpdate) AddStatus(i int8) *UserFavorUpdate {
+func (ufu *UserFavorUpdate) AddStatus(i int) *UserFavorUpdate {
 	ufu.mutation.AddStatus(i)
 	return ufu
 }
@@ -236,14 +236,14 @@ func (ufu *UserFavorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ufu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userfavor.FieldStatus,
 		})
 	}
 	if value, ok := ufu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userfavor.FieldStatus,
 		})
@@ -320,14 +320,14 @@ func (ufuo *UserFavorUpdateOne) AddSpuID(i int64) *UserFavorUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (ufuo *UserFavorUpdateOne) SetStatus(i int8) *UserFavorUpdateOne {
+func (ufuo *UserFavorUpdateOne) SetStatus(i int) *UserFavorUpdateOne {
 	ufuo.mutation.ResetStatus()
 	ufuo.mutation.SetStatus(i)
 	return ufuo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ufuo *UserFavorUpdateOne) SetNillableStatus(i *int8) *UserFavorUpdateOne {
+func (ufuo *UserFavorUpdateOne) SetNillableStatus(i *int) *UserFavorUpdateOne {
 	if i != nil {
 		ufuo.SetStatus(*i)
 	}
@@ -335,7 +335,7 @@ func (ufuo *UserFavorUpdateOne) SetNillableStatus(i *int8) *UserFavorUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (ufuo *UserFavorUpdateOne) AddStatus(i int8) *UserFavorUpdateOne {
+func (ufuo *UserFavorUpdateOne) AddStatus(i int) *UserFavorUpdateOne {
 	ufuo.mutation.AddStatus(i)
 	return ufuo
 }
@@ -500,14 +500,14 @@ func (ufuo *UserFavorUpdateOne) sqlSave(ctx context.Context) (_node *UserFavor, 
 	}
 	if value, ok := ufuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userfavor.FieldStatus,
 		})
 	}
 	if value, ok := ufuo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userfavor.FieldStatus,
 		})

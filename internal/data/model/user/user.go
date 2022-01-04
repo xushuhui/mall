@@ -80,5 +80,5 @@ var (
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int8
+	DefaultStatus int
 )

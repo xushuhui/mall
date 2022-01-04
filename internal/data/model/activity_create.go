@@ -95,7 +95,7 @@ func (ac *ActivityCreate) SetRemark(s string) *ActivityCreate {
 }
 
 // SetOnline sets the "online" field.
-func (ac *ActivityCreate) SetOnline(i int8) *ActivityCreate {
+func (ac *ActivityCreate) SetOnline(i int) *ActivityCreate {
 	ac.mutation.SetOnline(i)
 	return ac
 }
@@ -357,7 +357,7 @@ func (ac *ActivityCreate) createSpec() (*Activity, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := ac.mutation.Online(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: activity.FieldOnline,
 		})

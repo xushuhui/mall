@@ -128,14 +128,14 @@ func (ou *OrderUpdate) AddFinalTotalPrice(f float64) *OrderUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (ou *OrderUpdate) SetStatus(i int8) *OrderUpdate {
+func (ou *OrderUpdate) SetStatus(i int) *OrderUpdate {
 	ou.mutation.ResetStatus()
 	ou.mutation.SetStatus(i)
 	return ou
 }
 
 // AddStatus adds i to the "status" field.
-func (ou *OrderUpdate) AddStatus(i int8) *OrderUpdate {
+func (ou *OrderUpdate) AddStatus(i int) *OrderUpdate {
 	ou.mutation.AddStatus(i)
 	return ou
 }
@@ -403,14 +403,14 @@ func (ou *OrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ou.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: order.FieldStatus,
 		})
 	}
 	if value, ok := ou.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: order.FieldStatus,
 		})
@@ -675,14 +675,14 @@ func (ouo *OrderUpdateOne) AddFinalTotalPrice(f float64) *OrderUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (ouo *OrderUpdateOne) SetStatus(i int8) *OrderUpdateOne {
+func (ouo *OrderUpdateOne) SetStatus(i int) *OrderUpdateOne {
 	ouo.mutation.ResetStatus()
 	ouo.mutation.SetStatus(i)
 	return ouo
 }
 
 // AddStatus adds i to the "status" field.
-func (ouo *OrderUpdateOne) AddStatus(i int8) *OrderUpdateOne {
+func (ouo *OrderUpdateOne) AddStatus(i int) *OrderUpdateOne {
 	ouo.mutation.AddStatus(i)
 	return ouo
 }
@@ -974,14 +974,14 @@ func (ouo *OrderUpdateOne) sqlSave(ctx context.Context) (_node *Order, err error
 	}
 	if value, ok := ouo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: order.FieldStatus,
 		})
 	}
 	if value, ok := ouo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: order.FieldStatus,
 		})

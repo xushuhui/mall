@@ -18,7 +18,7 @@ func (Activity) Fields() []ent.Field {
 		field.Time("end_time").Comment(""),
 
 		field.String("remark").Comment(""),
-		field.Int8("online").Comment(""),
+		field.Int("online").Comment(""),
 		field.String("entrance_img").Comment(""),
 		field.String("internal_top_img").Comment(""),
 		field.String("name").Comment(""),

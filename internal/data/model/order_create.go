@@ -110,7 +110,7 @@ func (oc *OrderCreate) SetFinalTotalPrice(f float64) *OrderCreate {
 }
 
 // SetStatus sets the "status" field.
-func (oc *OrderCreate) SetStatus(i int8) *OrderCreate {
+func (oc *OrderCreate) SetStatus(i int) *OrderCreate {
 	oc.mutation.SetStatus(i)
 	return oc
 }
@@ -355,7 +355,7 @@ func (oc *OrderCreate) createSpec() (*Order, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := oc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: order.FieldStatus,
 		})

@@ -15,8 +15,8 @@ func (Tag) Fields() []ent.Field {
 		field.String("title").Comment("中文限制6个，英文限制12个，由逻辑层控制"),
 		field.String("description").Comment(""),
 
-		field.Int8("highlight").Comment(""),
-		field.Int8("type").Comment(""),
+		field.Int("highlight").Comment(""),
+		field.Int("type").Comment(""),
 	}
 }
 func (Tag) Mixin() []ent.Mixin {

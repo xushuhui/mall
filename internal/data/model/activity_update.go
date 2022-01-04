@@ -86,14 +86,14 @@ func (au *ActivityUpdate) SetRemark(s string) *ActivityUpdate {
 }
 
 // SetOnline sets the "online" field.
-func (au *ActivityUpdate) SetOnline(i int8) *ActivityUpdate {
+func (au *ActivityUpdate) SetOnline(i int) *ActivityUpdate {
 	au.mutation.ResetOnline()
 	au.mutation.SetOnline(i)
 	return au
 }
 
 // AddOnline adds i to the "online" field.
-func (au *ActivityUpdate) AddOnline(i int8) *ActivityUpdate {
+func (au *ActivityUpdate) AddOnline(i int) *ActivityUpdate {
 	au.mutation.AddOnline(i)
 	return au
 }
@@ -331,14 +331,14 @@ func (au *ActivityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: activity.FieldOnline,
 		})
 	}
 	if value, ok := au.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: activity.FieldOnline,
 		})
@@ -548,14 +548,14 @@ func (auo *ActivityUpdateOne) SetRemark(s string) *ActivityUpdateOne {
 }
 
 // SetOnline sets the "online" field.
-func (auo *ActivityUpdateOne) SetOnline(i int8) *ActivityUpdateOne {
+func (auo *ActivityUpdateOne) SetOnline(i int) *ActivityUpdateOne {
 	auo.mutation.ResetOnline()
 	auo.mutation.SetOnline(i)
 	return auo
 }
 
 // AddOnline adds i to the "online" field.
-func (auo *ActivityUpdateOne) AddOnline(i int8) *ActivityUpdateOne {
+func (auo *ActivityUpdateOne) AddOnline(i int) *ActivityUpdateOne {
 	auo.mutation.AddOnline(i)
 	return auo
 }
@@ -817,14 +817,14 @@ func (auo *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err
 	}
 	if value, ok := auo.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: activity.FieldOnline,
 		})
 	}
 	if value, ok := auo.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: activity.FieldOnline,
 		})

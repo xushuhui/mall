@@ -64,7 +64,7 @@ func (sec *SaleExplainCreate) SetNillableDeleteTime(t *time.Time) *SaleExplainCr
 }
 
 // SetFixed sets the "fixed" field.
-func (sec *SaleExplainCreate) SetFixed(i int8) *SaleExplainCreate {
+func (sec *SaleExplainCreate) SetFixed(i int) *SaleExplainCreate {
 	sec.mutation.SetFixed(i)
 	return sec
 }
@@ -260,7 +260,7 @@ func (sec *SaleExplainCreate) createSpec() (*SaleExplain, *sqlgraph.CreateSpec) 
 	}
 	if value, ok := sec.mutation.Fixed(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: saleexplain.FieldFixed,
 		})

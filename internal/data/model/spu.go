@@ -31,7 +31,7 @@ type Spu struct {
 	// RootCategoryID holds the value of the "root_category_id" field.
 	RootCategoryID int64 `json:"root_category_id,omitempty"`
 	// Online holds the value of the "online" field.
-	Online int8 `json:"online,omitempty"`
+	Online int `json:"online,omitempty"`
 	// Price holds the value of the "price" field.
 	// 文本型价格，有时候SPU需要展示的是一个范围，或者自定义平均价格
 	Price string `json:"price,omitempty"`
@@ -231,7 +231,7 @@ func (s *Spu) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field online", values[i])
 			} else if value.Valid {
-				s.Online = int8(value.Int64)
+				s.Online = int(value.Int64)
 			}
 		case spu.FieldPrice:
 			if value, ok := values[i].(*sql.NullString); !ok {

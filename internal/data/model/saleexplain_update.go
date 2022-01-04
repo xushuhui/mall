@@ -55,14 +55,14 @@ func (seu *SaleExplainUpdate) ClearDeleteTime() *SaleExplainUpdate {
 }
 
 // SetFixed sets the "fixed" field.
-func (seu *SaleExplainUpdate) SetFixed(i int8) *SaleExplainUpdate {
+func (seu *SaleExplainUpdate) SetFixed(i int) *SaleExplainUpdate {
 	seu.mutation.ResetFixed()
 	seu.mutation.SetFixed(i)
 	return seu
 }
 
 // AddFixed adds i to the "fixed" field.
-func (seu *SaleExplainUpdate) AddFixed(i int8) *SaleExplainUpdate {
+func (seu *SaleExplainUpdate) AddFixed(i int) *SaleExplainUpdate {
 	seu.mutation.AddFixed(i)
 	return seu
 }
@@ -238,14 +238,14 @@ func (seu *SaleExplainUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := seu.mutation.Fixed(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: saleexplain.FieldFixed,
 		})
 	}
 	if value, ok := seu.mutation.AddedFixed(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: saleexplain.FieldFixed,
 		})
@@ -366,14 +366,14 @@ func (seuo *SaleExplainUpdateOne) ClearDeleteTime() *SaleExplainUpdateOne {
 }
 
 // SetFixed sets the "fixed" field.
-func (seuo *SaleExplainUpdateOne) SetFixed(i int8) *SaleExplainUpdateOne {
+func (seuo *SaleExplainUpdateOne) SetFixed(i int) *SaleExplainUpdateOne {
 	seuo.mutation.ResetFixed()
 	seuo.mutation.SetFixed(i)
 	return seuo
 }
 
 // AddFixed adds i to the "fixed" field.
-func (seuo *SaleExplainUpdateOne) AddFixed(i int8) *SaleExplainUpdateOne {
+func (seuo *SaleExplainUpdateOne) AddFixed(i int) *SaleExplainUpdateOne {
 	seuo.mutation.AddFixed(i)
 	return seuo
 }
@@ -573,14 +573,14 @@ func (seuo *SaleExplainUpdateOne) sqlSave(ctx context.Context) (_node *SaleExpla
 	}
 	if value, ok := seuo.mutation.Fixed(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: saleexplain.FieldFixed,
 		})
 	}
 	if value, ok := seuo.mutation.AddedFixed(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: saleexplain.FieldFixed,
 		})

@@ -69,7 +69,7 @@ func (upc *UserPointCreate) SetValue(i int) *UserPointCreate {
 }
 
 // SetStatus sets the "status" field.
-func (upc *UserPointCreate) SetStatus(i int8) *UserPointCreate {
+func (upc *UserPointCreate) SetStatus(i int) *UserPointCreate {
 	upc.mutation.SetStatus(i)
 	return upc
 }
@@ -242,7 +242,7 @@ func (upc *UserPointCreate) createSpec() (*UserPoint, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := upc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userpoint.FieldStatus,
 		})

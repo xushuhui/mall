@@ -80,14 +80,14 @@ func (uu *UserUpdate) SetMobile(s string) *UserUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (uu *UserUpdate) SetStatus(i int8) *UserUpdate {
+func (uu *UserUpdate) SetStatus(i int) *UserUpdate {
 	uu.mutation.ResetStatus()
 	uu.mutation.SetStatus(i)
 	return uu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableStatus(i *int8) *UserUpdate {
+func (uu *UserUpdate) SetNillableStatus(i *int) *UserUpdate {
 	if i != nil {
 		uu.SetStatus(*i)
 	}
@@ -95,7 +95,7 @@ func (uu *UserUpdate) SetNillableStatus(i *int8) *UserUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (uu *UserUpdate) AddStatus(i int8) *UserUpdate {
+func (uu *UserUpdate) AddStatus(i int) *UserUpdate {
 	uu.mutation.AddStatus(i)
 	return uu
 }
@@ -308,14 +308,14 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: user.FieldStatus,
 		})
 	}
 	if value, ok := uu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: user.FieldStatus,
 		})
@@ -498,14 +498,14 @@ func (uuo *UserUpdateOne) SetMobile(s string) *UserUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (uuo *UserUpdateOne) SetStatus(i int8) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetStatus(i int) *UserUpdateOne {
 	uuo.mutation.ResetStatus()
 	uuo.mutation.SetStatus(i)
 	return uuo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableStatus(i *int8) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetNillableStatus(i *int) *UserUpdateOne {
 	if i != nil {
 		uuo.SetStatus(*i)
 	}
@@ -513,7 +513,7 @@ func (uuo *UserUpdateOne) SetNillableStatus(i *int8) *UserUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (uuo *UserUpdateOne) AddStatus(i int8) *UserUpdateOne {
+func (uuo *UserUpdateOne) AddStatus(i int) *UserUpdateOne {
 	uuo.mutation.AddStatus(i)
 	return uuo
 }
@@ -750,14 +750,14 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: user.FieldStatus,
 		})
 	}
 	if value, ok := uuo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: user.FieldStatus,
 		})

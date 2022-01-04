@@ -81,14 +81,14 @@ func (su *SkuUpdate) AddDiscountPrice(f float64) *SkuUpdate {
 }
 
 // SetOnline sets the "online" field.
-func (su *SkuUpdate) SetOnline(i int8) *SkuUpdate {
+func (su *SkuUpdate) SetOnline(i int) *SkuUpdate {
 	su.mutation.ResetOnline()
 	su.mutation.SetOnline(i)
 	return su
 }
 
 // AddOnline adds i to the "online" field.
-func (su *SkuUpdate) AddOnline(i int8) *SkuUpdate {
+func (su *SkuUpdate) AddOnline(i int) *SkuUpdate {
 	su.mutation.AddOnline(i)
 	return su
 }
@@ -319,14 +319,14 @@ func (su *SkuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := su.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sku.FieldOnline,
 		})
 	}
 	if value, ok := su.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sku.FieldOnline,
 		})
@@ -493,14 +493,14 @@ func (suo *SkuUpdateOne) AddDiscountPrice(f float64) *SkuUpdateOne {
 }
 
 // SetOnline sets the "online" field.
-func (suo *SkuUpdateOne) SetOnline(i int8) *SkuUpdateOne {
+func (suo *SkuUpdateOne) SetOnline(i int) *SkuUpdateOne {
 	suo.mutation.ResetOnline()
 	suo.mutation.SetOnline(i)
 	return suo
 }
 
 // AddOnline adds i to the "online" field.
-func (suo *SkuUpdateOne) AddOnline(i int8) *SkuUpdateOne {
+func (suo *SkuUpdateOne) AddOnline(i int) *SkuUpdateOne {
 	suo.mutation.AddOnline(i)
 	return suo
 }
@@ -755,14 +755,14 @@ func (suo *SkuUpdateOne) sqlSave(ctx context.Context) (_node *Sku, err error) {
 	}
 	if value, ok := suo.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sku.FieldOnline,
 		})
 	}
 	if value, ok := suo.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sku.FieldOnline,
 		})

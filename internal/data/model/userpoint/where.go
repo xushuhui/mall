@@ -121,7 +121,7 @@ func Value(v int) predicate.UserPoint {
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int8) predicate.UserPoint {
+func Status(v int) predicate.UserPoint {
 	return predicate.UserPoint(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
@@ -446,21 +446,21 @@ func ValueLTE(v int) predicate.UserPoint {
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int8) predicate.UserPoint {
+func StatusEQ(v int) predicate.UserPoint {
 	return predicate.UserPoint(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int8) predicate.UserPoint {
+func StatusNEQ(v int) predicate.UserPoint {
 	return predicate.UserPoint(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStatus), v))
 	})
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int8) predicate.UserPoint {
+func StatusIn(vs ...int) predicate.UserPoint {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -477,7 +477,7 @@ func StatusIn(vs ...int8) predicate.UserPoint {
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int8) predicate.UserPoint {
+func StatusNotIn(vs ...int) predicate.UserPoint {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -494,28 +494,28 @@ func StatusNotIn(vs ...int8) predicate.UserPoint {
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int8) predicate.UserPoint {
+func StatusGT(v int) predicate.UserPoint {
 	return predicate.UserPoint(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldStatus), v))
 	})
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int8) predicate.UserPoint {
+func StatusGTE(v int) predicate.UserPoint {
 	return predicate.UserPoint(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldStatus), v))
 	})
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int8) predicate.UserPoint {
+func StatusLT(v int) predicate.UserPoint {
 	return predicate.UserPoint(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldStatus), v))
 	})
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int8) predicate.UserPoint {
+func StatusLTE(v int) predicate.UserPoint {
 	return predicate.UserPoint(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldStatus), v))
 	})

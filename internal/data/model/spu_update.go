@@ -100,14 +100,14 @@ func (su *SpuUpdate) AddRootCategoryID(i int64) *SpuUpdate {
 }
 
 // SetOnline sets the "online" field.
-func (su *SpuUpdate) SetOnline(i int8) *SpuUpdate {
+func (su *SpuUpdate) SetOnline(i int) *SpuUpdate {
 	su.mutation.ResetOnline()
 	su.mutation.SetOnline(i)
 	return su
 }
 
 // AddOnline adds i to the "online" field.
-func (su *SpuUpdate) AddOnline(i int8) *SpuUpdate {
+func (su *SpuUpdate) AddOnline(i int) *SpuUpdate {
 	su.mutation.AddOnline(i)
 	return su
 }
@@ -618,14 +618,14 @@ func (su *SpuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := su.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: spu.FieldOnline,
 		})
 	}
 	if value, ok := su.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: spu.FieldOnline,
 		})
@@ -1223,14 +1223,14 @@ func (suo *SpuUpdateOne) AddRootCategoryID(i int64) *SpuUpdateOne {
 }
 
 // SetOnline sets the "online" field.
-func (suo *SpuUpdateOne) SetOnline(i int8) *SpuUpdateOne {
+func (suo *SpuUpdateOne) SetOnline(i int) *SpuUpdateOne {
 	suo.mutation.ResetOnline()
 	suo.mutation.SetOnline(i)
 	return suo
 }
 
 // AddOnline adds i to the "online" field.
-func (suo *SpuUpdateOne) AddOnline(i int8) *SpuUpdateOne {
+func (suo *SpuUpdateOne) AddOnline(i int) *SpuUpdateOne {
 	suo.mutation.AddOnline(i)
 	return suo
 }
@@ -1765,14 +1765,14 @@ func (suo *SpuUpdateOne) sqlSave(ctx context.Context) (_node *Spu, err error) {
 	}
 	if value, ok := suo.mutation.Online(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: spu.FieldOnline,
 		})
 	}
 	if value, ok := suo.mutation.AddedOnline(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: spu.FieldOnline,
 		})

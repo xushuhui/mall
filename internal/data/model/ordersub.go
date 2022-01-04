@@ -35,7 +35,7 @@ type OrderSub struct {
 	// FinalPrice holds the value of the "final_price" field.
 	FinalPrice float64 `json:"final_price,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 	// OrderID holds the value of the "order_id" field.
 	OrderID int64 `json:"order_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -152,7 +152,7 @@ func (os *OrderSub) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				os.Status = int8(value.Int64)
+				os.Status = int(value.Int64)
 			}
 		case ordersub.FieldOrderID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

@@ -76,7 +76,7 @@ func (skc *SpecKeyCreate) SetUnit(s string) *SpecKeyCreate {
 }
 
 // SetStandard sets the "standard" field.
-func (skc *SpecKeyCreate) SetStandard(i int8) *SpecKeyCreate {
+func (skc *SpecKeyCreate) SetStandard(i int) *SpecKeyCreate {
 	skc.mutation.SetStandard(i)
 	return skc
 }
@@ -272,7 +272,7 @@ func (skc *SpecKeyCreate) createSpec() (*SpecKey, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := skc.mutation.Standard(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: speckey.FieldStandard,
 		})

@@ -104,8 +104,8 @@ type ActivityMutation struct {
 	start_time       *time.Time
 	end_time         *time.Time
 	remark           *string
-	online           *int8
-	addonline        *int8
+	online           *int
+	addonline        *int
 	entrance_img     *string
 	internal_top_img *string
 	name             *string
@@ -502,13 +502,13 @@ func (m *ActivityMutation) ResetRemark() {
 }
 
 // SetOnline sets the "online" field.
-func (m *ActivityMutation) SetOnline(i int8) {
+func (m *ActivityMutation) SetOnline(i int) {
 	m.online = &i
 	m.addonline = nil
 }
 
 // Online returns the value of the "online" field in the mutation.
-func (m *ActivityMutation) Online() (r int8, exists bool) {
+func (m *ActivityMutation) Online() (r int, exists bool) {
 	v := m.online
 	if v == nil {
 		return
@@ -519,7 +519,7 @@ func (m *ActivityMutation) Online() (r int8, exists bool) {
 // OldOnline returns the old "online" field's value of the Activity entity.
 // If the Activity object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ActivityMutation) OldOnline(ctx context.Context) (v int8, err error) {
+func (m *ActivityMutation) OldOnline(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldOnline is only allowed on UpdateOne operations")
 	}
@@ -534,7 +534,7 @@ func (m *ActivityMutation) OldOnline(ctx context.Context) (v int8, err error) {
 }
 
 // AddOnline adds i to the "online" field.
-func (m *ActivityMutation) AddOnline(i int8) {
+func (m *ActivityMutation) AddOnline(i int) {
 	if m.addonline != nil {
 		*m.addonline += i
 	} else {
@@ -543,7 +543,7 @@ func (m *ActivityMutation) AddOnline(i int8) {
 }
 
 // AddedOnline returns the value that was added to the "online" field in this mutation.
-func (m *ActivityMutation) AddedOnline() (r int8, exists bool) {
+func (m *ActivityMutation) AddedOnline() (r int, exists bool) {
 	v := m.addonline
 	if v == nil {
 		return
@@ -960,7 +960,7 @@ func (m *ActivityMutation) SetField(name string, value ent.Value) error {
 		m.SetRemark(v)
 		return nil
 	case activity.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1018,7 +1018,7 @@ func (m *ActivityMutation) AddedField(name string) (ent.Value, bool) {
 func (m *ActivityMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case activity.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3377,8 +3377,8 @@ type CategoryMutation struct {
 	delete_time     *time.Time
 	name            *string
 	description     *string
-	is_root         *int8
-	addis_root      *int8
+	is_root         *int
+	addis_root      *int
 	img             *string
 	index           *int
 	addindex        *int
@@ -3673,13 +3673,13 @@ func (m *CategoryMutation) ResetDescription() {
 }
 
 // SetIsRoot sets the "is_root" field.
-func (m *CategoryMutation) SetIsRoot(i int8) {
+func (m *CategoryMutation) SetIsRoot(i int) {
 	m.is_root = &i
 	m.addis_root = nil
 }
 
 // IsRoot returns the value of the "is_root" field in the mutation.
-func (m *CategoryMutation) IsRoot() (r int8, exists bool) {
+func (m *CategoryMutation) IsRoot() (r int, exists bool) {
 	v := m.is_root
 	if v == nil {
 		return
@@ -3690,7 +3690,7 @@ func (m *CategoryMutation) IsRoot() (r int8, exists bool) {
 // OldIsRoot returns the old "is_root" field's value of the Category entity.
 // If the Category object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CategoryMutation) OldIsRoot(ctx context.Context) (v int8, err error) {
+func (m *CategoryMutation) OldIsRoot(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldIsRoot is only allowed on UpdateOne operations")
 	}
@@ -3705,7 +3705,7 @@ func (m *CategoryMutation) OldIsRoot(ctx context.Context) (v int8, err error) {
 }
 
 // AddIsRoot adds i to the "is_root" field.
-func (m *CategoryMutation) AddIsRoot(i int8) {
+func (m *CategoryMutation) AddIsRoot(i int) {
 	if m.addis_root != nil {
 		*m.addis_root += i
 	} else {
@@ -3714,7 +3714,7 @@ func (m *CategoryMutation) AddIsRoot(i int8) {
 }
 
 // AddedIsRoot returns the value that was added to the "is_root" field in this mutation.
-func (m *CategoryMutation) AddedIsRoot() (r int8, exists bool) {
+func (m *CategoryMutation) AddedIsRoot() (r int, exists bool) {
 	v := m.addis_root
 	if v == nil {
 		return
@@ -4274,7 +4274,7 @@ func (m *CategoryMutation) SetField(name string, value ent.Value) error {
 		m.SetDescription(v)
 		return nil
 	case category.FieldIsRoot:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4361,7 +4361,7 @@ func (m *CategoryMutation) AddedField(name string) (ent.Value, bool) {
 func (m *CategoryMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case category.FieldIsRoot:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5469,8 +5469,8 @@ type CouponMutation struct {
 	activity_id     *int64
 	addactivity_id  *int64
 	remark          *string
-	whole_store     *int8
-	addwhole_store  *int8
+	whole_store     *int
+	addwhole_store  *int
 	clearedFields   map[string]struct{}
 	category        map[int64]struct{}
 	removedcategory map[int64]struct{}
@@ -6214,13 +6214,13 @@ func (m *CouponMutation) ResetRemark() {
 }
 
 // SetWholeStore sets the "whole_store" field.
-func (m *CouponMutation) SetWholeStore(i int8) {
+func (m *CouponMutation) SetWholeStore(i int) {
 	m.whole_store = &i
 	m.addwhole_store = nil
 }
 
 // WholeStore returns the value of the "whole_store" field in the mutation.
-func (m *CouponMutation) WholeStore() (r int8, exists bool) {
+func (m *CouponMutation) WholeStore() (r int, exists bool) {
 	v := m.whole_store
 	if v == nil {
 		return
@@ -6231,7 +6231,7 @@ func (m *CouponMutation) WholeStore() (r int8, exists bool) {
 // OldWholeStore returns the old "whole_store" field's value of the Coupon entity.
 // If the Coupon object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldWholeStore(ctx context.Context) (v int8, err error) {
+func (m *CouponMutation) OldWholeStore(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldWholeStore is only allowed on UpdateOne operations")
 	}
@@ -6246,7 +6246,7 @@ func (m *CouponMutation) OldWholeStore(ctx context.Context) (v int8, err error) 
 }
 
 // AddWholeStore adds i to the "whole_store" field.
-func (m *CouponMutation) AddWholeStore(i int8) {
+func (m *CouponMutation) AddWholeStore(i int) {
 	if m.addwhole_store != nil {
 		*m.addwhole_store += i
 	} else {
@@ -6255,7 +6255,7 @@ func (m *CouponMutation) AddWholeStore(i int8) {
 }
 
 // AddedWholeStore returns the value that was added to the "whole_store" field in this mutation.
-func (m *CouponMutation) AddedWholeStore() (r int8, exists bool) {
+func (m *CouponMutation) AddedWholeStore() (r int, exists bool) {
 	v := m.addwhole_store
 	if v == nil {
 		return
@@ -6627,7 +6627,7 @@ func (m *CouponMutation) SetField(name string, value ent.Value) error {
 		m.SetRemark(v)
 		return nil
 	case coupon.FieldWholeStore:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -6736,7 +6736,7 @@ func (m *CouponMutation) AddField(name string, value ent.Value) error {
 		m.AddActivityID(v)
 		return nil
 	case coupon.FieldWholeStore:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9222,8 +9222,8 @@ type OrderMutation struct {
 	addtotal_count       *int
 	final_total_price    *float64
 	addfinal_total_price *float64
-	status               *int8
-	addstatus            *int8
+	status               *int
+	addstatus            *int
 	clearedFields        map[string]struct{}
 	user                 *int64
 	cleareduser          bool
@@ -9728,13 +9728,13 @@ func (m *OrderMutation) ResetFinalTotalPrice() {
 }
 
 // SetStatus sets the "status" field.
-func (m *OrderMutation) SetStatus(i int8) {
+func (m *OrderMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *OrderMutation) Status() (r int8, exists bool) {
+func (m *OrderMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -9745,7 +9745,7 @@ func (m *OrderMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the Order entity.
 // If the Order object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *OrderMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -9760,7 +9760,7 @@ func (m *OrderMutation) OldStatus(ctx context.Context) (v int8, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *OrderMutation) AddStatus(i int8) {
+func (m *OrderMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -9769,7 +9769,7 @@ func (m *OrderMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *OrderMutation) AddedStatus() (r int8, exists bool) {
+func (m *OrderMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -10097,7 +10097,7 @@ func (m *OrderMutation) SetField(name string, value ent.Value) error {
 		m.SetFinalTotalPrice(v)
 		return nil
 	case order.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -10170,7 +10170,7 @@ func (m *OrderMutation) AddField(name string, value ent.Value) error {
 		m.AddFinalTotalPrice(v)
 		return nil
 	case order.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -11726,8 +11726,8 @@ type OrderSubMutation struct {
 	addcount       *int
 	final_price    *float64
 	addfinal_price *float64
-	status         *int8
-	addstatus      *int8
+	status         *int
+	addstatus      *int
 	clearedFields  map[string]struct{}
 	_order         *int64
 	cleared_order  bool
@@ -12211,13 +12211,13 @@ func (m *OrderSubMutation) ResetFinalPrice() {
 }
 
 // SetStatus sets the "status" field.
-func (m *OrderSubMutation) SetStatus(i int8) {
+func (m *OrderSubMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *OrderSubMutation) Status() (r int8, exists bool) {
+func (m *OrderSubMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -12228,7 +12228,7 @@ func (m *OrderSubMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the OrderSub entity.
 // If the OrderSub object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderSubMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *OrderSubMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -12243,7 +12243,7 @@ func (m *OrderSubMutation) OldStatus(ctx context.Context) (v int8, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *OrderSubMutation) AddStatus(i int8) {
+func (m *OrderSubMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -12252,7 +12252,7 @@ func (m *OrderSubMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *OrderSubMutation) AddedStatus() (r int8, exists bool) {
+func (m *OrderSubMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -12514,7 +12514,7 @@ func (m *OrderSubMutation) SetField(name string, value ent.Value) error {
 		m.SetFinalPrice(v)
 		return nil
 	case ordersub.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -12606,7 +12606,7 @@ func (m *OrderSubMutation) AddField(name string, value ent.Value) error {
 		m.AddFinalPrice(v)
 		return nil
 	case ordersub.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -12786,8 +12786,8 @@ type RefundMutation struct {
 	addorder_id     *int64
 	order_sub_id    *int64
 	addorder_sub_id *int64
-	status          *int8
-	addstatus       *int8
+	status          *int
+	addstatus       *int
 	clearedFields   map[string]struct{}
 	user            *int64
 	cleareduser     bool
@@ -13294,13 +13294,13 @@ func (m *RefundMutation) ResetOrderSubID() {
 }
 
 // SetStatus sets the "status" field.
-func (m *RefundMutation) SetStatus(i int8) {
+func (m *RefundMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *RefundMutation) Status() (r int8, exists bool) {
+func (m *RefundMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -13311,7 +13311,7 @@ func (m *RefundMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the Refund entity.
 // If the Refund object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RefundMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *RefundMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -13326,7 +13326,7 @@ func (m *RefundMutation) OldStatus(ctx context.Context) (v int8, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *RefundMutation) AddStatus(i int8) {
+func (m *RefundMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -13335,7 +13335,7 @@ func (m *RefundMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *RefundMutation) AddedStatus() (r int8, exists bool) {
+func (m *RefundMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -13555,7 +13555,7 @@ func (m *RefundMutation) SetField(name string, value ent.Value) error {
 		m.SetOrderSubID(v)
 		return nil
 	case refund.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -13616,7 +13616,7 @@ func (m *RefundMutation) AddField(name string, value ent.Value) error {
 		m.AddOrderSubID(v)
 		return nil
 	case refund.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -13795,8 +13795,8 @@ type SaleExplainMutation struct {
 	create_time   *time.Time
 	update_time   *time.Time
 	delete_time   *time.Time
-	fixed         *int8
-	addfixed      *int8
+	fixed         *int
+	addfixed      *int
 	text          *string
 	index         *int
 	addindex      *int
@@ -14011,13 +14011,13 @@ func (m *SaleExplainMutation) ResetDeleteTime() {
 }
 
 // SetFixed sets the "fixed" field.
-func (m *SaleExplainMutation) SetFixed(i int8) {
+func (m *SaleExplainMutation) SetFixed(i int) {
 	m.fixed = &i
 	m.addfixed = nil
 }
 
 // Fixed returns the value of the "fixed" field in the mutation.
-func (m *SaleExplainMutation) Fixed() (r int8, exists bool) {
+func (m *SaleExplainMutation) Fixed() (r int, exists bool) {
 	v := m.fixed
 	if v == nil {
 		return
@@ -14028,7 +14028,7 @@ func (m *SaleExplainMutation) Fixed() (r int8, exists bool) {
 // OldFixed returns the old "fixed" field's value of the SaleExplain entity.
 // If the SaleExplain object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SaleExplainMutation) OldFixed(ctx context.Context) (v int8, err error) {
+func (m *SaleExplainMutation) OldFixed(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldFixed is only allowed on UpdateOne operations")
 	}
@@ -14043,7 +14043,7 @@ func (m *SaleExplainMutation) OldFixed(ctx context.Context) (v int8, err error) 
 }
 
 // AddFixed adds i to the "fixed" field.
-func (m *SaleExplainMutation) AddFixed(i int8) {
+func (m *SaleExplainMutation) AddFixed(i int) {
 	if m.addfixed != nil {
 		*m.addfixed += i
 	} else {
@@ -14052,7 +14052,7 @@ func (m *SaleExplainMutation) AddFixed(i int8) {
 }
 
 // AddedFixed returns the value that was added to the "fixed" field in this mutation.
-func (m *SaleExplainMutation) AddedFixed() (r int8, exists bool) {
+func (m *SaleExplainMutation) AddedFixed() (r int, exists bool) {
 	v := m.addfixed
 	if v == nil {
 		return
@@ -14413,7 +14413,7 @@ func (m *SaleExplainMutation) SetField(name string, value ent.Value) error {
 		m.SetDeleteTime(v)
 		return nil
 	case saleexplain.FieldFixed:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -14488,7 +14488,7 @@ func (m *SaleExplainMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SaleExplainMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case saleexplain.FieldFixed:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -14667,8 +14667,8 @@ type SkuMutation struct {
 	addprice            *float64
 	discount_price      *float64
 	adddiscount_price   *float64
-	online              *int8
-	addonline           *int8
+	online              *int
+	addonline           *int
 	img                 *string
 	title               *string
 	spu_id              *int64
@@ -15000,13 +15000,13 @@ func (m *SkuMutation) ResetDiscountPrice() {
 }
 
 // SetOnline sets the "online" field.
-func (m *SkuMutation) SetOnline(i int8) {
+func (m *SkuMutation) SetOnline(i int) {
 	m.online = &i
 	m.addonline = nil
 }
 
 // Online returns the value of the "online" field in the mutation.
-func (m *SkuMutation) Online() (r int8, exists bool) {
+func (m *SkuMutation) Online() (r int, exists bool) {
 	v := m.online
 	if v == nil {
 		return
@@ -15017,7 +15017,7 @@ func (m *SkuMutation) Online() (r int8, exists bool) {
 // OldOnline returns the old "online" field's value of the Sku entity.
 // If the Sku object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SkuMutation) OldOnline(ctx context.Context) (v int8, err error) {
+func (m *SkuMutation) OldOnline(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldOnline is only allowed on UpdateOne operations")
 	}
@@ -15032,7 +15032,7 @@ func (m *SkuMutation) OldOnline(ctx context.Context) (v int8, err error) {
 }
 
 // AddOnline adds i to the "online" field.
-func (m *SkuMutation) AddOnline(i int8) {
+func (m *SkuMutation) AddOnline(i int) {
 	if m.addonline != nil {
 		*m.addonline += i
 	} else {
@@ -15041,7 +15041,7 @@ func (m *SkuMutation) AddOnline(i int8) {
 }
 
 // AddedOnline returns the value that was added to the "online" field in this mutation.
-func (m *SkuMutation) AddedOnline() (r int8, exists bool) {
+func (m *SkuMutation) AddedOnline() (r int, exists bool) {
 	v := m.addonline
 	if v == nil {
 		return
@@ -15617,7 +15617,7 @@ func (m *SkuMutation) SetField(name string, value ent.Value) error {
 		m.SetDiscountPrice(v)
 		return nil
 	case sku.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -15754,7 +15754,7 @@ func (m *SkuMutation) AddField(name string, value ent.Value) error {
 		m.AddDiscountPrice(v)
 		return nil
 	case sku.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -16524,8 +16524,8 @@ type SpecKeyMutation struct {
 	delete_time   *time.Time
 	name          *string
 	unit          *string
-	standard      *int8
-	addstandard   *int8
+	standard      *int
+	addstandard   *int
 	description   *string
 	clearedFields map[string]struct{}
 	spu           map[int64]struct{}
@@ -16809,13 +16809,13 @@ func (m *SpecKeyMutation) ResetUnit() {
 }
 
 // SetStandard sets the "standard" field.
-func (m *SpecKeyMutation) SetStandard(i int8) {
+func (m *SpecKeyMutation) SetStandard(i int) {
 	m.standard = &i
 	m.addstandard = nil
 }
 
 // Standard returns the value of the "standard" field in the mutation.
-func (m *SpecKeyMutation) Standard() (r int8, exists bool) {
+func (m *SpecKeyMutation) Standard() (r int, exists bool) {
 	v := m.standard
 	if v == nil {
 		return
@@ -16826,7 +16826,7 @@ func (m *SpecKeyMutation) Standard() (r int8, exists bool) {
 // OldStandard returns the old "standard" field's value of the SpecKey entity.
 // If the SpecKey object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SpecKeyMutation) OldStandard(ctx context.Context) (v int8, err error) {
+func (m *SpecKeyMutation) OldStandard(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStandard is only allowed on UpdateOne operations")
 	}
@@ -16841,7 +16841,7 @@ func (m *SpecKeyMutation) OldStandard(ctx context.Context) (v int8, err error) {
 }
 
 // AddStandard adds i to the "standard" field.
-func (m *SpecKeyMutation) AddStandard(i int8) {
+func (m *SpecKeyMutation) AddStandard(i int) {
 	if m.addstandard != nil {
 		*m.addstandard += i
 	} else {
@@ -16850,7 +16850,7 @@ func (m *SpecKeyMutation) AddStandard(i int8) {
 }
 
 // AddedStandard returns the value that was added to the "standard" field in this mutation.
-func (m *SpecKeyMutation) AddedStandard() (r int8, exists bool) {
+func (m *SpecKeyMutation) AddedStandard() (r int, exists bool) {
 	v := m.addstandard
 	if v == nil {
 		return
@@ -17085,7 +17085,7 @@ func (m *SpecKeyMutation) SetField(name string, value ent.Value) error {
 		m.SetUnit(v)
 		return nil
 	case speckey.FieldStandard:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -17129,7 +17129,7 @@ func (m *SpecKeyMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SpecKeyMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case speckey.FieldStandard:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -17915,8 +17915,8 @@ type SpuMutation struct {
 	addcategory_id        *int64
 	root_category_id      *int64
 	addroot_category_id   *int64
-	online                *int8
-	addonline             *int8
+	online                *int
+	addonline             *int
 	price                 *string
 	sketch_spec_id        *int
 	addsketch_spec_id     *int
@@ -18343,13 +18343,13 @@ func (m *SpuMutation) ResetRootCategoryID() {
 }
 
 // SetOnline sets the "online" field.
-func (m *SpuMutation) SetOnline(i int8) {
+func (m *SpuMutation) SetOnline(i int) {
 	m.online = &i
 	m.addonline = nil
 }
 
 // Online returns the value of the "online" field in the mutation.
-func (m *SpuMutation) Online() (r int8, exists bool) {
+func (m *SpuMutation) Online() (r int, exists bool) {
 	v := m.online
 	if v == nil {
 		return
@@ -18360,7 +18360,7 @@ func (m *SpuMutation) Online() (r int8, exists bool) {
 // OldOnline returns the old "online" field's value of the Spu entity.
 // If the Spu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SpuMutation) OldOnline(ctx context.Context) (v int8, err error) {
+func (m *SpuMutation) OldOnline(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldOnline is only allowed on UpdateOne operations")
 	}
@@ -18375,7 +18375,7 @@ func (m *SpuMutation) OldOnline(ctx context.Context) (v int8, err error) {
 }
 
 // AddOnline adds i to the "online" field.
-func (m *SpuMutation) AddOnline(i int8) {
+func (m *SpuMutation) AddOnline(i int) {
 	if m.addonline != nil {
 		*m.addonline += i
 	} else {
@@ -18384,7 +18384,7 @@ func (m *SpuMutation) AddOnline(i int8) {
 }
 
 // AddedOnline returns the value that was added to the "online" field in this mutation.
-func (m *SpuMutation) AddedOnline() (r int8, exists bool) {
+func (m *SpuMutation) AddedOnline() (r int, exists bool) {
 	v := m.addonline
 	if v == nil {
 		return
@@ -19409,7 +19409,7 @@ func (m *SpuMutation) SetField(name string, value ent.Value) error {
 		m.SetRootCategoryID(v)
 		return nil
 	case spu.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -19543,7 +19543,7 @@ func (m *SpuMutation) AddField(name string, value ent.Value) error {
 		m.AddRootCategoryID(v)
 		return nil
 	case spu.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -21232,10 +21232,10 @@ type TagMutation struct {
 	delete_time   *time.Time
 	title         *string
 	description   *string
-	highlight     *int8
-	addhighlight  *int8
-	_type         *int8
-	add_type      *int8
+	highlight     *int
+	addhighlight  *int
+	_type         *int
+	add_type      *int
 	clearedFields map[string]struct{}
 	spu           map[int64]struct{}
 	removedspu    map[int64]struct{}
@@ -21518,13 +21518,13 @@ func (m *TagMutation) ResetDescription() {
 }
 
 // SetHighlight sets the "highlight" field.
-func (m *TagMutation) SetHighlight(i int8) {
+func (m *TagMutation) SetHighlight(i int) {
 	m.highlight = &i
 	m.addhighlight = nil
 }
 
 // Highlight returns the value of the "highlight" field in the mutation.
-func (m *TagMutation) Highlight() (r int8, exists bool) {
+func (m *TagMutation) Highlight() (r int, exists bool) {
 	v := m.highlight
 	if v == nil {
 		return
@@ -21535,7 +21535,7 @@ func (m *TagMutation) Highlight() (r int8, exists bool) {
 // OldHighlight returns the old "highlight" field's value of the Tag entity.
 // If the Tag object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TagMutation) OldHighlight(ctx context.Context) (v int8, err error) {
+func (m *TagMutation) OldHighlight(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldHighlight is only allowed on UpdateOne operations")
 	}
@@ -21550,7 +21550,7 @@ func (m *TagMutation) OldHighlight(ctx context.Context) (v int8, err error) {
 }
 
 // AddHighlight adds i to the "highlight" field.
-func (m *TagMutation) AddHighlight(i int8) {
+func (m *TagMutation) AddHighlight(i int) {
 	if m.addhighlight != nil {
 		*m.addhighlight += i
 	} else {
@@ -21559,7 +21559,7 @@ func (m *TagMutation) AddHighlight(i int8) {
 }
 
 // AddedHighlight returns the value that was added to the "highlight" field in this mutation.
-func (m *TagMutation) AddedHighlight() (r int8, exists bool) {
+func (m *TagMutation) AddedHighlight() (r int, exists bool) {
 	v := m.addhighlight
 	if v == nil {
 		return
@@ -21574,13 +21574,13 @@ func (m *TagMutation) ResetHighlight() {
 }
 
 // SetType sets the "type" field.
-func (m *TagMutation) SetType(i int8) {
+func (m *TagMutation) SetType(i int) {
 	m._type = &i
 	m.add_type = nil
 }
 
 // GetType returns the value of the "type" field in the mutation.
-func (m *TagMutation) GetType() (r int8, exists bool) {
+func (m *TagMutation) GetType() (r int, exists bool) {
 	v := m._type
 	if v == nil {
 		return
@@ -21591,7 +21591,7 @@ func (m *TagMutation) GetType() (r int8, exists bool) {
 // OldType returns the old "type" field's value of the Tag entity.
 // If the Tag object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TagMutation) OldType(ctx context.Context) (v int8, err error) {
+func (m *TagMutation) OldType(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldType is only allowed on UpdateOne operations")
 	}
@@ -21606,7 +21606,7 @@ func (m *TagMutation) OldType(ctx context.Context) (v int8, err error) {
 }
 
 // AddType adds i to the "type" field.
-func (m *TagMutation) AddType(i int8) {
+func (m *TagMutation) AddType(i int) {
 	if m.add_type != nil {
 		*m.add_type += i
 	} else {
@@ -21615,7 +21615,7 @@ func (m *TagMutation) AddType(i int8) {
 }
 
 // AddedType returns the value that was added to the "type" field in this mutation.
-func (m *TagMutation) AddedType() (r int8, exists bool) {
+func (m *TagMutation) AddedType() (r int, exists bool) {
 	v := m.add_type
 	if v == nil {
 		return
@@ -21814,14 +21814,14 @@ func (m *TagMutation) SetField(name string, value ent.Value) error {
 		m.SetDescription(v)
 		return nil
 	case tag.FieldHighlight:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetHighlight(v)
 		return nil
 	case tag.FieldType:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -21863,14 +21863,14 @@ func (m *TagMutation) AddedField(name string) (ent.Value, bool) {
 func (m *TagMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case tag.FieldHighlight:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddHighlight(v)
 		return nil
 	case tag.FieldType:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -22038,8 +22038,8 @@ type ThemeMutation struct {
 	extend           *string
 	internal_top_img *string
 	title_img        *string
-	online           *int8
-	addonline        *int8
+	online           *int
+	addonline        *int
 	clearedFields    map[string]struct{}
 	spu              map[int64]struct{}
 	removedspu       map[int64]struct{}
@@ -22538,13 +22538,13 @@ func (m *ThemeMutation) ResetTitleImg() {
 }
 
 // SetOnline sets the "online" field.
-func (m *ThemeMutation) SetOnline(i int8) {
+func (m *ThemeMutation) SetOnline(i int) {
 	m.online = &i
 	m.addonline = nil
 }
 
 // Online returns the value of the "online" field in the mutation.
-func (m *ThemeMutation) Online() (r int8, exists bool) {
+func (m *ThemeMutation) Online() (r int, exists bool) {
 	v := m.online
 	if v == nil {
 		return
@@ -22555,7 +22555,7 @@ func (m *ThemeMutation) Online() (r int8, exists bool) {
 // OldOnline returns the old "online" field's value of the Theme entity.
 // If the Theme object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ThemeMutation) OldOnline(ctx context.Context) (v int8, err error) {
+func (m *ThemeMutation) OldOnline(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldOnline is only allowed on UpdateOne operations")
 	}
@@ -22570,7 +22570,7 @@ func (m *ThemeMutation) OldOnline(ctx context.Context) (v int8, err error) {
 }
 
 // AddOnline adds i to the "online" field.
-func (m *ThemeMutation) AddOnline(i int8) {
+func (m *ThemeMutation) AddOnline(i int) {
 	if m.addonline != nil {
 		*m.addonline += i
 	} else {
@@ -22579,7 +22579,7 @@ func (m *ThemeMutation) AddOnline(i int8) {
 }
 
 // AddedOnline returns the value that was added to the "online" field in this mutation.
-func (m *ThemeMutation) AddedOnline() (r int8, exists bool) {
+func (m *ThemeMutation) AddedOnline() (r int, exists bool) {
 	v := m.addonline
 	if v == nil {
 		return
@@ -22855,7 +22855,7 @@ func (m *ThemeMutation) SetField(name string, value ent.Value) error {
 		m.SetTitleImg(v)
 		return nil
 	case theme.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -22892,7 +22892,7 @@ func (m *ThemeMutation) AddedField(name string) (ent.Value, bool) {
 func (m *ThemeMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case theme.FieldOnline:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -23071,8 +23071,8 @@ type UserMutation struct {
 	email         *string
 	password      *string
 	mobile        *string
-	status        *int8
-	addstatus     *int8
+	status        *int
+	addstatus     *int
 	clearedFields map[string]struct{}
 	_order        map[int64]struct{}
 	removed_order map[int64]struct{}
@@ -23430,13 +23430,13 @@ func (m *UserMutation) ResetMobile() {
 }
 
 // SetStatus sets the "status" field.
-func (m *UserMutation) SetStatus(i int8) {
+func (m *UserMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *UserMutation) Status() (r int8, exists bool) {
+func (m *UserMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -23447,7 +23447,7 @@ func (m *UserMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *UserMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -23462,7 +23462,7 @@ func (m *UserMutation) OldStatus(ctx context.Context) (v int8, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *UserMutation) AddStatus(i int8) {
+func (m *UserMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -23471,7 +23471,7 @@ func (m *UserMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *UserMutation) AddedStatus() (r int8, exists bool) {
+func (m *UserMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -23745,7 +23745,7 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		m.SetMobile(v)
 		return nil
 	case user.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -23782,7 +23782,7 @@ func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 func (m *UserMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case user.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -23975,8 +23975,8 @@ type UserCouponMutation struct {
 	adduser_id    *int64
 	coupon_id     *int64
 	addcoupon_id  *int64
-	status        *int8
-	addstatus     *int8
+	status        *int
+	addstatus     *int
 	order_id      *int
 	addorder_id   *int
 	clearedFields map[string]struct{}
@@ -24298,13 +24298,13 @@ func (m *UserCouponMutation) ResetCouponID() {
 }
 
 // SetStatus sets the "status" field.
-func (m *UserCouponMutation) SetStatus(i int8) {
+func (m *UserCouponMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *UserCouponMutation) Status() (r int8, exists bool) {
+func (m *UserCouponMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -24315,7 +24315,7 @@ func (m *UserCouponMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the UserCoupon entity.
 // If the UserCoupon object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserCouponMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *UserCouponMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -24330,7 +24330,7 @@ func (m *UserCouponMutation) OldStatus(ctx context.Context) (v int8, err error) 
 }
 
 // AddStatus adds i to the "status" field.
-func (m *UserCouponMutation) AddStatus(i int8) {
+func (m *UserCouponMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -24339,7 +24339,7 @@ func (m *UserCouponMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *UserCouponMutation) AddedStatus() (r int8, exists bool) {
+func (m *UserCouponMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -24540,7 +24540,7 @@ func (m *UserCouponMutation) SetField(name string, value ent.Value) error {
 		m.SetCouponID(v)
 		return nil
 	case usercoupon.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -24613,7 +24613,7 @@ func (m *UserCouponMutation) AddField(name string, value ent.Value) error {
 		m.AddCouponID(v)
 		return nil
 	case usercoupon.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -24748,8 +24748,8 @@ type UserFavorMutation struct {
 	adduser_id    *int64
 	spu_id        *int64
 	addspu_id     *int64
-	status        *int8
-	addstatus     *int8
+	status        *int
+	addstatus     *int
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*UserFavor, error)
@@ -25069,13 +25069,13 @@ func (m *UserFavorMutation) ResetSpuID() {
 }
 
 // SetStatus sets the "status" field.
-func (m *UserFavorMutation) SetStatus(i int8) {
+func (m *UserFavorMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *UserFavorMutation) Status() (r int8, exists bool) {
+func (m *UserFavorMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -25086,7 +25086,7 @@ func (m *UserFavorMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the UserFavor entity.
 // If the UserFavor object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserFavorMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *UserFavorMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -25101,7 +25101,7 @@ func (m *UserFavorMutation) OldStatus(ctx context.Context) (v int8, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *UserFavorMutation) AddStatus(i int8) {
+func (m *UserFavorMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -25110,7 +25110,7 @@ func (m *UserFavorMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *UserFavorMutation) AddedStatus() (r int8, exists bool) {
+func (m *UserFavorMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -25248,7 +25248,7 @@ func (m *UserFavorMutation) SetField(name string, value ent.Value) error {
 		m.SetSpuID(v)
 		return nil
 	case userfavor.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -25309,7 +25309,7 @@ func (m *UserFavorMutation) AddField(name string, value ent.Value) error {
 		m.AddSpuID(v)
 		return nil
 	case userfavor.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -26166,8 +26166,8 @@ type UserPointMutation struct {
 	delete_time   *time.Time
 	value         *int
 	addvalue      *int
-	status        *int8
-	addstatus     *int8
+	status        *int
+	addstatus     *int
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*UserPoint, error)
@@ -26437,13 +26437,13 @@ func (m *UserPointMutation) ResetValue() {
 }
 
 // SetStatus sets the "status" field.
-func (m *UserPointMutation) SetStatus(i int8) {
+func (m *UserPointMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *UserPointMutation) Status() (r int8, exists bool) {
+func (m *UserPointMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -26454,7 +26454,7 @@ func (m *UserPointMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the UserPoint entity.
 // If the UserPoint object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserPointMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *UserPointMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -26469,7 +26469,7 @@ func (m *UserPointMutation) OldStatus(ctx context.Context) (v int8, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *UserPointMutation) AddStatus(i int8) {
+func (m *UserPointMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -26478,7 +26478,7 @@ func (m *UserPointMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *UserPointMutation) AddedStatus() (r int8, exists bool) {
+func (m *UserPointMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -26602,7 +26602,7 @@ func (m *UserPointMutation) SetField(name string, value ent.Value) error {
 		m.SetValue(v)
 		return nil
 	case userpoint.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -26651,7 +26651,7 @@ func (m *UserPointMutation) AddField(name string, value ent.Value) error {
 		m.AddValue(v)
 		return nil
 	case userpoint.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -27887,14 +27887,14 @@ type UserWalletDetailMutation struct {
 	update_time   *time.Time
 	delete_time   *time.Time
 	description   *string
-	_op           *int8
-	add_op        *int8
+	_op           *int
+	add_op        *int
 	current       *int
 	addcurrent    *int
 	value         *int
 	addvalue      *int
-	_type         *int8
-	add_type      *int8
+	_type         *int
+	add_type      *int
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*UserWalletDetail, error)
@@ -28138,13 +28138,13 @@ func (m *UserWalletDetailMutation) ResetDescription() {
 }
 
 // SetOp sets the "op" field.
-func (m *UserWalletDetailMutation) SetOp(i int8) {
+func (m *UserWalletDetailMutation) SetOp(i int) {
 	m._op = &i
 	m.add_op = nil
 }
 
 // GetOp returns the value of the "op" field in the mutation.
-func (m *UserWalletDetailMutation) GetOp() (r int8, exists bool) {
+func (m *UserWalletDetailMutation) GetOp() (r int, exists bool) {
 	v := m._op
 	if v == nil {
 		return
@@ -28155,7 +28155,7 @@ func (m *UserWalletDetailMutation) GetOp() (r int8, exists bool) {
 // OldOp returns the old "op" field's value of the UserWalletDetail entity.
 // If the UserWalletDetail object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserWalletDetailMutation) OldOp(ctx context.Context) (v int8, err error) {
+func (m *UserWalletDetailMutation) OldOp(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldOp is only allowed on UpdateOne operations")
 	}
@@ -28170,7 +28170,7 @@ func (m *UserWalletDetailMutation) OldOp(ctx context.Context) (v int8, err error
 }
 
 // AddOp adds i to the "op" field.
-func (m *UserWalletDetailMutation) AddOp(i int8) {
+func (m *UserWalletDetailMutation) AddOp(i int) {
 	if m.add_op != nil {
 		*m.add_op += i
 	} else {
@@ -28179,7 +28179,7 @@ func (m *UserWalletDetailMutation) AddOp(i int8) {
 }
 
 // AddedOp returns the value that was added to the "op" field in this mutation.
-func (m *UserWalletDetailMutation) AddedOp() (r int8, exists bool) {
+func (m *UserWalletDetailMutation) AddedOp() (r int, exists bool) {
 	v := m.add_op
 	if v == nil {
 		return
@@ -28306,13 +28306,13 @@ func (m *UserWalletDetailMutation) ResetValue() {
 }
 
 // SetType sets the "type" field.
-func (m *UserWalletDetailMutation) SetType(i int8) {
+func (m *UserWalletDetailMutation) SetType(i int) {
 	m._type = &i
 	m.add_type = nil
 }
 
 // GetType returns the value of the "type" field in the mutation.
-func (m *UserWalletDetailMutation) GetType() (r int8, exists bool) {
+func (m *UserWalletDetailMutation) GetType() (r int, exists bool) {
 	v := m._type
 	if v == nil {
 		return
@@ -28323,7 +28323,7 @@ func (m *UserWalletDetailMutation) GetType() (r int8, exists bool) {
 // OldType returns the old "type" field's value of the UserWalletDetail entity.
 // If the UserWalletDetail object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserWalletDetailMutation) OldType(ctx context.Context) (v int8, err error) {
+func (m *UserWalletDetailMutation) OldType(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldType is only allowed on UpdateOne operations")
 	}
@@ -28338,7 +28338,7 @@ func (m *UserWalletDetailMutation) OldType(ctx context.Context) (v int8, err err
 }
 
 // AddType adds i to the "type" field.
-func (m *UserWalletDetailMutation) AddType(i int8) {
+func (m *UserWalletDetailMutation) AddType(i int) {
 	if m.add_type != nil {
 		*m.add_type += i
 	} else {
@@ -28347,7 +28347,7 @@ func (m *UserWalletDetailMutation) AddType(i int8) {
 }
 
 // AddedType returns the value that was added to the "type" field in this mutation.
-func (m *UserWalletDetailMutation) AddedType() (r int8, exists bool) {
+func (m *UserWalletDetailMutation) AddedType() (r int, exists bool) {
 	v := m.add_type
 	if v == nil {
 		return
@@ -28492,7 +28492,7 @@ func (m *UserWalletDetailMutation) SetField(name string, value ent.Value) error 
 		m.SetDescription(v)
 		return nil
 	case userwalletdetail.FieldOp:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -28513,7 +28513,7 @@ func (m *UserWalletDetailMutation) SetField(name string, value ent.Value) error 
 		m.SetValue(v)
 		return nil
 	case userwalletdetail.FieldType:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -28565,7 +28565,7 @@ func (m *UserWalletDetailMutation) AddedField(name string) (ent.Value, bool) {
 func (m *UserWalletDetailMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case userwalletdetail.FieldOp:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -28586,7 +28586,7 @@ func (m *UserWalletDetailMutation) AddField(name string, value ent.Value) error 
 		m.AddValue(v)
 		return nil
 	case userwalletdetail.FieldType:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

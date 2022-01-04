@@ -17,7 +17,7 @@ func (Spu) Fields() []ent.Field {
 		field.Int64("category_id").Comment(""),
 		field.Int64("root_category_id").Comment(""),
 
-		field.Int8("online").Comment(""),
+		field.Int("online").Comment(""),
 
 		field.String("price").Comment("文本型价格，有时候SPU需要展示的是一个范围，或者自定义平均价格"),
 		field.Int("sketch_spec_id").Comment("某种规格可以直接附加单品图片"),

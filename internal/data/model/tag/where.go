@@ -129,14 +129,14 @@ func Description(v string) predicate.Tag {
 }
 
 // Highlight applies equality check predicate on the "highlight" field. It's identical to HighlightEQ.
-func Highlight(v int8) predicate.Tag {
+func Highlight(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldHighlight), v))
 	})
 }
 
 // Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
-func Type(v int8) predicate.Tag {
+func Type(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldType), v))
 	})
@@ -607,21 +607,21 @@ func DescriptionContainsFold(v string) predicate.Tag {
 }
 
 // HighlightEQ applies the EQ predicate on the "highlight" field.
-func HighlightEQ(v int8) predicate.Tag {
+func HighlightEQ(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldHighlight), v))
 	})
 }
 
 // HighlightNEQ applies the NEQ predicate on the "highlight" field.
-func HighlightNEQ(v int8) predicate.Tag {
+func HighlightNEQ(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldHighlight), v))
 	})
 }
 
 // HighlightIn applies the In predicate on the "highlight" field.
-func HighlightIn(vs ...int8) predicate.Tag {
+func HighlightIn(vs ...int) predicate.Tag {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -638,7 +638,7 @@ func HighlightIn(vs ...int8) predicate.Tag {
 }
 
 // HighlightNotIn applies the NotIn predicate on the "highlight" field.
-func HighlightNotIn(vs ...int8) predicate.Tag {
+func HighlightNotIn(vs ...int) predicate.Tag {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -655,49 +655,49 @@ func HighlightNotIn(vs ...int8) predicate.Tag {
 }
 
 // HighlightGT applies the GT predicate on the "highlight" field.
-func HighlightGT(v int8) predicate.Tag {
+func HighlightGT(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldHighlight), v))
 	})
 }
 
 // HighlightGTE applies the GTE predicate on the "highlight" field.
-func HighlightGTE(v int8) predicate.Tag {
+func HighlightGTE(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldHighlight), v))
 	})
 }
 
 // HighlightLT applies the LT predicate on the "highlight" field.
-func HighlightLT(v int8) predicate.Tag {
+func HighlightLT(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldHighlight), v))
 	})
 }
 
 // HighlightLTE applies the LTE predicate on the "highlight" field.
-func HighlightLTE(v int8) predicate.Tag {
+func HighlightLTE(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldHighlight), v))
 	})
 }
 
 // TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v int8) predicate.Tag {
+func TypeEQ(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldType), v))
 	})
 }
 
 // TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v int8) predicate.Tag {
+func TypeNEQ(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldType), v))
 	})
 }
 
 // TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...int8) predicate.Tag {
+func TypeIn(vs ...int) predicate.Tag {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -714,7 +714,7 @@ func TypeIn(vs ...int8) predicate.Tag {
 }
 
 // TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...int8) predicate.Tag {
+func TypeNotIn(vs ...int) predicate.Tag {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -731,28 +731,28 @@ func TypeNotIn(vs ...int8) predicate.Tag {
 }
 
 // TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v int8) predicate.Tag {
+func TypeGT(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldType), v))
 	})
 }
 
 // TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v int8) predicate.Tag {
+func TypeGTE(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldType), v))
 	})
 }
 
 // TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v int8) predicate.Tag {
+func TypeLT(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldType), v))
 	})
 }
 
 // TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v int8) predicate.Tag {
+func TypeLTE(v int) predicate.Tag {
 	return predicate.Tag(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldType), v))
 	})

@@ -13,7 +13,7 @@ func (Sku) Fields() []ent.Field {
 	return []ent.Field{
 		field.Float("price").Comment(""),
 		field.Float("discount_price").Comment(""),
-		field.Int8("online").Comment(""),
+		field.Int("online").Comment(""),
 		field.String("img").Comment(""),
 		field.String("title").Comment(""),
 		field.Int64("spu_id").Optional().Comment(""),

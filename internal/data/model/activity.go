@@ -33,7 +33,7 @@ type Activity struct {
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// Online holds the value of the "online" field.
-	Online int8 `json:"online,omitempty"`
+	Online int `json:"online,omitempty"`
 	// EntranceImg holds the value of the "entrance_img" field.
 	EntranceImg string `json:"entrance_img,omitempty"`
 	// InternalTopImg holds the value of the "internal_top_img" field.
@@ -158,7 +158,7 @@ func (a *Activity) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field online", values[i])
 			} else if value.Valid {
-				a.Online = int8(value.Int64)
+				a.Online = int(value.Int64)
 			}
 		case activity.FieldEntranceImg:
 			if value, ok := values[i].(*sql.NullString); !ok {

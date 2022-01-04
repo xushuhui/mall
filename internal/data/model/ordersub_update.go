@@ -127,14 +127,14 @@ func (osu *OrderSubUpdate) AddFinalPrice(f float64) *OrderSubUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (osu *OrderSubUpdate) SetStatus(i int8) *OrderSubUpdate {
+func (osu *OrderSubUpdate) SetStatus(i int) *OrderSubUpdate {
 	osu.mutation.ResetStatus()
 	osu.mutation.SetStatus(i)
 	return osu
 }
 
 // AddStatus adds i to the "status" field.
-func (osu *OrderSubUpdate) AddStatus(i int8) *OrderSubUpdate {
+func (osu *OrderSubUpdate) AddStatus(i int) *OrderSubUpdate {
 	osu.mutation.AddStatus(i)
 	return osu
 }
@@ -347,14 +347,14 @@ func (osu *OrderSubUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := osu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: ordersub.FieldStatus,
 		})
 	}
 	if value, ok := osu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: ordersub.FieldStatus,
 		})
@@ -512,14 +512,14 @@ func (osuo *OrderSubUpdateOne) AddFinalPrice(f float64) *OrderSubUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (osuo *OrderSubUpdateOne) SetStatus(i int8) *OrderSubUpdateOne {
+func (osuo *OrderSubUpdateOne) SetStatus(i int) *OrderSubUpdateOne {
 	osuo.mutation.ResetStatus()
 	osuo.mutation.SetStatus(i)
 	return osuo
 }
 
 // AddStatus adds i to the "status" field.
-func (osuo *OrderSubUpdateOne) AddStatus(i int8) *OrderSubUpdateOne {
+func (osuo *OrderSubUpdateOne) AddStatus(i int) *OrderSubUpdateOne {
 	osuo.mutation.AddStatus(i)
 	return osuo
 }
@@ -756,14 +756,14 @@ func (osuo *OrderSubUpdateOne) sqlSave(ctx context.Context) (_node *OrderSub, er
 	}
 	if value, ok := osuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: ordersub.FieldStatus,
 		})
 	}
 	if value, ok := osuo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: ordersub.FieldStatus,
 		})

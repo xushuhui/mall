@@ -76,7 +76,7 @@ func (cc *CategoryCreate) SetDescription(s string) *CategoryCreate {
 }
 
 // SetIsRoot sets the "is_root" field.
-func (cc *CategoryCreate) SetIsRoot(i int8) *CategoryCreate {
+func (cc *CategoryCreate) SetIsRoot(i int) *CategoryCreate {
 	cc.mutation.SetIsRoot(i)
 	return cc
 }
@@ -333,7 +333,7 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := cc.mutation.IsRoot(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: category.FieldIsRoot,
 		})

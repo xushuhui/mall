@@ -6,7 +6,6 @@ package mall
 
 import (
 	context "context"
-
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -62,7 +61,6 @@ func _App_GetBannerById0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) 
 			return err
 		}
 		reply := out.(*Banner)
-
 		return ctx.Result(200, reply)
 	}
 }

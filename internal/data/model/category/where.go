@@ -129,7 +129,7 @@ func Description(v string) predicate.Category {
 }
 
 // IsRoot applies equality check predicate on the "is_root" field. It's identical to IsRootEQ.
-func IsRoot(v int8) predicate.Category {
+func IsRoot(v int) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIsRoot), v))
 	})
@@ -635,21 +635,21 @@ func DescriptionContainsFold(v string) predicate.Category {
 }
 
 // IsRootEQ applies the EQ predicate on the "is_root" field.
-func IsRootEQ(v int8) predicate.Category {
+func IsRootEQ(v int) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIsRoot), v))
 	})
 }
 
 // IsRootNEQ applies the NEQ predicate on the "is_root" field.
-func IsRootNEQ(v int8) predicate.Category {
+func IsRootNEQ(v int) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldIsRoot), v))
 	})
 }
 
 // IsRootIn applies the In predicate on the "is_root" field.
-func IsRootIn(vs ...int8) predicate.Category {
+func IsRootIn(vs ...int) predicate.Category {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -666,7 +666,7 @@ func IsRootIn(vs ...int8) predicate.Category {
 }
 
 // IsRootNotIn applies the NotIn predicate on the "is_root" field.
-func IsRootNotIn(vs ...int8) predicate.Category {
+func IsRootNotIn(vs ...int) predicate.Category {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -683,28 +683,28 @@ func IsRootNotIn(vs ...int8) predicate.Category {
 }
 
 // IsRootGT applies the GT predicate on the "is_root" field.
-func IsRootGT(v int8) predicate.Category {
+func IsRootGT(v int) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldIsRoot), v))
 	})
 }
 
 // IsRootGTE applies the GTE predicate on the "is_root" field.
-func IsRootGTE(v int8) predicate.Category {
+func IsRootGTE(v int) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldIsRoot), v))
 	})
 }
 
 // IsRootLT applies the LT predicate on the "is_root" field.
-func IsRootLT(v int8) predicate.Category {
+func IsRootLT(v int) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldIsRoot), v))
 	})
 }
 
 // IsRootLTE applies the LTE predicate on the "is_root" field.
-func IsRootLTE(v int8) predicate.Category {
+func IsRootLTE(v int) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldIsRoot), v))
 	})

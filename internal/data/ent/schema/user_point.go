@@ -13,7 +13,7 @@ func (UserPoint) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("id").Unique().Immutable().Comment("user_id"),
 		field.Int("value").Comment(""),
-		field.Int8("status").Comment(""),
+		field.Int("status").Comment(""),
 	}
 }
 func (UserPoint) Mixin() []ent.Mixin {

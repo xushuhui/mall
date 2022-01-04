@@ -27,7 +27,7 @@ type SpecKey struct {
 	// Unit holds the value of the "unit" field.
 	Unit string `json:"unit,omitempty"`
 	// Standard holds the value of the "standard" field.
-	Standard int8 `json:"standard,omitempty"`
+	Standard int `json:"standard,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -119,7 +119,7 @@ func (sk *SpecKey) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field standard", values[i])
 			} else if value.Valid {
-				sk.Standard = int8(value.Int64)
+				sk.Standard = int(value.Int64)
 			}
 		case speckey.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {

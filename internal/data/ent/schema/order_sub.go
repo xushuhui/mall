@@ -23,9 +23,9 @@ func (OrderSub) Fields() []ent.Field {
 		field.Int64("user_id").Optional().Comment("user表外键"),
 		field.Float("price").Comment(""),
 		field.Int("count").Comment(""),
-	
+
 		field.Float("final_price").Comment(""),
-		field.Int8("status").Comment(""),
+		field.Int("status").Comment(""),
 		field.Int64("order_id").Optional(),
 	}
 }

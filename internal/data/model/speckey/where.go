@@ -129,7 +129,7 @@ func Unit(v string) predicate.SpecKey {
 }
 
 // Standard applies equality check predicate on the "standard" field. It's identical to StandardEQ.
-func Standard(v int8) predicate.SpecKey {
+func Standard(v int) predicate.SpecKey {
 	return predicate.SpecKey(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStandard), v))
 	})
@@ -607,21 +607,21 @@ func UnitContainsFold(v string) predicate.SpecKey {
 }
 
 // StandardEQ applies the EQ predicate on the "standard" field.
-func StandardEQ(v int8) predicate.SpecKey {
+func StandardEQ(v int) predicate.SpecKey {
 	return predicate.SpecKey(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStandard), v))
 	})
 }
 
 // StandardNEQ applies the NEQ predicate on the "standard" field.
-func StandardNEQ(v int8) predicate.SpecKey {
+func StandardNEQ(v int) predicate.SpecKey {
 	return predicate.SpecKey(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStandard), v))
 	})
 }
 
 // StandardIn applies the In predicate on the "standard" field.
-func StandardIn(vs ...int8) predicate.SpecKey {
+func StandardIn(vs ...int) predicate.SpecKey {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -638,7 +638,7 @@ func StandardIn(vs ...int8) predicate.SpecKey {
 }
 
 // StandardNotIn applies the NotIn predicate on the "standard" field.
-func StandardNotIn(vs ...int8) predicate.SpecKey {
+func StandardNotIn(vs ...int) predicate.SpecKey {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -655,28 +655,28 @@ func StandardNotIn(vs ...int8) predicate.SpecKey {
 }
 
 // StandardGT applies the GT predicate on the "standard" field.
-func StandardGT(v int8) predicate.SpecKey {
+func StandardGT(v int) predicate.SpecKey {
 	return predicate.SpecKey(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldStandard), v))
 	})
 }
 
 // StandardGTE applies the GTE predicate on the "standard" field.
-func StandardGTE(v int8) predicate.SpecKey {
+func StandardGTE(v int) predicate.SpecKey {
 	return predicate.SpecKey(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldStandard), v))
 	})
 }
 
 // StandardLT applies the LT predicate on the "standard" field.
-func StandardLT(v int8) predicate.SpecKey {
+func StandardLT(v int) predicate.SpecKey {
 	return predicate.SpecKey(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldStandard), v))
 	})
 }
 
 // StandardLTE applies the LTE predicate on the "standard" field.
-func StandardLTE(v int8) predicate.SpecKey {
+func StandardLTE(v int) predicate.SpecKey {
 	return predicate.SpecKey(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldStandard), v))
 	})

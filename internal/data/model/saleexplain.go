@@ -24,7 +24,7 @@ type SaleExplain struct {
 	// DeleteTime holds the value of the "delete_time" field.
 	DeleteTime time.Time `json:"delete_time,omitempty"`
 	// Fixed holds the value of the "fixed" field.
-	Fixed int8 `json:"fixed,omitempty"`
+	Fixed int `json:"fixed,omitempty"`
 	// Text holds the value of the "text" field.
 	Text string `json:"text,omitempty"`
 	// SpuID holds the value of the "spu_id" field.
@@ -115,7 +115,7 @@ func (se *SaleExplain) assignValues(columns []string, values []interface{}) erro
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field fixed", values[i])
 			} else if value.Valid {
-				se.Fixed = int8(value.Int64)
+				se.Fixed = int(value.Int64)
 			}
 		case saleexplain.FieldText:
 			if value, ok := values[i].(*sql.NullString); !ok {

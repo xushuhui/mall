@@ -20,7 +20,7 @@ var (
 		{Name: "start_time", Type: field.TypeTime},
 		{Name: "end_time", Type: field.TypeTime},
 		{Name: "remark", Type: field.TypeString},
-		{Name: "online", Type: field.TypeInt8},
+		{Name: "online", Type: field.TypeInt},
 		{Name: "entrance_img", Type: field.TypeString},
 		{Name: "internal_top_img", Type: field.TypeString},
 		{Name: "name", Type: field.TypeString},
@@ -97,7 +97,7 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "description", Type: field.TypeString},
-		{Name: "is_root", Type: field.TypeInt8},
+		{Name: "is_root", Type: field.TypeInt},
 		{Name: "img", Type: field.TypeString},
 		{Name: "index", Type: field.TypeInt},
 		{Name: "online", Type: field.TypeInt},
@@ -154,7 +154,7 @@ var (
 		{Name: "valitiy", Type: field.TypeInt},
 		{Name: "activity_id", Type: field.TypeInt64, Nullable: true},
 		{Name: "remark", Type: field.TypeString},
-		{Name: "whole_store", Type: field.TypeInt8},
+		{Name: "whole_store", Type: field.TypeInt},
 	}
 	// CouponTable holds the schema information for the "coupon" table.
 	CouponTable = &schema.Table{
@@ -226,7 +226,7 @@ var (
 		{Name: "total_price", Type: field.TypeFloat64},
 		{Name: "total_count", Type: field.TypeInt},
 		{Name: "final_total_price", Type: field.TypeFloat64},
-		{Name: "status", Type: field.TypeInt8},
+		{Name: "status", Type: field.TypeInt},
 		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 	}
 	// OrderTable holds the schema information for the "order" table.
@@ -294,7 +294,7 @@ var (
 		{Name: "price", Type: field.TypeFloat64},
 		{Name: "count", Type: field.TypeInt},
 		{Name: "final_price", Type: field.TypeFloat64},
-		{Name: "status", Type: field.TypeInt8},
+		{Name: "status", Type: field.TypeInt},
 		{Name: "order_id", Type: field.TypeInt64, Nullable: true},
 	}
 	// OrderSubTable holds the schema information for the "order_sub" table.
@@ -322,7 +322,7 @@ var (
 		{Name: "reason", Type: field.TypeString},
 		{Name: "order_id", Type: field.TypeInt64, Nullable: true},
 		{Name: "order_sub_id", Type: field.TypeInt64, Nullable: true},
-		{Name: "status", Type: field.TypeInt8},
+		{Name: "status", Type: field.TypeInt},
 		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 	}
 	// RefundTable holds the schema information for the "refund" table.
@@ -345,7 +345,7 @@ var (
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "fixed", Type: field.TypeInt8},
+		{Name: "fixed", Type: field.TypeInt},
 		{Name: "text", Type: field.TypeString},
 		{Name: "index", Type: field.TypeInt},
 		{Name: "replace_id", Type: field.TypeInt64},
@@ -373,7 +373,7 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "price", Type: field.TypeFloat64},
 		{Name: "discount_price", Type: field.TypeFloat64},
-		{Name: "online", Type: field.TypeInt8},
+		{Name: "online", Type: field.TypeInt},
 		{Name: "img", Type: field.TypeString},
 		{Name: "title", Type: field.TypeString},
 		{Name: "spu_id", Type: field.TypeInt64, Nullable: true},
@@ -411,7 +411,7 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "unit", Type: field.TypeString},
-		{Name: "standard", Type: field.TypeInt8},
+		{Name: "standard", Type: field.TypeInt},
 		{Name: "description", Type: field.TypeString},
 	}
 	// SpecKeyTable holds the schema information for the "spec_key" table.
@@ -446,7 +446,7 @@ var (
 		{Name: "subtitle", Type: field.TypeString},
 		{Name: "category_id", Type: field.TypeInt64},
 		{Name: "root_category_id", Type: field.TypeInt64},
-		{Name: "online", Type: field.TypeInt8},
+		{Name: "online", Type: field.TypeInt},
 		{Name: "price", Type: field.TypeString},
 		{Name: "sketch_spec_id", Type: field.TypeInt},
 		{Name: "default_sku_id", Type: field.TypeInt},
@@ -518,8 +518,8 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "title", Type: field.TypeString},
 		{Name: "description", Type: field.TypeString},
-		{Name: "highlight", Type: field.TypeInt8},
-		{Name: "type", Type: field.TypeInt8},
+		{Name: "highlight", Type: field.TypeInt},
+		{Name: "type", Type: field.TypeInt},
 	}
 	// TagTable holds the schema information for the "tag" table.
 	TagTable = &schema.Table{
@@ -541,7 +541,7 @@ var (
 		{Name: "extend", Type: field.TypeString},
 		{Name: "internal_top_img", Type: field.TypeString},
 		{Name: "title_img", Type: field.TypeString},
-		{Name: "online", Type: field.TypeInt8},
+		{Name: "online", Type: field.TypeInt},
 	}
 	// ThemeTable holds the schema information for the "theme" table.
 	ThemeTable = &schema.Table{
@@ -559,7 +559,7 @@ var (
 		{Name: "email", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
 		{Name: "mobile", Type: field.TypeString},
-		{Name: "status", Type: field.TypeInt8, Default: 1},
+		{Name: "status", Type: field.TypeInt, Default: 1},
 	}
 	// UserTable holds the schema information for the "user" table.
 	UserTable = &schema.Table{
@@ -575,7 +575,7 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "user_id", Type: field.TypeInt64},
 		{Name: "coupon_id", Type: field.TypeInt64},
-		{Name: "status", Type: field.TypeInt8},
+		{Name: "status", Type: field.TypeInt},
 		{Name: "order_id", Type: field.TypeInt},
 	}
 	// UserCouponTable holds the schema information for the "user_coupon" table.
@@ -592,7 +592,7 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "user_id", Type: field.TypeInt64},
 		{Name: "spu_id", Type: field.TypeInt64},
-		{Name: "status", Type: field.TypeInt8, Default: 1},
+		{Name: "status", Type: field.TypeInt, Default: 1},
 	}
 	// UserFavorTable holds the schema information for the "user_favor" table.
 	UserFavorTable = &schema.Table{
@@ -625,7 +625,7 @@ var (
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "value", Type: field.TypeInt},
-		{Name: "status", Type: field.TypeInt8},
+		{Name: "status", Type: field.TypeInt},
 	}
 	// UserPointTable holds the schema information for the "user_point" table.
 	UserPointTable = &schema.Table{
@@ -669,10 +669,10 @@ var (
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "description", Type: field.TypeString},
-		{Name: "op", Type: field.TypeInt8, Default: 1},
+		{Name: "op", Type: field.TypeInt, Default: 1},
 		{Name: "current", Type: field.TypeInt},
 		{Name: "value", Type: field.TypeInt},
-		{Name: "type", Type: field.TypeInt8, Default: 1},
+		{Name: "type", Type: field.TypeInt, Default: 1},
 	}
 	// UserWalletDetailTable holds the schema information for the "user_wallet_detail" table.
 	UserWalletDetailTable = &schema.Table{
@@ -903,9 +903,6 @@ var (
 func init() {
 	BannerItemTable.ForeignKeys[0].RefTable = BannerTable
 	CategoryTable.ForeignKeys[0].RefTable = CategoryTable
-	ChargeTable.Annotation = &entsql.Annotation{
-		Table: "charge",
-	}
 	GridCategoryTable.Annotation = &entsql.Annotation{
 		Table: "grid_category",
 	}

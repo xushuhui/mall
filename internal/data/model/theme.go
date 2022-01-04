@@ -39,7 +39,7 @@ type Theme struct {
 	// TitleImg holds the value of the "title_img" field.
 	TitleImg string `json:"title_img,omitempty"`
 	// Online holds the value of the "online" field.
-	Online int8 `json:"online,omitempty"`
+	Online int `json:"online,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ThemeQuery when eager-loading is set.
 	Edges ThemeEdges `json:"edges"`
@@ -165,7 +165,7 @@ func (t *Theme) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field online", values[i])
 			} else if value.Valid {
-				t.Online = int8(value.Int64)
+				t.Online = int(value.Int64)
 			}
 		}
 	}

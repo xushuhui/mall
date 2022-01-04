@@ -27,7 +27,7 @@ func (Theme) Fields() []ent.Field {
 		field.String("extend").Comment(""),
 		field.String("internal_top_img").Comment(""),
 		field.String("title_img").Comment(""),
-		field.Int8("online").Comment(""),
+		field.Int("online").Comment(""),
 	}
 }
 func (Theme) Mixin() []ent.Mixin {

@@ -178,14 +178,14 @@ func (cu *CouponUpdate) SetRemark(s string) *CouponUpdate {
 }
 
 // SetWholeStore sets the "whole_store" field.
-func (cu *CouponUpdate) SetWholeStore(i int8) *CouponUpdate {
+func (cu *CouponUpdate) SetWholeStore(i int) *CouponUpdate {
 	cu.mutation.ResetWholeStore()
 	cu.mutation.SetWholeStore(i)
 	return cu
 }
 
 // AddWholeStore adds i to the "whole_store" field.
-func (cu *CouponUpdate) AddWholeStore(i int8) *CouponUpdate {
+func (cu *CouponUpdate) AddWholeStore(i int) *CouponUpdate {
 	cu.mutation.AddWholeStore(i)
 	return cu
 }
@@ -495,14 +495,14 @@ func (cu *CouponUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.WholeStore(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: coupon.FieldWholeStore,
 		})
 	}
 	if value, ok := cu.mutation.AddedWholeStore(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: coupon.FieldWholeStore,
 		})
@@ -783,14 +783,14 @@ func (cuo *CouponUpdateOne) SetRemark(s string) *CouponUpdateOne {
 }
 
 // SetWholeStore sets the "whole_store" field.
-func (cuo *CouponUpdateOne) SetWholeStore(i int8) *CouponUpdateOne {
+func (cuo *CouponUpdateOne) SetWholeStore(i int) *CouponUpdateOne {
 	cuo.mutation.ResetWholeStore()
 	cuo.mutation.SetWholeStore(i)
 	return cuo
 }
 
 // AddWholeStore adds i to the "whole_store" field.
-func (cuo *CouponUpdateOne) AddWholeStore(i int8) *CouponUpdateOne {
+func (cuo *CouponUpdateOne) AddWholeStore(i int) *CouponUpdateOne {
 	cuo.mutation.AddWholeStore(i)
 	return cuo
 }
@@ -1124,14 +1124,14 @@ func (cuo *CouponUpdateOne) sqlSave(ctx context.Context) (_node *Coupon, err err
 	}
 	if value, ok := cuo.mutation.WholeStore(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: coupon.FieldWholeStore,
 		})
 	}
 	if value, ok := cuo.mutation.AddedWholeStore(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: coupon.FieldWholeStore,
 		})

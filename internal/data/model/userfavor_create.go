@@ -75,13 +75,13 @@ func (ufc *UserFavorCreate) SetSpuID(i int64) *UserFavorCreate {
 }
 
 // SetStatus sets the "status" field.
-func (ufc *UserFavorCreate) SetStatus(i int8) *UserFavorCreate {
+func (ufc *UserFavorCreate) SetStatus(i int) *UserFavorCreate {
 	ufc.mutation.SetStatus(i)
 	return ufc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ufc *UserFavorCreate) SetNillableStatus(i *int8) *UserFavorCreate {
+func (ufc *UserFavorCreate) SetNillableStatus(i *int) *UserFavorCreate {
 	if i != nil {
 		ufc.SetStatus(*i)
 	}
@@ -259,7 +259,7 @@ func (ufc *UserFavorCreate) createSpec() (*UserFavor, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := ufc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userfavor.FieldStatus,
 		})

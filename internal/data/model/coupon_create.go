@@ -139,7 +139,7 @@ func (cc *CouponCreate) SetRemark(s string) *CouponCreate {
 }
 
 // SetWholeStore sets the "whole_store" field.
-func (cc *CouponCreate) SetWholeStore(i int8) *CouponCreate {
+func (cc *CouponCreate) SetWholeStore(i int) *CouponCreate {
 	cc.mutation.SetWholeStore(i)
 	return cc
 }
@@ -437,7 +437,7 @@ func (cc *CouponCreate) createSpec() (*Coupon, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := cc.mutation.WholeStore(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: coupon.FieldWholeStore,
 		})

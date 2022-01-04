@@ -18,7 +18,7 @@ func (Refund) Fields() []ent.Field {
 		field.String("reason").Comment(""),
 		field.Int64("order_id").Optional(),
 		field.Int64("order_sub_id").Optional(),
-		field.Int8("status").Comment(""),
+		field.Int("status").Comment(""),
 	}
 }
 func (Refund) Mixin() []ent.Mixin {

@@ -28,9 +28,9 @@ type Tag struct {
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
 	// Highlight holds the value of the "highlight" field.
-	Highlight int8 `json:"highlight,omitempty"`
+	Highlight int `json:"highlight,omitempty"`
 	// Type holds the value of the "type" field.
-	Type int8 `json:"type,omitempty"`
+	Type int `json:"type,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TagQuery when eager-loading is set.
 	Edges TagEdges `json:"edges"`
@@ -120,13 +120,13 @@ func (t *Tag) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field highlight", values[i])
 			} else if value.Valid {
-				t.Highlight = int8(value.Int64)
+				t.Highlight = int(value.Int64)
 			}
 		case tag.FieldType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				t.Type = int8(value.Int64)
+				t.Type = int(value.Int64)
 			}
 		}
 	}

@@ -38,7 +38,7 @@ type Refund struct {
 	// OrderSubID holds the value of the "order_sub_id" field.
 	OrderSubID int64 `json:"order_sub_id,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the RefundQuery when eager-loading is set.
 	Edges RefundEdges `json:"edges"`
@@ -157,7 +157,7 @@ func (r *Refund) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				r.Status = int8(value.Int64)
+				r.Status = int(value.Int64)
 			}
 		}
 	}

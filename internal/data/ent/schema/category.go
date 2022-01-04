@@ -15,7 +15,7 @@ func (Category) Fields() []ent.Field {
 		field.String("name").Comment(""),
 		field.String("description").Comment(""),
 
-		field.Int8("is_root").Comment(""),
+		field.Int("is_root").Comment(""),
 		field.Int64("parent_id").Optional().Comment(""),
 		field.String("img").Comment(""),
 		field.Int("index").Comment(""),

@@ -171,7 +171,7 @@ func TitleImg(v string) predicate.Theme {
 }
 
 // Online applies equality check predicate on the "online" field. It's identical to OnlineEQ.
-func Online(v int8) predicate.Theme {
+func Online(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOnline), v))
 	})
@@ -1308,21 +1308,21 @@ func TitleImgContainsFold(v string) predicate.Theme {
 }
 
 // OnlineEQ applies the EQ predicate on the "online" field.
-func OnlineEQ(v int8) predicate.Theme {
+func OnlineEQ(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineNEQ applies the NEQ predicate on the "online" field.
-func OnlineNEQ(v int8) predicate.Theme {
+func OnlineNEQ(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineIn applies the In predicate on the "online" field.
-func OnlineIn(vs ...int8) predicate.Theme {
+func OnlineIn(vs ...int) predicate.Theme {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1339,7 +1339,7 @@ func OnlineIn(vs ...int8) predicate.Theme {
 }
 
 // OnlineNotIn applies the NotIn predicate on the "online" field.
-func OnlineNotIn(vs ...int8) predicate.Theme {
+func OnlineNotIn(vs ...int) predicate.Theme {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1356,28 +1356,28 @@ func OnlineNotIn(vs ...int8) predicate.Theme {
 }
 
 // OnlineGT applies the GT predicate on the "online" field.
-func OnlineGT(v int8) predicate.Theme {
+func OnlineGT(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineGTE applies the GTE predicate on the "online" field.
-func OnlineGTE(v int8) predicate.Theme {
+func OnlineGTE(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineLT applies the LT predicate on the "online" field.
-func OnlineLT(v int8) predicate.Theme {
+func OnlineLT(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldOnline), v))
 	})
 }
 
 // OnlineLTE applies the LTE predicate on the "online" field.
-func OnlineLTE(v int8) predicate.Theme {
+func OnlineLTE(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldOnline), v))
 	})

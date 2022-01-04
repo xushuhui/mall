@@ -26,7 +26,7 @@ type UserWalletDetail struct {
 	Description string `json:"description,omitempty"`
 	// Op holds the value of the "op" field.
 	// 1 增加 2减少
-	Op int8 `json:"op,omitempty"`
+	Op int `json:"op,omitempty"`
 	// Current holds the value of the "current" field.
 	// 当前余额
 	Current int `json:"current,omitempty"`
@@ -35,7 +35,7 @@ type UserWalletDetail struct {
 	Value int `json:"value,omitempty"`
 	// Type holds the value of the "type" field.
 	// 1充值，2消费
-	Type int8 `json:"type,omitempty"`
+	Type int `json:"type,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -98,7 +98,7 @@ func (uwd *UserWalletDetail) assignValues(columns []string, values []interface{}
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field op", values[i])
 			} else if value.Valid {
-				uwd.Op = int8(value.Int64)
+				uwd.Op = int(value.Int64)
 			}
 		case userwalletdetail.FieldCurrent:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -116,7 +116,7 @@ func (uwd *UserWalletDetail) assignValues(columns []string, values []interface{}
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				uwd.Type = int8(value.Int64)
+				uwd.Type = int(value.Int64)
 			}
 		}
 	}

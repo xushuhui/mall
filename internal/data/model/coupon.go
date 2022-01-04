@@ -47,7 +47,7 @@ type Coupon struct {
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// WholeStore holds the value of the "whole_store" field.
-	WholeStore int8 `json:"whole_store,omitempty"`
+	WholeStore int `json:"whole_store,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CouponQuery when eager-loading is set.
 	Edges CouponEdges `json:"edges"`
@@ -204,7 +204,7 @@ func (c *Coupon) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field whole_store", values[i])
 			} else if value.Valid {
-				c.WholeStore = int8(value.Int64)
+				c.WholeStore = int(value.Int64)
 			}
 		}
 	}

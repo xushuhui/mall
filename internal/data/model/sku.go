@@ -29,7 +29,7 @@ type Sku struct {
 	// DiscountPrice holds the value of the "discount_price" field.
 	DiscountPrice float64 `json:"discount_price,omitempty"`
 	// Online holds the value of the "online" field.
-	Online int8 `json:"online,omitempty"`
+	Online int `json:"online,omitempty"`
 	// Img holds the value of the "img" field.
 	Img string `json:"img,omitempty"`
 	// Title holds the value of the "title" field.
@@ -118,7 +118,7 @@ func (s *Sku) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field online", values[i])
 			} else if value.Valid {
-				s.Online = int8(value.Int64)
+				s.Online = int(value.Int64)
 			}
 		case sku.FieldImg:
 			if value, ok := values[i].(*sql.NullString); !ok {

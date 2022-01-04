@@ -69,13 +69,13 @@ func (uwdc *UserWalletDetailCreate) SetDescription(s string) *UserWalletDetailCr
 }
 
 // SetOp sets the "op" field.
-func (uwdc *UserWalletDetailCreate) SetOp(i int8) *UserWalletDetailCreate {
+func (uwdc *UserWalletDetailCreate) SetOp(i int) *UserWalletDetailCreate {
 	uwdc.mutation.SetOp(i)
 	return uwdc
 }
 
 // SetNillableOp sets the "op" field if the given value is not nil.
-func (uwdc *UserWalletDetailCreate) SetNillableOp(i *int8) *UserWalletDetailCreate {
+func (uwdc *UserWalletDetailCreate) SetNillableOp(i *int) *UserWalletDetailCreate {
 	if i != nil {
 		uwdc.SetOp(*i)
 	}
@@ -95,13 +95,13 @@ func (uwdc *UserWalletDetailCreate) SetValue(i int) *UserWalletDetailCreate {
 }
 
 // SetType sets the "type" field.
-func (uwdc *UserWalletDetailCreate) SetType(i int8) *UserWalletDetailCreate {
+func (uwdc *UserWalletDetailCreate) SetType(i int) *UserWalletDetailCreate {
 	uwdc.mutation.SetType(i)
 	return uwdc
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (uwdc *UserWalletDetailCreate) SetNillableType(i *int8) *UserWalletDetailCreate {
+func (uwdc *UserWalletDetailCreate) SetNillableType(i *int) *UserWalletDetailCreate {
 	if i != nil {
 		uwdc.SetType(*i)
 	}
@@ -281,7 +281,7 @@ func (uwdc *UserWalletDetailCreate) createSpec() (*UserWalletDetail, *sqlgraph.C
 	}
 	if value, ok := uwdc.mutation.GetOp(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldOp,
 		})
@@ -305,7 +305,7 @@ func (uwdc *UserWalletDetailCreate) createSpec() (*UserWalletDetail, *sqlgraph.C
 	}
 	if value, ok := uwdc.mutation.GetType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userwalletdetail.FieldType,
 		})

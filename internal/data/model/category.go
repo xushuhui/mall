@@ -27,7 +27,7 @@ type Category struct {
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
 	// IsRoot holds the value of the "is_root" field.
-	IsRoot int8 `json:"is_root,omitempty"`
+	IsRoot int `json:"is_root,omitempty"`
 	// ParentID holds the value of the "parent_id" field.
 	ParentID int64 `json:"parent_id,omitempty"`
 	// Img holds the value of the "img" field.
@@ -154,7 +154,7 @@ func (c *Category) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field is_root", values[i])
 			} else if value.Valid {
-				c.IsRoot = int8(value.Int64)
+				c.IsRoot = int(value.Int64)
 			}
 		case category.FieldParentID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

@@ -24,7 +24,7 @@ func (Coupon) Fields() []ent.Field {
 		field.Int("valitiy").Comment(""),
 		field.Int64("activity_id").Optional().Comment(""),
 		field.String("remark").Comment(""),
-		field.Int8("whole_store").Comment(""),
+		field.Int("whole_store").Comment(""),
 	}
 }
 

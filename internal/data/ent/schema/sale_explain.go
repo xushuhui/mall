@@ -12,7 +12,7 @@ type SaleExplain struct {
 
 func (SaleExplain) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int8("fixed").Comment(""),
+		field.Int("fixed").Comment(""),
 		field.String("text").Comment(""),
 		field.Int64("spu_id").Optional().Comment(""),
 		field.Int("index").Comment(""),

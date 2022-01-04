@@ -62,7 +62,7 @@ var (
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
 	// DefaultOp holds the default value on creation for the "op" field.
-	DefaultOp int8
+	DefaultOp int
 	// DefaultType holds the default value on creation for the "type" field.
-	DefaultType int8
+	DefaultType int
 )

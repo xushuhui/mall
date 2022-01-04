@@ -67,14 +67,14 @@ func (upu *UserPointUpdate) AddValue(i int) *UserPointUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (upu *UserPointUpdate) SetStatus(i int8) *UserPointUpdate {
+func (upu *UserPointUpdate) SetStatus(i int) *UserPointUpdate {
 	upu.mutation.ResetStatus()
 	upu.mutation.SetStatus(i)
 	return upu
 }
 
 // AddStatus adds i to the "status" field.
-func (upu *UserPointUpdate) AddStatus(i int8) *UserPointUpdate {
+func (upu *UserPointUpdate) AddStatus(i int) *UserPointUpdate {
 	upu.mutation.AddStatus(i)
 	return upu
 }
@@ -201,14 +201,14 @@ func (upu *UserPointUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := upu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userpoint.FieldStatus,
 		})
 	}
 	if value, ok := upu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userpoint.FieldStatus,
 		})
@@ -272,14 +272,14 @@ func (upuo *UserPointUpdateOne) AddValue(i int) *UserPointUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (upuo *UserPointUpdateOne) SetStatus(i int8) *UserPointUpdateOne {
+func (upuo *UserPointUpdateOne) SetStatus(i int) *UserPointUpdateOne {
 	upuo.mutation.ResetStatus()
 	upuo.mutation.SetStatus(i)
 	return upuo
 }
 
 // AddStatus adds i to the "status" field.
-func (upuo *UserPointUpdateOne) AddStatus(i int8) *UserPointUpdateOne {
+func (upuo *UserPointUpdateOne) AddStatus(i int) *UserPointUpdateOne {
 	upuo.mutation.AddStatus(i)
 	return upuo
 }
@@ -430,14 +430,14 @@ func (upuo *UserPointUpdateOne) sqlSave(ctx context.Context) (_node *UserPoint, 
 	}
 	if value, ok := upuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userpoint.FieldStatus,
 		})
 	}
 	if value, ok := upuo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt8,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: userpoint.FieldStatus,
 		})
