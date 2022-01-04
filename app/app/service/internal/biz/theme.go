@@ -7,20 +7,18 @@ import (
 )
 
 type Theme struct {
-	Id             int64  ` json:"id,omitempty"`
-	Title          string ` json:"title,omitempty"`
-	Description    string ` json:"description,omitempty"`
-	Name           string ` json:"name,omitempty"`
-	EntranceImg    string ` json:"entrance_img,omitempty"`
-	
+	Id          int64  ` json:"id,omitempty"`
+	Title       string ` json:"title,omitempty"`
+	Description string ` json:"description,omitempty"`
+	Name        string ` json:"name,omitempty"`
+	EntranceImg string ` json:"entrance_img,omitempty"`
+
 	InternalTopImg string ` json:"internal_top_img,omitempty"`
 	TitleImg       string `json:"title_img,omitempty"`
 	TplName        string ` json:"tpl_name,omitempty"`
-	Online         int32   `json:"online,omitempty"`
+	Online         int32  `json:"online,omitempty"`
 }
-type Spu struct {
-	
-}
+
 type ThemeSpu struct {
 	Theme
 	SpuList []*Spu ` json:"spu_list,omitempty"`

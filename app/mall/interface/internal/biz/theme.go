@@ -7,20 +7,36 @@ import (
 )
 
 type Theme struct {
-	Id             int64  ` json:"id,omitempty"`
-	Title          string ` json:"title,omitempty"`
-	Description    string ` json:"description,omitempty"`
-	Name           string ` json:"name,omitempty"`
-	EntranceImg    string ` json:"entrance_img,omitempty"`
-	
+	Id          int64  ` json:"id,omitempty"`
+	Title       string ` json:"title,omitempty"`
+	Description string ` json:"description,omitempty"`
+	Name        string ` json:"name,omitempty"`
+	EntranceImg string ` json:"entrance_img,omitempty"`
+
 	InternalTopImg string ` json:"internal_top_img,omitempty"`
 	TitleImg       string `json:"title_img,omitempty"`
 	TplName        string ` json:"tpl_name,omitempty"`
-	Online         int32   `json:"online,omitempty"`
+	Online         int32  `json:"online,omitempty"`
 }
 type ThemeSpu struct {
 	Theme
 	SpuList []*Spu ` json:"spu_list,omitempty"`
+}
+
+type Spu struct {
+	Id             int64  ` json:"id,omitempty"`
+	Title          string ` json:"title,omitempty"`
+	Subtitle       string ` json:"subtitle,omitempty"`
+	CategoryId     int64  ` json:"category_id,omitempty"`
+	RootCategoryId int64  ` json:"root_category_id,omitempty"`
+	Price          string ` json:"price,omitempty"`
+	Img            string ` json:"img,omitempty"`
+	ForThemeImg    string ` json:"for_theme_img,omitempty"`
+	Description    string ` json:"description,omitempty"`
+	DiscountPrice  string ` json:"discount_price,omitempty"`
+	Tags           string ` json:"tags,omitempty"`
+
+	Online int32 `json:"online,omitempty"`
 }
 type ThemeRepo interface {
 	GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error)

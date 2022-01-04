@@ -25,4 +25,3 @@ func NewOrderSku(sku Sku, skuInfoDTO *mall.SkuInfo) OrderSku {
 		specValues:  sku.getSpecValueList(),
 	}
 }
-
