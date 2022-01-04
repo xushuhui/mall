@@ -2,12 +2,11 @@ package data
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/log"
 	"mall-go/api/mall"
-	"mall-go/internal/biz"
-	"mall-go/internal/data/model"
-	"mall-go/internal/data/model/activity"
+	
 	"mall-go/pkg/utils"
+
+	"github.com/go-kratos/kratos/v2/log"
 )
 
 type activityRepo struct {

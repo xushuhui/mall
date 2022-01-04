@@ -4,11 +4,14 @@ go 1.16
 
 require (
 	entgo.io/ent v0.9.1
-	github.com/go-kratos/kratos/v2 v2.1.2
+	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20211231061108-ed86f36476c9
+	github.com/go-kratos/kratos/v2 v2.1.3
 	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/google/subcommands v1.2.0 // indirect
 	github.com/google/wire v0.5.0
 	github.com/gorilla/handlers v1.5.1
+	github.com/hashicorp/consul/api v1.9.1
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/testify v1.7.0
 	github.com/xushuhui/goal v0.1.0

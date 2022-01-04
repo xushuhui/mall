@@ -4,106 +4,39 @@ package mall;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "api/mall/sku.proto";
-import "api/mall/coupon.proto";
+
+import "api/mall/common.proto";
+
 option go_package = "mall-go/api/mall";
 
 service App {
-
-  rpc GetBannerById(BannerByIdRequest) returns (Banner) {
-    option (google.api.http) = {
-      get : "/banner/id/{id}"
-    };
-  }
-  rpc GetBannerByName(BannerByNameRequest) returns (Banner) {
-    option (google.api.http) = {
-      get : "/banner/name/{name}"
-    };
-  }
-  rpc GetThemeByNames(ThemeByNamesRequest) returns (Themes) {
-    option (google.api.http) = {
-      get : "/theme/by/names"
-    };
-  }
-  //
-  rpc GetThemeWithSpu(ThemeWithSpuRequest) returns (ThemeSpu) {
-    option (google.api.http) = {
-      get : "/theme/name/{name}/with_spu"
-    };
-  }
-  rpc GetActivityByName(ActivityByNameRequest) returns (Activity) {
-    option (google.api.http) = {
-      get : "/activity/name/{name}"
-    };
-  }
-  rpc GetActivityWithCoupon(ActivityWithCouponRequest)
-      returns (ActivityCoupon) {
-    option (google.api.http) = {
-      get : "/activity/name/{name}/with_coupon"
-    };
-  }
- 
-  rpc GetAllCategory(google.protobuf.Empty) returns (AllCategory) {
-    option (google.api.http) = {
-      get : "/category/all"
-    };
-  }
-  rpc GetGridCategory(google.protobuf.Empty) returns (GridCategories) {
-    option (google.api.http) = {
-      get : "/category/grid/all"
-    };
-  }
- 
-  rpc GetTagByType(TagByTypeRequest) returns (Tags) {
-    option (google.api.http) = {
-      get : "/tag/type/{type}"
-    };
-  }
-  
+    rpc GetBannerById(BannerByIdRequest) returns (Banner) {
+        option (google.api.http) = {
+          get : "/banner/id/{id}"
+        };
+      }
+      rpc GetBannerByName(BannerByNameRequest) returns (Banner) {
+        option (google.api.http) = {
+          get : "/banner/name/{name}"
+        };
+      }
+      rpc GetThemeByNames(ThemeByNamesRequest) returns (Themes) {
+        option (google.api.http) = {
+          get : "/theme/by/names"
+        };
+      }
+      //
+      rpc GetThemeWithSpu(ThemeWithSpuRequest) returns (ThemeSpu) {
+        option (google.api.http) = {
+          get : "/theme/name/{name}/with_spu"
+        };
+      }
 }
 
 message BannerByIdRequest { int64 id = 1; }
 message BannerByNameRequest { string name = 1; }
 message ThemeByNamesRequest { string names = 1; }
 message ThemeWithSpuRequest { string name = 1; }
-message ActivityByNameRequest { string name = 1; }
-message ActivityWithCouponRequest { string name = 1; }
-
-message TagByTypeRequest { string type = 1; }
-
-message Tags {
-  message Tag {
-    int64 id = 1;
-    string title = 2;
-    uint32 highlight = 3;
-    string description = 4;
-    uint32 type = 5;
-  }
-  repeated Tag tag = 1;
-}
-message GridCategories {
-  message GridCategory {
-    int64 id = 1;
-    string name = 2;
-    string title = 3;
-    string img = 4;
-    int64 categoryId = 5;
-    int64 rootCategoryId = 6;
-  }
-  repeated GridCategory category = 1;
-}
-message AllCategory {
-  repeated Category roots = 1;
-  repeated Category subs = 2;
-}
-message Category {
-  int64 id = 1;
-  string name = 2;
-  bool is_root = 3;
-  string img = 4;
-  int64 parent_id = 5;
-  int32 index = 6;
-}
 message Themes { repeated Theme theme = 1; }
 message Theme {
   int64 id = 1;
@@ -147,25 +80,17 @@ message BannerItem {
   string name = 5;
   int64 bannerId = 6;
 }
-message Activity {
-  int64 id = 1;
-  string title = 2;
-  string entrance_img = 3;
-  int32 online = 4;
-  string remark = 5;
-  string start_time = 6;
-  string end_time = 7;
-}
-message ActivityCoupon {
-  int64 id = 1;
-  string title = 2;
-  string entrance_img = 3;
-  int32 online = 4;
-  string remark = 5;
-  string start_time = 6;
-  string end_time = 7;
-  repeated CouponBo coupon = 8;
-}
-
-
-
+message Spu {
+    int64 id = 1;
+    string title = 2;
+    string subtitle = 3;
+    int64 category_id = 4;
+    int64 root_category_id = 5;
+    string price = 6;
+    string img = 7;
+    string for_theme_img = 8;
+    string description = 9;
+    string discount_price = 10;
+    string tags = 11;
+    int32 online = 13;
+  }

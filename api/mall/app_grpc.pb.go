@@ -7,7 +7,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -24,11 +23,6 @@ type AppClient interface {
 	GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Themes, error)
 	//
 	GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*ThemeSpu, error)
-	GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Activity, error)
-	GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*ActivityCoupon, error)
-	GetAllCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AllCategory, error)
-	GetGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error)
-	GetTagByType(ctx context.Context, in *TagByTypeRequest, opts ...grpc.CallOption) (*Tags, error)
 }
 
 type appClient struct {
@@ -75,51 +69,6 @@ func (c *appClient) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest
 	return out, nil
 }
 
-func (c *appClient) GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Activity, error) {
-	out := new(Activity)
-	err := c.cc.Invoke(ctx, "/mall.App/GetActivityByName", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*ActivityCoupon, error) {
-	out := new(ActivityCoupon)
-	err := c.cc.Invoke(ctx, "/mall.App/GetActivityWithCoupon", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetAllCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AllCategory, error) {
-	out := new(AllCategory)
-	err := c.cc.Invoke(ctx, "/mall.App/GetAllCategory", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error) {
-	out := new(GridCategories)
-	err := c.cc.Invoke(ctx, "/mall.App/GetGridCategory", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetTagByType(ctx context.Context, in *TagByTypeRequest, opts ...grpc.CallOption) (*Tags, error) {
-	out := new(Tags)
-	err := c.cc.Invoke(ctx, "/mall.App/GetTagByType", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AppServer is the server API for App service.
 // All implementations must embed UnimplementedAppServer
 // for forward compatibility
@@ -129,11 +78,6 @@ type AppServer interface {
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
 	//
 	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error)
-	GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error)
-	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error)
-	GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error)
-	GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
-	GetTagByType(context.Context, *TagByTypeRequest) (*Tags, error)
 	mustEmbedUnimplementedAppServer()
 }
 
@@ -152,21 +96,6 @@ func (UnimplementedAppServer) GetThemeByNames(context.Context, *ThemeByNamesRequ
 }
 func (UnimplementedAppServer) GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetThemeWithSpu not implemented")
-}
-func (UnimplementedAppServer) GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetActivityByName not implemented")
-}
-func (UnimplementedAppServer) GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetActivityWithCoupon not implemented")
-}
-func (UnimplementedAppServer) GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllCategory not implemented")
-}
-func (UnimplementedAppServer) GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGridCategory not implemented")
-}
-func (UnimplementedAppServer) GetTagByType(context.Context, *TagByTypeRequest) (*Tags, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTagByType not implemented")
 }
 func (UnimplementedAppServer) mustEmbedUnimplementedAppServer() {}
 
@@ -253,96 +182,6 @@ func _App_GetThemeWithSpu_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetActivityByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActivityByNameRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetActivityByName(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mall.App/GetActivityByName",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetActivityByName(ctx, req.(*ActivityByNameRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetActivityWithCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActivityWithCouponRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetActivityWithCoupon(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mall.App/GetActivityWithCoupon",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetActivityWithCoupon(ctx, req.(*ActivityWithCouponRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetAllCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetAllCategory(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mall.App/GetAllCategory",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetAllCategory(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetGridCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetGridCategory(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mall.App/GetGridCategory",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetGridCategory(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetTagByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TagByTypeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetTagByType(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mall.App/GetTagByType",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetTagByType(ctx, req.(*TagByTypeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // App_ServiceDesc is the grpc.ServiceDesc for App service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -365,26 +204,6 @@ var App_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetThemeWithSpu",
 			Handler:    _App_GetThemeWithSpu_Handler,
-		},
-		{
-			MethodName: "GetActivityByName",
-			Handler:    _App_GetActivityByName_Handler,
-		},
-		{
-			MethodName: "GetActivityWithCoupon",
-			Handler:    _App_GetActivityWithCoupon_Handler,
-		},
-		{
-			MethodName: "GetAllCategory",
-			Handler:    _App_GetAllCategory_Handler,
-		},
-		{
-			MethodName: "GetGridCategory",
-			Handler:    _App_GetGridCategory_Handler,
-		},
-		{
-			MethodName: "GetTagByType",
-			Handler:    _App_GetTagByType_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
