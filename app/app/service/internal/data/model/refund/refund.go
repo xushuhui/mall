@@ -38,7 +38,7 @@ const (
 	// UserTable is the table that holds the user relation/edge.
 	UserTable = "refund"
 	// UserInverseTable is the table name for the User entity.
-	// It exists in this package in order to avoid circular dependency with the "user" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "user" package.
 	UserInverseTable = "user"
 	// UserColumn is the table column denoting the user relation/edge.
 	UserColumn = "user_id"

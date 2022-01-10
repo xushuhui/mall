@@ -1,7 +1,7 @@
 package server
 
 import (
-	"mall-go/api/mall"
+	"mall-go/api/app"
 	"mall-go/app/app/service/internal/conf"
 	"mall-go/app/app/service/internal/service"
 
@@ -37,7 +37,7 @@ func NewHTTPServer(c *conf.Server, as *service.AppService, logger log.Logger) *h
 	}
 	srv := http.NewServer(opts...)
 
-	mall.RegisterAppHTTPServer(srv, as)
+	app.RegisterAppHTTPServer(srv, as)
 
 	return srv
 }

@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"mall-go/api/mall"
+	"mall-go/api/app"
 	"mall-go/app/app/service/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -10,7 +10,7 @@ import (
 )
 
 type AppService struct {
-	mall.UnimplementedAppServer
+	app.UnimplementedAppServer
 	bu *biz.BannerUsecase
 	tu *biz.ThemeUsecase
 
@@ -28,15 +28,15 @@ func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase,
 	}
 }
 
-func (s *AppService) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (out *mall.Banner, err error) {
+func (s *AppService) GetBannerById(ctx context.Context, in *app.BannerByIdRequest) (out *app.Banner, err error) {
 	rv, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
-	var items []*mall.BannerItem
+	var items []*app.BannerItem
 	for _, v := range rv.Items {
 
-		item := &mall.BannerItem{
+		item := &app.BannerItem{
 			Id:      v.ID,
 			Name:    v.Name,
 			Img:     v.Img,
@@ -45,7 +45,7 @@ func (s *AppService) GetBannerById(ctx context.Context, in *mall.BannerByIdReque
 		}
 		items = append(items, item)
 	}
-	return &mall.Banner{
+	return &app.Banner{
 		Id:          rv.Id,
 		Name:        rv.Name,
 		Img:         rv.Img,
@@ -55,14 +55,14 @@ func (s *AppService) GetBannerById(ctx context.Context, in *mall.BannerByIdReque
 	}, nil
 
 }
-func (s *AppService) GetBannerByName(ctx context.Context, in *mall.BannerByNameRequest) (out *mall.Banner, err error) {
+func (s *AppService) GetBannerByName(ctx context.Context, in *app.BannerByNameRequest) (out *app.Banner, err error) {
 	return
 }
-func (s *AppService) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRequest) (out *mall.Themes, err error) {
+func (s *AppService) GetThemeByNames(ctx context.Context, in *app.ThemeByNamesRequest) (out *app.Themes, err error) {
 	return
 }
 
-func (s *AppService) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuRequest) (out *mall.ThemeSpu, err error) {
+func (s *AppService) GetThemeWithSpu(ctx context.Context, in *app.ThemeWithSpuRequest) (out *app.ThemeSpu, err error) {
 
 	return
 }
@@ -84,15 +84,15 @@ func (s *AppService) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuR
 // 		EndTime:     rv.EndTime,
 // 	}, nil
 // }
-func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *mall.ActivityWithCouponRequest) (out *mall.ActivityCoupon, err error) {
+func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *app.ActivityWithCouponRequest) (out *app.ActivityCoupon, err error) {
 	return
 }
-func (s *AppService) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *mall.AllCategory, err error) {
+func (s *AppService) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *app.AllCategory, err error) {
 	return
 }
-func (s *AppService) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *mall.GridCategories, err error) {
+func (s *AppService) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *app.GridCategories, err error) {
 	return
 }
-func (s *AppService) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
+func (s *AppService) GetTagByType(ctx context.Context, in *app.TagByTypeRequest) (out *app.Tags, err error) {
 	return
 }

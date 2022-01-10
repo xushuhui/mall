@@ -32,7 +32,7 @@ const (
 	// BannerItemTable is the table that holds the banner_item relation/edge.
 	BannerItemTable = "banner_item"
 	// BannerItemInverseTable is the table name for the BannerItem entity.
-	// It exists in this package in order to avoid circular dependency with the "banneritem" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "banneritem" package.
 	BannerItemInverseTable = "banner_item"
 	// BannerItemColumn is the table column denoting the banner_item relation/edge.
 	BannerItemColumn = "banner_id"

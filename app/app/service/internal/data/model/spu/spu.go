@@ -66,48 +66,48 @@ const (
 	// SaleExplainTable is the table that holds the sale_explain relation/edge.
 	SaleExplainTable = "sale_explain"
 	// SaleExplainInverseTable is the table name for the SaleExplain entity.
-	// It exists in this package in order to avoid circular dependency with the "saleexplain" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "saleexplain" package.
 	SaleExplainInverseTable = "sale_explain"
 	// SaleExplainColumn is the table column denoting the sale_explain relation/edge.
 	SaleExplainColumn = "spu_id"
 	// SpuImgTable is the table that holds the spu_img relation/edge.
 	SpuImgTable = "spu_img"
 	// SpuImgInverseTable is the table name for the SpuImg entity.
-	// It exists in this package in order to avoid circular dependency with the "spuimg" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "spuimg" package.
 	SpuImgInverseTable = "spu_img"
 	// SpuImgColumn is the table column denoting the spu_img relation/edge.
 	SpuImgColumn = "spu_id"
 	// SpuDetailImgTable is the table that holds the spu_detail_img relation/edge.
 	SpuDetailImgTable = "spu_detail_img"
 	// SpuDetailImgInverseTable is the table name for the SpuDetailImg entity.
-	// It exists in this package in order to avoid circular dependency with the "spudetailimg" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "spudetailimg" package.
 	SpuDetailImgInverseTable = "spu_detail_img"
 	// SpuDetailImgColumn is the table column denoting the spu_detail_img relation/edge.
 	SpuDetailImgColumn = "spu_id"
 	// SpecKeyTable is the table that holds the spec_key relation/edge. The primary key declared below.
 	SpecKeyTable = "spu_key"
 	// SpecKeyInverseTable is the table name for the SpecKey entity.
-	// It exists in this package in order to avoid circular dependency with the "speckey" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "speckey" package.
 	SpecKeyInverseTable = "spec_key"
 	// TagTable is the table that holds the tag relation/edge. The primary key declared below.
 	TagTable = "spu_tag"
 	// TagInverseTable is the table name for the Tag entity.
-	// It exists in this package in order to avoid circular dependency with the "tag" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "tag" package.
 	TagInverseTable = "tag"
 	// ThemeTable is the table that holds the theme relation/edge. The primary key declared below.
 	ThemeTable = "theme_spu"
 	// ThemeInverseTable is the table name for the Theme entity.
-	// It exists in this package in order to avoid circular dependency with the "theme" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "theme" package.
 	ThemeInverseTable = "theme"
 	// ActivityTable is the table that holds the activity relation/edge. The primary key declared below.
 	ActivityTable = "activity_spu"
 	// ActivityInverseTable is the table name for the Activity entity.
-	// It exists in this package in order to avoid circular dependency with the "activity" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "activity" package.
 	ActivityInverseTable = "activity"
 	// BrandTable is the table that holds the brand relation/edge. The primary key declared below.
 	BrandTable = "brand_spu"
 	// BrandInverseTable is the table name for the Brand entity.
-	// It exists in this package in order to avoid circular dependency with the "brand" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "brand" package.
 	BrandInverseTable = "brand"
 )
 

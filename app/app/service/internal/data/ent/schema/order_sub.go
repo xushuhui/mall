@@ -2,8 +2,6 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/dialect/entsql"
-	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
@@ -12,11 +10,6 @@ type OrderSub struct {
 	ent.Schema
 }
 
-func (OrderSub) Annotations() []schema.Annotation {
-	return []schema.Annotation{
-		entsql.Annotation{Table: "order_sub"},
-	}
-}
 func (OrderSub) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("order_no").Comment(""),

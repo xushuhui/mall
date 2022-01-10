@@ -36,14 +36,14 @@ const (
 	// OrderTable is the table that holds the order relation/edge.
 	OrderTable = "order"
 	// OrderInverseTable is the table name for the Order entity.
-	// It exists in this package in order to avoid circular dependency with the "order" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "order" package.
 	OrderInverseTable = "order"
 	// OrderColumn is the table column denoting the order relation/edge.
 	OrderColumn = "user_id"
 	// RefundTable is the table that holds the refund relation/edge.
 	RefundTable = "refund"
 	// RefundInverseTable is the table name for the Refund entity.
-	// It exists in this package in order to avoid circular dependency with the "refund" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "refund" package.
 	RefundInverseTable = "refund"
 	// RefundColumn is the table column denoting the refund relation/edge.
 	RefundColumn = "user_id"

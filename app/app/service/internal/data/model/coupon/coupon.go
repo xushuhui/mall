@@ -50,12 +50,12 @@ const (
 	// CategoryTable is the table that holds the category relation/edge. The primary key declared below.
 	CategoryTable = "coupon_category"
 	// CategoryInverseTable is the table name for the Category entity.
-	// It exists in this package in order to avoid circular dependency with the "category" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "category" package.
 	CategoryInverseTable = "category"
 	// ActivityTable is the table that holds the activity relation/edge. The primary key declared below.
 	ActivityTable = "activity_coupon"
 	// ActivityInverseTable is the table name for the Activity entity.
-	// It exists in this package in order to avoid circular dependency with the "activity" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "activity" package.
 	ActivityInverseTable = "activity"
 )
 

@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	// ActivityColumns holds the columns for the "activity" table.
-	ActivityColumns = []*schema.Column{
+	// ActivitiesColumns holds the columns for the "activities" table.
+	ActivitiesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -25,14 +25,14 @@ var (
 		{Name: "internal_top_img", Type: field.TypeString},
 		{Name: "name", Type: field.TypeString},
 	}
-	// ActivityTable holds the schema information for the "activity" table.
-	ActivityTable = &schema.Table{
-		Name:       "activity",
-		Columns:    ActivityColumns,
-		PrimaryKey: []*schema.Column{ActivityColumns[0]},
+	// ActivitiesTable holds the schema information for the "activities" table.
+	ActivitiesTable = &schema.Table{
+		Name:       "activities",
+		Columns:    ActivitiesColumns,
+		PrimaryKey: []*schema.Column{ActivitiesColumns[0]},
 	}
-	// BannerColumns holds the columns for the "banner" table.
-	BannerColumns = []*schema.Column{
+	// BannersColumns holds the columns for the "banners" table.
+	BannersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -42,14 +42,14 @@ var (
 		{Name: "title", Type: field.TypeString},
 		{Name: "img", Type: field.TypeString},
 	}
-	// BannerTable holds the schema information for the "banner" table.
-	BannerTable = &schema.Table{
-		Name:       "banner",
-		Columns:    BannerColumns,
-		PrimaryKey: []*schema.Column{BannerColumns[0]},
+	// BannersTable holds the schema information for the "banners" table.
+	BannersTable = &schema.Table{
+		Name:       "banners",
+		Columns:    BannersColumns,
+		PrimaryKey: []*schema.Column{BannersColumns[0]},
 	}
-	// BannerItemColumns holds the columns for the "banner_item" table.
-	BannerItemColumns = []*schema.Column{
+	// BannerItemsColumns holds the columns for the "banner_items" table.
+	BannerItemsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -60,22 +60,22 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "banner_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// BannerItemTable holds the schema information for the "banner_item" table.
-	BannerItemTable = &schema.Table{
-		Name:       "banner_item",
-		Columns:    BannerItemColumns,
-		PrimaryKey: []*schema.Column{BannerItemColumns[0]},
+	// BannerItemsTable holds the schema information for the "banner_items" table.
+	BannerItemsTable = &schema.Table{
+		Name:       "banner_items",
+		Columns:    BannerItemsColumns,
+		PrimaryKey: []*schema.Column{BannerItemsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "banner_item_banner_banner_item",
-				Columns:    []*schema.Column{BannerItemColumns[8]},
-				RefColumns: []*schema.Column{BannerColumns[0]},
+				Symbol:     "banner_items_banners_banner_item",
+				Columns:    []*schema.Column{BannerItemsColumns[8]},
+				RefColumns: []*schema.Column{BannersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// BrandColumns holds the columns for the "brand" table.
-	BrandColumns = []*schema.Column{
+	// BrandsColumns holds the columns for the "brands" table.
+	BrandsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -83,14 +83,14 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "description", Type: field.TypeString},
 	}
-	// BrandTable holds the schema information for the "brand" table.
-	BrandTable = &schema.Table{
-		Name:       "brand",
-		Columns:    BrandColumns,
-		PrimaryKey: []*schema.Column{BrandColumns[0]},
+	// BrandsTable holds the schema information for the "brands" table.
+	BrandsTable = &schema.Table{
+		Name:       "brands",
+		Columns:    BrandsColumns,
+		PrimaryKey: []*schema.Column{BrandsColumns[0]},
 	}
-	// CategoryColumns holds the columns for the "category" table.
-	CategoryColumns = []*schema.Column{
+	// CategoriesColumns holds the columns for the "categories" table.
+	CategoriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -104,22 +104,22 @@ var (
 		{Name: "level", Type: field.TypeInt},
 		{Name: "parent_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// CategoryTable holds the schema information for the "category" table.
-	CategoryTable = &schema.Table{
-		Name:       "category",
-		Columns:    CategoryColumns,
-		PrimaryKey: []*schema.Column{CategoryColumns[0]},
+	// CategoriesTable holds the schema information for the "categories" table.
+	CategoriesTable = &schema.Table{
+		Name:       "categories",
+		Columns:    CategoriesColumns,
+		PrimaryKey: []*schema.Column{CategoriesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "category_category_children",
-				Columns:    []*schema.Column{CategoryColumns[11]},
-				RefColumns: []*schema.Column{CategoryColumns[0]},
+				Symbol:     "categories_categories_children",
+				Columns:    []*schema.Column{CategoriesColumns[11]},
+				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// ChargeColumns holds the columns for the "charge" table.
-	ChargeColumns = []*schema.Column{
+	// ChargesColumns holds the columns for the "charges" table.
+	ChargesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -131,14 +131,14 @@ var (
 		{Name: "pay_way", Type: field.TypeInt},
 		{Name: "client_type", Type: field.TypeInt},
 	}
-	// ChargeTable holds the schema information for the "charge" table.
-	ChargeTable = &schema.Table{
-		Name:       "charge",
-		Columns:    ChargeColumns,
-		PrimaryKey: []*schema.Column{ChargeColumns[0]},
+	// ChargesTable holds the schema information for the "charges" table.
+	ChargesTable = &schema.Table{
+		Name:       "charges",
+		Columns:    ChargesColumns,
+		PrimaryKey: []*schema.Column{ChargesColumns[0]},
 	}
-	// CouponColumns holds the columns for the "coupon" table.
-	CouponColumns = []*schema.Column{
+	// CouponsColumns holds the columns for the "coupons" table.
+	CouponsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -156,14 +156,14 @@ var (
 		{Name: "remark", Type: field.TypeString},
 		{Name: "whole_store", Type: field.TypeInt},
 	}
-	// CouponTable holds the schema information for the "coupon" table.
-	CouponTable = &schema.Table{
-		Name:       "coupon",
-		Columns:    CouponColumns,
-		PrimaryKey: []*schema.Column{CouponColumns[0]},
+	// CouponsTable holds the schema information for the "coupons" table.
+	CouponsTable = &schema.Table{
+		Name:       "coupons",
+		Columns:    CouponsColumns,
+		PrimaryKey: []*schema.Column{CouponsColumns[0]},
 	}
-	// CouponTemplateColumns holds the columns for the "coupon_template" table.
-	CouponTemplateColumns = []*schema.Column{
+	// CouponTemplatesColumns holds the columns for the "coupon_templates" table.
+	CouponTemplatesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -175,14 +175,14 @@ var (
 		{Name: "discount", Type: field.TypeFloat64},
 		{Name: "type", Type: field.TypeInt},
 	}
-	// CouponTemplateTable holds the schema information for the "coupon_template" table.
-	CouponTemplateTable = &schema.Table{
-		Name:       "coupon_template",
-		Columns:    CouponTemplateColumns,
-		PrimaryKey: []*schema.Column{CouponTemplateColumns[0]},
+	// CouponTemplatesTable holds the schema information for the "coupon_templates" table.
+	CouponTemplatesTable = &schema.Table{
+		Name:       "coupon_templates",
+		Columns:    CouponTemplatesColumns,
+		PrimaryKey: []*schema.Column{CouponTemplatesColumns[0]},
 	}
-	// CouponTypeColumns holds the columns for the "coupon_type" table.
-	CouponTypeColumns = []*schema.Column{
+	// CouponTypesColumns holds the columns for the "coupon_types" table.
+	CouponTypesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -191,11 +191,11 @@ var (
 		{Name: "code", Type: field.TypeInt},
 		{Name: "description", Type: field.TypeString},
 	}
-	// CouponTypeTable holds the schema information for the "coupon_type" table.
-	CouponTypeTable = &schema.Table{
-		Name:       "coupon_type",
-		Columns:    CouponTypeColumns,
-		PrimaryKey: []*schema.Column{CouponTypeColumns[0]},
+	// CouponTypesTable holds the schema information for the "coupon_types" table.
+	CouponTypesTable = &schema.Table{
+		Name:       "coupon_types",
+		Columns:    CouponTypesColumns,
+		PrimaryKey: []*schema.Column{CouponTypesColumns[0]},
 	}
 	// GridCategoryColumns holds the columns for the "grid_category" table.
 	GridCategoryColumns = []*schema.Column{
@@ -215,8 +215,8 @@ var (
 		Columns:    GridCategoryColumns,
 		PrimaryKey: []*schema.Column{GridCategoryColumns[0]},
 	}
-	// OrderColumns holds the columns for the "order" table.
-	OrderColumns = []*schema.Column{
+	// OrdersColumns holds the columns for the "orders" table.
+	OrdersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -229,22 +229,22 @@ var (
 		{Name: "status", Type: field.TypeInt},
 		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// OrderTable holds the schema information for the "order" table.
-	OrderTable = &schema.Table{
-		Name:       "order",
-		Columns:    OrderColumns,
-		PrimaryKey: []*schema.Column{OrderColumns[0]},
+	// OrdersTable holds the schema information for the "orders" table.
+	OrdersTable = &schema.Table{
+		Name:       "orders",
+		Columns:    OrdersColumns,
+		PrimaryKey: []*schema.Column{OrdersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "order_user_order",
-				Columns:    []*schema.Column{OrderColumns[10]},
+				Symbol:     "orders_user_order",
+				Columns:    []*schema.Column{OrdersColumns[10]},
 				RefColumns: []*schema.Column{UserColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// OrderDetailColumns holds the columns for the "order_detail" table.
-	OrderDetailColumns = []*schema.Column{
+	// OrderDetailsColumns holds the columns for the "order_details" table.
+	OrderDetailsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -254,14 +254,14 @@ var (
 		{Name: "client_type", Type: field.TypeInt, Default: 1},
 		{Name: "ship_no", Type: field.TypeString},
 	}
-	// OrderDetailTable holds the schema information for the "order_detail" table.
-	OrderDetailTable = &schema.Table{
-		Name:       "order_detail",
-		Columns:    OrderDetailColumns,
-		PrimaryKey: []*schema.Column{OrderDetailColumns[0]},
+	// OrderDetailsTable holds the schema information for the "order_details" table.
+	OrderDetailsTable = &schema.Table{
+		Name:       "order_details",
+		Columns:    OrderDetailsColumns,
+		PrimaryKey: []*schema.Column{OrderDetailsColumns[0]},
 	}
-	// OrderSnapColumns holds the columns for the "order_snap" table.
-	OrderSnapColumns = []*schema.Column{
+	// OrderSnapsColumns holds the columns for the "order_snaps" table.
+	OrderSnapsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "snap_img", Type: field.TypeString},
 		{Name: "snap_title", Type: field.TypeString},
@@ -269,16 +269,16 @@ var (
 		{Name: "snap_address", Type: field.TypeString},
 		{Name: "order_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// OrderSnapTable holds the schema information for the "order_snap" table.
-	OrderSnapTable = &schema.Table{
-		Name:       "order_snap",
-		Columns:    OrderSnapColumns,
-		PrimaryKey: []*schema.Column{OrderSnapColumns[0]},
+	// OrderSnapsTable holds the schema information for the "order_snaps" table.
+	OrderSnapsTable = &schema.Table{
+		Name:       "order_snaps",
+		Columns:    OrderSnapsColumns,
+		PrimaryKey: []*schema.Column{OrderSnapsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "order_snap_order_order_snap",
-				Columns:    []*schema.Column{OrderSnapColumns[5]},
-				RefColumns: []*schema.Column{OrderColumns[0]},
+				Symbol:     "order_snaps_orders_order_snap",
+				Columns:    []*schema.Column{OrderSnapsColumns[5]},
+				RefColumns: []*schema.Column{OrdersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -304,15 +304,15 @@ var (
 		PrimaryKey: []*schema.Column{OrderSubColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "order_sub_order_order_sub",
+				Symbol:     "order_sub_orders_order_sub",
 				Columns:    []*schema.Column{OrderSubColumns[10]},
-				RefColumns: []*schema.Column{OrderColumns[0]},
+				RefColumns: []*schema.Column{OrdersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// RefundColumns holds the columns for the "refund" table.
-	RefundColumns = []*schema.Column{
+	// RefundsColumns holds the columns for the "refunds" table.
+	RefundsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -325,22 +325,22 @@ var (
 		{Name: "status", Type: field.TypeInt},
 		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// RefundTable holds the schema information for the "refund" table.
-	RefundTable = &schema.Table{
-		Name:       "refund",
-		Columns:    RefundColumns,
-		PrimaryKey: []*schema.Column{RefundColumns[0]},
+	// RefundsTable holds the schema information for the "refunds" table.
+	RefundsTable = &schema.Table{
+		Name:       "refunds",
+		Columns:    RefundsColumns,
+		PrimaryKey: []*schema.Column{RefundsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "refund_user_refund",
-				Columns:    []*schema.Column{RefundColumns[10]},
+				Symbol:     "refunds_user_refund",
+				Columns:    []*schema.Column{RefundsColumns[10]},
 				RefColumns: []*schema.Column{UserColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// SaleExplainColumns holds the columns for the "sale_explain" table.
-	SaleExplainColumns = []*schema.Column{
+	// SaleExplainsColumns holds the columns for the "sale_explains" table.
+	SaleExplainsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -351,22 +351,22 @@ var (
 		{Name: "replace_id", Type: field.TypeInt64},
 		{Name: "spu_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// SaleExplainTable holds the schema information for the "sale_explain" table.
-	SaleExplainTable = &schema.Table{
-		Name:       "sale_explain",
-		Columns:    SaleExplainColumns,
-		PrimaryKey: []*schema.Column{SaleExplainColumns[0]},
+	// SaleExplainsTable holds the schema information for the "sale_explains" table.
+	SaleExplainsTable = &schema.Table{
+		Name:       "sale_explains",
+		Columns:    SaleExplainsColumns,
+		PrimaryKey: []*schema.Column{SaleExplainsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "sale_explain_spu_sale_explain",
-				Columns:    []*schema.Column{SaleExplainColumns[8]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				Symbol:     "sale_explains_spus_sale_explain",
+				Columns:    []*schema.Column{SaleExplainsColumns[8]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// SkuColumns holds the columns for the "sku" table.
-	SkuColumns = []*schema.Column{
+	// SkusColumns holds the columns for the "skus" table.
+	SkusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -383,11 +383,11 @@ var (
 		{Name: "category_id", Type: field.TypeInt64},
 		{Name: "root_category_id", Type: field.TypeInt64},
 	}
-	// SkuTable holds the schema information for the "sku" table.
-	SkuTable = &schema.Table{
-		Name:       "sku",
-		Columns:    SkuColumns,
-		PrimaryKey: []*schema.Column{SkuColumns[0]},
+	// SkusTable holds the schema information for the "skus" table.
+	SkusTable = &schema.Table{
+		Name:       "skus",
+		Columns:    SkusColumns,
+		PrimaryKey: []*schema.Column{SkusColumns[0]},
 	}
 	// SkuSpecColumns holds the columns for the "sku_spec" table.
 	SkuSpecColumns = []*schema.Column{
@@ -403,8 +403,8 @@ var (
 		Columns:    SkuSpecColumns,
 		PrimaryKey: []*schema.Column{SkuSpecColumns[0]},
 	}
-	// SpecKeyColumns holds the columns for the "spec_key" table.
-	SpecKeyColumns = []*schema.Column{
+	// SpecKeysColumns holds the columns for the "spec_keys" table.
+	SpecKeysColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -414,14 +414,14 @@ var (
 		{Name: "standard", Type: field.TypeInt},
 		{Name: "description", Type: field.TypeString},
 	}
-	// SpecKeyTable holds the schema information for the "spec_key" table.
-	SpecKeyTable = &schema.Table{
-		Name:       "spec_key",
-		Columns:    SpecKeyColumns,
-		PrimaryKey: []*schema.Column{SpecKeyColumns[0]},
+	// SpecKeysTable holds the schema information for the "spec_keys" table.
+	SpecKeysTable = &schema.Table{
+		Name:       "spec_keys",
+		Columns:    SpecKeysColumns,
+		PrimaryKey: []*schema.Column{SpecKeysColumns[0]},
 	}
-	// SpecValueColumns holds the columns for the "spec_value" table.
-	SpecValueColumns = []*schema.Column{
+	// SpecValuesColumns holds the columns for the "spec_values" table.
+	SpecValuesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -430,14 +430,14 @@ var (
 		{Name: "spec_id", Type: field.TypeInt64},
 		{Name: "extend", Type: field.TypeString},
 	}
-	// SpecValueTable holds the schema information for the "spec_value" table.
-	SpecValueTable = &schema.Table{
-		Name:       "spec_value",
-		Columns:    SpecValueColumns,
-		PrimaryKey: []*schema.Column{SpecValueColumns[0]},
+	// SpecValuesTable holds the schema information for the "spec_values" table.
+	SpecValuesTable = &schema.Table{
+		Name:       "spec_values",
+		Columns:    SpecValuesColumns,
+		PrimaryKey: []*schema.Column{SpecValuesColumns[0]},
 	}
-	// SpuColumns holds the columns for the "spu" table.
-	SpuColumns = []*schema.Column{
+	// SpusColumns holds the columns for the "spus" table.
+	SpusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -457,11 +457,11 @@ var (
 		{Name: "spu_theme_img", Type: field.TypeString},
 		{Name: "for_theme_img", Type: field.TypeString},
 	}
-	// SpuTable holds the schema information for the "spu" table.
-	SpuTable = &schema.Table{
-		Name:       "spu",
-		Columns:    SpuColumns,
-		PrimaryKey: []*schema.Column{SpuColumns[0]},
+	// SpusTable holds the schema information for the "spus" table.
+	SpusTable = &schema.Table{
+		Name:       "spus",
+		Columns:    SpusColumns,
+		PrimaryKey: []*schema.Column{SpusColumns[0]},
 	}
 	// SpuDetailImgColumns holds the columns for the "spu_detail_img" table.
 	SpuDetailImgColumns = []*schema.Column{
@@ -480,15 +480,15 @@ var (
 		PrimaryKey: []*schema.Column{SpuDetailImgColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "spu_detail_img_spu_spu_detail_img",
+				Symbol:     "spu_detail_img_spus_spu_detail_img",
 				Columns:    []*schema.Column{SpuDetailImgColumns[6]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// SpuImgColumns holds the columns for the "spu_img" table.
-	SpuImgColumns = []*schema.Column{
+	// SpuImgsColumns holds the columns for the "spu_imgs" table.
+	SpuImgsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -496,22 +496,22 @@ var (
 		{Name: "img", Type: field.TypeString},
 		{Name: "spu_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// SpuImgTable holds the schema information for the "spu_img" table.
-	SpuImgTable = &schema.Table{
-		Name:       "spu_img",
-		Columns:    SpuImgColumns,
-		PrimaryKey: []*schema.Column{SpuImgColumns[0]},
+	// SpuImgsTable holds the schema information for the "spu_imgs" table.
+	SpuImgsTable = &schema.Table{
+		Name:       "spu_imgs",
+		Columns:    SpuImgsColumns,
+		PrimaryKey: []*schema.Column{SpuImgsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "spu_img_spu_spu_img",
-				Columns:    []*schema.Column{SpuImgColumns[5]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				Symbol:     "spu_imgs_spus_spu_img",
+				Columns:    []*schema.Column{SpuImgsColumns[5]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// TagColumns holds the columns for the "tag" table.
-	TagColumns = []*schema.Column{
+	// TagsColumns holds the columns for the "tags" table.
+	TagsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -521,11 +521,11 @@ var (
 		{Name: "highlight", Type: field.TypeInt},
 		{Name: "type", Type: field.TypeInt},
 	}
-	// TagTable holds the schema information for the "tag" table.
-	TagTable = &schema.Table{
-		Name:       "tag",
-		Columns:    TagColumns,
-		PrimaryKey: []*schema.Column{TagColumns[0]},
+	// TagsTable holds the schema information for the "tags" table.
+	TagsTable = &schema.Table{
+		Name:       "tags",
+		Columns:    TagsColumns,
+		PrimaryKey: []*schema.Column{TagsColumns[0]},
 	}
 	// ThemeColumns holds the columns for the "theme" table.
 	ThemeColumns = []*schema.Column{
@@ -618,8 +618,8 @@ var (
 		Columns:    UserInfoColumns,
 		PrimaryKey: []*schema.Column{UserInfoColumns[0]},
 	}
-	// UserPointColumns holds the columns for the "user_point" table.
-	UserPointColumns = []*schema.Column{
+	// UserPointsColumns holds the columns for the "user_points" table.
+	UserPointsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -627,11 +627,11 @@ var (
 		{Name: "value", Type: field.TypeInt},
 		{Name: "status", Type: field.TypeInt},
 	}
-	// UserPointTable holds the schema information for the "user_point" table.
-	UserPointTable = &schema.Table{
-		Name:       "user_point",
-		Columns:    UserPointColumns,
-		PrimaryKey: []*schema.Column{UserPointColumns[0]},
+	// UserPointsTable holds the schema information for the "user_points" table.
+	UserPointsTable = &schema.Table{
+		Name:       "user_points",
+		Columns:    UserPointsColumns,
+		PrimaryKey: []*schema.Column{UserPointsColumns[0]},
 	}
 	// UserPointDetailColumns holds the columns for the "user_point_detail" table.
 	UserPointDetailColumns = []*schema.Column{
@@ -648,22 +648,22 @@ var (
 		Columns:    UserPointDetailColumns,
 		PrimaryKey: []*schema.Column{UserPointDetailColumns[0]},
 	}
-	// UserWalletColumns holds the columns for the "user_wallet" table.
-	UserWalletColumns = []*schema.Column{
+	// UserWalletsColumns holds the columns for the "user_wallets" table.
+	UserWalletsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "value", Type: field.TypeInt},
 	}
-	// UserWalletTable holds the schema information for the "user_wallet" table.
-	UserWalletTable = &schema.Table{
-		Name:       "user_wallet",
-		Columns:    UserWalletColumns,
-		PrimaryKey: []*schema.Column{UserWalletColumns[0]},
+	// UserWalletsTable holds the schema information for the "user_wallets" table.
+	UserWalletsTable = &schema.Table{
+		Name:       "user_wallets",
+		Columns:    UserWalletsColumns,
+		PrimaryKey: []*schema.Column{UserWalletsColumns[0]},
 	}
-	// UserWalletDetailColumns holds the columns for the "user_wallet_detail" table.
-	UserWalletDetailColumns = []*schema.Column{
+	// UserWalletDetailsColumns holds the columns for the "user_wallet_details" table.
+	UserWalletDetailsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -674,11 +674,11 @@ var (
 		{Name: "value", Type: field.TypeInt},
 		{Name: "type", Type: field.TypeInt, Default: 1},
 	}
-	// UserWalletDetailTable holds the schema information for the "user_wallet_detail" table.
-	UserWalletDetailTable = &schema.Table{
-		Name:       "user_wallet_detail",
-		Columns:    UserWalletDetailColumns,
-		PrimaryKey: []*schema.Column{UserWalletDetailColumns[0]},
+	// UserWalletDetailsTable holds the schema information for the "user_wallet_details" table.
+	UserWalletDetailsTable = &schema.Table{
+		Name:       "user_wallet_details",
+		Columns:    UserWalletDetailsColumns,
+		PrimaryKey: []*schema.Column{UserWalletDetailsColumns[0]},
 	}
 	// ActivitySpuColumns holds the columns for the "activity_spu" table.
 	ActivitySpuColumns = []*schema.Column{
@@ -694,13 +694,13 @@ var (
 			{
 				Symbol:     "activity_spu_activity_id",
 				Columns:    []*schema.Column{ActivitySpuColumns[0]},
-				RefColumns: []*schema.Column{ActivityColumns[0]},
+				RefColumns: []*schema.Column{ActivitiesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "activity_spu_spu_id",
 				Columns:    []*schema.Column{ActivitySpuColumns[1]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -719,13 +719,13 @@ var (
 			{
 				Symbol:     "activity_coupon_activity_id",
 				Columns:    []*schema.Column{ActivityCouponColumns[0]},
-				RefColumns: []*schema.Column{ActivityColumns[0]},
+				RefColumns: []*schema.Column{ActivitiesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "activity_coupon_coupon_id",
 				Columns:    []*schema.Column{ActivityCouponColumns[1]},
-				RefColumns: []*schema.Column{CouponColumns[0]},
+				RefColumns: []*schema.Column{CouponsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -744,13 +744,13 @@ var (
 			{
 				Symbol:     "brand_spu_brand_id",
 				Columns:    []*schema.Column{BrandSpuColumns[0]},
-				RefColumns: []*schema.Column{BrandColumns[0]},
+				RefColumns: []*schema.Column{BrandsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "brand_spu_spu_id",
 				Columns:    []*schema.Column{BrandSpuColumns[1]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -769,13 +769,13 @@ var (
 			{
 				Symbol:     "coupon_category_coupon_id",
 				Columns:    []*schema.Column{CouponCategoryColumns[0]},
-				RefColumns: []*schema.Column{CouponColumns[0]},
+				RefColumns: []*schema.Column{CouponsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "coupon_category_category_id",
 				Columns:    []*schema.Column{CouponCategoryColumns[1]},
-				RefColumns: []*schema.Column{CategoryColumns[0]},
+				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -794,13 +794,13 @@ var (
 			{
 				Symbol:     "spu_key_spu_id",
 				Columns:    []*schema.Column{SpuKeyColumns[0]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "spu_key_spec_key_id",
 				Columns:    []*schema.Column{SpuKeyColumns[1]},
-				RefColumns: []*schema.Column{SpecKeyColumns[0]},
+				RefColumns: []*schema.Column{SpecKeysColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -819,13 +819,13 @@ var (
 			{
 				Symbol:     "spu_tag_spu_id",
 				Columns:    []*schema.Column{SpuTagColumns[0]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "spu_tag_tag_id",
 				Columns:    []*schema.Column{SpuTagColumns[1]},
-				RefColumns: []*schema.Column{TagColumns[0]},
+				RefColumns: []*schema.Column{TagsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -850,46 +850,46 @@ var (
 			{
 				Symbol:     "theme_spu_spu_id",
 				Columns:    []*schema.Column{ThemeSpuColumns[1]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		ActivityTable,
-		BannerTable,
-		BannerItemTable,
-		BrandTable,
-		CategoryTable,
-		ChargeTable,
-		CouponTable,
-		CouponTemplateTable,
-		CouponTypeTable,
+		ActivitiesTable,
+		BannersTable,
+		BannerItemsTable,
+		BrandsTable,
+		CategoriesTable,
+		ChargesTable,
+		CouponsTable,
+		CouponTemplatesTable,
+		CouponTypesTable,
 		GridCategoryTable,
-		OrderTable,
-		OrderDetailTable,
-		OrderSnapTable,
+		OrdersTable,
+		OrderDetailsTable,
+		OrderSnapsTable,
 		OrderSubTable,
-		RefundTable,
-		SaleExplainTable,
-		SkuTable,
+		RefundsTable,
+		SaleExplainsTable,
+		SkusTable,
 		SkuSpecTable,
-		SpecKeyTable,
-		SpecValueTable,
-		SpuTable,
+		SpecKeysTable,
+		SpecValuesTable,
+		SpusTable,
 		SpuDetailImgTable,
-		SpuImgTable,
-		TagTable,
+		SpuImgsTable,
+		TagsTable,
 		ThemeTable,
 		UserTable,
 		UserCouponTable,
 		UserFavorTable,
 		UserInfoTable,
-		UserPointTable,
+		UserPointsTable,
 		UserPointDetailTable,
-		UserWalletTable,
-		UserWalletDetailTable,
+		UserWalletsTable,
+		UserWalletDetailsTable,
 		ActivitySpuTable,
 		ActivityCouponTable,
 		BrandSpuTable,
@@ -901,27 +901,27 @@ var (
 )
 
 func init() {
-	BannerItemTable.ForeignKeys[0].RefTable = BannerTable
-	CategoryTable.ForeignKeys[0].RefTable = CategoryTable
+	BannerItemsTable.ForeignKeys[0].RefTable = BannersTable
+	CategoriesTable.ForeignKeys[0].RefTable = CategoriesTable
 	GridCategoryTable.Annotation = &entsql.Annotation{
 		Table: "grid_category",
 	}
-	OrderTable.ForeignKeys[0].RefTable = UserTable
-	OrderSnapTable.ForeignKeys[0].RefTable = OrderTable
-	OrderSubTable.ForeignKeys[0].RefTable = OrderTable
+	OrdersTable.ForeignKeys[0].RefTable = UserTable
+	OrderSnapsTable.ForeignKeys[0].RefTable = OrdersTable
+	OrderSubTable.ForeignKeys[0].RefTable = OrdersTable
 	OrderSubTable.Annotation = &entsql.Annotation{
 		Table: "order_sub",
 	}
-	RefundTable.ForeignKeys[0].RefTable = UserTable
-	SaleExplainTable.ForeignKeys[0].RefTable = SpuTable
+	RefundsTable.ForeignKeys[0].RefTable = UserTable
+	SaleExplainsTable.ForeignKeys[0].RefTable = SpusTable
 	SkuSpecTable.Annotation = &entsql.Annotation{
 		Table: "sku_spec",
 	}
-	SpuDetailImgTable.ForeignKeys[0].RefTable = SpuTable
+	SpuDetailImgTable.ForeignKeys[0].RefTable = SpusTable
 	SpuDetailImgTable.Annotation = &entsql.Annotation{
 		Table: "spu_detail_img",
 	}
-	SpuImgTable.ForeignKeys[0].RefTable = SpuTable
+	SpuImgsTable.ForeignKeys[0].RefTable = SpusTable
 	ThemeTable.Annotation = &entsql.Annotation{
 		Table: "theme",
 	}
@@ -940,18 +940,18 @@ func init() {
 	UserPointDetailTable.Annotation = &entsql.Annotation{
 		Table: "user_point_detail",
 	}
-	ActivitySpuTable.ForeignKeys[0].RefTable = ActivityTable
-	ActivitySpuTable.ForeignKeys[1].RefTable = SpuTable
-	ActivityCouponTable.ForeignKeys[0].RefTable = ActivityTable
-	ActivityCouponTable.ForeignKeys[1].RefTable = CouponTable
-	BrandSpuTable.ForeignKeys[0].RefTable = BrandTable
-	BrandSpuTable.ForeignKeys[1].RefTable = SpuTable
-	CouponCategoryTable.ForeignKeys[0].RefTable = CouponTable
-	CouponCategoryTable.ForeignKeys[1].RefTable = CategoryTable
-	SpuKeyTable.ForeignKeys[0].RefTable = SpuTable
-	SpuKeyTable.ForeignKeys[1].RefTable = SpecKeyTable
-	SpuTagTable.ForeignKeys[0].RefTable = SpuTable
-	SpuTagTable.ForeignKeys[1].RefTable = TagTable
+	ActivitySpuTable.ForeignKeys[0].RefTable = ActivitiesTable
+	ActivitySpuTable.ForeignKeys[1].RefTable = SpusTable
+	ActivityCouponTable.ForeignKeys[0].RefTable = ActivitiesTable
+	ActivityCouponTable.ForeignKeys[1].RefTable = CouponsTable
+	BrandSpuTable.ForeignKeys[0].RefTable = BrandsTable
+	BrandSpuTable.ForeignKeys[1].RefTable = SpusTable
+	CouponCategoryTable.ForeignKeys[0].RefTable = CouponsTable
+	CouponCategoryTable.ForeignKeys[1].RefTable = CategoriesTable
+	SpuKeyTable.ForeignKeys[0].RefTable = SpusTable
+	SpuKeyTable.ForeignKeys[1].RefTable = SpecKeysTable
+	SpuTagTable.ForeignKeys[0].RefTable = SpusTable
+	SpuTagTable.ForeignKeys[1].RefTable = TagsTable
 	ThemeSpuTable.ForeignKeys[0].RefTable = ThemeTable
-	ThemeSpuTable.ForeignKeys[1].RefTable = SpuTable
+	ThemeSpuTable.ForeignKeys[1].RefTable = SpusTable
 }

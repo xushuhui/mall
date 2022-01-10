@@ -42,21 +42,21 @@ const (
 	// UserTable is the table that holds the user relation/edge.
 	UserTable = "order"
 	// UserInverseTable is the table name for the User entity.
-	// It exists in this package in order to avoid circular dependency with the "user" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "user" package.
 	UserInverseTable = "user"
 	// UserColumn is the table column denoting the user relation/edge.
 	UserColumn = "user_id"
 	// OrderSnapTable is the table that holds the order_snap relation/edge.
 	OrderSnapTable = "order_snap"
 	// OrderSnapInverseTable is the table name for the OrderSnap entity.
-	// It exists in this package in order to avoid circular dependency with the "ordersnap" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "ordersnap" package.
 	OrderSnapInverseTable = "order_snap"
 	// OrderSnapColumn is the table column denoting the order_snap relation/edge.
 	OrderSnapColumn = "order_id"
 	// OrderSubTable is the table that holds the order_sub relation/edge.
 	OrderSubTable = "order_sub"
 	// OrderSubInverseTable is the table name for the OrderSub entity.
-	// It exists in this package in order to avoid circular dependency with the "ordersub" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "ordersub" package.
 	OrderSubInverseTable = "order_sub"
 	// OrderSubColumn is the table column denoting the order_sub relation/edge.
 	OrderSubColumn = "order_id"

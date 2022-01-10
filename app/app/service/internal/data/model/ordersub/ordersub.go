@@ -38,7 +38,7 @@ const (
 	// OrderTable is the table that holds the order relation/edge.
 	OrderTable = "order_sub"
 	// OrderInverseTable is the table name for the Order entity.
-	// It exists in this package in order to avoid circular dependency with the "order" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "order" package.
 	OrderInverseTable = "order"
 	// OrderColumn is the table column denoting the order relation/edge.
 	OrderColumn = "order_id"

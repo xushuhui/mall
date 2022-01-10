@@ -44,12 +44,12 @@ const (
 	// SpuTable is the table that holds the spu relation/edge. The primary key declared below.
 	SpuTable = "activity_spu"
 	// SpuInverseTable is the table name for the Spu entity.
-	// It exists in this package in order to avoid circular dependency with the "spu" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "spu" package.
 	SpuInverseTable = "spu"
 	// CouponTable is the table that holds the coupon relation/edge. The primary key declared below.
 	CouponTable = "activity_coupon"
 	// CouponInverseTable is the table name for the Coupon entity.
-	// It exists in this package in order to avoid circular dependency with the "coupon" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "coupon" package.
 	CouponInverseTable = "coupon"
 )
 

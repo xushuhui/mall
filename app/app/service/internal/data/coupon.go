@@ -2,8 +2,8 @@ package data
 
 import (
 	"context"
-
-	"mall-go/internal/data/model"
+	"mall-go/app/app/service/internal/biz"
+	"mall-go/app/app/service/internal/data/model"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

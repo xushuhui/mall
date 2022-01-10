@@ -3,7 +3,9 @@ package data
 import (
 	"context"
 	"mall-go/api/mall"
+	"mall-go/app/app/service/internal/biz"
 	"mall-go/app/app/service/internal/data/model"
+	"mall-go/app/app/service/internal/data/model/activity"
 
 	"mall-go/pkg/utils"
 

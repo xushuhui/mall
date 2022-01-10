@@ -44,7 +44,7 @@ const (
 	// CouponTable is the table that holds the coupon relation/edge. The primary key declared below.
 	CouponTable = "coupon_category"
 	// CouponInverseTable is the table name for the Coupon entity.
-	// It exists in this package in order to avoid circular dependency with the "coupon" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "coupon" package.
 	CouponInverseTable = "coupon"
 	// ParentTable is the table that holds the parent relation/edge.
 	ParentTable = "category"

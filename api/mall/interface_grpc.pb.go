@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,6 +21,24 @@ const _ = grpc.SupportPackageIsVersion7
 type InterfaceClient interface {
 	GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Themes, error)
+	//
+	GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*ThemeSpu, error)
+	GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Activity, error)
+	GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*ActivityCoupon, error)
+	GetAllCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AllCategory, error)
+	GetGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error)
+	GetTagByType(ctx context.Context, in *TagByTypeRequest, opts ...grpc.CallOption) (*Tags, error)
+	GetCouponByCategory(ctx context.Context, in *CouponByCategoryRequest, opts ...grpc.CallOption) (*Coupons, error)
+	GetWholeCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error)
+	GetMyCouponByStatus(ctx context.Context, in *MyCouponByStatusRequest, opts ...grpc.CallOption) (*Coupons, error)
+	GetMyAvailableCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error)
+	CollectCoupon(ctx context.Context, in *CollectCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error)
+	Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SpuPage, error)
+	GetSpuById(ctx context.Context, in *SpuByIdRequest, opts ...grpc.CallOption) (*SpuDetail, error)
+	GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error)
+	GetSpuByCategory(ctx context.Context, in *SpuByCategoryRequest, opts ...grpc.CallOption) (*SpuPage, error)
 }
 
 type interfaceClient struct {
@@ -48,12 +67,183 @@ func (c *interfaceClient) GetBannerByName(ctx context.Context, in *BannerByNameR
 	return out, nil
 }
 
+func (c *interfaceClient) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Themes, error) {
+	out := new(Themes)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetThemeByNames", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*ThemeSpu, error) {
+	out := new(ThemeSpu)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetThemeWithSpu", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Activity, error) {
+	out := new(Activity)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetActivityByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*ActivityCoupon, error) {
+	out := new(ActivityCoupon)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetActivityWithCoupon", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetAllCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AllCategory, error) {
+	out := new(AllCategory)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetAllCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error) {
+	out := new(GridCategories)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetGridCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetTagByType(ctx context.Context, in *TagByTypeRequest, opts ...grpc.CallOption) (*Tags, error) {
+	out := new(Tags)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetTagByType", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetCouponByCategory(ctx context.Context, in *CouponByCategoryRequest, opts ...grpc.CallOption) (*Coupons, error) {
+	out := new(Coupons)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetCouponByCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetWholeCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error) {
+	out := new(Coupons)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetWholeCoupon", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetMyCouponByStatus(ctx context.Context, in *MyCouponByStatusRequest, opts ...grpc.CallOption) (*Coupons, error) {
+	out := new(Coupons)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetMyCouponByStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetMyAvailableCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error) {
+	out := new(Coupons)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetMyAvailableCoupon", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) CollectCoupon(ctx context.Context, in *CollectCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/CollectCoupon", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error) {
+	out := new(SaleExplains)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetSaleExplain", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SpuPage, error) {
+	out := new(SpuPage)
+	err := c.cc.Invoke(ctx, "/mall.Interface/Search", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetSpuById(ctx context.Context, in *SpuByIdRequest, opts ...grpc.CallOption) (*SpuDetail, error) {
+	out := new(SpuDetail)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetSpuById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error) {
+	out := new(SpuPage)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetSpuLatest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetSpuByCategory(ctx context.Context, in *SpuByCategoryRequest, opts ...grpc.CallOption) (*SpuPage, error) {
+	out := new(SpuPage)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetSpuByCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // InterfaceServer is the server API for Interface service.
 // All implementations must embed UnimplementedInterfaceServer
 // for forward compatibility
 type InterfaceServer interface {
 	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
 	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
+	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
+	//
+	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error)
+	GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error)
+	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error)
+	GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error)
+	GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
+	GetTagByType(context.Context, *TagByTypeRequest) (*Tags, error)
+	GetCouponByCategory(context.Context, *CouponByCategoryRequest) (*Coupons, error)
+	GetWholeCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
+	GetMyCouponByStatus(context.Context, *MyCouponByStatusRequest) (*Coupons, error)
+	GetMyAvailableCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
+	CollectCoupon(context.Context, *CollectCouponRequest) (*emptypb.Empty, error)
+	GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error)
+	Search(context.Context, *SearchRequest) (*SpuPage, error)
+	GetSpuById(context.Context, *SpuByIdRequest) (*SpuDetail, error)
+	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
+	GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error)
 	mustEmbedUnimplementedInterfaceServer()
 }
 
@@ -66,6 +256,57 @@ func (UnimplementedInterfaceServer) GetBannerById(context.Context, *BannerByIdRe
 }
 func (UnimplementedInterfaceServer) GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBannerByName not implemented")
+}
+func (UnimplementedInterfaceServer) GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetThemeByNames not implemented")
+}
+func (UnimplementedInterfaceServer) GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetThemeWithSpu not implemented")
+}
+func (UnimplementedInterfaceServer) GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivityByName not implemented")
+}
+func (UnimplementedInterfaceServer) GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivityWithCoupon not implemented")
+}
+func (UnimplementedInterfaceServer) GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllCategory not implemented")
+}
+func (UnimplementedInterfaceServer) GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGridCategory not implemented")
+}
+func (UnimplementedInterfaceServer) GetTagByType(context.Context, *TagByTypeRequest) (*Tags, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTagByType not implemented")
+}
+func (UnimplementedInterfaceServer) GetCouponByCategory(context.Context, *CouponByCategoryRequest) (*Coupons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCouponByCategory not implemented")
+}
+func (UnimplementedInterfaceServer) GetWholeCoupon(context.Context, *emptypb.Empty) (*Coupons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWholeCoupon not implemented")
+}
+func (UnimplementedInterfaceServer) GetMyCouponByStatus(context.Context, *MyCouponByStatusRequest) (*Coupons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMyCouponByStatus not implemented")
+}
+func (UnimplementedInterfaceServer) GetMyAvailableCoupon(context.Context, *emptypb.Empty) (*Coupons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMyAvailableCoupon not implemented")
+}
+func (UnimplementedInterfaceServer) CollectCoupon(context.Context, *CollectCouponRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CollectCoupon not implemented")
+}
+func (UnimplementedInterfaceServer) GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSaleExplain not implemented")
+}
+func (UnimplementedInterfaceServer) Search(context.Context, *SearchRequest) (*SpuPage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
+}
+func (UnimplementedInterfaceServer) GetSpuById(context.Context, *SpuByIdRequest) (*SpuDetail, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSpuById not implemented")
+}
+func (UnimplementedInterfaceServer) GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSpuLatest not implemented")
+}
+func (UnimplementedInterfaceServer) GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSpuByCategory not implemented")
 }
 func (UnimplementedInterfaceServer) mustEmbedUnimplementedInterfaceServer() {}
 
@@ -116,6 +357,312 @@ func _Interface_GetBannerByName_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Interface_GetThemeByNames_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ThemeByNamesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetThemeByNames(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetThemeByNames",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetThemeByNames(ctx, req.(*ThemeByNamesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetThemeWithSpu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ThemeWithSpuRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetThemeWithSpu(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetThemeWithSpu",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetThemeWithSpu(ctx, req.(*ThemeWithSpuRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetActivityByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivityByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetActivityByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetActivityByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetActivityByName(ctx, req.(*ActivityByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetActivityWithCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivityWithCouponRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetActivityWithCoupon(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetActivityWithCoupon",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetActivityWithCoupon(ctx, req.(*ActivityWithCouponRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetAllCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetAllCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetAllCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetAllCategory(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetGridCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetGridCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetGridCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetGridCategory(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetTagByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TagByTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetTagByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetTagByType",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetTagByType(ctx, req.(*TagByTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetCouponByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CouponByCategoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetCouponByCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetCouponByCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetCouponByCategory(ctx, req.(*CouponByCategoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetWholeCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetWholeCoupon(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetWholeCoupon",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetWholeCoupon(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetMyCouponByStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MyCouponByStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetMyCouponByStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetMyCouponByStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetMyCouponByStatus(ctx, req.(*MyCouponByStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetMyAvailableCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetMyAvailableCoupon(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetMyAvailableCoupon",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetMyAvailableCoupon(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_CollectCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CollectCouponRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).CollectCoupon(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/CollectCoupon",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).CollectCoupon(ctx, req.(*CollectCouponRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetSaleExplain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetSaleExplain(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetSaleExplain",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetSaleExplain(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).Search(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/Search",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).Search(ctx, req.(*SearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetSpuById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SpuByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetSpuById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetSpuById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetSpuById(ctx, req.(*SpuByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetSpuLatest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetSpuLatest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetSpuLatest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetSpuLatest(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SpuByCategoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetSpuByCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetSpuByCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetSpuByCategory(ctx, req.(*SpuByCategoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Interface_ServiceDesc is the grpc.ServiceDesc for Interface service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +677,74 @@ var Interface_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBannerByName",
 			Handler:    _Interface_GetBannerByName_Handler,
+		},
+		{
+			MethodName: "GetThemeByNames",
+			Handler:    _Interface_GetThemeByNames_Handler,
+		},
+		{
+			MethodName: "GetThemeWithSpu",
+			Handler:    _Interface_GetThemeWithSpu_Handler,
+		},
+		{
+			MethodName: "GetActivityByName",
+			Handler:    _Interface_GetActivityByName_Handler,
+		},
+		{
+			MethodName: "GetActivityWithCoupon",
+			Handler:    _Interface_GetActivityWithCoupon_Handler,
+		},
+		{
+			MethodName: "GetAllCategory",
+			Handler:    _Interface_GetAllCategory_Handler,
+		},
+		{
+			MethodName: "GetGridCategory",
+			Handler:    _Interface_GetGridCategory_Handler,
+		},
+		{
+			MethodName: "GetTagByType",
+			Handler:    _Interface_GetTagByType_Handler,
+		},
+		{
+			MethodName: "GetCouponByCategory",
+			Handler:    _Interface_GetCouponByCategory_Handler,
+		},
+		{
+			MethodName: "GetWholeCoupon",
+			Handler:    _Interface_GetWholeCoupon_Handler,
+		},
+		{
+			MethodName: "GetMyCouponByStatus",
+			Handler:    _Interface_GetMyCouponByStatus_Handler,
+		},
+		{
+			MethodName: "GetMyAvailableCoupon",
+			Handler:    _Interface_GetMyAvailableCoupon_Handler,
+		},
+		{
+			MethodName: "CollectCoupon",
+			Handler:    _Interface_CollectCoupon_Handler,
+		},
+		{
+			MethodName: "GetSaleExplain",
+			Handler:    _Interface_GetSaleExplain_Handler,
+		},
+		{
+			MethodName: "Search",
+			Handler:    _Interface_Search_Handler,
+		},
+		{
+			MethodName: "GetSpuById",
+			Handler:    _Interface_GetSpuById_Handler,
+		},
+		{
+			MethodName: "GetSpuLatest",
+			Handler:    _Interface_GetSpuLatest_Handler,
+		},
+		{
+			MethodName: "GetSpuByCategory",
+			Handler:    _Interface_GetSpuByCategory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

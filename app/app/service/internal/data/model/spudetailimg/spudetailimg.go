@@ -30,7 +30,7 @@ const (
 	// SpuTable is the table that holds the spu relation/edge.
 	SpuTable = "spu_detail_img"
 	// SpuInverseTable is the table name for the Spu entity.
-	// It exists in this package in order to avoid circular dependency with the "spu" package.
+	// It exists in this package in order to avoid lower111 circular dependency with the "spu" package.
 	SpuInverseTable = "spu"
 	// SpuColumn is the table column denoting the spu relation/edge.
 	SpuColumn = "spu_id"

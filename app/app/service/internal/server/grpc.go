@@ -1,7 +1,8 @@
 package server
 
 import (
-	"mall-go/api/mall"
+	"mall-go/api/app"
+
 	"mall-go/app/app/service/internal/conf"
 	"mall-go/app/app/service/internal/service"
 
@@ -28,7 +29,6 @@ func NewGRPCServer(c *conf.Server, as *service.AppService, logger log.Logger) *g
 	}
 	srv := grpc.NewServer(opts...)
 
-	mall.RegisterAppServer(srv, as)
-
+	app.RegisterAppServer(srv, as)
 	return srv
 }

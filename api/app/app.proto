@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-package mall;
+package app;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 import "api/mall/common.proto";
 
-option go_package = "mall-go/api/mall";
+option go_package = "mall-go/app";
 
-service Interface {
+service App {
 
   rpc GetBannerById(BannerByIdRequest) returns (Banner) {
     option (google.api.http) = {
@@ -26,7 +26,6 @@ service Interface {
       get : "/theme/by/names"
     };
   }
-  //
   rpc GetThemeWithSpu(ThemeWithSpuRequest) returns (ThemeSpu) {
     option (google.api.http) = {
       get : "/theme/name/{name}/with_spu"
@@ -46,12 +45,12 @@ service Interface {
 
   rpc GetAllCategory(google.protobuf.Empty) returns (AllCategory) {
     option (google.api.http) = {
-      get : "/category/all"
+      get : "/category"
     };
   }
   rpc GetGridCategory(google.protobuf.Empty) returns (GridCategories) {
     option (google.api.http) = {
-      get : "/category/grid/all"
+      get : "/category/grid"
     };
   }
 
@@ -67,7 +66,7 @@ service Interface {
   }
   rpc GetWholeCoupon(google.protobuf.Empty) returns (Coupons) {
     option (google.api.http) = {
-      get : "/coupon/by/whole_store"
+      get : "/coupon"
     };
   }
   rpc GetMyCouponByStatus(MyCouponByStatusRequest) returns (Coupons) {
@@ -88,17 +87,13 @@ service Interface {
   }
   rpc GetSaleExplain(google.protobuf.Empty) returns (SaleExplains) {
     option (google.api.http) = {
-      get : "/sale_explain/fixed"
+      get : "/sale_explain"
     };
   }
-  rpc Search(SearchRequest) returns (SpuPage) {
-    option (google.api.http) = {
-      get : "/search"
-    };
-  }
+
   rpc GetSpuById(SpuByIdRequest) returns (SpuDetail) {
     option (google.api.http) = {
-      get : "/spu/id/{id}/detail"
+      get : "/spu/{id}"
     };
   }
   rpc GetSpuLatest(google.protobuf.Empty) returns (SpuPage) {
@@ -111,69 +106,16 @@ service Interface {
       get : "/spu/by/category/{id}"
     };
   }
+
 }
-message Banner {
-  int64 id = 1;
-  string name = 2;
-  string title = 3;
-  string img = 4;
-  string description = 5;
-  repeated BannerItem items = 6;
-}
-message BannerItem {
-  int64 id = 1;
-  string img = 2;
-  string keyword = 3;
-  int32 type = 4;
-  string name = 5;
-  int64 bannerId = 6;
-}
+
 message BannerByIdRequest { int64 id = 1; }
 message BannerByNameRequest { string name = 1; }
 message ThemeByNamesRequest { string names = 1; }
 message ThemeWithSpuRequest { string name = 1; }
 message ActivityByNameRequest { string name = 1; }
 message ActivityWithCouponRequest { string name = 1; }
-message Themes { repeated Theme theme = 1; }
-message Theme {
-  int64 id = 1;
-  string title = 2;
-  string description = 3;
-  string name = 4;
-  string entrance_img = 5;
 
-  string internal_top_img = 7;
-  string title_img = 8;
-  string tpl_name = 9;
-  int32 online = 10;
-}
-message ThemeSpu {
-  int64 id = 1;
-  string title = 2;
-  string description = 3;
-  string name = 4;
-  string entrance_img = 5;
-
-  string internal_top_img = 7;
-  string title_img = 8;
-  string tpl_name = 9;
-  int32 online = 10;
-  repeated Spu spu_list = 11;
-}
-message Spu {
-  int64 id = 1;
-  string title = 2;
-  string subtitle = 3;
-  int64 category_id = 4;
-  int64 root_category_id = 5;
-  string price = 6;
-  string img = 7;
-  string for_theme_img = 8;
-  string description = 9;
-  string discount_price = 10;
-  string tags = 11;
-  int32 online = 13;
-}
 message TagByTypeRequest { string type = 1; }
 
 message Tags {
@@ -209,15 +151,71 @@ message Category {
   int64 parent_id = 5;
   int32 index = 6;
 }
+message Themes { repeated Theme theme = 1; }
+message Theme {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  string name = 4;
+  string entrance_img = 5;
 
+  string internal_top_img = 7;
+  string title_img = 8;
+  string tpl_name = 9;
+  int32 online = 10;
+}
+message ThemeSpu {
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  string name = 4;
+  string entrance_img = 5;
+
+  string internal_top_img = 7;
+  string title_img = 8;
+  string tpl_name = 9;
+  int32 online = 10;
+  repeated Spu spu_list = 11;
+}
+
+message Banner {
+  int64 id = 1;
+  string name = 2;
+  string title = 3;
+  string img = 4;
+  string description = 5;
+  repeated BannerItem items = 6;
+}
+message BannerItem {
+  int64 id = 1;
+  string img = 2;
+  string keyword = 3;
+  int32 type = 4;
+  string name = 5;
+  int64 bannerId = 6;
+}
+message Spu {
+    int64 id = 1;
+    string title = 2;
+    string subtitle = 3;
+    int64 category_id = 4;
+    int64 root_category_id = 5;
+    string price = 6;
+    string img = 7;
+    string for_theme_img = 8;
+    string description = 9;
+    string discount_price = 10;
+    string tags = 11;
+    int32 online = 13;
+  }
 message Activity {
   int64 id = 1;
   string title = 2;
   string entrance_img = 3;
   int32 online = 4;
   string remark = 5;
-  uint64 start_time = 6;
-  uint64 end_time = 7;
+  string start_time = 6;
+  string end_time = 7;
 }
 message ActivityCoupon {
   int64 id = 1;
@@ -225,10 +223,11 @@ message ActivityCoupon {
   string entrance_img = 3;
   int32 online = 4;
   string remark = 5;
-  uint64 start_time = 6;
-  uint64 end_time = 7;
+  string start_time = 6;
+  string end_time = 7;
   repeated CouponBo coupon = 8;
 }
+
 message CouponByCategoryRequest { int64 id = 1; }
 message MyCouponByStatusRequest { string status = 1; }
 message CollectCouponRequest { string id = 1; }
@@ -248,46 +247,6 @@ message CouponBo {
   bool whole_store = 11;
 }
 
-message CancelOrderRequest { int64 id = 1; }
-message GetOrderRequest { int64 id = 1; }
-message SkuInfo {
-  int64 id = 1;
-  int32 count = 2;
-}
-
-message OrderAddress {
-  string UserName = 1;
-  string Province = 2;
-  string City = 3;
-  string County = 4;
-  string Mobile = 5;
-  string NationCode = 6;
-  string PostalCode = 7;
-  string Detail = 8;
-}
-
-message PlaceOrderRequest {
-  int64 CouponId = 1;
-  double TotalPrice = 2;
-  double FinalTotalPrice = 3;
-  repeated SkuInfo SkuInfoList = 4;
-  OrderAddress Address = 5;
-}
-
-message PlaceOrderReply { int64 orderId = 1; }
-message ListUserOrdersRequest {
-  PageRequest page = 1;
-  int32 Status = 3;
-}
-message ListUserOrdersReply {
-  PageReply PageReply = 1;
-  int32 Status = 3;
-}
-message SearchRequest {
-  string keyword = 1;
-  int32 page = 2;
-  int32 size = 3;
-}
 
 message SpuByIdRequest { int64 id = 1; }
 message SpuByCategoryRequest { int64 id = 1; }
