@@ -6,8 +6,8 @@ import (
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/app/app/service/internal/data/model"
 	"mall-go/app/app/service/internal/data/model/activity"
-
-	"mall-go/pkg/utils"
+	"mall-go/app/app/service/internal/data/model/coupon"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -25,7 +25,6 @@ func NewActivityRepo(data *Data, logger log.Logger) biz.ActivityRepo {
 }
 func (r *activityRepo) GetActivityByName(ctx context.Context, name string) (a biz.Activity, err error) {
 	po, err := r.data.db.Activity.Query().Where(activity.Name(name)).First(ctx)
-	r.log.Info(po, 111)
 	if model.IsNotFound(err) {
 		err = mall.ErrorNotfound("activity")
 		return
@@ -39,8 +38,8 @@ func (r *activityRepo) GetActivityByName(ctx context.Context, name string) (a bi
 		Id:             po.ID,
 		Title:          po.Title,
 		Description:    po.Description,
-		StartTime:      utils.TimeBecomeString(po.StartTime),
-		EndTime:        utils.TimeBecomeString(po.EndTime),
+		StartTime:      po.StartTime,
+		EndTime:        po.EndTime,
 		Remark:         po.Remark,
 		Online:         po.Online,
 		EntranceImg:    po.EntranceImg,
@@ -49,5 +48,50 @@ func (r *activityRepo) GetActivityByName(ctx context.Context, name string) (a bi
 }
 
 func (r *activityRepo) GetActivityWithCoupon(ctx context.Context, name string) (a biz.ActivityCoupon, err error) {
-	panic("not implemented") // TODO: Implement
+	po, err := r.data.db.Activity.Query().Where(activity.Name(name)).WithCoupon(func(query *model.CouponQuery) {
+		query.Where(coupon.EndTimeGT(time.Now()))
+	}).First(ctx)
+
+	if model.IsNotFound(err) {
+		err = mall.ErrorNotfound("activity")
+		return
+	}
+
+	if err != nil {
+		return
+	}
+
+	var coupons []biz.Coupons
+
+	for _, v := range po.Edges.Coupon {
+		coupons = append(coupons, biz.Coupons{
+			Id:          v.ID,
+			Title:       v.Title,
+			StartTime:   v.StartTime,
+			EndTime:     v.EndTime,
+			Description: v.Description,
+			FullMoney:   v.FullMoney,
+			Rate:        v.Rate,
+			Type:        v.Type,
+			Remark:      v.Remark,
+			WholeStore:  v.WholeStore,
+			Minus:       v.Minus,
+		})
+	}
+
+	act := biz.Activity{
+		Id:          po.ID,
+		Title:       po.Title,
+		EntranceImg: po.EntranceImg,
+		Online:      po.Online,
+		Remark:      po.Remark,
+		StartTime:   po.StartTime,
+		EndTime:     po.EndTime,
+	}
+
+	return biz.ActivityCoupon{
+		Activity: act,
+		Coupons:  coupons,
+	}, nil
+
 }

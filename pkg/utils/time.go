@@ -20,3 +20,8 @@ func TimeBecomeString(t time.Time) (s string) {
 	s = t.Format("2006-01-02 15:04:05")
 	return
 }
+
+func Time2uint64(t time.Time) (s uint64) {
+	s = uint64(t.Unix())
+	return
+}

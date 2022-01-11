@@ -1570,9 +1570,9 @@ type CouponBo struct {
 	StartTime   uint64  `protobuf:"varint,3,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	EndTime     uint64  `protobuf:"varint,4,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	Description string  `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	FullMoney   string  `protobuf:"bytes,6,opt,name=full_money,json=fullMoney,proto3" json:"full_money,omitempty"`
+	FullMoney   float64 `protobuf:"fixed64,7,opt,name=full_money,json=fullMoney,proto3" json:"full_money,omitempty"`
 	Minus       float64 `protobuf:"fixed64,7,opt,name=minus,proto3" json:"minus,omitempty"`
-	Rate        string  `protobuf:"bytes,8,opt,name=rate,proto3" json:"rate,omitempty"`
+	Rate        float64 `protobuf:"fixed64,7,opt,name=rate,proto3" json:"rate,omitempty"`
 	Type        uint32  `protobuf:"varint,9,opt,name=type,proto3" json:"type,omitempty"`
 	Remark      string  `protobuf:"bytes,10,opt,name=remark,proto3" json:"remark,omitempty"`
 	WholeStore  bool    `protobuf:"varint,11,opt,name=whole_store,json=wholeStore,proto3" json:"whole_store,omitempty"`
@@ -1645,25 +1645,25 @@ func (x *CouponBo) GetDescription() string {
 	return ""
 }
 
-func (x *CouponBo) GetFullMoney() string {
+func (x *CouponBo) GetFullMoney() float64 {
 	if x != nil {
 		return x.FullMoney
 	}
-	return ""
+	return 0.00
 }
 
 func (x *CouponBo) GetMinus() float64 {
 	if x != nil {
 		return x.Minus
 	}
-	return 0
+	return 0.00
 }
 
-func (x *CouponBo) GetRate() string {
+func (x *CouponBo) GetRate() float64 {
 	if x != nil {
 		return x.Rate
 	}
-	return ""
+	return 0.00
 }
 
 func (x *CouponBo) GetType() uint32 {
