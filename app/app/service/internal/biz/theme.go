@@ -26,6 +26,9 @@ type ThemeSpu struct {
 type ThemeRepo interface {
 	GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error)
 	GetThemeWithSpu(ctx context.Context, name string) (t ThemeSpu, err error)
+	CreateTheme() (err error)
+	ListTheme()
+	UpdateTheme() (err error)
 }
 
 type ThemeUsecase struct {

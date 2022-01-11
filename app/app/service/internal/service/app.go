@@ -6,6 +6,7 @@ import (
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	"mall-go/api/app"
 	"mall-go/app/app/service/internal/biz"
+	"strings"
 )
 
 type AppService struct {
@@ -82,12 +83,54 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *app.NameRequest) (
 
 }
 func (s *AppService) GetThemeByNames(ctx context.Context, in *app.ThemeByNamesRequest) (out *app.Themes, err error) {
-	return
+	rv, err := s.tu.GetThemeByNames(ctx, strings.Split(in.Names, `,`))
+	if err != nil {
+		return nil, err
+	}
+	var items []*app.Theme
+	for _, v := range rv {
+		items = append(items, &app.Theme{
+			Id:     v.Id,
+			Online: v.Online,
+			Name:   v.Name,
+			Title:  v.Title,
+		})
+	}
+
+	return &app.Themes{
+		Theme: items,
+	}, nil
 }
 
 func (s *AppService) GetThemeWithSpu(ctx context.Context, in *app.NameRequest) (out *app.ThemeSpu, err error) {
+	rv, err := s.tu.GetThemeWithSpu(ctx, in.Name)
+	if err != nil {
+		return nil, err
+	}
+	var items []*app.Spu
+	for _, v := range rv.SpuList {
+		items = append(items, &app.Spu{
+			Id:       v.Id,
+			Title:    v.Title,
+			Subtitle: v.Subtitle,
+			Online:   v.Online,
 
-	return
+			Img:            v.Img,
+			ForThemeImg:    v.ForThemeImg,
+			RootCategoryId: v.RootCategoryId,
+			CategoryId:     v.CategoryId,
+		})
+	}
+	return &app.ThemeSpu{
+		Id:          rv.Id,
+		Title:       rv.Title,
+		Name:        rv.Name,
+		EntranceImg: rv.EntranceImg,
+		Online:      rv.Online,
+		TitleImg:    rv.TitleImg,
+		SpuList:     items,
+	}, nil
+
 }
 
 func (s *AppService) GetActivityByName(ctx context.Context, in *app.NameRequest) (out *app.Activity, err error) {
@@ -145,10 +188,10 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *app.NameRequ
 	return
 
 }
-func (s *AppService) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *app.Categories, err error) {
+func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *app.Categories, err error) {
 	return
 }
-func (s *AppService) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *app.GridCategories, err error) {
+func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (out *app.GridCategories, err error) {
 	return
 }
 func (s *AppService) GetTagByType(ctx context.Context, in *app.TypeRequest) (out *app.Tags, err error) {

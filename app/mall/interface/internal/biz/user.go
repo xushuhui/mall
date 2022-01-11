@@ -13,6 +13,8 @@ type User struct {
 }
 
 type UserRepo interface {
+	CreateUser(ctx context.Context)
+	GetUserByAccount(ctx context.Context, account string)
 }
 type UserUsecase struct {
 	repo   UserRepo
@@ -49,21 +51,19 @@ func (u *UserUsecase) VerifyToken(ctx context.Context, tokenString string) (isVa
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(u.jwtKey), nil
 	})
-	if ve, ok := err.(*jwt.ValidationError); ok {
-		if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-
-			err = mall.ErrorToken("That's not even a token")
-			return
-		} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
-			err = mall.ErrorToken("token expire time")
-			return
-
-		} else {
-			err = mall.ErrorToken("token error")
-			return
-		}
-
+	if err.(*jwt.ValidationError).Errors&jwt.ValidationErrorMalformed != 0 {
+		err = mall.ErrorToken("That's not even a token")
+		return
 	}
+	if err.(*jwt.ValidationError).Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
+		err = mall.ErrorToken("token expire time")
+		return
+	}
+	if err != nil {
+		err = mall.ErrorToken("token error")
+		return
+	}
+
 	if token.Valid {
 		isValid = true
 	}

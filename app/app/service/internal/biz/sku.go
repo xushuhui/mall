@@ -1,6 +1,9 @@
 package biz
 
-import "github.com/go-kratos/kratos/v2/log"
+import (
+	"context"
+	"github.com/go-kratos/kratos/v2/log"
+)
 
 type Spec struct {
 	Value string `json:"value"`
@@ -35,6 +38,8 @@ func (sku *Sku) getSpecValueList() (val []string) {
 }
 
 type SkuRepo interface {
+	CreateSku(ctx context.Context, sku Sku)
+	ListSku(ctx context.Context)
 }
 type SkuUsecase struct {
 	repo SkuRepo

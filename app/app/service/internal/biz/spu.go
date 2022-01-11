@@ -19,6 +19,7 @@ type Spu struct {
 }
 
 type SpuRepo interface {
+	CreateSpu() (err error)
 }
 type SpuUsecase struct {
 	repo SpuRepo
