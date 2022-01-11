@@ -3,7 +3,7 @@ package test
 import (
 	"context"
 	"log"
-	"mall-go/api/mall"
+	"mall-go/api/app"
 	"testing"
 
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -11,11 +11,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var appClient mall.AppHTTPClient
+var appClient app.AppHTTPClient
 
 func TestGetBannerById(t *testing.T) {
 
-	reply, err := appClient.GetBannerById(context.Background(), &mall.BannerByIdRequest{Id: 1})
+	reply, err := appClient.GetBannerById(context.Background(), &app.BannerByIdRequest{Id: 1})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func TestGetBannerById(t *testing.T) {
 }
 func TestGetBannerByName(t *testing.T) {
 
-	reply, err := appClient.GetBannerByName(context.Background(), &mall.BannerByNameRequest{Name: "b-1"})
+	reply, err := appClient.GetBannerByName(context.Background(), &app.BannerByNameRequest{Name: "b-1"})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,12 +40,12 @@ func TestMain(m *testing.M) {
 		transhttp.WithMiddleware(
 			recovery.Recovery(),
 		),
-		transhttp.WithEndpoint("127.0.0.1:8000"),
+		transhttp.WithEndpoint("127.0.0.1:8001"),
 	)
 	if err != nil {
 		panic(err)
 	}
 
-	appClient = mall.NewAppHTTPClient(conn)
+	appClient = app.NewAppHTTPClient(conn)
 	m.Run()
 }

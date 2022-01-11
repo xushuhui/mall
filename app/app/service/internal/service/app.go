@@ -59,7 +59,31 @@ func (s *AppService) GetBannerById(ctx context.Context, in *app.BannerByIdReques
 
 }
 func (s *AppService) GetBannerByName(ctx context.Context, in *app.BannerByNameRequest) (out *app.Banner, err error) {
-	return
+	rv, err := s.bu.GetBannerByName(ctx, in.Name)
+	if err != nil {
+		return nil, err
+	}
+	var items []*app.BannerItem
+	for _, v := range rv.Items {
+
+		item := &app.BannerItem{
+			Id:      v.ID,
+			Name:    v.Name,
+			Img:     v.Img,
+			Keyword: v.Keyword,
+			Type:    int32(v.Type),
+		}
+		items = append(items, item)
+	}
+	return &app.Banner{
+		Id:          rv.Id,
+		Name:        rv.Name,
+		Img:         rv.Img,
+		Title:       rv.Title,
+		Description: rv.Description,
+		Items:       items,
+	}, nil
+
 }
 func (s *AppService) GetThemeByNames(ctx context.Context, in *app.ThemeByNamesRequest) (out *app.Themes, err error) {
 	return

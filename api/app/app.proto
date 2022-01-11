@@ -239,8 +239,8 @@ message CouponBo {
   uint64 start_time = 3;
   uint64 end_time = 4;
   string description = 5;
-  double full_money = 8;
-  double minus = 8;
+  double full_money = 6;
+  double minus = 7;
   double rate = 8;
   uint32 type = 9;
   string remark = 10;

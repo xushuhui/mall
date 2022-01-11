@@ -22,7 +22,6 @@ type AppClient interface {
 	GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Themes, error)
-	//
 	GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*ThemeSpu, error)
 	GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Activity, error)
 	GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*ActivityCoupon, error)
@@ -217,7 +216,6 @@ type AppServer interface {
 	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
 	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
-	//
 	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error)
 	GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error)
 	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error)
