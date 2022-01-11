@@ -48,14 +48,14 @@ func RegisterInterfaceHTTPServer(s *http.Server, srv InterfaceHTTPServer) {
 	r.GET("/theme/name/{name}/with_spu", _Interface_GetThemeWithSpu1_HTTP_Handler(srv))
 	r.GET("/activity/name/{name}", _Interface_GetActivityByName1_HTTP_Handler(srv))
 	r.GET("/activity/name/{name}/with_coupon", _Interface_GetActivityWithCoupon1_HTTP_Handler(srv))
-	r.GET("/category/all", _Interface_GetAllCategory1_HTTP_Handler(srv))
-	r.GET("/category/grid/all", _Interface_GetGridCategory1_HTTP_Handler(srv))
+	r.GET("/category/all", _Interface_GetAllCategory0_HTTP_Handler(srv))
+	r.GET("/category/grid/all", _Interface_GetGridCategory0_HTTP_Handler(srv))
 	r.GET("/tag/type/{type}", _Interface_GetTagByType1_HTTP_Handler(srv))
 	r.GET("/coupon/by/category/{id}", _Interface_GetCouponByCategory1_HTTP_Handler(srv))
-	r.GET("/coupon/by/whole_store", _Interface_GetWholeCoupon1_HTTP_Handler(srv))
-	r.GET("/coupon/myself/by/status/{status}", _Interface_GetMyCouponByStatus1_HTTP_Handler(srv))
-	r.GET("/coupon/myself/available/with_category", _Interface_GetMyAvailableCoupon1_HTTP_Handler(srv))
-	r.POST("/coupon/collect/{id}", _Interface_CollectCoupon1_HTTP_Handler(srv))
+	r.GET("/coupon/by/whole_store", _Interface_GetWholeCoupon0_HTTP_Handler(srv))
+	r.GET("/coupon/myself/by/status/{status}", _Interface_GetMyCouponByStatus0_HTTP_Handler(srv))
+	r.GET("/coupon/myself/available/with_category", _Interface_GetMyAvailableCoupon0_HTTP_Handler(srv))
+	r.POST("/coupon/collect/{id}", _Interface_CollectCoupon0_HTTP_Handler(srv))
 	r.GET("/sale_explain/fixed", _Interface_GetSaleExplain1_HTTP_Handler(srv))
 	r.GET("/search", _Interface_Search0_HTTP_Handler(srv))
 	r.GET("/spu/id/{id}/detail", _Interface_GetSpuById1_HTTP_Handler(srv))
@@ -192,7 +192,7 @@ func _Interface_GetActivityWithCoupon1_HTTP_Handler(srv InterfaceHTTPServer) fun
 	}
 }
 
-func _Interface_GetAllCategory1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetAllCategory0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
@@ -211,7 +211,7 @@ func _Interface_GetAllCategory1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx h
 	}
 }
 
-func _Interface_GetGridCategory1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetGridCategory0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
@@ -274,7 +274,7 @@ func _Interface_GetCouponByCategory1_HTTP_Handler(srv InterfaceHTTPServer) func(
 	}
 }
 
-func _Interface_GetWholeCoupon1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetWholeCoupon0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
@@ -293,7 +293,7 @@ func _Interface_GetWholeCoupon1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx h
 	}
 }
 
-func _Interface_GetMyCouponByStatus1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetMyCouponByStatus0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in MyCouponByStatusRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -315,7 +315,7 @@ func _Interface_GetMyCouponByStatus1_HTTP_Handler(srv InterfaceHTTPServer) func(
 	}
 }
 
-func _Interface_GetMyAvailableCoupon1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetMyAvailableCoupon0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
@@ -334,7 +334,7 @@ func _Interface_GetMyAvailableCoupon1_HTTP_Handler(srv InterfaceHTTPServer) func
 	}
 }
 
-func _Interface_CollectCoupon1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_CollectCoupon0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CollectCouponRequest
 		if err := ctx.Bind(&in); err != nil {

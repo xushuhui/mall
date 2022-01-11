@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"mall-go/api/app"
 	"mall-go/app/app/service/internal/conf"
 	"mall-go/app/app/service/internal/service"
@@ -18,6 +19,7 @@ func NewHTTPServer(c *conf.Server, as *service.AppService, logger log.Logger) *h
 		http.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),
+			validate.Validator(),
 		),
 		http.Filter(handlers.CORS(
 			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),

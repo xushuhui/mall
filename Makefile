@@ -53,6 +53,14 @@ generate:
 ent:
 	go generate ./internal/data/ent
 
+.PHONY: validate
+# validate
+validate:
+	protoc --proto_path=. \
+           --proto_path=./third_party \
+           --go_out=paths=source_relative:. \
+           --validate_out=paths=source_relative,lang=go:. \
+           $(API_PROTO_FILES)
 
 .PHONY: all
 # generate all

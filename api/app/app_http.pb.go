@@ -19,24 +19,24 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type AppHTTPServer interface {
-	CollectCoupon(context.Context, *CollectCouponRequest) (*emptypb.Empty, error)
-	GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error)
-	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error)
-	GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error)
-	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
-	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
-	GetCouponByCategory(context.Context, *CouponByCategoryRequest) (*Coupons, error)
-	GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
-	GetMyAvailableCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
-	GetMyCouponByStatus(context.Context, *MyCouponByStatusRequest) (*Coupons, error)
+	CreateUserCoupon(context.Context, *CreateUserCouponRequest) (*emptypb.Empty, error)
+	GetActivityByName(context.Context, *NameRequest) (*Activity, error)
+	GetActivityWithCoupon(context.Context, *NameRequest) (*ActivityCoupon, error)
+	GetBannerById(context.Context, *IdRequest) (*Banner, error)
+	GetBannerByName(context.Context, *NameRequest) (*Banner, error)
+	GetCouponByCategory(context.Context, *IdRequest) (*Coupons, error)
+	GetCouponByType(context.Context, *TypeRequest) (*Coupons, error)
 	GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error)
-	GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error)
-	GetSpuById(context.Context, *SpuByIdRequest) (*SpuDetail, error)
+	GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error)
+	GetSpuById(context.Context, *IdRequest) (*SpuDetail, error)
 	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
-	GetTagByType(context.Context, *TagByTypeRequest) (*Tags, error)
+	GetTagByType(context.Context, *TypeRequest) (*Tags, error)
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
-	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error)
-	GetWholeCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
+	GetThemeWithSpu(context.Context, *NameRequest) (*ThemeSpu, error)
+	GetUserCouponByStatus(context.Context, *StatusRequest) (*Coupons, error)
+	GetUserCouponByStatusWithCategory(context.Context, *StatusRequest) (*Coupons, error)
+	ListCategory(context.Context, *emptypb.Empty) (*Categories, error)
+	ListGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
 }
 
 func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
@@ -47,23 +47,23 @@ func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
 	r.GET("/theme/name/{name}/with_spu", _App_GetThemeWithSpu0_HTTP_Handler(srv))
 	r.GET("/activity/name/{name}", _App_GetActivityByName0_HTTP_Handler(srv))
 	r.GET("/activity/name/{name}/with_coupon", _App_GetActivityWithCoupon0_HTTP_Handler(srv))
-	r.GET("/category", _App_GetAllCategory0_HTTP_Handler(srv))
-	r.GET("/category/grid", _App_GetGridCategory0_HTTP_Handler(srv))
+	r.GET("/category", _App_ListCategory0_HTTP_Handler(srv))
+	r.GET("/category/grid", _App_ListGridCategory0_HTTP_Handler(srv))
 	r.GET("/tag/type/{type}", _App_GetTagByType0_HTTP_Handler(srv))
-	r.GET("/coupon/by/category/{id}", _App_GetCouponByCategory0_HTTP_Handler(srv))
-	r.GET("/coupon", _App_GetWholeCoupon0_HTTP_Handler(srv))
-	r.GET("/coupon/myself/by/status/{status}", _App_GetMyCouponByStatus0_HTTP_Handler(srv))
-	r.GET("/coupon/myself/available/with_category", _App_GetMyAvailableCoupon0_HTTP_Handler(srv))
-	r.POST("/coupon/collect/{id}", _App_CollectCoupon0_HTTP_Handler(srv))
+	r.GET("/coupon/category/{id}", _App_GetCouponByCategory0_HTTP_Handler(srv))
+	r.GET("/coupon/type/{type}", _App_GetCouponByType0_HTTP_Handler(srv))
+	r.GET("/coupon/user/status/{status}", _App_GetUserCouponByStatus0_HTTP_Handler(srv))
+	r.GET("/coupon/user/status/{status}/with_category", _App_GetUserCouponByStatusWithCategory0_HTTP_Handler(srv))
+	r.POST("/coupon/user", _App_CreateUserCoupon0_HTTP_Handler(srv))
 	r.GET("/sale_explain", _App_GetSaleExplain0_HTTP_Handler(srv))
 	r.GET("/spu/{id}", _App_GetSpuById0_HTTP_Handler(srv))
 	r.GET("/spu/latest", _App_GetSpuLatest0_HTTP_Handler(srv))
-	r.GET("/spu/by/category/{id}", _App_GetSpuByCategory0_HTTP_Handler(srv))
+	r.GET("/spu/category/{id}", _App_GetSpuByCategory0_HTTP_Handler(srv))
 }
 
 func _App_GetBannerById0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in BannerByIdRequest
+		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -72,7 +72,7 @@ func _App_GetBannerById0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) 
 		}
 		http.SetOperation(ctx, "/app.App/GetBannerById")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetBannerById(ctx, req.(*BannerByIdRequest))
+			return srv.GetBannerById(ctx, req.(*IdRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -85,7 +85,7 @@ func _App_GetBannerById0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) 
 
 func _App_GetBannerByName0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in BannerByNameRequest
+		var in NameRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -94,7 +94,7 @@ func _App_GetBannerByName0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context
 		}
 		http.SetOperation(ctx, "/app.App/GetBannerByName")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetBannerByName(ctx, req.(*BannerByNameRequest))
+			return srv.GetBannerByName(ctx, req.(*NameRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -126,7 +126,7 @@ func _App_GetThemeByNames0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context
 
 func _App_GetThemeWithSpu0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ThemeWithSpuRequest
+		var in NameRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -135,7 +135,7 @@ func _App_GetThemeWithSpu0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context
 		}
 		http.SetOperation(ctx, "/app.App/GetThemeWithSpu")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetThemeWithSpu(ctx, req.(*ThemeWithSpuRequest))
+			return srv.GetThemeWithSpu(ctx, req.(*NameRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -148,7 +148,7 @@ func _App_GetThemeWithSpu0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context
 
 func _App_GetActivityByName0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ActivityByNameRequest
+		var in NameRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -157,7 +157,7 @@ func _App_GetActivityByName0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Conte
 		}
 		http.SetOperation(ctx, "/app.App/GetActivityByName")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetActivityByName(ctx, req.(*ActivityByNameRequest))
+			return srv.GetActivityByName(ctx, req.(*NameRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -170,7 +170,7 @@ func _App_GetActivityByName0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Conte
 
 func _App_GetActivityWithCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ActivityWithCouponRequest
+		var in NameRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -179,7 +179,7 @@ func _App_GetActivityWithCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.C
 		}
 		http.SetOperation(ctx, "/app.App/GetActivityWithCoupon")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetActivityWithCoupon(ctx, req.(*ActivityWithCouponRequest))
+			return srv.GetActivityWithCoupon(ctx, req.(*NameRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -190,34 +190,34 @@ func _App_GetActivityWithCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.C
 	}
 }
 
-func _App_GetAllCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+func _App_ListCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/app.App/GetAllCategory")
+		http.SetOperation(ctx, "/app.App/ListCategory")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetAllCategory(ctx, req.(*emptypb.Empty))
+			return srv.ListCategory(ctx, req.(*emptypb.Empty))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*AllCategory)
+		reply := out.(*Categories)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _App_GetGridCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+func _App_ListGridCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/app.App/GetGridCategory")
+		http.SetOperation(ctx, "/app.App/ListGridCategory")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetGridCategory(ctx, req.(*emptypb.Empty))
+			return srv.ListGridCategory(ctx, req.(*emptypb.Empty))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -230,7 +230,7 @@ func _App_GetGridCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context
 
 func _App_GetTagByType0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in TagByTypeRequest
+		var in TypeRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -239,7 +239,7 @@ func _App_GetTagByType0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) e
 		}
 		http.SetOperation(ctx, "/app.App/GetTagByType")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetTagByType(ctx, req.(*TagByTypeRequest))
+			return srv.GetTagByType(ctx, req.(*TypeRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -252,7 +252,7 @@ func _App_GetTagByType0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) e
 
 func _App_GetCouponByCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CouponByCategoryRequest
+		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -261,7 +261,7 @@ func _App_GetCouponByCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Con
 		}
 		http.SetOperation(ctx, "/app.App/GetCouponByCategory")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetCouponByCategory(ctx, req.(*CouponByCategoryRequest))
+			return srv.GetCouponByCategory(ctx, req.(*IdRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -272,37 +272,18 @@ func _App_GetCouponByCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Con
 	}
 }
 
-func _App_GetWholeCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+func _App_GetCouponByType0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in emptypb.Empty
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/app.App/GetWholeCoupon")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetWholeCoupon(ctx, req.(*emptypb.Empty))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*Coupons)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _App_GetMyCouponByStatus0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in MyCouponByStatusRequest
+		var in TypeRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/app.App/GetMyCouponByStatus")
+		http.SetOperation(ctx, "/app.App/GetCouponByType")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetMyCouponByStatus(ctx, req.(*MyCouponByStatusRequest))
+			return srv.GetCouponByType(ctx, req.(*TypeRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -313,15 +294,18 @@ func _App_GetMyCouponByStatus0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Con
 	}
 }
 
-func _App_GetMyAvailableCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+func _App_GetUserCouponByStatus0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in emptypb.Empty
+		var in StatusRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/app.App/GetMyAvailableCoupon")
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/app.App/GetUserCouponByStatus")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetMyAvailableCoupon(ctx, req.(*emptypb.Empty))
+			return srv.GetUserCouponByStatus(ctx, req.(*StatusRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -332,18 +316,37 @@ func _App_GetMyAvailableCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Co
 	}
 }
 
-func _App_CollectCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+func _App_GetUserCouponByStatusWithCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CollectCouponRequest
+		var in StatusRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/app.App/GetUserCouponByStatusWithCategory")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetUserCouponByStatusWithCategory(ctx, req.(*StatusRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Coupons)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_CreateUserCoupon0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateUserCouponRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		if err := ctx.BindVars(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/app.App/CollectCoupon")
+		http.SetOperation(ctx, "/app.App/CreateUserCoupon")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CollectCoupon(ctx, req.(*CollectCouponRequest))
+			return srv.CreateUserCoupon(ctx, req.(*CreateUserCouponRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -375,7 +378,7 @@ func _App_GetSaleExplain0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context)
 
 func _App_GetSpuById0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in SpuByIdRequest
+		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -384,7 +387,7 @@ func _App_GetSpuById0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) err
 		}
 		http.SetOperation(ctx, "/app.App/GetSpuById")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetSpuById(ctx, req.(*SpuByIdRequest))
+			return srv.GetSpuById(ctx, req.(*IdRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -416,7 +419,7 @@ func _App_GetSpuLatest0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) e
 
 func _App_GetSpuByCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in SpuByCategoryRequest
+		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -425,7 +428,7 @@ func _App_GetSpuByCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Contex
 		}
 		http.SetOperation(ctx, "/app.App/GetSpuByCategory")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetSpuByCategory(ctx, req.(*SpuByCategoryRequest))
+			return srv.GetSpuByCategory(ctx, req.(*IdRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -437,24 +440,24 @@ func _App_GetSpuByCategory0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Contex
 }
 
 type AppHTTPClient interface {
-	CollectCoupon(ctx context.Context, req *CollectCouponRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	GetActivityByName(ctx context.Context, req *ActivityByNameRequest, opts ...http.CallOption) (rsp *Activity, err error)
-	GetActivityWithCoupon(ctx context.Context, req *ActivityWithCouponRequest, opts ...http.CallOption) (rsp *ActivityCoupon, err error)
-	GetAllCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *AllCategory, err error)
-	GetBannerById(ctx context.Context, req *BannerByIdRequest, opts ...http.CallOption) (rsp *Banner, err error)
-	GetBannerByName(ctx context.Context, req *BannerByNameRequest, opts ...http.CallOption) (rsp *Banner, err error)
-	GetCouponByCategory(ctx context.Context, req *CouponByCategoryRequest, opts ...http.CallOption) (rsp *Coupons, err error)
-	GetGridCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *GridCategories, err error)
-	GetMyAvailableCoupon(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Coupons, err error)
-	GetMyCouponByStatus(ctx context.Context, req *MyCouponByStatusRequest, opts ...http.CallOption) (rsp *Coupons, err error)
+	CreateUserCoupon(ctx context.Context, req *CreateUserCouponRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	GetActivityByName(ctx context.Context, req *NameRequest, opts ...http.CallOption) (rsp *Activity, err error)
+	GetActivityWithCoupon(ctx context.Context, req *NameRequest, opts ...http.CallOption) (rsp *ActivityCoupon, err error)
+	GetBannerById(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetBannerByName(ctx context.Context, req *NameRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetCouponByCategory(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *Coupons, err error)
+	GetCouponByType(ctx context.Context, req *TypeRequest, opts ...http.CallOption) (rsp *Coupons, err error)
 	GetSaleExplain(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *SaleExplains, err error)
-	GetSpuByCategory(ctx context.Context, req *SpuByCategoryRequest, opts ...http.CallOption) (rsp *SpuPage, err error)
-	GetSpuById(ctx context.Context, req *SpuByIdRequest, opts ...http.CallOption) (rsp *SpuDetail, err error)
+	GetSpuByCategory(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SpuPage, err error)
+	GetSpuById(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SpuDetail, err error)
 	GetSpuLatest(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *SpuPage, err error)
-	GetTagByType(ctx context.Context, req *TagByTypeRequest, opts ...http.CallOption) (rsp *Tags, err error)
+	GetTagByType(ctx context.Context, req *TypeRequest, opts ...http.CallOption) (rsp *Tags, err error)
 	GetThemeByNames(ctx context.Context, req *ThemeByNamesRequest, opts ...http.CallOption) (rsp *Themes, err error)
-	GetThemeWithSpu(ctx context.Context, req *ThemeWithSpuRequest, opts ...http.CallOption) (rsp *ThemeSpu, err error)
-	GetWholeCoupon(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Coupons, err error)
+	GetThemeWithSpu(ctx context.Context, req *NameRequest, opts ...http.CallOption) (rsp *ThemeSpu, err error)
+	GetUserCouponByStatus(ctx context.Context, req *StatusRequest, opts ...http.CallOption) (rsp *Coupons, err error)
+	GetUserCouponByStatusWithCategory(ctx context.Context, req *StatusRequest, opts ...http.CallOption) (rsp *Coupons, err error)
+	ListCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Categories, err error)
+	ListGridCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *GridCategories, err error)
 }
 
 type AppHTTPClientImpl struct {
@@ -465,11 +468,11 @@ func NewAppHTTPClient(client *http.Client) AppHTTPClient {
 	return &AppHTTPClientImpl{client}
 }
 
-func (c *AppHTTPClientImpl) CollectCoupon(ctx context.Context, in *CollectCouponRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+func (c *AppHTTPClientImpl) CreateUserCoupon(ctx context.Context, in *CreateUserCouponRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/coupon/collect/{id}"
+	pattern := "/coupon/user"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/app.App/CollectCoupon"))
+	opts = append(opts, http.Operation("/app.App/CreateUserCoupon"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -478,7 +481,7 @@ func (c *AppHTTPClientImpl) CollectCoupon(ctx context.Context, in *CollectCoupon
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...http.CallOption) (*Activity, error) {
+func (c *AppHTTPClientImpl) GetActivityByName(ctx context.Context, in *NameRequest, opts ...http.CallOption) (*Activity, error) {
 	var out Activity
 	pattern := "/activity/name/{name}"
 	path := binding.EncodeURL(pattern, in, true)
@@ -491,7 +494,7 @@ func (c *AppHTTPClientImpl) GetActivityByName(ctx context.Context, in *ActivityB
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...http.CallOption) (*ActivityCoupon, error) {
+func (c *AppHTTPClientImpl) GetActivityWithCoupon(ctx context.Context, in *NameRequest, opts ...http.CallOption) (*ActivityCoupon, error) {
 	var out ActivityCoupon
 	pattern := "/activity/name/{name}/with_coupon"
 	path := binding.EncodeURL(pattern, in, true)
@@ -504,20 +507,7 @@ func (c *AppHTTPClientImpl) GetActivityWithCoupon(ctx context.Context, in *Activ
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetAllCategory(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*AllCategory, error) {
-	var out AllCategory
-	pattern := "/category"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/app.App/GetAllCategory"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *AppHTTPClientImpl) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...http.CallOption) (*Banner, error) {
+func (c *AppHTTPClientImpl) GetBannerById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*Banner, error) {
 	var out Banner
 	pattern := "/banner/id/{id}"
 	path := binding.EncodeURL(pattern, in, true)
@@ -530,7 +520,7 @@ func (c *AppHTTPClientImpl) GetBannerById(ctx context.Context, in *BannerByIdReq
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...http.CallOption) (*Banner, error) {
+func (c *AppHTTPClientImpl) GetBannerByName(ctx context.Context, in *NameRequest, opts ...http.CallOption) (*Banner, error) {
 	var out Banner
 	pattern := "/banner/name/{name}"
 	path := binding.EncodeURL(pattern, in, true)
@@ -543,9 +533,9 @@ func (c *AppHTTPClientImpl) GetBannerByName(ctx context.Context, in *BannerByNam
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetCouponByCategory(ctx context.Context, in *CouponByCategoryRequest, opts ...http.CallOption) (*Coupons, error) {
+func (c *AppHTTPClientImpl) GetCouponByCategory(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*Coupons, error) {
 	var out Coupons
-	pattern := "/coupon/by/category/{id}"
+	pattern := "/coupon/category/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/app.App/GetCouponByCategory"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -556,37 +546,11 @@ func (c *AppHTTPClientImpl) GetCouponByCategory(ctx context.Context, in *CouponB
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetGridCategory(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*GridCategories, error) {
-	var out GridCategories
-	pattern := "/category/grid"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/app.App/GetGridCategory"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *AppHTTPClientImpl) GetMyAvailableCoupon(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*Coupons, error) {
+func (c *AppHTTPClientImpl) GetCouponByType(ctx context.Context, in *TypeRequest, opts ...http.CallOption) (*Coupons, error) {
 	var out Coupons
-	pattern := "/coupon/myself/available/with_category"
+	pattern := "/coupon/type/{type}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/app.App/GetMyAvailableCoupon"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *AppHTTPClientImpl) GetMyCouponByStatus(ctx context.Context, in *MyCouponByStatusRequest, opts ...http.CallOption) (*Coupons, error) {
-	var out Coupons
-	pattern := "/coupon/myself/by/status/{status}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/app.App/GetMyCouponByStatus"))
+	opts = append(opts, http.Operation("/app.App/GetCouponByType"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -608,9 +572,9 @@ func (c *AppHTTPClientImpl) GetSaleExplain(ctx context.Context, in *emptypb.Empt
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetSpuByCategory(ctx context.Context, in *SpuByCategoryRequest, opts ...http.CallOption) (*SpuPage, error) {
+func (c *AppHTTPClientImpl) GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuPage, error) {
 	var out SpuPage
-	pattern := "/spu/by/category/{id}"
+	pattern := "/spu/category/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/app.App/GetSpuByCategory"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -621,7 +585,7 @@ func (c *AppHTTPClientImpl) GetSpuByCategory(ctx context.Context, in *SpuByCateg
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetSpuById(ctx context.Context, in *SpuByIdRequest, opts ...http.CallOption) (*SpuDetail, error) {
+func (c *AppHTTPClientImpl) GetSpuById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuDetail, error) {
 	var out SpuDetail
 	pattern := "/spu/{id}"
 	path := binding.EncodeURL(pattern, in, true)
@@ -647,7 +611,7 @@ func (c *AppHTTPClientImpl) GetSpuLatest(ctx context.Context, in *emptypb.Empty,
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetTagByType(ctx context.Context, in *TagByTypeRequest, opts ...http.CallOption) (*Tags, error) {
+func (c *AppHTTPClientImpl) GetTagByType(ctx context.Context, in *TypeRequest, opts ...http.CallOption) (*Tags, error) {
 	var out Tags
 	pattern := "/tag/type/{type}"
 	path := binding.EncodeURL(pattern, in, true)
@@ -673,7 +637,7 @@ func (c *AppHTTPClientImpl) GetThemeByNames(ctx context.Context, in *ThemeByName
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...http.CallOption) (*ThemeSpu, error) {
+func (c *AppHTTPClientImpl) GetThemeWithSpu(ctx context.Context, in *NameRequest, opts ...http.CallOption) (*ThemeSpu, error) {
 	var out ThemeSpu
 	pattern := "/theme/name/{name}/with_spu"
 	path := binding.EncodeURL(pattern, in, true)
@@ -686,11 +650,50 @@ func (c *AppHTTPClientImpl) GetThemeWithSpu(ctx context.Context, in *ThemeWithSp
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetWholeCoupon(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*Coupons, error) {
+func (c *AppHTTPClientImpl) GetUserCouponByStatus(ctx context.Context, in *StatusRequest, opts ...http.CallOption) (*Coupons, error) {
 	var out Coupons
-	pattern := "/coupon"
+	pattern := "/coupon/user/status/{status}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/app.App/GetWholeCoupon"))
+	opts = append(opts, http.Operation("/app.App/GetUserCouponByStatus"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) GetUserCouponByStatusWithCategory(ctx context.Context, in *StatusRequest, opts ...http.CallOption) (*Coupons, error) {
+	var out Coupons
+	pattern := "/coupon/user/status/{status}/with_category"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/app.App/GetUserCouponByStatusWithCategory"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) ListCategory(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*Categories, error) {
+	var out Categories
+	pattern := "/category"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/app.App/ListCategory"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) ListGridCategory(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*GridCategories, error) {
+	var out GridCategories
+	pattern := "/category/grid"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/app.App/ListGridCategory"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

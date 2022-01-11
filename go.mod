@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	entgo.io/ent v0.9.1
+	github.com/envoyproxy/protoc-gen-validate v0.6.2 // indirect
 	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20211231061108-ed86f36476c9
 	github.com/go-kratos/kratos/v2 v2.1.3
 	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae

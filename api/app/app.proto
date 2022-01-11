@@ -6,17 +6,17 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 import "api/mall/common.proto";
-
+import "validate/validate.proto";
 option go_package = "mall-go/app";
 
 service App {
 
-  rpc GetBannerById(BannerByIdRequest) returns (Banner) {
+  rpc GetBannerById(IdRequest) returns (Banner) {
     option (google.api.http) = {
       get : "/banner/id/{id}"
     };
   }
-  rpc GetBannerByName(BannerByNameRequest) returns (Banner) {
+  rpc GetBannerByName(nameRequest) returns (Banner) {
     option (google.api.http) = {
       get : "/banner/name/{name}"
     };
@@ -26,62 +26,63 @@ service App {
       get : "/theme/by/names"
     };
   }
-  rpc GetThemeWithSpu(ThemeWithSpuRequest) returns (ThemeSpu) {
+  rpc GetThemeWithSpu(nameRequest) returns (ThemeSpu) {
     option (google.api.http) = {
       get : "/theme/name/{name}/with_spu"
     };
   }
-  rpc GetActivityByName(ActivityByNameRequest) returns (Activity) {
+  rpc GetActivityByName(nameRequest) returns (Activity) {
     option (google.api.http) = {
       get : "/activity/name/{name}"
     };
   }
-  rpc GetActivityWithCoupon(ActivityWithCouponRequest)
+  rpc GetActivityWithCoupon(nameRequest)
       returns (ActivityCoupon) {
     option (google.api.http) = {
       get : "/activity/name/{name}/with_coupon"
     };
   }
 
-  rpc GetAllCategory(google.protobuf.Empty) returns (AllCategory) {
+  rpc ListCategory(google.protobuf.Empty) returns (Categories) {
     option (google.api.http) = {
       get : "/category"
     };
   }
-  rpc GetGridCategory(google.protobuf.Empty) returns (GridCategories) {
+  rpc ListGridCategory(google.protobuf.Empty) returns (GridCategories) {
     option (google.api.http) = {
       get : "/category/grid"
     };
   }
 
-  rpc GetTagByType(TagByTypeRequest) returns (Tags) {
+  rpc GetTagByType(typeRequest) returns (Tags) {
     option (google.api.http) = {
       get : "/tag/type/{type}"
     };
   }
-  rpc GetCouponByCategory(CouponByCategoryRequest) returns (Coupons) {
+  rpc GetCouponByCategory(IdRequest) returns (Coupons) {
     option (google.api.http) = {
-      get : "/coupon/by/category/{id}"
+      get : "/coupon/category/{id}"
     };
   }
-  rpc GetWholeCoupon(google.protobuf.Empty) returns (Coupons) {
+  rpc GetCouponByType(typeRequest) returns (Coupons) {
     option (google.api.http) = {
-      get : "/coupon"
+      get : "/coupon/type/{type}"
     };
   }
-  rpc GetMyCouponByStatus(MyCouponByStatusRequest) returns (Coupons) {
+  rpc GetUserCouponByStatus(statusRequest) returns (Coupons) {
     option (google.api.http) = {
-      get : "/coupon/myself/by/status/{status}"
+      get : "/coupon/user/status/{status}"
     };
   }
-  rpc GetMyAvailableCoupon(google.protobuf.Empty) returns (Coupons) {
+  rpc GetUserCouponByStatusWithCategory(statusRequest) returns (Coupons) {
     option (google.api.http) = {
-      get : "/coupon/myself/available/with_category"
+      get : "/coupon/user/status/{status}/with_category"
     };
   }
-  rpc CollectCoupon(CollectCouponRequest) returns (google.protobuf.Empty) {
+
+  rpc CreateUserCoupon(CreateUserCouponRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post : "/coupon/collect/{id}"
+      post : "/coupon/user"
       body : "*"
     };
   }
@@ -91,7 +92,7 @@ service App {
     };
   }
 
-  rpc GetSpuById(SpuByIdRequest) returns (SpuDetail) {
+  rpc GetSpuById(IdRequest) returns (SpuDetail) {
     option (google.api.http) = {
       get : "/spu/{id}"
     };
@@ -101,22 +102,20 @@ service App {
       get : "/spu/latest"
     };
   }
-  rpc GetSpuByCategory(SpuByCategoryRequest) returns (SpuPage) {
+  rpc GetSpuByCategory(IdRequest) returns (SpuPage) {
     option (google.api.http) = {
-      get : "/spu/by/category/{id}"
+      get : "/spu/category/{id}"
     };
   }
 
 }
+message IdRequest { int64 id = 1  [(validate.rules).int64 = {gt: 0}]; }
+message nameRequest{ string  name=1; }
+message typeRequest{ int32  type=1  [(validate.rules).int32 = {gte: 0}];}
+message statusRequest{ int32  status=1 [(validate.rules).int32 = {gte: 0}] ;}
 
-message BannerByIdRequest { int64 id = 1; }
-message BannerByNameRequest { string name = 1; }
+
 message ThemeByNamesRequest { string names = 1; }
-message ThemeWithSpuRequest { string name = 1; }
-message ActivityByNameRequest { string name = 1; }
-message ActivityWithCouponRequest { string name = 1; }
-
-message TagByTypeRequest { string type = 1; }
 
 message Tags {
   message Tag {
@@ -139,7 +138,7 @@ message GridCategories {
   }
   repeated GridCategory category = 1;
 }
-message AllCategory {
+message Categories {
   repeated Category roots = 1;
   repeated Category subs = 2;
 }
@@ -214,8 +213,8 @@ message Activity {
   string entrance_img = 3;
   int32 online = 4;
   string remark = 5;
-  string start_time = 6;
-  string end_time = 7;
+  int64 start_time = 6;
+  int64 end_time = 7;
 }
 message ActivityCoupon {
   int64 id = 1;
@@ -223,38 +222,38 @@ message ActivityCoupon {
   string entrance_img = 3;
   int32 online = 4;
   string remark = 5;
-  string start_time = 6;
-  string end_time = 7;
+  int64 start_time = 6;
+  int64 end_time = 7;
   repeated CouponBo coupon = 8;
 }
 
-message CouponByCategoryRequest { int64 id = 1; }
-message MyCouponByStatusRequest { string status = 1; }
-message CollectCouponRequest { string id = 1; }
+
+message  CreateUserCouponRequest {
+  int64 userId = 1;
+  int64 couponId = 2;
+}
 
 message Coupons { repeated CouponBo coupon = 1; }
 message CouponBo {
-  uint32 id = 1;
+  int64 id = 1;
   string title = 2;
-  uint64 start_time = 3;
-  uint64 end_time = 4;
+  int64 start_time = 3;
+  int64 end_time = 4;
   string description = 5;
   double full_money = 6;
   double minus = 7;
   double rate = 8;
-  uint32 type = 9;
+  int32 type = 9;
   string remark = 10;
   bool whole_store = 11;
 }
 
 
-message SpuByIdRequest { int64 id = 1; }
-message SpuByCategoryRequest { int64 id = 1; }
 message SpuDetail {
   message Specs {
-    uint32 key_id = 1;
+    int64 key_id = 1;
     string key = 2;
-    uint32 value_id = 3;
+    int64 value_id = 3;
     string value = 4;
   }
 
@@ -283,7 +282,7 @@ message SpuDetail {
     int64 id = 1;
     string img = 2;
     int64 spu_id = 3;
-    uint32 index = 4;
+    int32 index = 4;
   }
 
   int64 id = 1;

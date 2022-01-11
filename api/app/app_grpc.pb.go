@@ -19,24 +19,24 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AppClient interface {
-	GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error)
-	GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetBannerById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetBannerByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Themes, error)
-	GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*ThemeSpu, error)
-	GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Activity, error)
-	GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*ActivityCoupon, error)
-	GetAllCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AllCategory, error)
-	GetGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error)
-	GetTagByType(ctx context.Context, in *TagByTypeRequest, opts ...grpc.CallOption) (*Tags, error)
-	GetCouponByCategory(ctx context.Context, in *CouponByCategoryRequest, opts ...grpc.CallOption) (*Coupons, error)
-	GetWholeCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error)
-	GetMyCouponByStatus(ctx context.Context, in *MyCouponByStatusRequest, opts ...grpc.CallOption) (*Coupons, error)
-	GetMyAvailableCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error)
-	CollectCoupon(ctx context.Context, in *CollectCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetThemeWithSpu(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*ThemeSpu, error)
+	GetActivityByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Activity, error)
+	GetActivityWithCoupon(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*ActivityCoupon, error)
+	ListCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Categories, error)
+	ListGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error)
+	GetTagByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (*Tags, error)
+	GetCouponByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*Coupons, error)
+	GetCouponByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (*Coupons, error)
+	GetUserCouponByStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error)
+	GetUserCouponByStatusWithCategory(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error)
+	CreateUserCoupon(ctx context.Context, in *CreateUserCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error)
-	GetSpuById(ctx context.Context, in *SpuByIdRequest, opts ...grpc.CallOption) (*SpuDetail, error)
+	GetSpuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuDetail, error)
 	GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error)
-	GetSpuByCategory(ctx context.Context, in *SpuByCategoryRequest, opts ...grpc.CallOption) (*SpuPage, error)
+	GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuPage, error)
 }
 
 type appClient struct {
@@ -47,7 +47,7 @@ func NewAppClient(cc grpc.ClientConnInterface) AppClient {
 	return &appClient{cc}
 }
 
-func (c *appClient) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error) {
+func (c *appClient) GetBannerById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*Banner, error) {
 	out := new(Banner)
 	err := c.cc.Invoke(ctx, "/app.App/GetBannerById", in, out, opts...)
 	if err != nil {
@@ -56,7 +56,7 @@ func (c *appClient) GetBannerById(ctx context.Context, in *BannerByIdRequest, op
 	return out, nil
 }
 
-func (c *appClient) GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...grpc.CallOption) (*Banner, error) {
+func (c *appClient) GetBannerByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Banner, error) {
 	out := new(Banner)
 	err := c.cc.Invoke(ctx, "/app.App/GetBannerByName", in, out, opts...)
 	if err != nil {
@@ -74,7 +74,7 @@ func (c *appClient) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest
 	return out, nil
 }
 
-func (c *appClient) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest, opts ...grpc.CallOption) (*ThemeSpu, error) {
+func (c *appClient) GetThemeWithSpu(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*ThemeSpu, error) {
 	out := new(ThemeSpu)
 	err := c.cc.Invoke(ctx, "/app.App/GetThemeWithSpu", in, out, opts...)
 	if err != nil {
@@ -83,7 +83,7 @@ func (c *appClient) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest
 	return out, nil
 }
 
-func (c *appClient) GetActivityByName(ctx context.Context, in *ActivityByNameRequest, opts ...grpc.CallOption) (*Activity, error) {
+func (c *appClient) GetActivityByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Activity, error) {
 	out := new(Activity)
 	err := c.cc.Invoke(ctx, "/app.App/GetActivityByName", in, out, opts...)
 	if err != nil {
@@ -92,7 +92,7 @@ func (c *appClient) GetActivityByName(ctx context.Context, in *ActivityByNameReq
 	return out, nil
 }
 
-func (c *appClient) GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest, opts ...grpc.CallOption) (*ActivityCoupon, error) {
+func (c *appClient) GetActivityWithCoupon(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*ActivityCoupon, error) {
 	out := new(ActivityCoupon)
 	err := c.cc.Invoke(ctx, "/app.App/GetActivityWithCoupon", in, out, opts...)
 	if err != nil {
@@ -101,25 +101,25 @@ func (c *appClient) GetActivityWithCoupon(ctx context.Context, in *ActivityWithC
 	return out, nil
 }
 
-func (c *appClient) GetAllCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AllCategory, error) {
-	out := new(AllCategory)
-	err := c.cc.Invoke(ctx, "/app.App/GetAllCategory", in, out, opts...)
+func (c *appClient) ListCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Categories, error) {
+	out := new(Categories)
+	err := c.cc.Invoke(ctx, "/app.App/ListCategory", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *appClient) GetGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error) {
+func (c *appClient) ListGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error) {
 	out := new(GridCategories)
-	err := c.cc.Invoke(ctx, "/app.App/GetGridCategory", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/app.App/ListGridCategory", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *appClient) GetTagByType(ctx context.Context, in *TagByTypeRequest, opts ...grpc.CallOption) (*Tags, error) {
+func (c *appClient) GetTagByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (*Tags, error) {
 	out := new(Tags)
 	err := c.cc.Invoke(ctx, "/app.App/GetTagByType", in, out, opts...)
 	if err != nil {
@@ -128,7 +128,7 @@ func (c *appClient) GetTagByType(ctx context.Context, in *TagByTypeRequest, opts
 	return out, nil
 }
 
-func (c *appClient) GetCouponByCategory(ctx context.Context, in *CouponByCategoryRequest, opts ...grpc.CallOption) (*Coupons, error) {
+func (c *appClient) GetCouponByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*Coupons, error) {
 	out := new(Coupons)
 	err := c.cc.Invoke(ctx, "/app.App/GetCouponByCategory", in, out, opts...)
 	if err != nil {
@@ -137,36 +137,36 @@ func (c *appClient) GetCouponByCategory(ctx context.Context, in *CouponByCategor
 	return out, nil
 }
 
-func (c *appClient) GetWholeCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error) {
+func (c *appClient) GetCouponByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (*Coupons, error) {
 	out := new(Coupons)
-	err := c.cc.Invoke(ctx, "/app.App/GetWholeCoupon", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/app.App/GetCouponByType", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *appClient) GetMyCouponByStatus(ctx context.Context, in *MyCouponByStatusRequest, opts ...grpc.CallOption) (*Coupons, error) {
+func (c *appClient) GetUserCouponByStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error) {
 	out := new(Coupons)
-	err := c.cc.Invoke(ctx, "/app.App/GetMyCouponByStatus", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/app.App/GetUserCouponByStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *appClient) GetMyAvailableCoupon(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Coupons, error) {
+func (c *appClient) GetUserCouponByStatusWithCategory(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error) {
 	out := new(Coupons)
-	err := c.cc.Invoke(ctx, "/app.App/GetMyAvailableCoupon", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/app.App/GetUserCouponByStatusWithCategory", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *appClient) CollectCoupon(ctx context.Context, in *CollectCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *appClient) CreateUserCoupon(ctx context.Context, in *CreateUserCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/app.App/CollectCoupon", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/app.App/CreateUserCoupon", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +182,7 @@ func (c *appClient) GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts 
 	return out, nil
 }
 
-func (c *appClient) GetSpuById(ctx context.Context, in *SpuByIdRequest, opts ...grpc.CallOption) (*SpuDetail, error) {
+func (c *appClient) GetSpuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuDetail, error) {
 	out := new(SpuDetail)
 	err := c.cc.Invoke(ctx, "/app.App/GetSpuById", in, out, opts...)
 	if err != nil {
@@ -200,7 +200,7 @@ func (c *appClient) GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ..
 	return out, nil
 }
 
-func (c *appClient) GetSpuByCategory(ctx context.Context, in *SpuByCategoryRequest, opts ...grpc.CallOption) (*SpuPage, error) {
+func (c *appClient) GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuPage, error) {
 	out := new(SpuPage)
 	err := c.cc.Invoke(ctx, "/app.App/GetSpuByCategory", in, out, opts...)
 	if err != nil {
@@ -213,24 +213,24 @@ func (c *appClient) GetSpuByCategory(ctx context.Context, in *SpuByCategoryReque
 // All implementations must embed UnimplementedAppServer
 // for forward compatibility
 type AppServer interface {
-	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
-	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
+	GetBannerById(context.Context, *IdRequest) (*Banner, error)
+	GetBannerByName(context.Context, *NameRequest) (*Banner, error)
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
-	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error)
-	GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error)
-	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error)
-	GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error)
-	GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
-	GetTagByType(context.Context, *TagByTypeRequest) (*Tags, error)
-	GetCouponByCategory(context.Context, *CouponByCategoryRequest) (*Coupons, error)
-	GetWholeCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
-	GetMyCouponByStatus(context.Context, *MyCouponByStatusRequest) (*Coupons, error)
-	GetMyAvailableCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
-	CollectCoupon(context.Context, *CollectCouponRequest) (*emptypb.Empty, error)
+	GetThemeWithSpu(context.Context, *NameRequest) (*ThemeSpu, error)
+	GetActivityByName(context.Context, *NameRequest) (*Activity, error)
+	GetActivityWithCoupon(context.Context, *NameRequest) (*ActivityCoupon, error)
+	ListCategory(context.Context, *emptypb.Empty) (*Categories, error)
+	ListGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
+	GetTagByType(context.Context, *TypeRequest) (*Tags, error)
+	GetCouponByCategory(context.Context, *IdRequest) (*Coupons, error)
+	GetCouponByType(context.Context, *TypeRequest) (*Coupons, error)
+	GetUserCouponByStatus(context.Context, *StatusRequest) (*Coupons, error)
+	GetUserCouponByStatusWithCategory(context.Context, *StatusRequest) (*Coupons, error)
+	CreateUserCoupon(context.Context, *CreateUserCouponRequest) (*emptypb.Empty, error)
 	GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error)
-	GetSpuById(context.Context, *SpuByIdRequest) (*SpuDetail, error)
+	GetSpuById(context.Context, *IdRequest) (*SpuDetail, error)
 	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
-	GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error)
+	GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error)
 	mustEmbedUnimplementedAppServer()
 }
 
@@ -238,58 +238,58 @@ type AppServer interface {
 type UnimplementedAppServer struct {
 }
 
-func (UnimplementedAppServer) GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error) {
+func (UnimplementedAppServer) GetBannerById(context.Context, *IdRequest) (*Banner, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBannerById not implemented")
 }
-func (UnimplementedAppServer) GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error) {
+func (UnimplementedAppServer) GetBannerByName(context.Context, *NameRequest) (*Banner, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBannerByName not implemented")
 }
 func (UnimplementedAppServer) GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetThemeByNames not implemented")
 }
-func (UnimplementedAppServer) GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error) {
+func (UnimplementedAppServer) GetThemeWithSpu(context.Context, *NameRequest) (*ThemeSpu, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetThemeWithSpu not implemented")
 }
-func (UnimplementedAppServer) GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error) {
+func (UnimplementedAppServer) GetActivityByName(context.Context, *NameRequest) (*Activity, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActivityByName not implemented")
 }
-func (UnimplementedAppServer) GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error) {
+func (UnimplementedAppServer) GetActivityWithCoupon(context.Context, *NameRequest) (*ActivityCoupon, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActivityWithCoupon not implemented")
 }
-func (UnimplementedAppServer) GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllCategory not implemented")
+func (UnimplementedAppServer) ListCategory(context.Context, *emptypb.Empty) (*Categories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListCategory not implemented")
 }
-func (UnimplementedAppServer) GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGridCategory not implemented")
+func (UnimplementedAppServer) ListGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListGridCategory not implemented")
 }
-func (UnimplementedAppServer) GetTagByType(context.Context, *TagByTypeRequest) (*Tags, error) {
+func (UnimplementedAppServer) GetTagByType(context.Context, *TypeRequest) (*Tags, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTagByType not implemented")
 }
-func (UnimplementedAppServer) GetCouponByCategory(context.Context, *CouponByCategoryRequest) (*Coupons, error) {
+func (UnimplementedAppServer) GetCouponByCategory(context.Context, *IdRequest) (*Coupons, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCouponByCategory not implemented")
 }
-func (UnimplementedAppServer) GetWholeCoupon(context.Context, *emptypb.Empty) (*Coupons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWholeCoupon not implemented")
+func (UnimplementedAppServer) GetCouponByType(context.Context, *TypeRequest) (*Coupons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCouponByType not implemented")
 }
-func (UnimplementedAppServer) GetMyCouponByStatus(context.Context, *MyCouponByStatusRequest) (*Coupons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMyCouponByStatus not implemented")
+func (UnimplementedAppServer) GetUserCouponByStatus(context.Context, *StatusRequest) (*Coupons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCouponByStatus not implemented")
 }
-func (UnimplementedAppServer) GetMyAvailableCoupon(context.Context, *emptypb.Empty) (*Coupons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMyAvailableCoupon not implemented")
+func (UnimplementedAppServer) GetUserCouponByStatusWithCategory(context.Context, *StatusRequest) (*Coupons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCouponByStatusWithCategory not implemented")
 }
-func (UnimplementedAppServer) CollectCoupon(context.Context, *CollectCouponRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CollectCoupon not implemented")
+func (UnimplementedAppServer) CreateUserCoupon(context.Context, *CreateUserCouponRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUserCoupon not implemented")
 }
 func (UnimplementedAppServer) GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSaleExplain not implemented")
 }
-func (UnimplementedAppServer) GetSpuById(context.Context, *SpuByIdRequest) (*SpuDetail, error) {
+func (UnimplementedAppServer) GetSpuById(context.Context, *IdRequest) (*SpuDetail, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuById not implemented")
 }
 func (UnimplementedAppServer) GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuLatest not implemented")
 }
-func (UnimplementedAppServer) GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error) {
+func (UnimplementedAppServer) GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuByCategory not implemented")
 }
 func (UnimplementedAppServer) mustEmbedUnimplementedAppServer() {}
@@ -306,7 +306,7 @@ func RegisterAppServer(s grpc.ServiceRegistrar, srv AppServer) {
 }
 
 func _App_GetBannerById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BannerByIdRequest)
+	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -318,13 +318,13 @@ func _App_GetBannerById_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/app.App/GetBannerById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetBannerById(ctx, req.(*BannerByIdRequest))
+		return srv.(AppServer).GetBannerById(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _App_GetBannerByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BannerByNameRequest)
+	in := new(NameRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -336,7 +336,7 @@ func _App_GetBannerByName_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/app.App/GetBannerByName",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetBannerByName(ctx, req.(*BannerByNameRequest))
+		return srv.(AppServer).GetBannerByName(ctx, req.(*NameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -360,7 +360,7 @@ func _App_GetThemeByNames_Handler(srv interface{}, ctx context.Context, dec func
 }
 
 func _App_GetThemeWithSpu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ThemeWithSpuRequest)
+	in := new(NameRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -372,13 +372,13 @@ func _App_GetThemeWithSpu_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/app.App/GetThemeWithSpu",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetThemeWithSpu(ctx, req.(*ThemeWithSpuRequest))
+		return srv.(AppServer).GetThemeWithSpu(ctx, req.(*NameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _App_GetActivityByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActivityByNameRequest)
+	in := new(NameRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -390,13 +390,13 @@ func _App_GetActivityByName_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/app.App/GetActivityByName",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetActivityByName(ctx, req.(*ActivityByNameRequest))
+		return srv.(AppServer).GetActivityByName(ctx, req.(*NameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _App_GetActivityWithCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActivityWithCouponRequest)
+	in := new(NameRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -408,49 +408,49 @@ func _App_GetActivityWithCoupon_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/app.App/GetActivityWithCoupon",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetActivityWithCoupon(ctx, req.(*ActivityWithCouponRequest))
+		return srv.(AppServer).GetActivityWithCoupon(ctx, req.(*NameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetAllCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _App_ListCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AppServer).GetAllCategory(ctx, in)
+		return srv.(AppServer).ListCategory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.App/GetAllCategory",
+		FullMethod: "/app.App/ListCategory",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetAllCategory(ctx, req.(*emptypb.Empty))
+		return srv.(AppServer).ListCategory(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetGridCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _App_ListGridCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AppServer).GetGridCategory(ctx, in)
+		return srv.(AppServer).ListGridCategory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.App/GetGridCategory",
+		FullMethod: "/app.App/ListGridCategory",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetGridCategory(ctx, req.(*emptypb.Empty))
+		return srv.(AppServer).ListGridCategory(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _App_GetTagByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TagByTypeRequest)
+	in := new(TypeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -462,13 +462,13 @@ func _App_GetTagByType_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/app.App/GetTagByType",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetTagByType(ctx, req.(*TagByTypeRequest))
+		return srv.(AppServer).GetTagByType(ctx, req.(*TypeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _App_GetCouponByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CouponByCategoryRequest)
+	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -480,79 +480,79 @@ func _App_GetCouponByCategory_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/app.App/GetCouponByCategory",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetCouponByCategory(ctx, req.(*CouponByCategoryRequest))
+		return srv.(AppServer).GetCouponByCategory(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetWholeCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _App_GetCouponByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TypeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AppServer).GetWholeCoupon(ctx, in)
+		return srv.(AppServer).GetCouponByType(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.App/GetWholeCoupon",
+		FullMethod: "/app.App/GetCouponByType",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetWholeCoupon(ctx, req.(*emptypb.Empty))
+		return srv.(AppServer).GetCouponByType(ctx, req.(*TypeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetMyCouponByStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MyCouponByStatusRequest)
+func _App_GetUserCouponByStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AppServer).GetMyCouponByStatus(ctx, in)
+		return srv.(AppServer).GetUserCouponByStatus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.App/GetMyCouponByStatus",
+		FullMethod: "/app.App/GetUserCouponByStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetMyCouponByStatus(ctx, req.(*MyCouponByStatusRequest))
+		return srv.(AppServer).GetUserCouponByStatus(ctx, req.(*StatusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetMyAvailableCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _App_GetUserCouponByStatusWithCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AppServer).GetMyAvailableCoupon(ctx, in)
+		return srv.(AppServer).GetUserCouponByStatusWithCategory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.App/GetMyAvailableCoupon",
+		FullMethod: "/app.App/GetUserCouponByStatusWithCategory",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetMyAvailableCoupon(ctx, req.(*emptypb.Empty))
+		return srv.(AppServer).GetUserCouponByStatusWithCategory(ctx, req.(*StatusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_CollectCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CollectCouponRequest)
+func _App_CreateUserCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserCouponRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AppServer).CollectCoupon(ctx, in)
+		return srv.(AppServer).CreateUserCoupon(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.App/CollectCoupon",
+		FullMethod: "/app.App/CreateUserCoupon",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).CollectCoupon(ctx, req.(*CollectCouponRequest))
+		return srv.(AppServer).CreateUserCoupon(ctx, req.(*CreateUserCouponRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -576,7 +576,7 @@ func _App_GetSaleExplain_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _App_GetSpuById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SpuByIdRequest)
+	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -588,7 +588,7 @@ func _App_GetSpuById_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/app.App/GetSpuById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetSpuById(ctx, req.(*SpuByIdRequest))
+		return srv.(AppServer).GetSpuById(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -612,7 +612,7 @@ func _App_GetSpuLatest_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _App_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SpuByCategoryRequest)
+	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -624,7 +624,7 @@ func _App_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/app.App/GetSpuByCategory",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetSpuByCategory(ctx, req.(*SpuByCategoryRequest))
+		return srv.(AppServer).GetSpuByCategory(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -661,12 +661,12 @@ var App_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _App_GetActivityWithCoupon_Handler,
 		},
 		{
-			MethodName: "GetAllCategory",
-			Handler:    _App_GetAllCategory_Handler,
+			MethodName: "ListCategory",
+			Handler:    _App_ListCategory_Handler,
 		},
 		{
-			MethodName: "GetGridCategory",
-			Handler:    _App_GetGridCategory_Handler,
+			MethodName: "ListGridCategory",
+			Handler:    _App_ListGridCategory_Handler,
 		},
 		{
 			MethodName: "GetTagByType",
@@ -677,20 +677,20 @@ var App_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _App_GetCouponByCategory_Handler,
 		},
 		{
-			MethodName: "GetWholeCoupon",
-			Handler:    _App_GetWholeCoupon_Handler,
+			MethodName: "GetCouponByType",
+			Handler:    _App_GetCouponByType_Handler,
 		},
 		{
-			MethodName: "GetMyCouponByStatus",
-			Handler:    _App_GetMyCouponByStatus_Handler,
+			MethodName: "GetUserCouponByStatus",
+			Handler:    _App_GetUserCouponByStatus_Handler,
 		},
 		{
-			MethodName: "GetMyAvailableCoupon",
-			Handler:    _App_GetMyAvailableCoupon_Handler,
+			MethodName: "GetUserCouponByStatusWithCategory",
+			Handler:    _App_GetUserCouponByStatusWithCategory_Handler,
 		},
 		{
-			MethodName: "CollectCoupon",
-			Handler:    _App_CollectCoupon_Handler,
+			MethodName: "CreateUserCoupon",
+			Handler:    _App_CreateUserCoupon_Handler,
 		},
 		{
 			MethodName: "GetSaleExplain",
