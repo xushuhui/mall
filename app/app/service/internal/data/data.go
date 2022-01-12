@@ -10,8 +10,8 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewEntClient, NewBannerRepo,
-	NewThemeRepo)
+var ProviderSet = wire.NewSet(NewData, NewEntClient, NewBannerRepo, NewCouponRepo, NewActivityRepo,
+	NewThemeRepo, NewOrderRepo)
 
 // Data .
 type Data struct {
@@ -19,6 +19,7 @@ type Data struct {
 	log *log.Helper
 	//rdb *redis.Client
 }
+type DBOption func(*model.Client) *model.Client
 
 func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
 	l := log.NewHelper(logger)

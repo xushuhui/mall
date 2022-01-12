@@ -5,6 +5,7 @@ package model
 import (
 	"context"
 	"fmt"
+	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/usercoupon"
 	"time"
@@ -68,14 +69,21 @@ func (ucu *UserCouponUpdate) AddUserID(i int64) *UserCouponUpdate {
 
 // SetCouponID sets the "coupon_id" field.
 func (ucu *UserCouponUpdate) SetCouponID(i int64) *UserCouponUpdate {
-	ucu.mutation.ResetCouponID()
 	ucu.mutation.SetCouponID(i)
 	return ucu
 }
 
-// AddCouponID adds i to the "coupon_id" field.
-func (ucu *UserCouponUpdate) AddCouponID(i int64) *UserCouponUpdate {
-	ucu.mutation.AddCouponID(i)
+// SetNillableCouponID sets the "coupon_id" field if the given value is not nil.
+func (ucu *UserCouponUpdate) SetNillableCouponID(i *int64) *UserCouponUpdate {
+	if i != nil {
+		ucu.SetCouponID(*i)
+	}
+	return ucu
+}
+
+// ClearCouponID clears the value of the "coupon_id" field.
+func (ucu *UserCouponUpdate) ClearCouponID() *UserCouponUpdate {
+	ucu.mutation.ClearCouponID()
 	return ucu
 }
 
@@ -83,6 +91,14 @@ func (ucu *UserCouponUpdate) AddCouponID(i int64) *UserCouponUpdate {
 func (ucu *UserCouponUpdate) SetStatus(i int) *UserCouponUpdate {
 	ucu.mutation.ResetStatus()
 	ucu.mutation.SetStatus(i)
+	return ucu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ucu *UserCouponUpdate) SetNillableStatus(i *int) *UserCouponUpdate {
+	if i != nil {
+		ucu.SetStatus(*i)
+	}
 	return ucu
 }
 
@@ -105,9 +121,20 @@ func (ucu *UserCouponUpdate) AddOrderID(i int) *UserCouponUpdate {
 	return ucu
 }
 
+// SetCoupon sets the "coupon" edge to the Coupon entity.
+func (ucu *UserCouponUpdate) SetCoupon(c *Coupon) *UserCouponUpdate {
+	return ucu.SetCouponID(c.ID)
+}
+
 // Mutation returns the UserCouponMutation object of the builder.
 func (ucu *UserCouponUpdate) Mutation() *UserCouponMutation {
 	return ucu.mutation
+}
+
+// ClearCoupon clears the "coupon" edge to the Coupon entity.
+func (ucu *UserCouponUpdate) ClearCoupon() *UserCouponUpdate {
+	ucu.mutation.ClearCoupon()
+	return ucu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -225,20 +252,6 @@ func (ucu *UserCouponUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: usercoupon.FieldUserID,
 		})
 	}
-	if value, ok := ucu.mutation.CouponID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
-			Value:  value,
-			Column: usercoupon.FieldCouponID,
-		})
-	}
-	if value, ok := ucu.mutation.AddedCouponID(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
-			Value:  value,
-			Column: usercoupon.FieldCouponID,
-		})
-	}
 	if value, ok := ucu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -266,6 +279,41 @@ func (ucu *UserCouponUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Value:  value,
 			Column: usercoupon.FieldOrderID,
 		})
+	}
+	if ucu.mutation.CouponCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   usercoupon.CouponTable,
+			Columns: []string{usercoupon.CouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: coupon.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ucu.mutation.CouponIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   usercoupon.CouponTable,
+			Columns: []string{usercoupon.CouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: coupon.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ucu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -327,14 +375,21 @@ func (ucuo *UserCouponUpdateOne) AddUserID(i int64) *UserCouponUpdateOne {
 
 // SetCouponID sets the "coupon_id" field.
 func (ucuo *UserCouponUpdateOne) SetCouponID(i int64) *UserCouponUpdateOne {
-	ucuo.mutation.ResetCouponID()
 	ucuo.mutation.SetCouponID(i)
 	return ucuo
 }
 
-// AddCouponID adds i to the "coupon_id" field.
-func (ucuo *UserCouponUpdateOne) AddCouponID(i int64) *UserCouponUpdateOne {
-	ucuo.mutation.AddCouponID(i)
+// SetNillableCouponID sets the "coupon_id" field if the given value is not nil.
+func (ucuo *UserCouponUpdateOne) SetNillableCouponID(i *int64) *UserCouponUpdateOne {
+	if i != nil {
+		ucuo.SetCouponID(*i)
+	}
+	return ucuo
+}
+
+// ClearCouponID clears the value of the "coupon_id" field.
+func (ucuo *UserCouponUpdateOne) ClearCouponID() *UserCouponUpdateOne {
+	ucuo.mutation.ClearCouponID()
 	return ucuo
 }
 
@@ -342,6 +397,14 @@ func (ucuo *UserCouponUpdateOne) AddCouponID(i int64) *UserCouponUpdateOne {
 func (ucuo *UserCouponUpdateOne) SetStatus(i int) *UserCouponUpdateOne {
 	ucuo.mutation.ResetStatus()
 	ucuo.mutation.SetStatus(i)
+	return ucuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ucuo *UserCouponUpdateOne) SetNillableStatus(i *int) *UserCouponUpdateOne {
+	if i != nil {
+		ucuo.SetStatus(*i)
+	}
 	return ucuo
 }
 
@@ -364,9 +427,20 @@ func (ucuo *UserCouponUpdateOne) AddOrderID(i int) *UserCouponUpdateOne {
 	return ucuo
 }
 
+// SetCoupon sets the "coupon" edge to the Coupon entity.
+func (ucuo *UserCouponUpdateOne) SetCoupon(c *Coupon) *UserCouponUpdateOne {
+	return ucuo.SetCouponID(c.ID)
+}
+
 // Mutation returns the UserCouponMutation object of the builder.
 func (ucuo *UserCouponUpdateOne) Mutation() *UserCouponMutation {
 	return ucuo.mutation
+}
+
+// ClearCoupon clears the "coupon" edge to the Coupon entity.
+func (ucuo *UserCouponUpdateOne) ClearCoupon() *UserCouponUpdateOne {
+	ucuo.mutation.ClearCoupon()
+	return ucuo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -508,20 +582,6 @@ func (ucuo *UserCouponUpdateOne) sqlSave(ctx context.Context) (_node *UserCoupon
 			Column: usercoupon.FieldUserID,
 		})
 	}
-	if value, ok := ucuo.mutation.CouponID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
-			Value:  value,
-			Column: usercoupon.FieldCouponID,
-		})
-	}
-	if value, ok := ucuo.mutation.AddedCouponID(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
-			Value:  value,
-			Column: usercoupon.FieldCouponID,
-		})
-	}
 	if value, ok := ucuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -549,6 +609,41 @@ func (ucuo *UserCouponUpdateOne) sqlSave(ctx context.Context) (_node *UserCoupon
 			Value:  value,
 			Column: usercoupon.FieldOrderID,
 		})
+	}
+	if ucuo.mutation.CouponCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   usercoupon.CouponTable,
+			Columns: []string{usercoupon.CouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: coupon.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ucuo.mutation.CouponIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   usercoupon.CouponTable,
+			Columns: []string{usercoupon.CouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: coupon.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &UserCoupon{config: ucuo.config}
 	_spec.Assign = _node.assignValues

@@ -1,6 +1,9 @@
 package biz
 
-import "github.com/go-kratos/kratos/v2/log"
+import (
+	"context"
+	"github.com/go-kratos/kratos/v2/log"
+)
 
 type Spu struct {
 	Id             int64  ` json:"id,omitempty"`
@@ -19,7 +22,9 @@ type Spu struct {
 }
 
 type SpuRepo interface {
-	CreateSpu() (err error)
+	CreateSpu(ctx context.Context) (err error)
+	GetSpuById(ctx context.Context, id int64) (Spu Spu, err error)
+	GetSpuByCategory(ctx context.Context, id int64) (Spus []Spu, err error)
 }
 type SpuUsecase struct {
 	repo SpuRepo

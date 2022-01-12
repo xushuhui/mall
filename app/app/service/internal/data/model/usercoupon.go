@@ -4,6 +4,7 @@ package model
 
 import (
 	"fmt"
+	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/usercoupon"
 	"strings"
 	"time"
@@ -31,6 +32,32 @@ type UserCoupon struct {
 	Status int `json:"status,omitempty"`
 	// OrderID holds the value of the "order_id" field.
 	OrderID int `json:"order_id,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the UserCouponQuery when eager-loading is set.
+	Edges UserCouponEdges `json:"edges"`
+}
+
+// UserCouponEdges holds the relations/edges for other nodes in the graph.
+type UserCouponEdges struct {
+	// Coupon holds the value of the coupon edge.
+	Coupon *Coupon `json:"coupon,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// CouponOrErr returns the Coupon value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserCouponEdges) CouponOrErr() (*Coupon, error) {
+	if e.loadedTypes[0] {
+		if e.Coupon == nil {
+			// The edge coupon was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: coupon.Label}
+		}
+		return e.Coupon, nil
+	}
+	return nil, &NotLoadedError{edge: "coupon"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -108,6 +135,11 @@ func (uc *UserCoupon) assignValues(columns []string, values []interface{}) error
 		}
 	}
 	return nil
+}
+
+// QueryCoupon queries the "coupon" edge of the UserCoupon entity.
+func (uc *UserCoupon) QueryCoupon() *CouponQuery {
+	return (&UserCouponClient{config: uc.config}).QueryCoupon(uc)
 }
 
 // Update returns a builder for updating this UserCoupon.

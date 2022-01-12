@@ -283,8 +283,8 @@ var (
 			},
 		},
 	}
-	// OrderSubColumns holds the columns for the "order_sub" table.
-	OrderSubColumns = []*schema.Column{
+	// OrderSubsColumns holds the columns for the "order_subs" table.
+	OrderSubsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -297,15 +297,15 @@ var (
 		{Name: "status", Type: field.TypeInt},
 		{Name: "order_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// OrderSubTable holds the schema information for the "order_sub" table.
-	OrderSubTable = &schema.Table{
-		Name:       "order_sub",
-		Columns:    OrderSubColumns,
-		PrimaryKey: []*schema.Column{OrderSubColumns[0]},
+	// OrderSubsTable holds the schema information for the "order_subs" table.
+	OrderSubsTable = &schema.Table{
+		Name:       "order_subs",
+		Columns:    OrderSubsColumns,
+		PrimaryKey: []*schema.Column{OrderSubsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "order_sub_orders_order_sub",
-				Columns:    []*schema.Column{OrderSubColumns[10]},
+				Symbol:     "order_subs_orders_order_sub",
+				Columns:    []*schema.Column{OrderSubsColumns[10]},
 				RefColumns: []*schema.Column{OrdersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -574,15 +574,23 @@ var (
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "user_id", Type: field.TypeInt64},
-		{Name: "coupon_id", Type: field.TypeInt64},
-		{Name: "status", Type: field.TypeInt},
+		{Name: "status", Type: field.TypeInt, Default: 1},
 		{Name: "order_id", Type: field.TypeInt},
+		{Name: "coupon_id", Type: field.TypeInt64, Nullable: true},
 	}
 	// UserCouponTable holds the schema information for the "user_coupon" table.
 	UserCouponTable = &schema.Table{
 		Name:       "user_coupon",
 		Columns:    UserCouponColumns,
 		PrimaryKey: []*schema.Column{UserCouponColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "user_coupon_coupons_user_coupon",
+				Columns:    []*schema.Column{UserCouponColumns[7]},
+				RefColumns: []*schema.Column{CouponsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// UserFavorColumns holds the columns for the "user_favor" table.
 	UserFavorColumns = []*schema.Column{
@@ -870,7 +878,7 @@ var (
 		OrdersTable,
 		OrderDetailsTable,
 		OrderSnapsTable,
-		OrderSubTable,
+		OrderSubsTable,
 		RefundsTable,
 		SaleExplainsTable,
 		SkusTable,
@@ -908,10 +916,7 @@ func init() {
 	}
 	OrdersTable.ForeignKeys[0].RefTable = UserTable
 	OrderSnapsTable.ForeignKeys[0].RefTable = OrdersTable
-	OrderSubTable.ForeignKeys[0].RefTable = OrdersTable
-	OrderSubTable.Annotation = &entsql.Annotation{
-		Table: "order_sub",
-	}
+	OrderSubsTable.ForeignKeys[0].RefTable = OrdersTable
 	RefundsTable.ForeignKeys[0].RefTable = UserTable
 	SaleExplainsTable.ForeignKeys[0].RefTable = SpusTable
 	SkuSpecTable.Annotation = &entsql.Annotation{
@@ -928,6 +933,7 @@ func init() {
 	UserTable.Annotation = &entsql.Annotation{
 		Table: "user",
 	}
+	UserCouponTable.ForeignKeys[0].RefTable = CouponsTable
 	UserCouponTable.Annotation = &entsql.Annotation{
 		Table: "user_coupon",
 	}

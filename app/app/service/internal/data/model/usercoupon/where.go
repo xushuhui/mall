@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -507,31 +508,17 @@ func CouponIDNotIn(vs ...int64) predicate.UserCoupon {
 	})
 }
 
-// CouponIDGT applies the GT predicate on the "coupon_id" field.
-func CouponIDGT(v int64) predicate.UserCoupon {
+// CouponIDIsNil applies the IsNil predicate on the "coupon_id" field.
+func CouponIDIsNil() predicate.UserCoupon {
 	return predicate.UserCoupon(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldCouponID), v))
+		s.Where(sql.IsNull(s.C(FieldCouponID)))
 	})
 }
 
-// CouponIDGTE applies the GTE predicate on the "coupon_id" field.
-func CouponIDGTE(v int64) predicate.UserCoupon {
+// CouponIDNotNil applies the NotNil predicate on the "coupon_id" field.
+func CouponIDNotNil() predicate.UserCoupon {
 	return predicate.UserCoupon(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldCouponID), v))
-	})
-}
-
-// CouponIDLT applies the LT predicate on the "coupon_id" field.
-func CouponIDLT(v int64) predicate.UserCoupon {
-	return predicate.UserCoupon(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldCouponID), v))
-	})
-}
-
-// CouponIDLTE applies the LTE predicate on the "coupon_id" field.
-func CouponIDLTE(v int64) predicate.UserCoupon {
-	return predicate.UserCoupon(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldCouponID), v))
+		s.Where(sql.NotNull(s.C(FieldCouponID)))
 	})
 }
 
@@ -684,6 +671,34 @@ func OrderIDLT(v int) predicate.UserCoupon {
 func OrderIDLTE(v int) predicate.UserCoupon {
 	return predicate.UserCoupon(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldOrderID), v))
+	})
+}
+
+// HasCoupon applies the HasEdge predicate on the "coupon" edge.
+func HasCoupon() predicate.UserCoupon {
+	return predicate.UserCoupon(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(CouponTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, CouponTable, CouponColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCouponWith applies the HasEdge predicate on the "coupon" edge with a given conditions (other predicates).
+func HasCouponWith(preds ...predicate.Coupon) predicate.UserCoupon {
+	return predicate.UserCoupon(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(CouponInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, CouponTable, CouponColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
 	})
 }
 

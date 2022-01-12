@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"mall-go/api/app"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -26,9 +27,10 @@ type ThemeSpu struct {
 type ThemeRepo interface {
 	GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error)
 	GetThemeWithSpu(ctx context.Context, name string) (t ThemeSpu, err error)
-	CreateTheme() (err error)
-	ListTheme()
-	UpdateTheme() (err error)
+
+	CreateTheme(ctx context.Context, req app.Theme) (err error)
+	ListTheme(ctx context.Context) (t []Theme, err error)
+	UpdateTheme(ctx context.Context, req app.Theme) (err error)
 }
 
 type ThemeUsecase struct {

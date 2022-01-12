@@ -42,28 +42,28 @@ type InterfaceHTTPServer interface {
 
 func RegisterInterfaceHTTPServer(s *http.Server, srv InterfaceHTTPServer) {
 	r := s.Route("/")
-	r.GET("/banner/id/{id}", _Interface_GetBannerById1_HTTP_Handler(srv))
-	r.GET("/banner/name/{name}", _Interface_GetBannerByName1_HTTP_Handler(srv))
-	r.GET("/theme/by/names", _Interface_GetThemeByNames1_HTTP_Handler(srv))
-	r.GET("/theme/name/{name}/with_spu", _Interface_GetThemeWithSpu1_HTTP_Handler(srv))
-	r.GET("/activity/name/{name}", _Interface_GetActivityByName1_HTTP_Handler(srv))
-	r.GET("/activity/name/{name}/with_coupon", _Interface_GetActivityWithCoupon1_HTTP_Handler(srv))
+	r.GET("/banner/id/{id}", _Interface_GetBannerById0_HTTP_Handler(srv))
+	r.GET("/banner/name/{name}", _Interface_GetBannerByName0_HTTP_Handler(srv))
+	r.GET("/theme/by/names", _Interface_GetThemeByNames0_HTTP_Handler(srv))
+	r.GET("/theme/name/{name}/with_spu", _Interface_GetThemeWithSpu0_HTTP_Handler(srv))
+	r.GET("/activity/name/{name}", _Interface_GetActivityByName0_HTTP_Handler(srv))
+	r.GET("/activity/name/{name}/with_coupon", _Interface_GetActivityWithCoupon0_HTTP_Handler(srv))
 	r.GET("/category/all", _Interface_GetAllCategory0_HTTP_Handler(srv))
 	r.GET("/category/grid/all", _Interface_GetGridCategory0_HTTP_Handler(srv))
-	r.GET("/tag/type/{type}", _Interface_GetTagByType1_HTTP_Handler(srv))
-	r.GET("/coupon/by/category/{id}", _Interface_GetCouponByCategory1_HTTP_Handler(srv))
+	r.GET("/tag/type/{type}", _Interface_GetTagByType0_HTTP_Handler(srv))
+	r.GET("/coupon/by/category/{id}", _Interface_GetCouponByCategory0_HTTP_Handler(srv))
 	r.GET("/coupon/by/whole_store", _Interface_GetWholeCoupon0_HTTP_Handler(srv))
 	r.GET("/coupon/myself/by/status/{status}", _Interface_GetMyCouponByStatus0_HTTP_Handler(srv))
 	r.GET("/coupon/myself/available/with_category", _Interface_GetMyAvailableCoupon0_HTTP_Handler(srv))
 	r.POST("/coupon/collect/{id}", _Interface_CollectCoupon0_HTTP_Handler(srv))
-	r.GET("/sale_explain/fixed", _Interface_GetSaleExplain1_HTTP_Handler(srv))
+	r.GET("/sale_explain/fixed", _Interface_GetSaleExplain0_HTTP_Handler(srv))
 	r.GET("/search", _Interface_Search0_HTTP_Handler(srv))
-	r.GET("/spu/id/{id}/detail", _Interface_GetSpuById1_HTTP_Handler(srv))
-	r.GET("/spu/latest", _Interface_GetSpuLatest1_HTTP_Handler(srv))
-	r.GET("/spu/by/category/{id}", _Interface_GetSpuByCategory1_HTTP_Handler(srv))
+	r.GET("/spu/id/{id}/detail", _Interface_GetSpuById0_HTTP_Handler(srv))
+	r.GET("/spu/latest", _Interface_GetSpuLatest0_HTTP_Handler(srv))
+	r.GET("/spu/by/category/{id}", _Interface_GetSpuByCategory0_HTTP_Handler(srv))
 }
 
-func _Interface_GetBannerById1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetBannerById0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in BannerByIdRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -85,7 +85,7 @@ func _Interface_GetBannerById1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx ht
 	}
 }
 
-func _Interface_GetBannerByName1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetBannerByName0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in BannerByNameRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -107,7 +107,7 @@ func _Interface_GetBannerByName1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx 
 	}
 }
 
-func _Interface_GetThemeByNames1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetThemeByNames0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ThemeByNamesRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -126,7 +126,7 @@ func _Interface_GetThemeByNames1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx 
 	}
 }
 
-func _Interface_GetThemeWithSpu1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetThemeWithSpu0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ThemeWithSpuRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -148,7 +148,7 @@ func _Interface_GetThemeWithSpu1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx 
 	}
 }
 
-func _Interface_GetActivityByName1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetActivityByName0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ActivityByNameRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -170,7 +170,7 @@ func _Interface_GetActivityByName1_HTTP_Handler(srv InterfaceHTTPServer) func(ct
 	}
 }
 
-func _Interface_GetActivityWithCoupon1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetActivityWithCoupon0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ActivityWithCouponRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -230,7 +230,7 @@ func _Interface_GetGridCategory0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx 
 	}
 }
 
-func _Interface_GetTagByType1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetTagByType0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in TagByTypeRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -252,7 +252,7 @@ func _Interface_GetTagByType1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx htt
 	}
 }
 
-func _Interface_GetCouponByCategory1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetCouponByCategory0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CouponByCategoryRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -356,7 +356,7 @@ func _Interface_CollectCoupon0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx ht
 	}
 }
 
-func _Interface_GetSaleExplain1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetSaleExplain0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
@@ -394,7 +394,7 @@ func _Interface_Search0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Cont
 	}
 }
 
-func _Interface_GetSpuById1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetSpuById0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in SpuByIdRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -416,7 +416,7 @@ func _Interface_GetSpuById1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.
 	}
 }
 
-func _Interface_GetSpuLatest1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetSpuLatest0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
@@ -435,7 +435,7 @@ func _Interface_GetSpuLatest1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx htt
 	}
 }
 
-func _Interface_GetSpuByCategory1_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_GetSpuByCategory0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in SpuByCategoryRequest
 		if err := ctx.BindQuery(&in); err != nil {

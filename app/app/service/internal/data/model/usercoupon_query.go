@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/usercoupon"
 	"math"
@@ -24,6 +25,8 @@ type UserCouponQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.UserCoupon
+	// eager-loading edges.
+	withCoupon *CouponQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -58,6 +61,28 @@ func (ucq *UserCouponQuery) Unique(unique bool) *UserCouponQuery {
 func (ucq *UserCouponQuery) Order(o ...OrderFunc) *UserCouponQuery {
 	ucq.order = append(ucq.order, o...)
 	return ucq
+}
+
+// QueryCoupon chains the current query on the "coupon" edge.
+func (ucq *UserCouponQuery) QueryCoupon() *CouponQuery {
+	query := &CouponQuery{config: ucq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ucq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ucq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(usercoupon.Table, usercoupon.FieldID, selector),
+			sqlgraph.To(coupon.Table, coupon.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, usercoupon.CouponTable, usercoupon.CouponColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(ucq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first UserCoupon entity from the query.
@@ -286,10 +311,22 @@ func (ucq *UserCouponQuery) Clone() *UserCouponQuery {
 		offset:     ucq.offset,
 		order:      append([]OrderFunc{}, ucq.order...),
 		predicates: append([]predicate.UserCoupon{}, ucq.predicates...),
+		withCoupon: ucq.withCoupon.Clone(),
 		// clone intermediate query.
 		sql:  ucq.sql.Clone(),
 		path: ucq.path,
 	}
+}
+
+// WithCoupon tells the query-builder to eager-load the nodes that are connected to
+// the "coupon" edge. The optional arguments are used to configure the query builder of the edge.
+func (ucq *UserCouponQuery) WithCoupon(opts ...func(*CouponQuery)) *UserCouponQuery {
+	query := &CouponQuery{config: ucq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	ucq.withCoupon = query
+	return ucq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -355,8 +392,11 @@ func (ucq *UserCouponQuery) prepareQuery(ctx context.Context) error {
 
 func (ucq *UserCouponQuery) sqlAll(ctx context.Context) ([]*UserCoupon, error) {
 	var (
-		nodes = []*UserCoupon{}
-		_spec = ucq.querySpec()
+		nodes       = []*UserCoupon{}
+		_spec       = ucq.querySpec()
+		loadedTypes = [1]bool{
+			ucq.withCoupon != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &UserCoupon{config: ucq.config}
@@ -368,6 +408,7 @@ func (ucq *UserCouponQuery) sqlAll(ctx context.Context) ([]*UserCoupon, error) {
 			return fmt.Errorf("model: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, ucq.driver, _spec); err != nil {
@@ -376,6 +417,33 @@ func (ucq *UserCouponQuery) sqlAll(ctx context.Context) ([]*UserCoupon, error) {
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+
+	if query := ucq.withCoupon; query != nil {
+		ids := make([]int64, 0, len(nodes))
+		nodeids := make(map[int64][]*UserCoupon)
+		for i := range nodes {
+			fk := nodes[i].CouponID
+			if _, ok := nodeids[fk]; !ok {
+				ids = append(ids, fk)
+			}
+			nodeids[fk] = append(nodeids[fk], nodes[i])
+		}
+		query.Where(coupon.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "coupon_id" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Coupon = n
+			}
+		}
+	}
+
 	return nodes, nil
 }
 

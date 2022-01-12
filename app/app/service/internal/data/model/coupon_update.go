@@ -9,6 +9,7 @@ import (
 	"mall-go/app/app/service/internal/data/model/category"
 	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
+	"mall-go/app/app/service/internal/data/model/usercoupon"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -220,6 +221,21 @@ func (cu *CouponUpdate) AddActivity(a ...*Activity) *CouponUpdate {
 	return cu.AddActivityIDs(ids...)
 }
 
+// AddUserCouponIDs adds the "user_coupon" edge to the UserCoupon entity by IDs.
+func (cu *CouponUpdate) AddUserCouponIDs(ids ...int64) *CouponUpdate {
+	cu.mutation.AddUserCouponIDs(ids...)
+	return cu
+}
+
+// AddUserCoupon adds the "user_coupon" edges to the UserCoupon entity.
+func (cu *CouponUpdate) AddUserCoupon(u ...*UserCoupon) *CouponUpdate {
+	ids := make([]int64, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return cu.AddUserCouponIDs(ids...)
+}
+
 // Mutation returns the CouponMutation object of the builder.
 func (cu *CouponUpdate) Mutation() *CouponMutation {
 	return cu.mutation
@@ -265,6 +281,27 @@ func (cu *CouponUpdate) RemoveActivity(a ...*Activity) *CouponUpdate {
 		ids[i] = a[i].ID
 	}
 	return cu.RemoveActivityIDs(ids...)
+}
+
+// ClearUserCoupon clears all "user_coupon" edges to the UserCoupon entity.
+func (cu *CouponUpdate) ClearUserCoupon() *CouponUpdate {
+	cu.mutation.ClearUserCoupon()
+	return cu
+}
+
+// RemoveUserCouponIDs removes the "user_coupon" edge to UserCoupon entities by IDs.
+func (cu *CouponUpdate) RemoveUserCouponIDs(ids ...int64) *CouponUpdate {
+	cu.mutation.RemoveUserCouponIDs(ids...)
+	return cu
+}
+
+// RemoveUserCoupon removes "user_coupon" edges to UserCoupon entities.
+func (cu *CouponUpdate) RemoveUserCoupon(u ...*UserCoupon) *CouponUpdate {
+	ids := make([]int64, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return cu.RemoveUserCouponIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -615,6 +652,60 @@ func (cu *CouponUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if cu.mutation.UserCouponCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   coupon.UserCouponTable,
+			Columns: []string{coupon.UserCouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: usercoupon.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedUserCouponIDs(); len(nodes) > 0 && !cu.mutation.UserCouponCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   coupon.UserCouponTable,
+			Columns: []string{coupon.UserCouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: usercoupon.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.UserCouponIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   coupon.UserCouponTable,
+			Columns: []string{coupon.UserCouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: usercoupon.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{coupon.Label}
@@ -825,6 +916,21 @@ func (cuo *CouponUpdateOne) AddActivity(a ...*Activity) *CouponUpdateOne {
 	return cuo.AddActivityIDs(ids...)
 }
 
+// AddUserCouponIDs adds the "user_coupon" edge to the UserCoupon entity by IDs.
+func (cuo *CouponUpdateOne) AddUserCouponIDs(ids ...int64) *CouponUpdateOne {
+	cuo.mutation.AddUserCouponIDs(ids...)
+	return cuo
+}
+
+// AddUserCoupon adds the "user_coupon" edges to the UserCoupon entity.
+func (cuo *CouponUpdateOne) AddUserCoupon(u ...*UserCoupon) *CouponUpdateOne {
+	ids := make([]int64, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return cuo.AddUserCouponIDs(ids...)
+}
+
 // Mutation returns the CouponMutation object of the builder.
 func (cuo *CouponUpdateOne) Mutation() *CouponMutation {
 	return cuo.mutation
@@ -870,6 +976,27 @@ func (cuo *CouponUpdateOne) RemoveActivity(a ...*Activity) *CouponUpdateOne {
 		ids[i] = a[i].ID
 	}
 	return cuo.RemoveActivityIDs(ids...)
+}
+
+// ClearUserCoupon clears all "user_coupon" edges to the UserCoupon entity.
+func (cuo *CouponUpdateOne) ClearUserCoupon() *CouponUpdateOne {
+	cuo.mutation.ClearUserCoupon()
+	return cuo
+}
+
+// RemoveUserCouponIDs removes the "user_coupon" edge to UserCoupon entities by IDs.
+func (cuo *CouponUpdateOne) RemoveUserCouponIDs(ids ...int64) *CouponUpdateOne {
+	cuo.mutation.RemoveUserCouponIDs(ids...)
+	return cuo
+}
+
+// RemoveUserCoupon removes "user_coupon" edges to UserCoupon entities.
+func (cuo *CouponUpdateOne) RemoveUserCoupon(u ...*UserCoupon) *CouponUpdateOne {
+	ids := make([]int64, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return cuo.RemoveUserCouponIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -1236,6 +1363,60 @@ func (cuo *CouponUpdateOne) sqlSave(ctx context.Context) (_node *Coupon, err err
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt64,
 					Column: activity.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.UserCouponCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   coupon.UserCouponTable,
+			Columns: []string{coupon.UserCouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: usercoupon.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedUserCouponIDs(); len(nodes) > 0 && !cuo.mutation.UserCouponCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   coupon.UserCouponTable,
+			Columns: []string{coupon.UserCouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: usercoupon.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.UserCouponIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   coupon.UserCouponTable,
+			Columns: []string{coupon.UserCouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: usercoupon.FieldID,
 				},
 			},
 		}

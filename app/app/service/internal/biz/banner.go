@@ -15,12 +15,11 @@ type Banner struct {
 	Items       []BannerItem
 }
 type BannerItem struct {
-	ID       int64  `json:"id"`
-	Img      string `json:"img"`
-	Keyword  string `json:"keyword"`
-	Type     int    `json:"type"`
-	Name     string `json:"name"`
-
+	ID      int64  `json:"id"`
+	Img     string `json:"img"`
+	Keyword string `json:"keyword"`
+	Type    int    `json:"type"`
+	Name    string `json:"name"`
 }
 type BannerRepo interface {
 	GetBannerById(ctx context.Context, id int64) (b Banner, err error)

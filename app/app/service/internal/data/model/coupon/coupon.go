@@ -45,6 +45,8 @@ const (
 	EdgeCategory = "category"
 	// EdgeActivity holds the string denoting the activity edge name in mutations.
 	EdgeActivity = "activity"
+	// EdgeUserCoupon holds the string denoting the user_coupon edge name in mutations.
+	EdgeUserCoupon = "user_coupon"
 	// Table holds the table name of the coupon in the database.
 	Table = "coupon"
 	// CategoryTable is the table that holds the category relation/edge. The primary key declared below.
@@ -57,6 +59,13 @@ const (
 	// ActivityInverseTable is the table name for the Activity entity.
 	// It exists in this package in order to avoid lower111 circular dependency with the "activity" package.
 	ActivityInverseTable = "activity"
+	// UserCouponTable is the table that holds the user_coupon relation/edge.
+	UserCouponTable = "user_coupon"
+	// UserCouponInverseTable is the table name for the UserCoupon entity.
+	// It exists in this package in order to avoid lower111 circular dependency with the "usercoupon" package.
+	UserCouponInverseTable = "user_coupon"
+	// UserCouponColumn is the table column denoting the user_coupon relation/edge.
+	UserCouponColumn = "coupon_id"
 )
 
 // Columns holds all SQL columns for coupon fields.

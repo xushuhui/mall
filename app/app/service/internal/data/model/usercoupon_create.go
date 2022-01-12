@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/usercoupon"
 	"time"
 
@@ -74,9 +75,25 @@ func (ucc *UserCouponCreate) SetCouponID(i int64) *UserCouponCreate {
 	return ucc
 }
 
+// SetNillableCouponID sets the "coupon_id" field if the given value is not nil.
+func (ucc *UserCouponCreate) SetNillableCouponID(i *int64) *UserCouponCreate {
+	if i != nil {
+		ucc.SetCouponID(*i)
+	}
+	return ucc
+}
+
 // SetStatus sets the "status" field.
 func (ucc *UserCouponCreate) SetStatus(i int) *UserCouponCreate {
 	ucc.mutation.SetStatus(i)
+	return ucc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ucc *UserCouponCreate) SetNillableStatus(i *int) *UserCouponCreate {
+	if i != nil {
+		ucc.SetStatus(*i)
+	}
 	return ucc
 }
 
@@ -84,6 +101,11 @@ func (ucc *UserCouponCreate) SetStatus(i int) *UserCouponCreate {
 func (ucc *UserCouponCreate) SetOrderID(i int) *UserCouponCreate {
 	ucc.mutation.SetOrderID(i)
 	return ucc
+}
+
+// SetCoupon sets the "coupon" edge to the Coupon entity.
+func (ucc *UserCouponCreate) SetCoupon(c *Coupon) *UserCouponCreate {
+	return ucc.SetCouponID(c.ID)
 }
 
 // Mutation returns the UserCouponMutation object of the builder.
@@ -165,6 +187,10 @@ func (ucc *UserCouponCreate) defaults() {
 		v := usercoupon.DefaultUpdateTime()
 		ucc.mutation.SetUpdateTime(v)
 	}
+	if _, ok := ucc.mutation.Status(); !ok {
+		v := usercoupon.DefaultStatus
+		ucc.mutation.SetStatus(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -177,9 +203,6 @@ func (ucc *UserCouponCreate) check() error {
 	}
 	if _, ok := ucc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "user_id"`)}
-	}
-	if _, ok := ucc.mutation.CouponID(); !ok {
-		return &ValidationError{Name: "coupon_id", err: errors.New(`model: missing required field "coupon_id"`)}
 	}
 	if _, ok := ucc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`model: missing required field "status"`)}
@@ -246,14 +269,6 @@ func (ucc *UserCouponCreate) createSpec() (*UserCoupon, *sqlgraph.CreateSpec) {
 		})
 		_node.UserID = value
 	}
-	if value, ok := ucc.mutation.CouponID(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
-			Value:  value,
-			Column: usercoupon.FieldCouponID,
-		})
-		_node.CouponID = value
-	}
 	if value, ok := ucc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -269,6 +284,26 @@ func (ucc *UserCouponCreate) createSpec() (*UserCoupon, *sqlgraph.CreateSpec) {
 			Column: usercoupon.FieldOrderID,
 		})
 		_node.OrderID = value
+	}
+	if nodes := ucc.mutation.CouponIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   usercoupon.CouponTable,
+			Columns: []string{usercoupon.CouponColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: coupon.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.CouponID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

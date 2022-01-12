@@ -1,6 +1,7 @@
 package biz
 
 import (
+	"context"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -14,15 +15,18 @@ type Coupon struct {
 	Category   []Category `json:"category"`
 	Type       int        `json:"type"`
 	FullMoney  float64    `json:"full_money"`
-
-	Minus float64 `json:"minus"`
-
-	Rate float64 `json:"rate"`
+	Title      string     `json:"title"`
+	Minus      float64    `json:"minus"`
+	Rate       float64    `json:"rate"`
 }
 type Category struct {
 	Id int64
 }
 type CouponRepo interface {
+	CreateUserCoupon(ctx context.Context, couponId, userId int64) (err error)
+	ListUserCoupon(ctx context.Context, userId int64) (list []Coupon, err error)
+	CreateCoupon(ctx context.Context) (err error)
+	ListCoupon(ctx context.Context) (list []Coupon, err error)
 }
 type CouponUsecase struct {
 	repo CouponRepo
@@ -34,4 +38,20 @@ func NewCouponUsecase(repo CouponRepo, logger log.Logger) *CouponUsecase {
 		repo: repo,
 		log:  log.NewHelper(logger),
 	}
+}
+
+func (uc *CouponUsecase) CreateUserCoupon(ctx context.Context, couponId, userId int64) (err error) {
+	panic("implement me")
+}
+
+func (uc *CouponUsecase) ListUserCoupon(ctx context.Context, userId int64) (list []Coupon, err error) {
+	panic("implement me")
+}
+
+func (uc *CouponUsecase) CreateCoupon(ctx context.Context) (err error) {
+	panic("implement me")
+}
+
+func (uc *CouponUsecase) ListCoupon(ctx context.Context) (list []Coupon, err error) {
+	panic("implement me")
 }

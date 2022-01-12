@@ -433,6 +433,10 @@ func init() {
 	usercoupon.DefaultUpdateTime = usercouponDescUpdateTime.Default.(func() time.Time)
 	// usercoupon.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	usercoupon.UpdateDefaultUpdateTime = usercouponDescUpdateTime.UpdateDefault.(func() time.Time)
+	// usercouponDescStatus is the schema descriptor for status field.
+	usercouponDescStatus := usercouponFields[2].Descriptor()
+	// usercoupon.DefaultStatus holds the default value on creation for the status field.
+	usercoupon.DefaultStatus = usercouponDescStatus.Default.(int)
 	userfavorMixin := schema.UserFavor{}.Mixin()
 	userfavorMixinFields0 := userfavorMixin[0].Fields()
 	_ = userfavorMixinFields0

@@ -5446,41 +5446,44 @@ func (m *ChargeMutation) ResetEdge(name string) error {
 // CouponMutation represents an operation that mutates the Coupon nodes in the graph.
 type CouponMutation struct {
 	config
-	op              Op
-	typ             string
-	id              *int64
-	create_time     *time.Time
-	update_time     *time.Time
-	delete_time     *time.Time
-	title           *string
-	start_time      *time.Time
-	end_time        *time.Time
-	description     *string
-	full_money      *float64
-	addfull_money   *float64
-	minus           *float64
-	addminus        *float64
-	rate            *float64
-	addrate         *float64
-	_type           *int
-	add_type        *int
-	valitiy         *int
-	addvalitiy      *int
-	activity_id     *int64
-	addactivity_id  *int64
-	remark          *string
-	whole_store     *int
-	addwhole_store  *int
-	clearedFields   map[string]struct{}
-	category        map[int64]struct{}
-	removedcategory map[int64]struct{}
-	clearedcategory bool
-	activity        map[int64]struct{}
-	removedactivity map[int64]struct{}
-	clearedactivity bool
-	done            bool
-	oldValue        func(context.Context) (*Coupon, error)
-	predicates      []predicate.Coupon
+	op                 Op
+	typ                string
+	id                 *int64
+	create_time        *time.Time
+	update_time        *time.Time
+	delete_time        *time.Time
+	title              *string
+	start_time         *time.Time
+	end_time           *time.Time
+	description        *string
+	full_money         *float64
+	addfull_money      *float64
+	minus              *float64
+	addminus           *float64
+	rate               *float64
+	addrate            *float64
+	_type              *int
+	add_type           *int
+	valitiy            *int
+	addvalitiy         *int
+	activity_id        *int64
+	addactivity_id     *int64
+	remark             *string
+	whole_store        *int
+	addwhole_store     *int
+	clearedFields      map[string]struct{}
+	category           map[int64]struct{}
+	removedcategory    map[int64]struct{}
+	clearedcategory    bool
+	activity           map[int64]struct{}
+	removedactivity    map[int64]struct{}
+	clearedactivity    bool
+	user_coupon        map[int64]struct{}
+	removeduser_coupon map[int64]struct{}
+	cleareduser_coupon bool
+	done               bool
+	oldValue           func(context.Context) (*Coupon, error)
+	predicates         []predicate.Coupon
 }
 
 var _ ent.Mutation = (*CouponMutation)(nil)
@@ -6377,6 +6380,60 @@ func (m *CouponMutation) ResetActivity() {
 	m.removedactivity = nil
 }
 
+// AddUserCouponIDs adds the "user_coupon" edge to the UserCoupon entity by ids.
+func (m *CouponMutation) AddUserCouponIDs(ids ...int64) {
+	if m.user_coupon == nil {
+		m.user_coupon = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.user_coupon[ids[i]] = struct{}{}
+	}
+}
+
+// ClearUserCoupon clears the "user_coupon" edge to the UserCoupon entity.
+func (m *CouponMutation) ClearUserCoupon() {
+	m.cleareduser_coupon = true
+}
+
+// UserCouponCleared reports if the "user_coupon" edge to the UserCoupon entity was cleared.
+func (m *CouponMutation) UserCouponCleared() bool {
+	return m.cleareduser_coupon
+}
+
+// RemoveUserCouponIDs removes the "user_coupon" edge to the UserCoupon entity by IDs.
+func (m *CouponMutation) RemoveUserCouponIDs(ids ...int64) {
+	if m.removeduser_coupon == nil {
+		m.removeduser_coupon = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.user_coupon, ids[i])
+		m.removeduser_coupon[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedUserCoupon returns the removed IDs of the "user_coupon" edge to the UserCoupon entity.
+func (m *CouponMutation) RemovedUserCouponIDs() (ids []int64) {
+	for id := range m.removeduser_coupon {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// UserCouponIDs returns the "user_coupon" edge IDs in the mutation.
+func (m *CouponMutation) UserCouponIDs() (ids []int64) {
+	for id := range m.user_coupon {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetUserCoupon resets all changes to the "user_coupon" edge.
+func (m *CouponMutation) ResetUserCoupon() {
+	m.user_coupon = nil
+	m.cleareduser_coupon = false
+	m.removeduser_coupon = nil
+}
+
 // Where appends a list predicates to the CouponMutation builder.
 func (m *CouponMutation) Where(ps ...predicate.Coupon) {
 	m.predicates = append(m.predicates, ps...)
@@ -6835,12 +6892,15 @@ func (m *CouponMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CouponMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.category != nil {
 		edges = append(edges, coupon.EdgeCategory)
 	}
 	if m.activity != nil {
 		edges = append(edges, coupon.EdgeActivity)
+	}
+	if m.user_coupon != nil {
+		edges = append(edges, coupon.EdgeUserCoupon)
 	}
 	return edges
 }
@@ -6861,18 +6921,27 @@ func (m *CouponMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case coupon.EdgeUserCoupon:
+		ids := make([]ent.Value, 0, len(m.user_coupon))
+		for id := range m.user_coupon {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CouponMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.removedcategory != nil {
 		edges = append(edges, coupon.EdgeCategory)
 	}
 	if m.removedactivity != nil {
 		edges = append(edges, coupon.EdgeActivity)
+	}
+	if m.removeduser_coupon != nil {
+		edges = append(edges, coupon.EdgeUserCoupon)
 	}
 	return edges
 }
@@ -6893,18 +6962,27 @@ func (m *CouponMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case coupon.EdgeUserCoupon:
+		ids := make([]ent.Value, 0, len(m.removeduser_coupon))
+		for id := range m.removeduser_coupon {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CouponMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.clearedcategory {
 		edges = append(edges, coupon.EdgeCategory)
 	}
 	if m.clearedactivity {
 		edges = append(edges, coupon.EdgeActivity)
+	}
+	if m.cleareduser_coupon {
+		edges = append(edges, coupon.EdgeUserCoupon)
 	}
 	return edges
 }
@@ -6917,6 +6995,8 @@ func (m *CouponMutation) EdgeCleared(name string) bool {
 		return m.clearedcategory
 	case coupon.EdgeActivity:
 		return m.clearedactivity
+	case coupon.EdgeUserCoupon:
+		return m.cleareduser_coupon
 	}
 	return false
 }
@@ -6938,6 +7018,9 @@ func (m *CouponMutation) ResetEdge(name string) error {
 		return nil
 	case coupon.EdgeActivity:
 		m.ResetActivity()
+		return nil
+	case coupon.EdgeUserCoupon:
+		m.ResetUserCoupon()
 		return nil
 	}
 	return fmt.Errorf("unknown Coupon edge %s", name)
@@ -23973,13 +24056,13 @@ type UserCouponMutation struct {
 	delete_time   *time.Time
 	user_id       *int64
 	adduser_id    *int64
-	coupon_id     *int64
-	addcoupon_id  *int64
 	status        *int
 	addstatus     *int
 	order_id      *int
 	addorder_id   *int
 	clearedFields map[string]struct{}
+	coupon        *int64
+	clearedcoupon bool
 	done          bool
 	oldValue      func(context.Context) (*UserCoupon, error)
 	predicates    []predicate.UserCoupon
@@ -24243,13 +24326,12 @@ func (m *UserCouponMutation) ResetUserID() {
 
 // SetCouponID sets the "coupon_id" field.
 func (m *UserCouponMutation) SetCouponID(i int64) {
-	m.coupon_id = &i
-	m.addcoupon_id = nil
+	m.coupon = &i
 }
 
 // CouponID returns the value of the "coupon_id" field in the mutation.
 func (m *UserCouponMutation) CouponID() (r int64, exists bool) {
-	v := m.coupon_id
+	v := m.coupon
 	if v == nil {
 		return
 	}
@@ -24273,28 +24355,22 @@ func (m *UserCouponMutation) OldCouponID(ctx context.Context) (v int64, err erro
 	return oldValue.CouponID, nil
 }
 
-// AddCouponID adds i to the "coupon_id" field.
-func (m *UserCouponMutation) AddCouponID(i int64) {
-	if m.addcoupon_id != nil {
-		*m.addcoupon_id += i
-	} else {
-		m.addcoupon_id = &i
-	}
+// ClearCouponID clears the value of the "coupon_id" field.
+func (m *UserCouponMutation) ClearCouponID() {
+	m.coupon = nil
+	m.clearedFields[usercoupon.FieldCouponID] = struct{}{}
 }
 
-// AddedCouponID returns the value that was added to the "coupon_id" field in this mutation.
-func (m *UserCouponMutation) AddedCouponID() (r int64, exists bool) {
-	v := m.addcoupon_id
-	if v == nil {
-		return
-	}
-	return *v, true
+// CouponIDCleared returns if the "coupon_id" field was cleared in this mutation.
+func (m *UserCouponMutation) CouponIDCleared() bool {
+	_, ok := m.clearedFields[usercoupon.FieldCouponID]
+	return ok
 }
 
 // ResetCouponID resets all changes to the "coupon_id" field.
 func (m *UserCouponMutation) ResetCouponID() {
-	m.coupon_id = nil
-	m.addcoupon_id = nil
+	m.coupon = nil
+	delete(m.clearedFields, usercoupon.FieldCouponID)
 }
 
 // SetStatus sets the "status" field.
@@ -24409,6 +24485,32 @@ func (m *UserCouponMutation) ResetOrderID() {
 	m.addorder_id = nil
 }
 
+// ClearCoupon clears the "coupon" edge to the Coupon entity.
+func (m *UserCouponMutation) ClearCoupon() {
+	m.clearedcoupon = true
+}
+
+// CouponCleared reports if the "coupon" edge to the Coupon entity was cleared.
+func (m *UserCouponMutation) CouponCleared() bool {
+	return m.CouponIDCleared() || m.clearedcoupon
+}
+
+// CouponIDs returns the "coupon" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CouponID instead. It exists only for internal usage by the builders.
+func (m *UserCouponMutation) CouponIDs() (ids []int64) {
+	if id := m.coupon; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCoupon resets all changes to the "coupon" edge.
+func (m *UserCouponMutation) ResetCoupon() {
+	m.coupon = nil
+	m.clearedcoupon = false
+}
+
 // Where appends a list predicates to the UserCouponMutation builder.
 func (m *UserCouponMutation) Where(ps ...predicate.UserCoupon) {
 	m.predicates = append(m.predicates, ps...)
@@ -24441,7 +24543,7 @@ func (m *UserCouponMutation) Fields() []string {
 	if m.user_id != nil {
 		fields = append(fields, usercoupon.FieldUserID)
 	}
-	if m.coupon_id != nil {
+	if m.coupon != nil {
 		fields = append(fields, usercoupon.FieldCouponID)
 	}
 	if m.status != nil {
@@ -24564,9 +24666,6 @@ func (m *UserCouponMutation) AddedFields() []string {
 	if m.adduser_id != nil {
 		fields = append(fields, usercoupon.FieldUserID)
 	}
-	if m.addcoupon_id != nil {
-		fields = append(fields, usercoupon.FieldCouponID)
-	}
 	if m.addstatus != nil {
 		fields = append(fields, usercoupon.FieldStatus)
 	}
@@ -24583,8 +24682,6 @@ func (m *UserCouponMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case usercoupon.FieldUserID:
 		return m.AddedUserID()
-	case usercoupon.FieldCouponID:
-		return m.AddedCouponID()
 	case usercoupon.FieldStatus:
 		return m.AddedStatus()
 	case usercoupon.FieldOrderID:
@@ -24604,13 +24701,6 @@ func (m *UserCouponMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUserID(v)
-		return nil
-	case usercoupon.FieldCouponID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddCouponID(v)
 		return nil
 	case usercoupon.FieldStatus:
 		v, ok := value.(int)
@@ -24637,6 +24727,9 @@ func (m *UserCouponMutation) ClearedFields() []string {
 	if m.FieldCleared(usercoupon.FieldDeleteTime) {
 		fields = append(fields, usercoupon.FieldDeleteTime)
 	}
+	if m.FieldCleared(usercoupon.FieldCouponID) {
+		fields = append(fields, usercoupon.FieldCouponID)
+	}
 	return fields
 }
 
@@ -24653,6 +24746,9 @@ func (m *UserCouponMutation) ClearField(name string) error {
 	switch name {
 	case usercoupon.FieldDeleteTime:
 		m.ClearDeleteTime()
+		return nil
+	case usercoupon.FieldCouponID:
+		m.ClearCouponID()
 		return nil
 	}
 	return fmt.Errorf("unknown UserCoupon nullable field %s", name)
@@ -24689,49 +24785,77 @@ func (m *UserCouponMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserCouponMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.coupon != nil {
+		edges = append(edges, usercoupon.EdgeCoupon)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *UserCouponMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case usercoupon.EdgeCoupon:
+		if id := m.coupon; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserCouponMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *UserCouponMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserCouponMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedcoupon {
+		edges = append(edges, usercoupon.EdgeCoupon)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *UserCouponMutation) EdgeCleared(name string) bool {
+	switch name {
+	case usercoupon.EdgeCoupon:
+		return m.clearedcoupon
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *UserCouponMutation) ClearEdge(name string) error {
+	switch name {
+	case usercoupon.EdgeCoupon:
+		m.ClearCoupon()
+		return nil
+	}
 	return fmt.Errorf("unknown UserCoupon unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *UserCouponMutation) ResetEdge(name string) error {
+	switch name {
+	case usercoupon.EdgeCoupon:
+		m.ResetCoupon()
+		return nil
+	}
 	return fmt.Errorf("unknown UserCoupon edge %s", name)
 }
 

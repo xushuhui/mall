@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"mall-go/api/app"
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/app/app/service/internal/data/model/theme"
 
@@ -25,19 +26,6 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 		return
 	}
 	spuList := make([]*biz.Spu, 0)
-	// for _, v := range po.Edges.Spu {
-
-	// 	spuList = append(spuList, &biz.Spu{
-	// 		Id:             v.ID,
-	// 		Title:          v.Title,
-	// 		Price:          v.Price,
-	// 		Subtitle:       v.Subtitle,
-	// 		CategoryId:     v.CategoryID,
-	// 		RootCategoryId: v.RootCategoryID,
-	// 		Img:            v.Img,
-	// 		Online:         int32(po.Online),
-	// 	})
-	// }
 	theme := biz.Theme{
 		Id:             po.ID,
 		Name:           po.Name,
@@ -74,4 +62,13 @@ func (r *themeRepo) GetThemeByNames(ctx context.Context, names []string) (themes
 		})
 	}
 	return themes, nil
+}
+func (r *themeRepo) CreateTheme(ctx context.Context, req app.Theme) (err error) {
+	return
+}
+func (r *themeRepo) ListTheme(ctx context.Context) (t []biz.Theme, err error) {
+	return
+}
+func (r *themeRepo) UpdateTheme(ctx context.Context, req app.Theme) (err error) {
+	return
 }

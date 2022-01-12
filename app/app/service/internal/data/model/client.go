@@ -1131,6 +1131,22 @@ func (c *CouponClient) QueryActivity(co *Coupon) *ActivityQuery {
 	return query
 }
 
+// QueryUserCoupon queries the user_coupon edge of a Coupon.
+func (c *CouponClient) QueryUserCoupon(co *Coupon) *UserCouponQuery {
+	query := &UserCouponQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(coupon.Table, coupon.FieldID, id),
+			sqlgraph.To(usercoupon.Table, usercoupon.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, coupon.UserCouponTable, coupon.UserCouponColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CouponClient) Hooks() []Hook {
 	return c.hooks.Coupon
@@ -3281,6 +3297,22 @@ func (c *UserCouponClient) GetX(ctx context.Context, id int64) *UserCoupon {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryCoupon queries the coupon edge of a UserCoupon.
+func (c *UserCouponClient) QueryCoupon(uc *UserCoupon) *CouponQuery {
+	query := &CouponQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := uc.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(usercoupon.Table, usercoupon.FieldID, id),
+			sqlgraph.To(coupon.Table, coupon.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, usercoupon.CouponTable, usercoupon.CouponColumn),
+		)
+		fromV = sqlgraph.Neighbors(uc.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.

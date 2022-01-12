@@ -25,8 +25,17 @@ const (
 	FieldStatus = "status"
 	// FieldOrderID holds the string denoting the order_id field in the database.
 	FieldOrderID = "order_id"
+	// EdgeCoupon holds the string denoting the coupon edge name in mutations.
+	EdgeCoupon = "coupon"
 	// Table holds the table name of the usercoupon in the database.
 	Table = "user_coupon"
+	// CouponTable is the table that holds the coupon relation/edge.
+	CouponTable = "user_coupon"
+	// CouponInverseTable is the table name for the Coupon entity.
+	// It exists in this package in order to avoid lower111 circular dependency with the "coupon" package.
+	CouponInverseTable = "coupon"
+	// CouponColumn is the table column denoting the coupon relation/edge.
+	CouponColumn = "coupon_id"
 )
 
 // Columns holds all SQL columns for usercoupon fields.
@@ -58,4 +67,6 @@ var (
 	DefaultUpdateTime func() time.Time
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
+	// DefaultStatus holds the default value on creation for the "status" field.
+	DefaultStatus int
 )

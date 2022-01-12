@@ -50,3 +50,6 @@ func (r *orderRepo) GetOrderByOrderNo(ctx context.Context, orderNo string) (o bi
 		Id: po.ID,
 	}, nil
 }
+func (r *orderRepo) ListUserOrder(ctx context.Context, userid int64) (list []biz.Order, err error) {
+	return
+}

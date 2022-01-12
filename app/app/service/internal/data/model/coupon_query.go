@@ -11,6 +11,7 @@ import (
 	"mall-go/app/app/service/internal/data/model/category"
 	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
+	"mall-go/app/app/service/internal/data/model/usercoupon"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
@@ -28,8 +29,9 @@ type CouponQuery struct {
 	fields     []string
 	predicates []predicate.Coupon
 	// eager-loading edges.
-	withCategory *CategoryQuery
-	withActivity *ActivityQuery
+	withCategory   *CategoryQuery
+	withActivity   *ActivityQuery
+	withUserCoupon *UserCouponQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -103,6 +105,28 @@ func (cq *CouponQuery) QueryActivity() *ActivityQuery {
 			sqlgraph.From(coupon.Table, coupon.FieldID, selector),
 			sqlgraph.To(activity.Table, activity.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, coupon.ActivityTable, coupon.ActivityPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryUserCoupon chains the current query on the "user_coupon" edge.
+func (cq *CouponQuery) QueryUserCoupon() *UserCouponQuery {
+	query := &UserCouponQuery{config: cq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(coupon.Table, coupon.FieldID, selector),
+			sqlgraph.To(usercoupon.Table, usercoupon.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, coupon.UserCouponTable, coupon.UserCouponColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -331,13 +355,14 @@ func (cq *CouponQuery) Clone() *CouponQuery {
 		return nil
 	}
 	return &CouponQuery{
-		config:       cq.config,
-		limit:        cq.limit,
-		offset:       cq.offset,
-		order:        append([]OrderFunc{}, cq.order...),
-		predicates:   append([]predicate.Coupon{}, cq.predicates...),
-		withCategory: cq.withCategory.Clone(),
-		withActivity: cq.withActivity.Clone(),
+		config:         cq.config,
+		limit:          cq.limit,
+		offset:         cq.offset,
+		order:          append([]OrderFunc{}, cq.order...),
+		predicates:     append([]predicate.Coupon{}, cq.predicates...),
+		withCategory:   cq.withCategory.Clone(),
+		withActivity:   cq.withActivity.Clone(),
+		withUserCoupon: cq.withUserCoupon.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
@@ -363,6 +388,17 @@ func (cq *CouponQuery) WithActivity(opts ...func(*ActivityQuery)) *CouponQuery {
 		opt(query)
 	}
 	cq.withActivity = query
+	return cq
+}
+
+// WithUserCoupon tells the query-builder to eager-load the nodes that are connected to
+// the "user_coupon" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CouponQuery) WithUserCoupon(opts ...func(*UserCouponQuery)) *CouponQuery {
+	query := &UserCouponQuery{config: cq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withUserCoupon = query
 	return cq
 }
 
@@ -431,9 +467,10 @@ func (cq *CouponQuery) sqlAll(ctx context.Context) ([]*Coupon, error) {
 	var (
 		nodes       = []*Coupon{}
 		_spec       = cq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			cq.withCategory != nil,
 			cq.withActivity != nil,
+			cq.withUserCoupon != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -583,6 +620,31 @@ func (cq *CouponQuery) sqlAll(ctx context.Context) ([]*Coupon, error) {
 			for i := range nodes {
 				nodes[i].Edges.Activity = append(nodes[i].Edges.Activity, n)
 			}
+		}
+	}
+
+	if query := cq.withUserCoupon; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int64]*Coupon)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.UserCoupon = []*UserCoupon{}
+		}
+		query.Where(predicate.UserCoupon(func(s *sql.Selector) {
+			s.Where(sql.InValues(coupon.UserCouponColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.CouponID
+			node, ok := nodeids[fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "coupon_id" returned %v for node %v`, fk, n.ID)
+			}
+			node.Edges.UserCoupon = append(node.Edges.UserCoupon, n)
 		}
 	}
 

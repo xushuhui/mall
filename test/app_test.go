@@ -2,7 +2,6 @@ package test
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"mall-go/api/app"
 	"testing"
@@ -25,11 +24,11 @@ func TestGetBannerById(t *testing.T) {
 
 }
 func TestGetBannerByName(t *testing.T) {
-	reply, err := appClient.GetBannerByName(context.Background(), &app.NameRequest{Name: ""})
+	reply, err := appClient.GetBannerByName(context.Background(), &app.NameRequest{Name: "b-1"})
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(reply)
+	t.Log(reply)
 	assert.Equal(t, reply.Name, "b-1")
 
 }
@@ -39,7 +38,7 @@ func TestGetActivtyByName(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(reply)
+	t.Log(reply)
 	assert.Equal(t, reply.Title, "夏日好礼送不停")
 
 }
@@ -49,7 +48,7 @@ func TestGetActivityWithCoupon(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(reply)
+	t.Log(reply)
 	assert.Equal(t, reply.Title, "夏日好礼送不停")
 
 }
