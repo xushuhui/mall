@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package user.service;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+option go_package = "mall-go/api/user/service";
+
+service User{
+
+}

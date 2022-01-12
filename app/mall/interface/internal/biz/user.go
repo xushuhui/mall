@@ -2,10 +2,9 @@ package biz
 
 import (
 	"context"
-	"mall-go/api/mall"
-
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt"
+	"mall-go/api/mall"
 )
 
 type User struct {
@@ -13,7 +12,7 @@ type User struct {
 }
 
 type UserRepo interface {
-	CreateUser(ctx context.Context)
+	CreateUser(ctx context.Context) (err error)
 	GetUserByAccount(ctx context.Context, account string)
 }
 type UserUsecase struct {

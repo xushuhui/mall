@@ -2,8 +2,6 @@ package biz
 
 import (
 	"context"
-	"mall-go/api/mall"
-
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -23,7 +21,7 @@ type BannerItem struct {
 	Name    string `json:"name"`
 }
 type BannerRepo interface {
-	GetBannerById(ctx context.Context, id int64) (b *mall.Banner, err error)
+	GetBannerById(ctx context.Context, id int64) (b Banner, err error)
 }
 
 type BannerUsecase struct {
@@ -37,7 +35,7 @@ func NewBannerUsecase(repo BannerRepo, logger log.Logger) *BannerUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
-func (uc *BannerUsecase) GetBannerById(ctx context.Context, id int64) (b *mall.Banner, err error) {
+func (uc *BannerUsecase) GetBannerById(ctx context.Context, id int64) (b Banner, err error) {
 	b, err = uc.repo.GetBannerById(ctx, id)
 	return
 }

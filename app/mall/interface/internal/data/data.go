@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"mall-go/api/app"
 	"mall-go/app/mall/interface/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -9,8 +10,6 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	_ "github.com/go-sql-driver/mysql"
-
-	"mall-go/api/mall"
 
 	consul "github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	"github.com/google/wire"
@@ -24,13 +23,13 @@ var ProviderSet = wire.NewSet(NewData, NewBannerRepo, NewAppServiceClient, NewRe
 
 // Data .
 type Data struct {
-	ac  mall.InterfaceClient
+	ac  app.AppClient
 	log *log.Helper
 	//rdb *redis.Client
 }
 
 // NewData .
-func NewData(ac mall.InterfaceClient, logger log.Logger) (*Data, func(), error) {
+func NewData(ac app.AppClient, logger log.Logger) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
@@ -61,7 +60,7 @@ func NewRegistrar(conf *conf.Registry) registry.Registrar {
 	r := consul.New(cli, consul.WithHealthCheck(false))
 	return r
 }
-func NewAppServiceClient(r registry.Discovery) mall.InterfaceClient {
+func NewAppServiceClient(r registry.Discovery) app.AppClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
 		grpc.WithEndpoint("discovery:///app.service"),
@@ -73,6 +72,6 @@ func NewAppServiceClient(r registry.Discovery) mall.InterfaceClient {
 	if err != nil {
 		panic(err)
 	}
-	c := mall.NewInterfaceClient(conn)
+	c := app.NewAppClient(conn)
 	return c
 }

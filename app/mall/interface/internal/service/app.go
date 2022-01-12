@@ -27,8 +27,18 @@ func NewInterface(bu *biz.BannerUsecase,
 }
 
 func (s *Interface) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (out *mall.Banner, err error) {
-	s.bu.GetBannerById(ctx, in.Id)
-	return
+	b, err := s.bu.GetBannerById(ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &mall.Banner{
+		Id:          b.Id,
+		Name:        b.Name,
+		Title:       b.Title,
+		Img:         b.Img,
+		Description: b.Description,
+	}, nil
 
 }
 func (s *Interface) GetBannerByName(ctx context.Context, in *mall.BannerByNameRequest) (out *mall.Banner, err error) {

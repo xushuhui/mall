@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package mall;
+package payment.service;
 
 import "google/api/annotations.proto";
 
-option go_package = "mall-go/api/mall";
+option go_package = "mall-go/api/payment/service";
 
 service WechatPayService {
   
@@ -65,9 +65,13 @@ service WechatPayService {
 }
 }
 
-message MpRequest {}
+message MpRequest {
+  string out_trade_no = 2;
+}
 message MpReply {}
-message MiniRequest {}
+message MiniRequest {
+  string out_trade_no = 2;
+}
 message MiniReply {}
 message ScanRequest {}
 message ScanReply {}

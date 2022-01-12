@@ -21,8 +21,8 @@ import (
 // initApp init kratos application.
 func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
 	discovery := data.NewDiscovery(registry)
-	interfaceClient := data.NewAppServiceClient(discovery)
-	dataData, cleanup, err := data.NewData(interfaceClient, logger)
+	appClient := data.NewAppServiceClient(discovery)
+	dataData, cleanup, err := data.NewData(appClient, logger)
 	if err != nil {
 		return nil, nil, err
 	}

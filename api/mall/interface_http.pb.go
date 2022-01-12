@@ -19,9 +19,13 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type InterfaceHTTPServer interface {
+	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
 	CollectCoupon(context.Context, *CollectCouponRequest) (*emptypb.Empty, error)
+	CreateAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*emptypb.Empty, error)
 	GetActivityByName(context.Context, *ActivityByNameRequest) (*Activity, error)
 	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error)
+	GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error)
 	GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error)
 	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
 	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
@@ -37,7 +41,12 @@ type InterfaceHTTPServer interface {
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
 	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error)
 	GetWholeCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
+	ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	Search(context.Context, *SearchRequest) (*SpuPage, error)
+	SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error)
+	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
+	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
 }
 
 func RegisterInterfaceHTTPServer(s *http.Server, srv InterfaceHTTPServer) {
@@ -61,6 +70,15 @@ func RegisterInterfaceHTTPServer(s *http.Server, srv InterfaceHTTPServer) {
 	r.GET("/spu/id/{id}/detail", _Interface_GetSpuById0_HTTP_Handler(srv))
 	r.GET("/spu/latest", _Interface_GetSpuLatest0_HTTP_Handler(srv))
 	r.GET("/spu/by/category/{id}", _Interface_GetSpuByCategory0_HTTP_Handler(srv))
+	r.POST("/login", _Interface_Login0_HTTP_Handler(srv))
+	r.POST("/verify", _Interface_VerifyToken0_HTTP_Handler(srv))
+	r.PUT("/info", _Interface_UpdateInfo0_HTTP_Handler(srv))
+	r.POST("/charge", _Interface_Charge0_HTTP_Handler(srv))
+	r.POST("/address", _Interface_CreateAddress0_HTTP_Handler(srv))
+	r.GET("/addresses", _Interface_ListAddress0_HTTP_Handler(srv))
+	r.GET("/address/{id}", _Interface_GetAddress0_HTTP_Handler(srv))
+	r.PUT("/address/{id}/default", _Interface_SetDefaultAddr0_HTTP_Handler(srv))
+	r.DELETE("/address/{id}", _Interface_DeleteAddress0_HTTP_Handler(srv))
 }
 
 func _Interface_GetBannerById0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
@@ -457,10 +475,194 @@ func _Interface_GetSpuByCategory0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx
 	}
 }
 
+func _Interface_Login0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in LoginRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/Login")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Login(ctx, req.(*LoginRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*LoginReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_VerifyToken0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in VerifyTokenRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/VerifyToken")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.VerifyToken(ctx, req.(*VerifyTokenRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*VerifyTokenReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_UpdateInfo0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateInfoRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/UpdateInfo")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateInfo(ctx, req.(*UpdateInfoRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_Charge0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ChargeRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/Charge")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Charge(ctx, req.(*ChargeRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_CreateAddress0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateAddressRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/CreateAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateAddress(ctx, req.(*CreateAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_ListAddress0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/ListAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListAddress(ctx, req.(*CreateAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_GetAddress0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/GetAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetAddress(ctx, req.(*GetAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_SetDefaultAddr0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SetDefaultAddrRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/SetDefaultAddr")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SetDefaultAddr(ctx, req.(*SetDefaultAddrRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interface_DeleteAddress0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteAddressRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/mall.Interface/DeleteAddress")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteAddress(ctx, req.(*DeleteAddressRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
 type InterfaceHTTPClient interface {
+	Charge(ctx context.Context, req *ChargeRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	CollectCoupon(ctx context.Context, req *CollectCouponRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	CreateAddress(ctx context.Context, req *CreateAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	DeleteAddress(ctx context.Context, req *DeleteAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	GetActivityByName(ctx context.Context, req *ActivityByNameRequest, opts ...http.CallOption) (rsp *Activity, err error)
 	GetActivityWithCoupon(ctx context.Context, req *ActivityWithCouponRequest, opts ...http.CallOption) (rsp *ActivityCoupon, err error)
+	GetAddress(ctx context.Context, req *GetAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	GetAllCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *AllCategory, err error)
 	GetBannerById(ctx context.Context, req *BannerByIdRequest, opts ...http.CallOption) (rsp *Banner, err error)
 	GetBannerByName(ctx context.Context, req *BannerByNameRequest, opts ...http.CallOption) (rsp *Banner, err error)
@@ -476,7 +678,12 @@ type InterfaceHTTPClient interface {
 	GetThemeByNames(ctx context.Context, req *ThemeByNamesRequest, opts ...http.CallOption) (rsp *Themes, err error)
 	GetThemeWithSpu(ctx context.Context, req *ThemeWithSpuRequest, opts ...http.CallOption) (rsp *ThemeSpu, err error)
 	GetWholeCoupon(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Coupons, err error)
+	ListAddress(ctx context.Context, req *CreateAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
 	Search(ctx context.Context, req *SearchRequest, opts ...http.CallOption) (rsp *SpuPage, err error)
+	SetDefaultAddr(ctx context.Context, req *SetDefaultAddrRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	UpdateInfo(ctx context.Context, req *UpdateInfoRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	VerifyToken(ctx context.Context, req *VerifyTokenRequest, opts ...http.CallOption) (rsp *VerifyTokenReply, err error)
 }
 
 type InterfaceHTTPClientImpl struct {
@@ -487,6 +694,19 @@ func NewInterfaceHTTPClient(client *http.Client) InterfaceHTTPClient {
 	return &InterfaceHTTPClientImpl{client}
 }
 
+func (c *InterfaceHTTPClientImpl) Charge(ctx context.Context, in *ChargeRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/charge"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.Interface/Charge"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *InterfaceHTTPClientImpl) CollectCoupon(ctx context.Context, in *CollectCouponRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
 	pattern := "/coupon/collect/{id}"
@@ -494,6 +714,32 @@ func (c *InterfaceHTTPClientImpl) CollectCoupon(ctx context.Context, in *Collect
 	opts = append(opts, http.Operation("/mall.Interface/CollectCoupon"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterfaceHTTPClientImpl) CreateAddress(ctx context.Context, in *CreateAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.Interface/CreateAddress"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterfaceHTTPClientImpl) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Interface/DeleteAddress"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -518,6 +764,19 @@ func (c *InterfaceHTTPClientImpl) GetActivityWithCoupon(ctx context.Context, in 
 	pattern := "/activity/name/{name}/with_coupon"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/mall.Interface/GetActivityWithCoupon"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterfaceHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Interface/GetAddress"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -721,6 +980,32 @@ func (c *InterfaceHTTPClientImpl) GetWholeCoupon(ctx context.Context, in *emptyp
 	return &out, err
 }
 
+func (c *InterfaceHTTPClientImpl) ListAddress(ctx context.Context, in *CreateAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/addresses"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/mall.Interface/ListAddress"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterfaceHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginReply, error) {
+	var out LoginReply
+	pattern := "/login"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.Interface/Login"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *InterfaceHTTPClientImpl) Search(ctx context.Context, in *SearchRequest, opts ...http.CallOption) (*SpuPage, error) {
 	var out SpuPage
 	pattern := "/search"
@@ -728,6 +1013,45 @@ func (c *InterfaceHTTPClientImpl) Search(ctx context.Context, in *SearchRequest,
 	opts = append(opts, http.Operation("/mall.Interface/Search"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterfaceHTTPClientImpl) SetDefaultAddr(ctx context.Context, in *SetDefaultAddrRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/address/{id}/default"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.Interface/SetDefaultAddr"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterfaceHTTPClientImpl) UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/info"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.Interface/UpdateInfo"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterfaceHTTPClientImpl) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...http.CallOption) (*VerifyTokenReply, error) {
+	var out VerifyTokenReply
+	pattern := "/verify"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/mall.Interface/VerifyToken"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

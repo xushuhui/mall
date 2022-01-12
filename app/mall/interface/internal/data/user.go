@@ -2,7 +2,7 @@ package data
 
 import (
 	"context"
-	"mall-go/app/app/service/internal/biz"
+	"mall-go/app/mall/interface/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -18,10 +18,11 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 		Log:  log.NewHelper(logger),
 	}
 }
-func (r *userRepo) GenerateToken(ctx context.Context, account string) (token string, err error) {
+
+func (r *userRepo) CreateUser(ctx context.Context) (err error) {
 	panic("not implemented") // TODO: Implement
 }
 
-func (r *userRepo) VerifyToken(ctx context.Context, token string) (isValid bool, err error) {
+func (r *userRepo) GetUserByAccount(ctx context.Context, account string) {
 	panic("not implemented") // TODO: Implement
 }

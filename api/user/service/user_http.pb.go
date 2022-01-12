@@ -2,7 +2,7 @@
 // versions:
 // protoc-gen-go-http v2.1.2
 
-package mall
+package service
 
 import (
 	context "context"

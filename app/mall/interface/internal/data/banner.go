@@ -2,7 +2,7 @@ package data
 
 import (
 	"context"
-	"mall-go/api/mall"
+	"mall-go/api/app"
 	"mall-go/app/mall/interface/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -19,9 +19,31 @@ func NewBannerRepo(data *Data, logger log.Logger) biz.BannerRepo {
 		log:  log.NewHelper(logger),
 	}
 }
-func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b *mall.Banner, err error) {
-	b, err = r.data.ac.GetBannerById(ctx, &mall.BannerByIdRequest{Id: id})
+func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner, err error) {
+	po, err := r.data.ac.GetBannerById(ctx, &app.IdRequest{Id: id})
+	if err != nil {
+		return
+	}
+	var items []biz.BannerItem
 
+	for _, v := range po.Items {
+
+		items = append(items, biz.BannerItem{
+			ID:      v.Id,
+			Name:    v.Name,
+			Img:     v.Img,
+			Keyword: v.Keyword,
+			Type:    int(v.Type),
+		})
+	}
+	return biz.Banner{
+		Id:          po.Id,
+		Name:        po.Name,
+		Title:       po.Title,
+		Description: po.Description,
+		Img:         po.Description,
+		Items:       items,
+	}, nil
 	return
 
 }

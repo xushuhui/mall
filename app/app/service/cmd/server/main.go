@@ -25,7 +25,7 @@ var (
 	// flagconf is the config flag.
 	flagconf string
 
-	id, _ = os.Hostname()
+	id = Name
 )
 
 func init() {

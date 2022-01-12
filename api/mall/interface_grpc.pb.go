@@ -39,6 +39,15 @@ type InterfaceClient interface {
 	GetSpuById(ctx context.Context, in *SpuByIdRequest, opts ...grpc.CallOption) (*SpuDetail, error)
 	GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error)
 	GetSpuByCategory(ctx context.Context, in *SpuByCategoryRequest, opts ...grpc.CallOption) (*SpuPage, error)
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
+	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenReply, error)
+	UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SetDefaultAddr(ctx context.Context, in *SetDefaultAddrRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type interfaceClient struct {
@@ -220,6 +229,87 @@ func (c *interfaceClient) GetSpuByCategory(ctx context.Context, in *SpuByCategor
 	return out, nil
 }
 
+func (c *interfaceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
+	out := new(LoginReply)
+	err := c.cc.Invoke(ctx, "/mall.Interface/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenReply, error) {
+	out := new(VerifyTokenReply)
+	err := c.cc.Invoke(ctx, "/mall.Interface/VerifyToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/UpdateInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/Charge", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) CreateAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/CreateAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) ListAddress(ctx context.Context, in *CreateAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/ListAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/GetAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) SetDefaultAddr(ctx context.Context, in *SetDefaultAddrRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/SetDefaultAddr", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceClient) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mall.Interface/DeleteAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // InterfaceServer is the server API for Interface service.
 // All implementations must embed UnimplementedInterfaceServer
 // for forward compatibility
@@ -244,6 +334,15 @@ type InterfaceServer interface {
 	GetSpuById(context.Context, *SpuByIdRequest) (*SpuDetail, error)
 	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
 	GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error)
+	Login(context.Context, *LoginRequest) (*LoginReply, error)
+	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
+	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
+	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
+	CreateAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
+	GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error)
+	SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error)
+	DeleteAddress(context.Context, *DeleteAddressRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedInterfaceServer()
 }
 
@@ -307,6 +406,33 @@ func (UnimplementedInterfaceServer) GetSpuLatest(context.Context, *emptypb.Empty
 }
 func (UnimplementedInterfaceServer) GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuByCategory not implemented")
+}
+func (UnimplementedInterfaceServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedInterfaceServer) VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
+}
+func (UnimplementedInterfaceServer) UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInfo not implemented")
+}
+func (UnimplementedInterfaceServer) Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Charge not implemented")
+}
+func (UnimplementedInterfaceServer) CreateAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAddress not implemented")
+}
+func (UnimplementedInterfaceServer) ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAddress not implemented")
+}
+func (UnimplementedInterfaceServer) GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAddress not implemented")
+}
+func (UnimplementedInterfaceServer) SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetDefaultAddr not implemented")
+}
+func (UnimplementedInterfaceServer) DeleteAddress(context.Context, *DeleteAddressRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAddress not implemented")
 }
 func (UnimplementedInterfaceServer) mustEmbedUnimplementedInterfaceServer() {}
 
@@ -663,6 +789,168 @@ func _Interface_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Interface_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/Login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_VerifyToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).VerifyToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/VerifyToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).VerifyToken(ctx, req.(*VerifyTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_UpdateInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).UpdateInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/UpdateInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).UpdateInfo(ctx, req.(*UpdateInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_Charge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChargeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).Charge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/Charge",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).Charge(ctx, req.(*ChargeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_CreateAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).CreateAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/CreateAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).CreateAddress(ctx, req.(*CreateAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_ListAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).ListAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/ListAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).ListAddress(ctx, req.(*CreateAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_GetAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).GetAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/GetAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).GetAddress(ctx, req.(*GetAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_SetDefaultAddr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetDefaultAddrRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).SetDefaultAddr(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/SetDefaultAddr",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).SetDefaultAddr(ctx, req.(*SetDefaultAddrRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interface_DeleteAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServer).DeleteAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mall.Interface/DeleteAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServer).DeleteAddress(ctx, req.(*DeleteAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Interface_ServiceDesc is the grpc.ServiceDesc for Interface service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -745,6 +1033,42 @@ var Interface_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSpuByCategory",
 			Handler:    _Interface_GetSpuByCategory_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _Interface_Login_Handler,
+		},
+		{
+			MethodName: "VerifyToken",
+			Handler:    _Interface_VerifyToken_Handler,
+		},
+		{
+			MethodName: "UpdateInfo",
+			Handler:    _Interface_UpdateInfo_Handler,
+		},
+		{
+			MethodName: "Charge",
+			Handler:    _Interface_Charge_Handler,
+		},
+		{
+			MethodName: "CreateAddress",
+			Handler:    _Interface_CreateAddress_Handler,
+		},
+		{
+			MethodName: "ListAddress",
+			Handler:    _Interface_ListAddress_Handler,
+		},
+		{
+			MethodName: "GetAddress",
+			Handler:    _Interface_GetAddress_Handler,
+		},
+		{
+			MethodName: "SetDefaultAddr",
+			Handler:    _Interface_SetDefaultAddr_Handler,
+		},
+		{
+			MethodName: "DeleteAddress",
+			Handler:    _Interface_DeleteAddress_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
