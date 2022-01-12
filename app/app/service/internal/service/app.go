@@ -6,6 +6,7 @@ import (
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	"mall-go/api/app"
 	"mall-go/app/app/service/internal/biz"
+	"mall-go/pkg/utils"
 	"strings"
 )
 
@@ -14,18 +15,19 @@ type AppService struct {
 	bu *biz.BannerUsecase
 	tu *biz.ThemeUsecase
 	au *biz.ActivityUsecase
+	cu *biz.CateGoryUsecase
 
 	log *log.Helper
 }
 
-func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase,
+func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CateGoryUsecase,
 	logger log.Logger) *AppService {
 
 	return &AppService{
-		bu: bu,
-		tu: tu,
-		au: au,
-
+		bu:  bu,
+		tu:  tu,
+		au:  au,
+		cu:  cu,
 		log: log.NewHelper(logger),
 	}
 }
@@ -189,10 +191,58 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *app.NameRequ
 
 }
 func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *app.Categories, err error) {
-	return
+	rv, err := s.cu.ListCategory(ctx)
+	if err != nil {
+		return
+	}
+
+	var roots []*app.Category
+	var subs []*app.Category
+	for _, v := range rv.Roots {
+		roots = append(roots, &app.Category{
+			Id:       v.Id,
+			Name:     v.Name,
+			IsRoot:   utils.Int2Bool(v.IsRoot),
+			Img:      v.Img,
+			ParentId: v.ParentId,
+			Index:    int32(v.Index),
+		})
+	}
+
+	for _, v := range rv.Subs {
+		subs = append(subs, &app.Category{
+			Id:       v.Id,
+			Name:     v.Name,
+			IsRoot:   utils.Int2Bool(v.IsRoot),
+			Img:      v.Img,
+			ParentId: v.ParentId,
+			Index:    int32(v.Index),
+		})
+	}
+	out = &app.Categories{
+		Roots: roots,
+		Subs:  subs,
+	}
+	return out, nil
 }
 func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (out *app.GridCategories, err error) {
-	return
+	rv, err := s.cu.ListGridCategory(ctx)
+	if err != nil {
+		return
+	}
+	var category []*app.GridCategories_GridCategory
+	for _, v := range rv {
+		category = append(category, &app.GridCategories_GridCategory{
+			Id:             v.Id,
+			Name:           v.Name,
+			Title:          v.Title,
+			Img:            v.Img,
+			CategoryId:     int64(v.CategoryId),
+			RootCategoryId: int64(v.RootCategoryId),
+		})
+	}
+	out = &app.GridCategories{Category: category}
+	return out, nil
 }
 func (s *AppService) GetTagByType(ctx context.Context, in *app.TypeRequest) (out *app.Tags, err error) {
 	return

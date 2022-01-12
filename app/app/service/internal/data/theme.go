@@ -26,6 +26,19 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 		return
 	}
 	spuList := make([]*biz.Spu, 0)
+	for _, v := range po.Edges.Spu {
+
+		spuList = append(spuList, &biz.Spu{
+			Id:             v.ID,
+			Title:          v.Title,
+			Price:          v.Price,
+			Subtitle:       v.Subtitle,
+			CategoryId:     v.CategoryID,
+			RootCategoryId: v.RootCategoryID,
+			Img:            v.Img,
+			Online:         int32(po.Online),
+		})
+	}
 	theme := biz.Theme{
 		Id:             po.ID,
 		Name:           po.Name,
