@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/refund"
-	"mall-go/app/app/service/internal/data/model/user"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
@@ -25,8 +24,6 @@ type RefundQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.Refund
-	// eager-loading edges.
-	withUser *UserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -61,28 +58,6 @@ func (rq *RefundQuery) Unique(unique bool) *RefundQuery {
 func (rq *RefundQuery) Order(o ...OrderFunc) *RefundQuery {
 	rq.order = append(rq.order, o...)
 	return rq
-}
-
-// QueryUser chains the current query on the "user" edge.
-func (rq *RefundQuery) QueryUser() *UserQuery {
-	query := &UserQuery{config: rq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := rq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := rq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(refund.Table, refund.FieldID, selector),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, refund.UserTable, refund.UserColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(rq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
 }
 
 // First returns the first Refund entity from the query.
@@ -311,22 +286,10 @@ func (rq *RefundQuery) Clone() *RefundQuery {
 		offset:     rq.offset,
 		order:      append([]OrderFunc{}, rq.order...),
 		predicates: append([]predicate.Refund{}, rq.predicates...),
-		withUser:   rq.withUser.Clone(),
 		// clone intermediate query.
 		sql:  rq.sql.Clone(),
 		path: rq.path,
 	}
-}
-
-// WithUser tells the query-builder to eager-load the nodes that are connected to
-// the "user" edge. The optional arguments are used to configure the query builder of the edge.
-func (rq *RefundQuery) WithUser(opts ...func(*UserQuery)) *RefundQuery {
-	query := &UserQuery{config: rq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	rq.withUser = query
-	return rq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -392,11 +355,8 @@ func (rq *RefundQuery) prepareQuery(ctx context.Context) error {
 
 func (rq *RefundQuery) sqlAll(ctx context.Context) ([]*Refund, error) {
 	var (
-		nodes       = []*Refund{}
-		_spec       = rq.querySpec()
-		loadedTypes = [1]bool{
-			rq.withUser != nil,
-		}
+		nodes = []*Refund{}
+		_spec = rq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Refund{config: rq.config}
@@ -408,7 +368,6 @@ func (rq *RefundQuery) sqlAll(ctx context.Context) ([]*Refund, error) {
 			return fmt.Errorf("model: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
-		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, rq.driver, _spec); err != nil {
@@ -417,33 +376,6 @@ func (rq *RefundQuery) sqlAll(ctx context.Context) ([]*Refund, error) {
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-
-	if query := rq.withUser; query != nil {
-		ids := make([]int64, 0, len(nodes))
-		nodeids := make(map[int64][]*Refund)
-		for i := range nodes {
-			fk := nodes[i].UserID
-			if _, ok := nodeids[fk]; !ok {
-				ids = append(ids, fk)
-			}
-			nodeids[fk] = append(nodeids[fk], nodes[i])
-		}
-		query.Where(user.IDIn(ids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := nodeids[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_id" returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.User = n
-			}
-		}
-	}
-
 	return nodes, nil
 }
 

@@ -31,21 +31,12 @@ const (
 	FieldFinalTotalPrice = "final_total_price"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// EdgeUser holds the string denoting the user edge name in mutations.
-	EdgeUser = "user"
 	// EdgeOrderSnap holds the string denoting the order_snap edge name in mutations.
 	EdgeOrderSnap = "order_snap"
 	// EdgeOrderSub holds the string denoting the order_sub edge name in mutations.
 	EdgeOrderSub = "order_sub"
 	// Table holds the table name of the order in the database.
 	Table = "order"
-	// UserTable is the table that holds the user relation/edge.
-	UserTable = "order"
-	// UserInverseTable is the table name for the User entity.
-	// It exists in this package in order to avoid lower111 circular dependency with the "user" package.
-	UserInverseTable = "user"
-	// UserColumn is the table column denoting the user relation/edge.
-	UserColumn = "user_id"
 	// OrderSnapTable is the table that holds the order_snap relation/edge.
 	OrderSnapTable = "order_snap"
 	// OrderSnapInverseTable is the table name for the OrderSnap entity.

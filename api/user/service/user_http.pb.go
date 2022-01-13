@@ -19,77 +19,29 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
-	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
-	CreateAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
-	DeleteAddress(context.Context, *DeleteAddressRequest) (*emptypb.Empty, error)
-	GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error)
-	ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
-	Login(context.Context, *LoginRequest) (*LoginReply, error)
-	SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error)
-	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
-	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
+	CreateUser(context.Context, *CreateUserRequest) (*emptypb.Empty, error)
+	GetUser(context.Context, *IdRequest) (*emptypb.Empty, error)
+	GetUserByAccount(context.Context, *AccountRequest) (*emptypb.Empty, error)
+	ListUser(context.Context, *IdsRequest) (*emptypb.Empty, error)
 }
 
 func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r := s.Route("/")
-	r.POST("/login", _User_Login0_HTTP_Handler(srv))
-	r.POST("/verify", _User_VerifyToken0_HTTP_Handler(srv))
-	r.PUT("/info", _User_UpdateInfo0_HTTP_Handler(srv))
-	r.POST("/charge", _User_Charge0_HTTP_Handler(srv))
-	r.POST("/address", _User_CreateAddress0_HTTP_Handler(srv))
-	r.GET("/addresses", _User_ListAddress0_HTTP_Handler(srv))
-	r.GET("/address/{id}", _User_GetAddress0_HTTP_Handler(srv))
-	r.PUT("/address/{id}/default", _User_SetDefaultAddr0_HTTP_Handler(srv))
-	r.DELETE("/address/{id}", _User_DeleteAddress0_HTTP_Handler(srv))
+	r.POST("/user", _User_CreateUser0_HTTP_Handler(srv))
+	r.GET("/user/{id}", _User_GetUser0_HTTP_Handler(srv))
+	r.GET("/user/{account}", _User_GetUserByAccount0_HTTP_Handler(srv))
+	r.GET("/user", _User_ListUser0_HTTP_Handler(srv))
 }
 
-func _User_Login0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _User_CreateUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in LoginRequest
+		var in CreateUserRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/mall.User/Login")
+		http.SetOperation(ctx, "/user.service.User/CreateUser")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.Login(ctx, req.(*LoginRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*LoginReply)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _User_VerifyToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in VerifyTokenRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/mall.User/VerifyToken")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.VerifyToken(ctx, req.(*VerifyTokenRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*VerifyTokenReply)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _User_UpdateInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in UpdateInfoRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/mall.User/UpdateInfo")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateInfo(ctx, req.(*UpdateInfoRequest))
+			return srv.CreateUser(ctx, req.(*CreateUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -100,75 +52,18 @@ func _User_UpdateInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) e
 	}
 }
 
-func _User_Charge0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _User_GetUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ChargeRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/mall.User/Charge")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.Charge(ctx, req.(*ChargeRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*emptypb.Empty)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _User_CreateAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in CreateAddressRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/mall.User/CreateAddress")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateAddress(ctx, req.(*CreateAddressRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*emptypb.Empty)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _User_ListAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in CreateAddressRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/mall.User/ListAddress")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListAddress(ctx, req.(*CreateAddressRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*emptypb.Empty)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _User_GetAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in GetAddressRequest
+		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/mall.User/GetAddress")
+		http.SetOperation(ctx, "/user.service.User/GetUser")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetAddress(ctx, req.(*GetAddressRequest))
+			return srv.GetUser(ctx, req.(*IdRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -179,40 +74,37 @@ func _User_GetAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) e
 	}
 }
 
-func _User_SetDefaultAddr0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _User_GetUserByAccount0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in SetDefaultAddrRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindVars(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/mall.User/SetDefaultAddr")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.SetDefaultAddr(ctx, req.(*SetDefaultAddrRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*emptypb.Empty)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _User_DeleteAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in DeleteAddressRequest
+		var in AccountRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/mall.User/DeleteAddress")
+		http.SetOperation(ctx, "/user.service.User/GetUserByAccount")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DeleteAddress(ctx, req.(*DeleteAddressRequest))
+			return srv.GetUserByAccount(ctx, req.(*AccountRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in IdsRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.service.User/ListUser")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListUser(ctx, req.(*IdsRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -224,15 +116,10 @@ func _User_DeleteAddress0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context
 }
 
 type UserHTTPClient interface {
-	Charge(ctx context.Context, req *ChargeRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	CreateAddress(ctx context.Context, req *CreateAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	DeleteAddress(ctx context.Context, req *DeleteAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	GetAddress(ctx context.Context, req *GetAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	ListAddress(ctx context.Context, req *CreateAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
-	SetDefaultAddr(ctx context.Context, req *SetDefaultAddrRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	UpdateInfo(ctx context.Context, req *UpdateInfoRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	VerifyToken(ctx context.Context, req *VerifyTokenRequest, opts ...http.CallOption) (rsp *VerifyTokenReply, err error)
+	CreateUser(ctx context.Context, req *CreateUserRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	GetUser(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	GetUserByAccount(ctx context.Context, req *AccountRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	ListUser(ctx context.Context, req *IdsRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 }
 
 type UserHTTPClientImpl struct {
@@ -243,11 +130,11 @@ func NewUserHTTPClient(client *http.Client) UserHTTPClient {
 	return &UserHTTPClientImpl{client}
 }
 
-func (c *UserHTTPClientImpl) Charge(ctx context.Context, in *ChargeRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+func (c *UserHTTPClientImpl) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/charge"
+	pattern := "/user"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/Charge"))
+	opts = append(opts, http.Operation("/user.service.User/CreateUser"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -256,37 +143,11 @@ func (c *UserHTTPClientImpl) Charge(ctx context.Context, in *ChargeRequest, opts
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) CreateAddress(ctx context.Context, in *CreateAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+func (c *UserHTTPClientImpl) GetUser(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/address"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/CreateAddress"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *UserHTTPClientImpl) DeleteAddress(ctx context.Context, in *DeleteAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
-	pattern := "/address/{id}"
+	pattern := "/user/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/mall.User/DeleteAddress"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *UserHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
-	pattern := "/address/{id}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/mall.User/GetAddress"))
+	opts = append(opts, http.Operation("/user.service.User/GetUser"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -295,11 +156,11 @@ func (c *UserHTTPClientImpl) GetAddress(ctx context.Context, in *GetAddressReque
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) ListAddress(ctx context.Context, in *CreateAddressRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+func (c *UserHTTPClientImpl) GetUserByAccount(ctx context.Context, in *AccountRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/addresses"
+	pattern := "/user/{account}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/mall.User/ListAddress"))
+	opts = append(opts, http.Operation("/user.service.User/GetUserByAccount"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -308,52 +169,13 @@ func (c *UserHTTPClientImpl) ListAddress(ctx context.Context, in *CreateAddressR
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginReply, error) {
-	var out LoginReply
-	pattern := "/login"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/Login"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *UserHTTPClientImpl) SetDefaultAddr(ctx context.Context, in *SetDefaultAddrRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+func (c *UserHTTPClientImpl) ListUser(ctx context.Context, in *IdsRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/address/{id}/default"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/SetDefaultAddr"))
+	pattern := "/user"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.service.User/ListUser"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *UserHTTPClientImpl) UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
-	pattern := "/info"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/UpdateInfo"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *UserHTTPClientImpl) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...http.CallOption) (*VerifyTokenReply, error) {
-	var out VerifyTokenReply
-	pattern := "/verify"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.User/VerifyToken"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

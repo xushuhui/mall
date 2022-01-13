@@ -9,7 +9,6 @@ import (
 	"mall-go/app/app/service/internal/data/model/order"
 	"mall-go/app/app/service/internal/data/model/ordersnap"
 	"mall-go/app/app/service/internal/data/model/ordersub"
-	"mall-go/app/app/service/internal/data/model/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -113,11 +112,6 @@ func (oc *OrderCreate) SetFinalTotalPrice(f float64) *OrderCreate {
 func (oc *OrderCreate) SetStatus(i int) *OrderCreate {
 	oc.mutation.SetStatus(i)
 	return oc
-}
-
-// SetUser sets the "user" edge to the User entity.
-func (oc *OrderCreate) SetUser(u *User) *OrderCreate {
-	return oc.SetUserID(u.ID)
 }
 
 // AddOrderSnapIDs adds the "order_snap" edge to the OrderSnap entity by IDs.
@@ -329,6 +323,14 @@ func (oc *OrderCreate) createSpec() (*Order, *sqlgraph.CreateSpec) {
 		})
 		_node.TransactionID = value
 	}
+	if value, ok := oc.mutation.UserID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: order.FieldUserID,
+		})
+		_node.UserID = value
+	}
 	if value, ok := oc.mutation.TotalPrice(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeFloat64,
@@ -360,26 +362,6 @@ func (oc *OrderCreate) createSpec() (*Order, *sqlgraph.CreateSpec) {
 			Column: order.FieldStatus,
 		})
 		_node.Status = value
-	}
-	if nodes := oc.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   order.UserTable,
-			Columns: []string{order.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.UserID = nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := oc.mutation.OrderSnapIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

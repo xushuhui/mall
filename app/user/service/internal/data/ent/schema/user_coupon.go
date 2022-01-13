@@ -4,7 +4,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -31,8 +30,9 @@ func (UserCoupon) Mixin() []ent.Mixin {
 		TimeMixin{},
 	}
 }
-func (UserCoupon) Edges() []ent.Edge {
-	return []ent.Edge{
-		edge.From("coupon", Coupon.Type).Ref("user_coupon").Unique().Field("coupon_id"),
-	}
-}
+
+//func (UserCoupon) Edges() []ent.Edge {
+//	return []ent.Edge{
+//		edge.From("coupon", schema2.Coupon.Type).Ref("user_coupon").Unique().Field("coupon_id"),
+//	}
+//}

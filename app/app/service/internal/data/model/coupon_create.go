@@ -9,7 +9,6 @@ import (
 	"mall-go/app/app/service/internal/data/model/activity"
 	"mall-go/app/app/service/internal/data/model/category"
 	"mall-go/app/app/service/internal/data/model/coupon"
-	"mall-go/app/app/service/internal/data/model/usercoupon"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -173,21 +172,6 @@ func (cc *CouponCreate) AddActivity(a ...*Activity) *CouponCreate {
 		ids[i] = a[i].ID
 	}
 	return cc.AddActivityIDs(ids...)
-}
-
-// AddUserCouponIDs adds the "user_coupon" edge to the UserCoupon entity by IDs.
-func (cc *CouponCreate) AddUserCouponIDs(ids ...int64) *CouponCreate {
-	cc.mutation.AddUserCouponIDs(ids...)
-	return cc
-}
-
-// AddUserCoupon adds the "user_coupon" edges to the UserCoupon entity.
-func (cc *CouponCreate) AddUserCoupon(u ...*UserCoupon) *CouponCreate {
-	ids := make([]int64, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
-	}
-	return cc.AddUserCouponIDs(ids...)
 }
 
 // Mutation returns the CouponMutation object of the builder.
@@ -489,25 +473,6 @@ func (cc *CouponCreate) createSpec() (*Coupon, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt64,
 					Column: activity.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := cc.mutation.UserCouponIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   coupon.UserCouponTable,
-			Columns: []string{coupon.UserCouponColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: usercoupon.FieldID,
 				},
 			},
 		}

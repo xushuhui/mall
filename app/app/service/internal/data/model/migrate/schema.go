@@ -223,25 +223,17 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "order_no", Type: field.TypeString, Size: 64},
 		{Name: "transaction_id", Type: field.TypeString},
+		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 		{Name: "total_price", Type: field.TypeFloat64},
 		{Name: "total_count", Type: field.TypeInt},
 		{Name: "final_total_price", Type: field.TypeFloat64},
 		{Name: "status", Type: field.TypeInt},
-		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 	}
 	// OrdersTable holds the schema information for the "orders" table.
 	OrdersTable = &schema.Table{
 		Name:       "orders",
 		Columns:    OrdersColumns,
 		PrimaryKey: []*schema.Column{OrdersColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "orders_user_order",
-				Columns:    []*schema.Column{OrdersColumns[10]},
-				RefColumns: []*schema.Column{UserColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
 	}
 	// OrderDetailsColumns holds the columns for the "order_details" table.
 	OrderDetailsColumns = []*schema.Column{
@@ -319,25 +311,17 @@ var (
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "refund_no", Type: field.TypeString},
 		{Name: "transaction_id", Type: field.TypeString},
+		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 		{Name: "reason", Type: field.TypeString},
 		{Name: "order_id", Type: field.TypeInt64, Nullable: true},
 		{Name: "order_sub_id", Type: field.TypeInt64, Nullable: true},
 		{Name: "status", Type: field.TypeInt},
-		{Name: "user_id", Type: field.TypeInt64, Nullable: true},
 	}
 	// RefundsTable holds the schema information for the "refunds" table.
 	RefundsTable = &schema.Table{
 		Name:       "refunds",
 		Columns:    RefundsColumns,
 		PrimaryKey: []*schema.Column{RefundsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "refunds_user_refund",
-				Columns:    []*schema.Column{RefundsColumns[10]},
-				RefColumns: []*schema.Column{UserColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
 	}
 	// SaleExplainsColumns holds the columns for the "sale_explains" table.
 	SaleExplainsColumns = []*schema.Column{
@@ -549,145 +533,6 @@ var (
 		Columns:    ThemeColumns,
 		PrimaryKey: []*schema.Column{ThemeColumns[0]},
 	}
-	// UserColumns holds the columns for the "user" table.
-	UserColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "openid", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString},
-		{Name: "password", Type: field.TypeString},
-		{Name: "mobile", Type: field.TypeString},
-		{Name: "status", Type: field.TypeInt, Default: 1},
-	}
-	// UserTable holds the schema information for the "user" table.
-	UserTable = &schema.Table{
-		Name:       "user",
-		Columns:    UserColumns,
-		PrimaryKey: []*schema.Column{UserColumns[0]},
-	}
-	// UserCouponColumns holds the columns for the "user_coupon" table.
-	UserCouponColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "user_id", Type: field.TypeInt64},
-		{Name: "status", Type: field.TypeInt, Default: 1},
-		{Name: "order_id", Type: field.TypeInt},
-		{Name: "coupon_id", Type: field.TypeInt64, Nullable: true},
-	}
-	// UserCouponTable holds the schema information for the "user_coupon" table.
-	UserCouponTable = &schema.Table{
-		Name:       "user_coupon",
-		Columns:    UserCouponColumns,
-		PrimaryKey: []*schema.Column{UserCouponColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "user_coupon_coupons_user_coupon",
-				Columns:    []*schema.Column{UserCouponColumns[7]},
-				RefColumns: []*schema.Column{CouponsColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
-	}
-	// UserFavorColumns holds the columns for the "user_favor" table.
-	UserFavorColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "user_id", Type: field.TypeInt64},
-		{Name: "spu_id", Type: field.TypeInt64},
-		{Name: "status", Type: field.TypeInt, Default: 1},
-	}
-	// UserFavorTable holds the schema information for the "user_favor" table.
-	UserFavorTable = &schema.Table{
-		Name:       "user_favor",
-		Columns:    UserFavorColumns,
-		PrimaryKey: []*schema.Column{UserFavorColumns[0]},
-	}
-	// UserInfoColumns holds the columns for the "user_info" table.
-	UserInfoColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "nickname", Type: field.TypeString},
-		{Name: "unify_uid", Type: field.TypeInt},
-		{Name: "email", Type: field.TypeString},
-		{Name: "avatar", Type: field.TypeString},
-		{Name: "wx_profile", Type: field.TypeString},
-	}
-	// UserInfoTable holds the schema information for the "user_info" table.
-	UserInfoTable = &schema.Table{
-		Name:       "user_info",
-		Columns:    UserInfoColumns,
-		PrimaryKey: []*schema.Column{UserInfoColumns[0]},
-	}
-	// UserPointsColumns holds the columns for the "user_points" table.
-	UserPointsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "value", Type: field.TypeInt},
-		{Name: "status", Type: field.TypeInt},
-	}
-	// UserPointsTable holds the schema information for the "user_points" table.
-	UserPointsTable = &schema.Table{
-		Name:       "user_points",
-		Columns:    UserPointsColumns,
-		PrimaryKey: []*schema.Column{UserPointsColumns[0]},
-	}
-	// UserPointDetailColumns holds the columns for the "user_point_detail" table.
-	UserPointDetailColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "user_id", Type: field.TypeInt64},
-		{Name: "value", Type: field.TypeInt},
-	}
-	// UserPointDetailTable holds the schema information for the "user_point_detail" table.
-	UserPointDetailTable = &schema.Table{
-		Name:       "user_point_detail",
-		Columns:    UserPointDetailColumns,
-		PrimaryKey: []*schema.Column{UserPointDetailColumns[0]},
-	}
-	// UserWalletsColumns holds the columns for the "user_wallets" table.
-	UserWalletsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "value", Type: field.TypeInt},
-	}
-	// UserWalletsTable holds the schema information for the "user_wallets" table.
-	UserWalletsTable = &schema.Table{
-		Name:       "user_wallets",
-		Columns:    UserWalletsColumns,
-		PrimaryKey: []*schema.Column{UserWalletsColumns[0]},
-	}
-	// UserWalletDetailsColumns holds the columns for the "user_wallet_details" table.
-	UserWalletDetailsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "description", Type: field.TypeString},
-		{Name: "op", Type: field.TypeInt, Default: 1},
-		{Name: "current", Type: field.TypeInt},
-		{Name: "value", Type: field.TypeInt},
-		{Name: "type", Type: field.TypeInt, Default: 1},
-	}
-	// UserWalletDetailsTable holds the schema information for the "user_wallet_details" table.
-	UserWalletDetailsTable = &schema.Table{
-		Name:       "user_wallet_details",
-		Columns:    UserWalletDetailsColumns,
-		PrimaryKey: []*schema.Column{UserWalletDetailsColumns[0]},
-	}
 	// ActivitySpuColumns holds the columns for the "activity_spu" table.
 	ActivitySpuColumns = []*schema.Column{
 		{Name: "activity_id", Type: field.TypeInt},
@@ -890,14 +735,6 @@ var (
 		SpuImgsTable,
 		TagsTable,
 		ThemeTable,
-		UserTable,
-		UserCouponTable,
-		UserFavorTable,
-		UserInfoTable,
-		UserPointsTable,
-		UserPointDetailTable,
-		UserWalletsTable,
-		UserWalletDetailsTable,
 		ActivitySpuTable,
 		ActivityCouponTable,
 		BrandSpuTable,
@@ -914,10 +751,8 @@ func init() {
 	GridCategoryTable.Annotation = &entsql.Annotation{
 		Table: "grid_category",
 	}
-	OrdersTable.ForeignKeys[0].RefTable = UserTable
 	OrderSnapsTable.ForeignKeys[0].RefTable = OrdersTable
 	OrderSubsTable.ForeignKeys[0].RefTable = OrdersTable
-	RefundsTable.ForeignKeys[0].RefTable = UserTable
 	SaleExplainsTable.ForeignKeys[0].RefTable = SpusTable
 	SkuSpecTable.Annotation = &entsql.Annotation{
 		Table: "sku_spec",
@@ -929,22 +764,6 @@ func init() {
 	SpuImgsTable.ForeignKeys[0].RefTable = SpusTable
 	ThemeTable.Annotation = &entsql.Annotation{
 		Table: "theme",
-	}
-	UserTable.Annotation = &entsql.Annotation{
-		Table: "user",
-	}
-	UserCouponTable.ForeignKeys[0].RefTable = CouponsTable
-	UserCouponTable.Annotation = &entsql.Annotation{
-		Table: "user_coupon",
-	}
-	UserFavorTable.Annotation = &entsql.Annotation{
-		Table: "user_favor",
-	}
-	UserInfoTable.Annotation = &entsql.Annotation{
-		Table: "user_info",
-	}
-	UserPointDetailTable.Annotation = &entsql.Annotation{
-		Table: "user_point_detail",
 	}
 	ActivitySpuTable.ForeignKeys[0].RefTable = ActivitiesTable
 	ActivitySpuTable.ForeignKeys[1].RefTable = SpusTable

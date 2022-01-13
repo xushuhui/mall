@@ -9,7 +9,6 @@ import (
 	"mall-go/app/app/service/internal/data/model/ordersnap"
 	"mall-go/app/app/service/internal/data/model/ordersub"
 	"mall-go/app/app/service/internal/data/model/predicate"
-	"mall-go/app/app/service/internal/data/model/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -70,6 +69,7 @@ func (ou *OrderUpdate) SetTransactionID(s string) *OrderUpdate {
 
 // SetUserID sets the "user_id" field.
 func (ou *OrderUpdate) SetUserID(i int64) *OrderUpdate {
+	ou.mutation.ResetUserID()
 	ou.mutation.SetUserID(i)
 	return ou
 }
@@ -79,6 +79,12 @@ func (ou *OrderUpdate) SetNillableUserID(i *int64) *OrderUpdate {
 	if i != nil {
 		ou.SetUserID(*i)
 	}
+	return ou
+}
+
+// AddUserID adds i to the "user_id" field.
+func (ou *OrderUpdate) AddUserID(i int64) *OrderUpdate {
+	ou.mutation.AddUserID(i)
 	return ou
 }
 
@@ -140,11 +146,6 @@ func (ou *OrderUpdate) AddStatus(i int) *OrderUpdate {
 	return ou
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (ou *OrderUpdate) SetUser(u *User) *OrderUpdate {
-	return ou.SetUserID(u.ID)
-}
-
 // AddOrderSnapIDs adds the "order_snap" edge to the OrderSnap entity by IDs.
 func (ou *OrderUpdate) AddOrderSnapIDs(ids ...int64) *OrderUpdate {
 	ou.mutation.AddOrderSnapIDs(ids...)
@@ -178,12 +179,6 @@ func (ou *OrderUpdate) AddOrderSub(o ...*OrderSub) *OrderUpdate {
 // Mutation returns the OrderMutation object of the builder.
 func (ou *OrderUpdate) Mutation() *OrderMutation {
 	return ou.mutation
-}
-
-// ClearUser clears the "user" edge to the User entity.
-func (ou *OrderUpdate) ClearUser() *OrderUpdate {
-	ou.mutation.ClearUser()
-	return ou
 }
 
 // ClearOrderSnap clears all "order_snap" edges to the OrderSnap entity.
@@ -359,6 +354,26 @@ func (ou *OrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: order.FieldTransactionID,
 		})
 	}
+	if value, ok := ou.mutation.UserID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: order.FieldUserID,
+		})
+	}
+	if value, ok := ou.mutation.AddedUserID(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: order.FieldUserID,
+		})
+	}
+	if ou.mutation.UserIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Column: order.FieldUserID,
+		})
+	}
 	if value, ok := ou.mutation.TotalPrice(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeFloat64,
@@ -414,41 +429,6 @@ func (ou *OrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Value:  value,
 			Column: order.FieldStatus,
 		})
-	}
-	if ou.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   order.UserTable,
-			Columns: []string{order.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ou.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   order.UserTable,
-			Columns: []string{order.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if ou.mutation.OrderSnapCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -617,6 +597,7 @@ func (ouo *OrderUpdateOne) SetTransactionID(s string) *OrderUpdateOne {
 
 // SetUserID sets the "user_id" field.
 func (ouo *OrderUpdateOne) SetUserID(i int64) *OrderUpdateOne {
+	ouo.mutation.ResetUserID()
 	ouo.mutation.SetUserID(i)
 	return ouo
 }
@@ -626,6 +607,12 @@ func (ouo *OrderUpdateOne) SetNillableUserID(i *int64) *OrderUpdateOne {
 	if i != nil {
 		ouo.SetUserID(*i)
 	}
+	return ouo
+}
+
+// AddUserID adds i to the "user_id" field.
+func (ouo *OrderUpdateOne) AddUserID(i int64) *OrderUpdateOne {
+	ouo.mutation.AddUserID(i)
 	return ouo
 }
 
@@ -687,11 +674,6 @@ func (ouo *OrderUpdateOne) AddStatus(i int) *OrderUpdateOne {
 	return ouo
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (ouo *OrderUpdateOne) SetUser(u *User) *OrderUpdateOne {
-	return ouo.SetUserID(u.ID)
-}
-
 // AddOrderSnapIDs adds the "order_snap" edge to the OrderSnap entity by IDs.
 func (ouo *OrderUpdateOne) AddOrderSnapIDs(ids ...int64) *OrderUpdateOne {
 	ouo.mutation.AddOrderSnapIDs(ids...)
@@ -725,12 +707,6 @@ func (ouo *OrderUpdateOne) AddOrderSub(o ...*OrderSub) *OrderUpdateOne {
 // Mutation returns the OrderMutation object of the builder.
 func (ouo *OrderUpdateOne) Mutation() *OrderMutation {
 	return ouo.mutation
-}
-
-// ClearUser clears the "user" edge to the User entity.
-func (ouo *OrderUpdateOne) ClearUser() *OrderUpdateOne {
-	ouo.mutation.ClearUser()
-	return ouo
 }
 
 // ClearOrderSnap clears all "order_snap" edges to the OrderSnap entity.
@@ -930,6 +906,26 @@ func (ouo *OrderUpdateOne) sqlSave(ctx context.Context) (_node *Order, err error
 			Column: order.FieldTransactionID,
 		})
 	}
+	if value, ok := ouo.mutation.UserID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: order.FieldUserID,
+		})
+	}
+	if value, ok := ouo.mutation.AddedUserID(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: order.FieldUserID,
+		})
+	}
+	if ouo.mutation.UserIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Column: order.FieldUserID,
+		})
+	}
 	if value, ok := ouo.mutation.TotalPrice(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeFloat64,
@@ -985,41 +981,6 @@ func (ouo *OrderUpdateOne) sqlSave(ctx context.Context) (_node *Order, err error
 			Value:  value,
 			Column: order.FieldStatus,
 		})
-	}
-	if ouo.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   order.UserTable,
-			Columns: []string{order.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ouo.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   order.UserTable,
-			Columns: []string{order.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if ouo.mutation.OrderSnapCleared() {
 		edge := &sqlgraph.EdgeSpec{

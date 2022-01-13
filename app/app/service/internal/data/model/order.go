@@ -5,7 +5,6 @@ package model
 import (
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/order"
-	"mall-go/app/app/service/internal/data/model/user"
 	"strings"
 	"time"
 
@@ -46,35 +45,19 @@ type Order struct {
 
 // OrderEdges holds the relations/edges for other nodes in the graph.
 type OrderEdges struct {
-	// User holds the value of the user edge.
-	User *User `json:"user,omitempty"`
 	// OrderSnap holds the value of the order_snap edge.
 	OrderSnap []*OrderSnap `json:"order_snap,omitempty"`
 	// OrderSub holds the value of the order_sub edge.
 	OrderSub []*OrderSub `json:"order_sub,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
-}
-
-// UserOrErr returns the User value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e OrderEdges) UserOrErr() (*User, error) {
-	if e.loadedTypes[0] {
-		if e.User == nil {
-			// The edge user was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: user.Label}
-		}
-		return e.User, nil
-	}
-	return nil, &NotLoadedError{edge: "user"}
+	loadedTypes [2]bool
 }
 
 // OrderSnapOrErr returns the OrderSnap value or an error if the edge
 // was not loaded in eager-loading.
 func (e OrderEdges) OrderSnapOrErr() ([]*OrderSnap, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[0] {
 		return e.OrderSnap, nil
 	}
 	return nil, &NotLoadedError{edge: "order_snap"}
@@ -83,7 +66,7 @@ func (e OrderEdges) OrderSnapOrErr() ([]*OrderSnap, error) {
 // OrderSubOrErr returns the OrderSub value or an error if the edge
 // was not loaded in eager-loading.
 func (e OrderEdges) OrderSubOrErr() ([]*OrderSub, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[1] {
 		return e.OrderSub, nil
 	}
 	return nil, &NotLoadedError{edge: "order_sub"}
@@ -186,11 +169,6 @@ func (o *Order) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
-}
-
-// QueryUser queries the "user" edge of the Order entity.
-func (o *Order) QueryUser() *UserQuery {
-	return (&OrderClient{config: o.config}).QueryUser(o)
 }
 
 // QueryOrderSnap queries the "order_snap" edge of the Order entity.

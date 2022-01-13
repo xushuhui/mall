@@ -2,7 +2,7 @@ package data
 
 import (
 	"context"
-	"mall-go/app/mall/interface/internal/biz"
+	"mall-go/app/user/service/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

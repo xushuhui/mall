@@ -59,11 +59,9 @@ type CouponEdges struct {
 	Category []*Category `json:"category,omitempty"`
 	// Activity holds the value of the activity edge.
 	Activity []*Activity `json:"activity,omitempty"`
-	// UserCoupon holds the value of the user_coupon edge.
-	UserCoupon []*UserCoupon `json:"user_coupon,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [2]bool
 }
 
 // CategoryOrErr returns the Category value or an error if the edge
@@ -82,15 +80,6 @@ func (e CouponEdges) ActivityOrErr() ([]*Activity, error) {
 		return e.Activity, nil
 	}
 	return nil, &NotLoadedError{edge: "activity"}
-}
-
-// UserCouponOrErr returns the UserCoupon value or an error if the edge
-// was not loaded in eager-loading.
-func (e CouponEdges) UserCouponOrErr() ([]*UserCoupon, error) {
-	if e.loadedTypes[2] {
-		return e.UserCoupon, nil
-	}
-	return nil, &NotLoadedError{edge: "user_coupon"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -230,11 +219,6 @@ func (c *Coupon) QueryCategory() *CategoryQuery {
 // QueryActivity queries the "activity" edge of the Coupon entity.
 func (c *Coupon) QueryActivity() *ActivityQuery {
 	return (&CouponClient{config: c.config}).QueryActivity(c)
-}
-
-// QueryUserCoupon queries the "user_coupon" edge of the Coupon entity.
-func (c *Coupon) QueryUserCoupon() *UserCouponQuery {
-	return (&CouponClient{config: c.config}).QueryUserCoupon(c)
 }
 
 // Update returns a builder for updating this Coupon.

@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/refund"
-	"mall-go/app/app/service/internal/data/model/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -127,11 +126,6 @@ func (rc *RefundCreate) SetNillableOrderSubID(i *int64) *RefundCreate {
 func (rc *RefundCreate) SetStatus(i int) *RefundCreate {
 	rc.mutation.SetStatus(i)
 	return rc
-}
-
-// SetUser sets the "user" edge to the User entity.
-func (rc *RefundCreate) SetUser(u *User) *RefundCreate {
-	return rc.SetUserID(u.ID)
 }
 
 // Mutation returns the RefundMutation object of the builder.
@@ -302,6 +296,14 @@ func (rc *RefundCreate) createSpec() (*Refund, *sqlgraph.CreateSpec) {
 		})
 		_node.TransactionID = value
 	}
+	if value, ok := rc.mutation.UserID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: refund.FieldUserID,
+		})
+		_node.UserID = value
+	}
 	if value, ok := rc.mutation.Reason(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -333,26 +335,6 @@ func (rc *RefundCreate) createSpec() (*Refund, *sqlgraph.CreateSpec) {
 			Column: refund.FieldStatus,
 		})
 		_node.Status = value
-	}
-	if nodes := rc.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   refund.UserTable,
-			Columns: []string{refund.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.UserID = nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

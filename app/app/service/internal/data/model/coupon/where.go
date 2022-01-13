@@ -1527,34 +1527,6 @@ func HasActivityWith(preds ...predicate.Activity) predicate.Coupon {
 	})
 }
 
-// HasUserCoupon applies the HasEdge predicate on the "user_coupon" edge.
-func HasUserCoupon() predicate.Coupon {
-	return predicate.Coupon(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(UserCouponTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, UserCouponTable, UserCouponColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasUserCouponWith applies the HasEdge predicate on the "user_coupon" edge with a given conditions (other predicates).
-func HasUserCouponWith(preds ...predicate.UserCoupon) predicate.Coupon {
-	return predicate.Coupon(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(UserCouponInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, UserCouponTable, UserCouponColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.Coupon) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {

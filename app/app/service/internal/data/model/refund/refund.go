@@ -31,17 +31,8 @@ const (
 	FieldOrderSubID = "order_sub_id"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// EdgeUser holds the string denoting the user edge name in mutations.
-	EdgeUser = "user"
 	// Table holds the table name of the refund in the database.
 	Table = "refund"
-	// UserTable is the table that holds the user relation/edge.
-	UserTable = "refund"
-	// UserInverseTable is the table name for the User entity.
-	// It exists in this package in order to avoid lower111 circular dependency with the "user" package.
-	UserInverseTable = "user"
-	// UserColumn is the table column denoting the user relation/edge.
-	UserColumn = "user_id"
 )
 
 // Columns holds all SQL columns for refund fields.

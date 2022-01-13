@@ -62,22 +62,6 @@ type Tx struct {
 	Tag *TagClient
 	// Theme is the client for interacting with the Theme builders.
 	Theme *ThemeClient
-	// User is the client for interacting with the User builders.
-	User *UserClient
-	// UserCoupon is the client for interacting with the UserCoupon builders.
-	UserCoupon *UserCouponClient
-	// UserFavor is the client for interacting with the UserFavor builders.
-	UserFavor *UserFavorClient
-	// UserInfo is the client for interacting with the UserInfo builders.
-	UserInfo *UserInfoClient
-	// UserPoint is the client for interacting with the UserPoint builders.
-	UserPoint *UserPointClient
-	// UserPointDetail is the client for interacting with the UserPointDetail builders.
-	UserPointDetail *UserPointDetailClient
-	// UserWallet is the client for interacting with the UserWallet builders.
-	UserWallet *UserWalletClient
-	// UserWalletDetail is the client for interacting with the UserWalletDetail builders.
-	UserWalletDetail *UserWalletDetailClient
 
 	// lazily loaded.
 	client     *Client
@@ -238,14 +222,6 @@ func (tx *Tx) init() {
 	tx.SpuImg = NewSpuImgClient(tx.config)
 	tx.Tag = NewTagClient(tx.config)
 	tx.Theme = NewThemeClient(tx.config)
-	tx.User = NewUserClient(tx.config)
-	tx.UserCoupon = NewUserCouponClient(tx.config)
-	tx.UserFavor = NewUserFavorClient(tx.config)
-	tx.UserInfo = NewUserInfoClient(tx.config)
-	tx.UserPoint = NewUserPointClient(tx.config)
-	tx.UserPointDetail = NewUserPointDetailClient(tx.config)
-	tx.UserWallet = NewUserWalletClient(tx.config)
-	tx.UserWalletDetail = NewUserWalletDetailClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

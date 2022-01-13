@@ -30,14 +30,6 @@ import (
 	"mall-go/app/app/service/internal/data/model/spuimg"
 	"mall-go/app/app/service/internal/data/model/tag"
 	"mall-go/app/app/service/internal/data/model/theme"
-	"mall-go/app/app/service/internal/data/model/user"
-	"mall-go/app/app/service/internal/data/model/usercoupon"
-	"mall-go/app/app/service/internal/data/model/userfavor"
-	"mall-go/app/app/service/internal/data/model/userinfo"
-	"mall-go/app/app/service/internal/data/model/userpoint"
-	"mall-go/app/app/service/internal/data/model/userpointdetail"
-	"mall-go/app/app/service/internal/data/model/userwallet"
-	"mall-go/app/app/service/internal/data/model/userwalletdetail"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -61,39 +53,31 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		activity.Table:         activity.ValidColumn,
-		banner.Table:           banner.ValidColumn,
-		banneritem.Table:       banneritem.ValidColumn,
-		brand.Table:            brand.ValidColumn,
-		category.Table:         category.ValidColumn,
-		charge.Table:           charge.ValidColumn,
-		coupon.Table:           coupon.ValidColumn,
-		coupontemplate.Table:   coupontemplate.ValidColumn,
-		coupontype.Table:       coupontype.ValidColumn,
-		gridcategory.Table:     gridcategory.ValidColumn,
-		order.Table:            order.ValidColumn,
-		orderdetail.Table:      orderdetail.ValidColumn,
-		ordersnap.Table:        ordersnap.ValidColumn,
-		ordersub.Table:         ordersub.ValidColumn,
-		refund.Table:           refund.ValidColumn,
-		saleexplain.Table:      saleexplain.ValidColumn,
-		sku.Table:              sku.ValidColumn,
-		skuspec.Table:          skuspec.ValidColumn,
-		speckey.Table:          speckey.ValidColumn,
-		specvalue.Table:        specvalue.ValidColumn,
-		spu.Table:              spu.ValidColumn,
-		spudetailimg.Table:     spudetailimg.ValidColumn,
-		spuimg.Table:           spuimg.ValidColumn,
-		tag.Table:              tag.ValidColumn,
-		theme.Table:            theme.ValidColumn,
-		user.Table:             user.ValidColumn,
-		usercoupon.Table:       usercoupon.ValidColumn,
-		userfavor.Table:        userfavor.ValidColumn,
-		userinfo.Table:         userinfo.ValidColumn,
-		userpoint.Table:        userpoint.ValidColumn,
-		userpointdetail.Table:  userpointdetail.ValidColumn,
-		userwallet.Table:       userwallet.ValidColumn,
-		userwalletdetail.Table: userwalletdetail.ValidColumn,
+		activity.Table:       activity.ValidColumn,
+		banner.Table:         banner.ValidColumn,
+		banneritem.Table:     banneritem.ValidColumn,
+		brand.Table:          brand.ValidColumn,
+		category.Table:       category.ValidColumn,
+		charge.Table:         charge.ValidColumn,
+		coupon.Table:         coupon.ValidColumn,
+		coupontemplate.Table: coupontemplate.ValidColumn,
+		coupontype.Table:     coupontype.ValidColumn,
+		gridcategory.Table:   gridcategory.ValidColumn,
+		order.Table:          order.ValidColumn,
+		orderdetail.Table:    orderdetail.ValidColumn,
+		ordersnap.Table:      ordersnap.ValidColumn,
+		ordersub.Table:       ordersub.ValidColumn,
+		refund.Table:         refund.ValidColumn,
+		saleexplain.Table:    saleexplain.ValidColumn,
+		sku.Table:            sku.ValidColumn,
+		skuspec.Table:        skuspec.ValidColumn,
+		speckey.Table:        speckey.ValidColumn,
+		specvalue.Table:      specvalue.ValidColumn,
+		spu.Table:            spu.ValidColumn,
+		spudetailimg.Table:   spudetailimg.ValidColumn,
+		spuimg.Table:         spuimg.ValidColumn,
+		tag.Table:            tag.ValidColumn,
+		theme.Table:          theme.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

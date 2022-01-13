@@ -5,7 +5,6 @@ package model
 import (
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/refund"
-	"mall-go/app/app/service/internal/data/model/user"
 	"strings"
 	"time"
 
@@ -39,32 +38,6 @@ type Refund struct {
 	OrderSubID int64 `json:"order_sub_id,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int `json:"status,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the RefundQuery when eager-loading is set.
-	Edges RefundEdges `json:"edges"`
-}
-
-// RefundEdges holds the relations/edges for other nodes in the graph.
-type RefundEdges struct {
-	// User holds the value of the user edge.
-	User *User `json:"user,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
-}
-
-// UserOrErr returns the User value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e RefundEdges) UserOrErr() (*User, error) {
-	if e.loadedTypes[0] {
-		if e.User == nil {
-			// The edge user was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: user.Label}
-		}
-		return e.User, nil
-	}
-	return nil, &NotLoadedError{edge: "user"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -162,11 +135,6 @@ func (r *Refund) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
-}
-
-// QueryUser queries the "user" edge of the Refund entity.
-func (r *Refund) QueryUser() *UserQuery {
-	return (&RefundClient{config: r.config}).QueryUser(r)
 }
 
 // Update returns a builder for updating this Refund.

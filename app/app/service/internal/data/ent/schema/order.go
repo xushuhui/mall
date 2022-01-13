@@ -29,7 +29,7 @@ func (Order) Mixin() []ent.Mixin {
 }
 func (Order) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("user", User.Type).Ref("order").Unique().Field("user_id"),
+		//edge.From("user", schema.User.Type).Ref("order").Unique().Field("user_id"),
 		edge.To("order_snap", OrderSnap.Type),
 		edge.To("order_sub", OrderSub.Type),
 	}

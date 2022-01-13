@@ -24,39 +24,31 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
-	Activity         []ent.Hook
-	Banner           []ent.Hook
-	BannerItem       []ent.Hook
-	Brand            []ent.Hook
-	Category         []ent.Hook
-	Charge           []ent.Hook
-	Coupon           []ent.Hook
-	CouponTemplate   []ent.Hook
-	CouponType       []ent.Hook
-	GridCategory     []ent.Hook
-	Order            []ent.Hook
-	OrderDetail      []ent.Hook
-	OrderSnap        []ent.Hook
-	OrderSub         []ent.Hook
-	Refund           []ent.Hook
-	SaleExplain      []ent.Hook
-	Sku              []ent.Hook
-	SkuSpec          []ent.Hook
-	SpecKey          []ent.Hook
-	SpecValue        []ent.Hook
-	Spu              []ent.Hook
-	SpuDetailImg     []ent.Hook
-	SpuImg           []ent.Hook
-	Tag              []ent.Hook
-	Theme            []ent.Hook
-	User             []ent.Hook
-	UserCoupon       []ent.Hook
-	UserFavor        []ent.Hook
-	UserInfo         []ent.Hook
-	UserPoint        []ent.Hook
-	UserPointDetail  []ent.Hook
-	UserWallet       []ent.Hook
-	UserWalletDetail []ent.Hook
+	Activity       []ent.Hook
+	Banner         []ent.Hook
+	BannerItem     []ent.Hook
+	Brand          []ent.Hook
+	Category       []ent.Hook
+	Charge         []ent.Hook
+	Coupon         []ent.Hook
+	CouponTemplate []ent.Hook
+	CouponType     []ent.Hook
+	GridCategory   []ent.Hook
+	Order          []ent.Hook
+	OrderDetail    []ent.Hook
+	OrderSnap      []ent.Hook
+	OrderSub       []ent.Hook
+	Refund         []ent.Hook
+	SaleExplain    []ent.Hook
+	Sku            []ent.Hook
+	SkuSpec        []ent.Hook
+	SpecKey        []ent.Hook
+	SpecValue      []ent.Hook
+	Spu            []ent.Hook
+	SpuDetailImg   []ent.Hook
+	SpuImg         []ent.Hook
+	Tag            []ent.Hook
+	Theme          []ent.Hook
 }
 
 // Options applies the options on the config object.

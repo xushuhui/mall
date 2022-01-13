@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/refund"
-	"mall-go/app/app/service/internal/data/model/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -68,6 +67,7 @@ func (ru *RefundUpdate) SetTransactionID(s string) *RefundUpdate {
 
 // SetUserID sets the "user_id" field.
 func (ru *RefundUpdate) SetUserID(i int64) *RefundUpdate {
+	ru.mutation.ResetUserID()
 	ru.mutation.SetUserID(i)
 	return ru
 }
@@ -77,6 +77,12 @@ func (ru *RefundUpdate) SetNillableUserID(i *int64) *RefundUpdate {
 	if i != nil {
 		ru.SetUserID(*i)
 	}
+	return ru
+}
+
+// AddUserID adds i to the "user_id" field.
+func (ru *RefundUpdate) AddUserID(i int64) *RefundUpdate {
+	ru.mutation.AddUserID(i)
 	return ru
 }
 
@@ -159,20 +165,9 @@ func (ru *RefundUpdate) AddStatus(i int) *RefundUpdate {
 	return ru
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (ru *RefundUpdate) SetUser(u *User) *RefundUpdate {
-	return ru.SetUserID(u.ID)
-}
-
 // Mutation returns the RefundMutation object of the builder.
 func (ru *RefundUpdate) Mutation() *RefundMutation {
 	return ru.mutation
-}
-
-// ClearUser clears the "user" edge to the User entity.
-func (ru *RefundUpdate) ClearUser() *RefundUpdate {
-	ru.mutation.ClearUser()
-	return ru
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -290,6 +285,26 @@ func (ru *RefundUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: refund.FieldTransactionID,
 		})
 	}
+	if value, ok := ru.mutation.UserID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: refund.FieldUserID,
+		})
+	}
+	if value, ok := ru.mutation.AddedUserID(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: refund.FieldUserID,
+		})
+	}
+	if ru.mutation.UserIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Column: refund.FieldUserID,
+		})
+	}
 	if value, ok := ru.mutation.Reason(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -351,41 +366,6 @@ func (ru *RefundUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: refund.FieldStatus,
 		})
 	}
-	if ru.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   refund.UserTable,
-			Columns: []string{refund.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ru.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   refund.UserTable,
-			Columns: []string{refund.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{refund.Label}
@@ -445,6 +425,7 @@ func (ruo *RefundUpdateOne) SetTransactionID(s string) *RefundUpdateOne {
 
 // SetUserID sets the "user_id" field.
 func (ruo *RefundUpdateOne) SetUserID(i int64) *RefundUpdateOne {
+	ruo.mutation.ResetUserID()
 	ruo.mutation.SetUserID(i)
 	return ruo
 }
@@ -454,6 +435,12 @@ func (ruo *RefundUpdateOne) SetNillableUserID(i *int64) *RefundUpdateOne {
 	if i != nil {
 		ruo.SetUserID(*i)
 	}
+	return ruo
+}
+
+// AddUserID adds i to the "user_id" field.
+func (ruo *RefundUpdateOne) AddUserID(i int64) *RefundUpdateOne {
+	ruo.mutation.AddUserID(i)
 	return ruo
 }
 
@@ -536,20 +523,9 @@ func (ruo *RefundUpdateOne) AddStatus(i int) *RefundUpdateOne {
 	return ruo
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (ruo *RefundUpdateOne) SetUser(u *User) *RefundUpdateOne {
-	return ruo.SetUserID(u.ID)
-}
-
 // Mutation returns the RefundMutation object of the builder.
 func (ruo *RefundUpdateOne) Mutation() *RefundMutation {
 	return ruo.mutation
-}
-
-// ClearUser clears the "user" edge to the User entity.
-func (ruo *RefundUpdateOne) ClearUser() *RefundUpdateOne {
-	ruo.mutation.ClearUser()
-	return ruo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -691,6 +667,26 @@ func (ruo *RefundUpdateOne) sqlSave(ctx context.Context) (_node *Refund, err err
 			Column: refund.FieldTransactionID,
 		})
 	}
+	if value, ok := ruo.mutation.UserID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: refund.FieldUserID,
+		})
+	}
+	if value, ok := ruo.mutation.AddedUserID(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Value:  value,
+			Column: refund.FieldUserID,
+		})
+	}
+	if ruo.mutation.UserIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt64,
+			Column: refund.FieldUserID,
+		})
+	}
 	if value, ok := ruo.mutation.Reason(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -751,41 +747,6 @@ func (ruo *RefundUpdateOne) sqlSave(ctx context.Context) (_node *Refund, err err
 			Value:  value,
 			Column: refund.FieldStatus,
 		})
-	}
-	if ruo.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   refund.UserTable,
-			Columns: []string{refund.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ruo.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   refund.UserTable,
-			Columns: []string{refund.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: user.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Refund{config: ruo.config}
 	_spec.Assign = _node.assignValues

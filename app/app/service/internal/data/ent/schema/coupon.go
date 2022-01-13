@@ -41,6 +41,5 @@ func (Coupon) Edges() []ent.Edge {
 
 		edge.From("activity", Activity.Type).
 			Ref("coupon"),
-		edge.To("user_coupon", UserCoupon.Type),
 	}
 }

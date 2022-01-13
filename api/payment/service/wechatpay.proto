@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 
 option go_package = "mall-go/api/payment/service";
 
-service WechatPayService {
+service WechatPay {
   
   rpc Mp(MpRequest) returns (MpReply) {
     option (google.api.http) = {

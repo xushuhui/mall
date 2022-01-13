@@ -2,7 +2,6 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -24,10 +23,5 @@ func (Refund) Fields() []ent.Field {
 func (Refund) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
-	}
-}
-func (Refund) Edges() []ent.Edge {
-	return []ent.Edge{
-		edge.From("user", User.Type).Ref("refund").Unique().Field("user_id"),
 	}
 }

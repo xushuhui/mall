@@ -34,14 +34,6 @@ import (
 	"mall-go/app/app/service/internal/data/model/spuimg"
 	"mall-go/app/app/service/internal/data/model/tag"
 	"mall-go/app/app/service/internal/data/model/theme"
-	"mall-go/app/app/service/internal/data/model/user"
-	"mall-go/app/app/service/internal/data/model/usercoupon"
-	"mall-go/app/app/service/internal/data/model/userfavor"
-	"mall-go/app/app/service/internal/data/model/userinfo"
-	"mall-go/app/app/service/internal/data/model/userpoint"
-	"mall-go/app/app/service/internal/data/model/userpointdetail"
-	"mall-go/app/app/service/internal/data/model/userwallet"
-	"mall-go/app/app/service/internal/data/model/userwalletdetail"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -103,22 +95,6 @@ type Client struct {
 	Tag *TagClient
 	// Theme is the client for interacting with the Theme builders.
 	Theme *ThemeClient
-	// User is the client for interacting with the User builders.
-	User *UserClient
-	// UserCoupon is the client for interacting with the UserCoupon builders.
-	UserCoupon *UserCouponClient
-	// UserFavor is the client for interacting with the UserFavor builders.
-	UserFavor *UserFavorClient
-	// UserInfo is the client for interacting with the UserInfo builders.
-	UserInfo *UserInfoClient
-	// UserPoint is the client for interacting with the UserPoint builders.
-	UserPoint *UserPointClient
-	// UserPointDetail is the client for interacting with the UserPointDetail builders.
-	UserPointDetail *UserPointDetailClient
-	// UserWallet is the client for interacting with the UserWallet builders.
-	UserWallet *UserWalletClient
-	// UserWalletDetail is the client for interacting with the UserWalletDetail builders.
-	UserWalletDetail *UserWalletDetailClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -157,14 +133,6 @@ func (c *Client) init() {
 	c.SpuImg = NewSpuImgClient(c.config)
 	c.Tag = NewTagClient(c.config)
 	c.Theme = NewThemeClient(c.config)
-	c.User = NewUserClient(c.config)
-	c.UserCoupon = NewUserCouponClient(c.config)
-	c.UserFavor = NewUserFavorClient(c.config)
-	c.UserInfo = NewUserInfoClient(c.config)
-	c.UserPoint = NewUserPointClient(c.config)
-	c.UserPointDetail = NewUserPointDetailClient(c.config)
-	c.UserWallet = NewUserWalletClient(c.config)
-	c.UserWalletDetail = NewUserWalletDetailClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -196,41 +164,33 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:              ctx,
-		config:           cfg,
-		Activity:         NewActivityClient(cfg),
-		Banner:           NewBannerClient(cfg),
-		BannerItem:       NewBannerItemClient(cfg),
-		Brand:            NewBrandClient(cfg),
-		Category:         NewCategoryClient(cfg),
-		Charge:           NewChargeClient(cfg),
-		Coupon:           NewCouponClient(cfg),
-		CouponTemplate:   NewCouponTemplateClient(cfg),
-		CouponType:       NewCouponTypeClient(cfg),
-		GridCategory:     NewGridCategoryClient(cfg),
-		Order:            NewOrderClient(cfg),
-		OrderDetail:      NewOrderDetailClient(cfg),
-		OrderSnap:        NewOrderSnapClient(cfg),
-		OrderSub:         NewOrderSubClient(cfg),
-		Refund:           NewRefundClient(cfg),
-		SaleExplain:      NewSaleExplainClient(cfg),
-		Sku:              NewSkuClient(cfg),
-		SkuSpec:          NewSkuSpecClient(cfg),
-		SpecKey:          NewSpecKeyClient(cfg),
-		SpecValue:        NewSpecValueClient(cfg),
-		Spu:              NewSpuClient(cfg),
-		SpuDetailImg:     NewSpuDetailImgClient(cfg),
-		SpuImg:           NewSpuImgClient(cfg),
-		Tag:              NewTagClient(cfg),
-		Theme:            NewThemeClient(cfg),
-		User:             NewUserClient(cfg),
-		UserCoupon:       NewUserCouponClient(cfg),
-		UserFavor:        NewUserFavorClient(cfg),
-		UserInfo:         NewUserInfoClient(cfg),
-		UserPoint:        NewUserPointClient(cfg),
-		UserPointDetail:  NewUserPointDetailClient(cfg),
-		UserWallet:       NewUserWalletClient(cfg),
-		UserWalletDetail: NewUserWalletDetailClient(cfg),
+		ctx:            ctx,
+		config:         cfg,
+		Activity:       NewActivityClient(cfg),
+		Banner:         NewBannerClient(cfg),
+		BannerItem:     NewBannerItemClient(cfg),
+		Brand:          NewBrandClient(cfg),
+		Category:       NewCategoryClient(cfg),
+		Charge:         NewChargeClient(cfg),
+		Coupon:         NewCouponClient(cfg),
+		CouponTemplate: NewCouponTemplateClient(cfg),
+		CouponType:     NewCouponTypeClient(cfg),
+		GridCategory:   NewGridCategoryClient(cfg),
+		Order:          NewOrderClient(cfg),
+		OrderDetail:    NewOrderDetailClient(cfg),
+		OrderSnap:      NewOrderSnapClient(cfg),
+		OrderSub:       NewOrderSubClient(cfg),
+		Refund:         NewRefundClient(cfg),
+		SaleExplain:    NewSaleExplainClient(cfg),
+		Sku:            NewSkuClient(cfg),
+		SkuSpec:        NewSkuSpecClient(cfg),
+		SpecKey:        NewSpecKeyClient(cfg),
+		SpecValue:      NewSpecValueClient(cfg),
+		Spu:            NewSpuClient(cfg),
+		SpuDetailImg:   NewSpuDetailImgClient(cfg),
+		SpuImg:         NewSpuImgClient(cfg),
+		Tag:            NewTagClient(cfg),
+		Theme:          NewThemeClient(cfg),
 	}, nil
 }
 
@@ -248,40 +208,32 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		config:           cfg,
-		Activity:         NewActivityClient(cfg),
-		Banner:           NewBannerClient(cfg),
-		BannerItem:       NewBannerItemClient(cfg),
-		Brand:            NewBrandClient(cfg),
-		Category:         NewCategoryClient(cfg),
-		Charge:           NewChargeClient(cfg),
-		Coupon:           NewCouponClient(cfg),
-		CouponTemplate:   NewCouponTemplateClient(cfg),
-		CouponType:       NewCouponTypeClient(cfg),
-		GridCategory:     NewGridCategoryClient(cfg),
-		Order:            NewOrderClient(cfg),
-		OrderDetail:      NewOrderDetailClient(cfg),
-		OrderSnap:        NewOrderSnapClient(cfg),
-		OrderSub:         NewOrderSubClient(cfg),
-		Refund:           NewRefundClient(cfg),
-		SaleExplain:      NewSaleExplainClient(cfg),
-		Sku:              NewSkuClient(cfg),
-		SkuSpec:          NewSkuSpecClient(cfg),
-		SpecKey:          NewSpecKeyClient(cfg),
-		SpecValue:        NewSpecValueClient(cfg),
-		Spu:              NewSpuClient(cfg),
-		SpuDetailImg:     NewSpuDetailImgClient(cfg),
-		SpuImg:           NewSpuImgClient(cfg),
-		Tag:              NewTagClient(cfg),
-		Theme:            NewThemeClient(cfg),
-		User:             NewUserClient(cfg),
-		UserCoupon:       NewUserCouponClient(cfg),
-		UserFavor:        NewUserFavorClient(cfg),
-		UserInfo:         NewUserInfoClient(cfg),
-		UserPoint:        NewUserPointClient(cfg),
-		UserPointDetail:  NewUserPointDetailClient(cfg),
-		UserWallet:       NewUserWalletClient(cfg),
-		UserWalletDetail: NewUserWalletDetailClient(cfg),
+		config:         cfg,
+		Activity:       NewActivityClient(cfg),
+		Banner:         NewBannerClient(cfg),
+		BannerItem:     NewBannerItemClient(cfg),
+		Brand:          NewBrandClient(cfg),
+		Category:       NewCategoryClient(cfg),
+		Charge:         NewChargeClient(cfg),
+		Coupon:         NewCouponClient(cfg),
+		CouponTemplate: NewCouponTemplateClient(cfg),
+		CouponType:     NewCouponTypeClient(cfg),
+		GridCategory:   NewGridCategoryClient(cfg),
+		Order:          NewOrderClient(cfg),
+		OrderDetail:    NewOrderDetailClient(cfg),
+		OrderSnap:      NewOrderSnapClient(cfg),
+		OrderSub:       NewOrderSubClient(cfg),
+		Refund:         NewRefundClient(cfg),
+		SaleExplain:    NewSaleExplainClient(cfg),
+		Sku:            NewSkuClient(cfg),
+		SkuSpec:        NewSkuSpecClient(cfg),
+		SpecKey:        NewSpecKeyClient(cfg),
+		SpecValue:      NewSpecValueClient(cfg),
+		Spu:            NewSpuClient(cfg),
+		SpuDetailImg:   NewSpuDetailImgClient(cfg),
+		SpuImg:         NewSpuImgClient(cfg),
+		Tag:            NewTagClient(cfg),
+		Theme:          NewThemeClient(cfg),
 	}, nil
 }
 
@@ -336,14 +288,6 @@ func (c *Client) Use(hooks ...Hook) {
 	c.SpuImg.Use(hooks...)
 	c.Tag.Use(hooks...)
 	c.Theme.Use(hooks...)
-	c.User.Use(hooks...)
-	c.UserCoupon.Use(hooks...)
-	c.UserFavor.Use(hooks...)
-	c.UserInfo.Use(hooks...)
-	c.UserPoint.Use(hooks...)
-	c.UserPointDetail.Use(hooks...)
-	c.UserWallet.Use(hooks...)
-	c.UserWalletDetail.Use(hooks...)
 }
 
 // ActivityClient is a client for the Activity schema.
@@ -1131,22 +1075,6 @@ func (c *CouponClient) QueryActivity(co *Coupon) *ActivityQuery {
 	return query
 }
 
-// QueryUserCoupon queries the user_coupon edge of a Coupon.
-func (c *CouponClient) QueryUserCoupon(co *Coupon) *UserCouponQuery {
-	query := &UserCouponQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := co.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(coupon.Table, coupon.FieldID, id),
-			sqlgraph.To(usercoupon.Table, usercoupon.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, coupon.UserCouponTable, coupon.UserCouponColumn),
-		)
-		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *CouponClient) Hooks() []Hook {
 	return c.hooks.Coupon
@@ -1505,22 +1433,6 @@ func (c *OrderClient) GetX(ctx context.Context, id int64) *Order {
 		panic(err)
 	}
 	return obj
-}
-
-// QueryUser queries the user edge of a Order.
-func (c *OrderClient) QueryUser(o *Order) *UserQuery {
-	query := &UserQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := o.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(order.Table, order.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, order.UserTable, order.UserColumn),
-		)
-		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // QueryOrderSnap queries the order_snap edge of a Order.
@@ -1945,22 +1857,6 @@ func (c *RefundClient) GetX(ctx context.Context, id int64) *Refund {
 		panic(err)
 	}
 	return obj
-}
-
-// QueryUser queries the user edge of a Refund.
-func (c *RefundClient) QueryUser(r *Refund) *UserQuery {
-	query := &UserQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := r.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(refund.Table, refund.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, refund.UserTable, refund.UserColumn),
-		)
-		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.
@@ -3090,772 +2986,4 @@ func (c *ThemeClient) QuerySpu(t *Theme) *SpuQuery {
 // Hooks returns the client hooks.
 func (c *ThemeClient) Hooks() []Hook {
 	return c.hooks.Theme
-}
-
-// UserClient is a client for the User schema.
-type UserClient struct {
-	config
-}
-
-// NewUserClient returns a client for the User from the given config.
-func NewUserClient(c config) *UserClient {
-	return &UserClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `user.Hooks(f(g(h())))`.
-func (c *UserClient) Use(hooks ...Hook) {
-	c.hooks.User = append(c.hooks.User, hooks...)
-}
-
-// Create returns a create builder for User.
-func (c *UserClient) Create() *UserCreate {
-	mutation := newUserMutation(c.config, OpCreate)
-	return &UserCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of User entities.
-func (c *UserClient) CreateBulk(builders ...*UserCreate) *UserCreateBulk {
-	return &UserCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for User.
-func (c *UserClient) Update() *UserUpdate {
-	mutation := newUserMutation(c.config, OpUpdate)
-	return &UserUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserClient) UpdateOne(u *User) *UserUpdateOne {
-	mutation := newUserMutation(c.config, OpUpdateOne, withUser(u))
-	return &UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserClient) UpdateOneID(id int64) *UserUpdateOne {
-	mutation := newUserMutation(c.config, OpUpdateOne, withUserID(id))
-	return &UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for User.
-func (c *UserClient) Delete() *UserDelete {
-	mutation := newUserMutation(c.config, OpDelete)
-	return &UserDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserClient) DeleteOne(u *User) *UserDeleteOne {
-	return c.DeleteOneID(u.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserClient) DeleteOneID(id int64) *UserDeleteOne {
-	builder := c.Delete().Where(user.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserDeleteOne{builder}
-}
-
-// Query returns a query builder for User.
-func (c *UserClient) Query() *UserQuery {
-	return &UserQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a User entity by its id.
-func (c *UserClient) Get(ctx context.Context, id int64) (*User, error) {
-	return c.Query().Where(user.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserClient) GetX(ctx context.Context, id int64) *User {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryOrder queries the order edge of a User.
-func (c *UserClient) QueryOrder(u *User) *OrderQuery {
-	query := &OrderQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(order.Table, order.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.OrderTable, user.OrderColumn),
-		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryRefund queries the refund edge of a User.
-func (c *UserClient) QueryRefund(u *User) *RefundQuery {
-	query := &RefundQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(refund.Table, refund.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.RefundTable, user.RefundColumn),
-		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *UserClient) Hooks() []Hook {
-	return c.hooks.User
-}
-
-// UserCouponClient is a client for the UserCoupon schema.
-type UserCouponClient struct {
-	config
-}
-
-// NewUserCouponClient returns a client for the UserCoupon from the given config.
-func NewUserCouponClient(c config) *UserCouponClient {
-	return &UserCouponClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `usercoupon.Hooks(f(g(h())))`.
-func (c *UserCouponClient) Use(hooks ...Hook) {
-	c.hooks.UserCoupon = append(c.hooks.UserCoupon, hooks...)
-}
-
-// Create returns a create builder for UserCoupon.
-func (c *UserCouponClient) Create() *UserCouponCreate {
-	mutation := newUserCouponMutation(c.config, OpCreate)
-	return &UserCouponCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserCoupon entities.
-func (c *UserCouponClient) CreateBulk(builders ...*UserCouponCreate) *UserCouponCreateBulk {
-	return &UserCouponCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserCoupon.
-func (c *UserCouponClient) Update() *UserCouponUpdate {
-	mutation := newUserCouponMutation(c.config, OpUpdate)
-	return &UserCouponUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserCouponClient) UpdateOne(uc *UserCoupon) *UserCouponUpdateOne {
-	mutation := newUserCouponMutation(c.config, OpUpdateOne, withUserCoupon(uc))
-	return &UserCouponUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserCouponClient) UpdateOneID(id int64) *UserCouponUpdateOne {
-	mutation := newUserCouponMutation(c.config, OpUpdateOne, withUserCouponID(id))
-	return &UserCouponUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserCoupon.
-func (c *UserCouponClient) Delete() *UserCouponDelete {
-	mutation := newUserCouponMutation(c.config, OpDelete)
-	return &UserCouponDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserCouponClient) DeleteOne(uc *UserCoupon) *UserCouponDeleteOne {
-	return c.DeleteOneID(uc.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserCouponClient) DeleteOneID(id int64) *UserCouponDeleteOne {
-	builder := c.Delete().Where(usercoupon.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserCouponDeleteOne{builder}
-}
-
-// Query returns a query builder for UserCoupon.
-func (c *UserCouponClient) Query() *UserCouponQuery {
-	return &UserCouponQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserCoupon entity by its id.
-func (c *UserCouponClient) Get(ctx context.Context, id int64) (*UserCoupon, error) {
-	return c.Query().Where(usercoupon.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserCouponClient) GetX(ctx context.Context, id int64) *UserCoupon {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryCoupon queries the coupon edge of a UserCoupon.
-func (c *UserCouponClient) QueryCoupon(uc *UserCoupon) *CouponQuery {
-	query := &CouponQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := uc.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(usercoupon.Table, usercoupon.FieldID, id),
-			sqlgraph.To(coupon.Table, coupon.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, usercoupon.CouponTable, usercoupon.CouponColumn),
-		)
-		fromV = sqlgraph.Neighbors(uc.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *UserCouponClient) Hooks() []Hook {
-	return c.hooks.UserCoupon
-}
-
-// UserFavorClient is a client for the UserFavor schema.
-type UserFavorClient struct {
-	config
-}
-
-// NewUserFavorClient returns a client for the UserFavor from the given config.
-func NewUserFavorClient(c config) *UserFavorClient {
-	return &UserFavorClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `userfavor.Hooks(f(g(h())))`.
-func (c *UserFavorClient) Use(hooks ...Hook) {
-	c.hooks.UserFavor = append(c.hooks.UserFavor, hooks...)
-}
-
-// Create returns a create builder for UserFavor.
-func (c *UserFavorClient) Create() *UserFavorCreate {
-	mutation := newUserFavorMutation(c.config, OpCreate)
-	return &UserFavorCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserFavor entities.
-func (c *UserFavorClient) CreateBulk(builders ...*UserFavorCreate) *UserFavorCreateBulk {
-	return &UserFavorCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserFavor.
-func (c *UserFavorClient) Update() *UserFavorUpdate {
-	mutation := newUserFavorMutation(c.config, OpUpdate)
-	return &UserFavorUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserFavorClient) UpdateOne(uf *UserFavor) *UserFavorUpdateOne {
-	mutation := newUserFavorMutation(c.config, OpUpdateOne, withUserFavor(uf))
-	return &UserFavorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserFavorClient) UpdateOneID(id int64) *UserFavorUpdateOne {
-	mutation := newUserFavorMutation(c.config, OpUpdateOne, withUserFavorID(id))
-	return &UserFavorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserFavor.
-func (c *UserFavorClient) Delete() *UserFavorDelete {
-	mutation := newUserFavorMutation(c.config, OpDelete)
-	return &UserFavorDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserFavorClient) DeleteOne(uf *UserFavor) *UserFavorDeleteOne {
-	return c.DeleteOneID(uf.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserFavorClient) DeleteOneID(id int64) *UserFavorDeleteOne {
-	builder := c.Delete().Where(userfavor.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserFavorDeleteOne{builder}
-}
-
-// Query returns a query builder for UserFavor.
-func (c *UserFavorClient) Query() *UserFavorQuery {
-	return &UserFavorQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserFavor entity by its id.
-func (c *UserFavorClient) Get(ctx context.Context, id int64) (*UserFavor, error) {
-	return c.Query().Where(userfavor.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserFavorClient) GetX(ctx context.Context, id int64) *UserFavor {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserFavorClient) Hooks() []Hook {
-	return c.hooks.UserFavor
-}
-
-// UserInfoClient is a client for the UserInfo schema.
-type UserInfoClient struct {
-	config
-}
-
-// NewUserInfoClient returns a client for the UserInfo from the given config.
-func NewUserInfoClient(c config) *UserInfoClient {
-	return &UserInfoClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `userinfo.Hooks(f(g(h())))`.
-func (c *UserInfoClient) Use(hooks ...Hook) {
-	c.hooks.UserInfo = append(c.hooks.UserInfo, hooks...)
-}
-
-// Create returns a create builder for UserInfo.
-func (c *UserInfoClient) Create() *UserInfoCreate {
-	mutation := newUserInfoMutation(c.config, OpCreate)
-	return &UserInfoCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserInfo entities.
-func (c *UserInfoClient) CreateBulk(builders ...*UserInfoCreate) *UserInfoCreateBulk {
-	return &UserInfoCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserInfo.
-func (c *UserInfoClient) Update() *UserInfoUpdate {
-	mutation := newUserInfoMutation(c.config, OpUpdate)
-	return &UserInfoUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserInfoClient) UpdateOne(ui *UserInfo) *UserInfoUpdateOne {
-	mutation := newUserInfoMutation(c.config, OpUpdateOne, withUserInfo(ui))
-	return &UserInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserInfoClient) UpdateOneID(id int64) *UserInfoUpdateOne {
-	mutation := newUserInfoMutation(c.config, OpUpdateOne, withUserInfoID(id))
-	return &UserInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserInfo.
-func (c *UserInfoClient) Delete() *UserInfoDelete {
-	mutation := newUserInfoMutation(c.config, OpDelete)
-	return &UserInfoDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserInfoClient) DeleteOne(ui *UserInfo) *UserInfoDeleteOne {
-	return c.DeleteOneID(ui.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserInfoClient) DeleteOneID(id int64) *UserInfoDeleteOne {
-	builder := c.Delete().Where(userinfo.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserInfoDeleteOne{builder}
-}
-
-// Query returns a query builder for UserInfo.
-func (c *UserInfoClient) Query() *UserInfoQuery {
-	return &UserInfoQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserInfo entity by its id.
-func (c *UserInfoClient) Get(ctx context.Context, id int64) (*UserInfo, error) {
-	return c.Query().Where(userinfo.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserInfoClient) GetX(ctx context.Context, id int64) *UserInfo {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserInfoClient) Hooks() []Hook {
-	return c.hooks.UserInfo
-}
-
-// UserPointClient is a client for the UserPoint schema.
-type UserPointClient struct {
-	config
-}
-
-// NewUserPointClient returns a client for the UserPoint from the given config.
-func NewUserPointClient(c config) *UserPointClient {
-	return &UserPointClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `userpoint.Hooks(f(g(h())))`.
-func (c *UserPointClient) Use(hooks ...Hook) {
-	c.hooks.UserPoint = append(c.hooks.UserPoint, hooks...)
-}
-
-// Create returns a create builder for UserPoint.
-func (c *UserPointClient) Create() *UserPointCreate {
-	mutation := newUserPointMutation(c.config, OpCreate)
-	return &UserPointCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserPoint entities.
-func (c *UserPointClient) CreateBulk(builders ...*UserPointCreate) *UserPointCreateBulk {
-	return &UserPointCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserPoint.
-func (c *UserPointClient) Update() *UserPointUpdate {
-	mutation := newUserPointMutation(c.config, OpUpdate)
-	return &UserPointUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserPointClient) UpdateOne(up *UserPoint) *UserPointUpdateOne {
-	mutation := newUserPointMutation(c.config, OpUpdateOne, withUserPoint(up))
-	return &UserPointUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserPointClient) UpdateOneID(id int64) *UserPointUpdateOne {
-	mutation := newUserPointMutation(c.config, OpUpdateOne, withUserPointID(id))
-	return &UserPointUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserPoint.
-func (c *UserPointClient) Delete() *UserPointDelete {
-	mutation := newUserPointMutation(c.config, OpDelete)
-	return &UserPointDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserPointClient) DeleteOne(up *UserPoint) *UserPointDeleteOne {
-	return c.DeleteOneID(up.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserPointClient) DeleteOneID(id int64) *UserPointDeleteOne {
-	builder := c.Delete().Where(userpoint.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserPointDeleteOne{builder}
-}
-
-// Query returns a query builder for UserPoint.
-func (c *UserPointClient) Query() *UserPointQuery {
-	return &UserPointQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserPoint entity by its id.
-func (c *UserPointClient) Get(ctx context.Context, id int64) (*UserPoint, error) {
-	return c.Query().Where(userpoint.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserPointClient) GetX(ctx context.Context, id int64) *UserPoint {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserPointClient) Hooks() []Hook {
-	return c.hooks.UserPoint
-}
-
-// UserPointDetailClient is a client for the UserPointDetail schema.
-type UserPointDetailClient struct {
-	config
-}
-
-// NewUserPointDetailClient returns a client for the UserPointDetail from the given config.
-func NewUserPointDetailClient(c config) *UserPointDetailClient {
-	return &UserPointDetailClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `userpointdetail.Hooks(f(g(h())))`.
-func (c *UserPointDetailClient) Use(hooks ...Hook) {
-	c.hooks.UserPointDetail = append(c.hooks.UserPointDetail, hooks...)
-}
-
-// Create returns a create builder for UserPointDetail.
-func (c *UserPointDetailClient) Create() *UserPointDetailCreate {
-	mutation := newUserPointDetailMutation(c.config, OpCreate)
-	return &UserPointDetailCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserPointDetail entities.
-func (c *UserPointDetailClient) CreateBulk(builders ...*UserPointDetailCreate) *UserPointDetailCreateBulk {
-	return &UserPointDetailCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserPointDetail.
-func (c *UserPointDetailClient) Update() *UserPointDetailUpdate {
-	mutation := newUserPointDetailMutation(c.config, OpUpdate)
-	return &UserPointDetailUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserPointDetailClient) UpdateOne(upd *UserPointDetail) *UserPointDetailUpdateOne {
-	mutation := newUserPointDetailMutation(c.config, OpUpdateOne, withUserPointDetail(upd))
-	return &UserPointDetailUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserPointDetailClient) UpdateOneID(id int64) *UserPointDetailUpdateOne {
-	mutation := newUserPointDetailMutation(c.config, OpUpdateOne, withUserPointDetailID(id))
-	return &UserPointDetailUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserPointDetail.
-func (c *UserPointDetailClient) Delete() *UserPointDetailDelete {
-	mutation := newUserPointDetailMutation(c.config, OpDelete)
-	return &UserPointDetailDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserPointDetailClient) DeleteOne(upd *UserPointDetail) *UserPointDetailDeleteOne {
-	return c.DeleteOneID(upd.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserPointDetailClient) DeleteOneID(id int64) *UserPointDetailDeleteOne {
-	builder := c.Delete().Where(userpointdetail.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserPointDetailDeleteOne{builder}
-}
-
-// Query returns a query builder for UserPointDetail.
-func (c *UserPointDetailClient) Query() *UserPointDetailQuery {
-	return &UserPointDetailQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserPointDetail entity by its id.
-func (c *UserPointDetailClient) Get(ctx context.Context, id int64) (*UserPointDetail, error) {
-	return c.Query().Where(userpointdetail.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserPointDetailClient) GetX(ctx context.Context, id int64) *UserPointDetail {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserPointDetailClient) Hooks() []Hook {
-	return c.hooks.UserPointDetail
-}
-
-// UserWalletClient is a client for the UserWallet schema.
-type UserWalletClient struct {
-	config
-}
-
-// NewUserWalletClient returns a client for the UserWallet from the given config.
-func NewUserWalletClient(c config) *UserWalletClient {
-	return &UserWalletClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `userwallet.Hooks(f(g(h())))`.
-func (c *UserWalletClient) Use(hooks ...Hook) {
-	c.hooks.UserWallet = append(c.hooks.UserWallet, hooks...)
-}
-
-// Create returns a create builder for UserWallet.
-func (c *UserWalletClient) Create() *UserWalletCreate {
-	mutation := newUserWalletMutation(c.config, OpCreate)
-	return &UserWalletCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserWallet entities.
-func (c *UserWalletClient) CreateBulk(builders ...*UserWalletCreate) *UserWalletCreateBulk {
-	return &UserWalletCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserWallet.
-func (c *UserWalletClient) Update() *UserWalletUpdate {
-	mutation := newUserWalletMutation(c.config, OpUpdate)
-	return &UserWalletUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserWalletClient) UpdateOne(uw *UserWallet) *UserWalletUpdateOne {
-	mutation := newUserWalletMutation(c.config, OpUpdateOne, withUserWallet(uw))
-	return &UserWalletUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserWalletClient) UpdateOneID(id int64) *UserWalletUpdateOne {
-	mutation := newUserWalletMutation(c.config, OpUpdateOne, withUserWalletID(id))
-	return &UserWalletUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserWallet.
-func (c *UserWalletClient) Delete() *UserWalletDelete {
-	mutation := newUserWalletMutation(c.config, OpDelete)
-	return &UserWalletDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserWalletClient) DeleteOne(uw *UserWallet) *UserWalletDeleteOne {
-	return c.DeleteOneID(uw.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserWalletClient) DeleteOneID(id int64) *UserWalletDeleteOne {
-	builder := c.Delete().Where(userwallet.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserWalletDeleteOne{builder}
-}
-
-// Query returns a query builder for UserWallet.
-func (c *UserWalletClient) Query() *UserWalletQuery {
-	return &UserWalletQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserWallet entity by its id.
-func (c *UserWalletClient) Get(ctx context.Context, id int64) (*UserWallet, error) {
-	return c.Query().Where(userwallet.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserWalletClient) GetX(ctx context.Context, id int64) *UserWallet {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserWalletClient) Hooks() []Hook {
-	return c.hooks.UserWallet
-}
-
-// UserWalletDetailClient is a client for the UserWalletDetail schema.
-type UserWalletDetailClient struct {
-	config
-}
-
-// NewUserWalletDetailClient returns a client for the UserWalletDetail from the given config.
-func NewUserWalletDetailClient(c config) *UserWalletDetailClient {
-	return &UserWalletDetailClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `userwalletdetail.Hooks(f(g(h())))`.
-func (c *UserWalletDetailClient) Use(hooks ...Hook) {
-	c.hooks.UserWalletDetail = append(c.hooks.UserWalletDetail, hooks...)
-}
-
-// Create returns a create builder for UserWalletDetail.
-func (c *UserWalletDetailClient) Create() *UserWalletDetailCreate {
-	mutation := newUserWalletDetailMutation(c.config, OpCreate)
-	return &UserWalletDetailCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserWalletDetail entities.
-func (c *UserWalletDetailClient) CreateBulk(builders ...*UserWalletDetailCreate) *UserWalletDetailCreateBulk {
-	return &UserWalletDetailCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserWalletDetail.
-func (c *UserWalletDetailClient) Update() *UserWalletDetailUpdate {
-	mutation := newUserWalletDetailMutation(c.config, OpUpdate)
-	return &UserWalletDetailUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserWalletDetailClient) UpdateOne(uwd *UserWalletDetail) *UserWalletDetailUpdateOne {
-	mutation := newUserWalletDetailMutation(c.config, OpUpdateOne, withUserWalletDetail(uwd))
-	return &UserWalletDetailUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserWalletDetailClient) UpdateOneID(id int64) *UserWalletDetailUpdateOne {
-	mutation := newUserWalletDetailMutation(c.config, OpUpdateOne, withUserWalletDetailID(id))
-	return &UserWalletDetailUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserWalletDetail.
-func (c *UserWalletDetailClient) Delete() *UserWalletDetailDelete {
-	mutation := newUserWalletDetailMutation(c.config, OpDelete)
-	return &UserWalletDetailDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserWalletDetailClient) DeleteOne(uwd *UserWalletDetail) *UserWalletDetailDeleteOne {
-	return c.DeleteOneID(uwd.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserWalletDetailClient) DeleteOneID(id int64) *UserWalletDetailDeleteOne {
-	builder := c.Delete().Where(userwalletdetail.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserWalletDetailDeleteOne{builder}
-}
-
-// Query returns a query builder for UserWalletDetail.
-func (c *UserWalletDetailClient) Query() *UserWalletDetailQuery {
-	return &UserWalletDetailQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserWalletDetail entity by its id.
-func (c *UserWalletDetailClient) Get(ctx context.Context, id int64) (*UserWalletDetail, error) {
-	return c.Query().Where(userwalletdetail.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserWalletDetailClient) GetX(ctx context.Context, id int64) *UserWalletDetail {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserWalletDetailClient) Hooks() []Hook {
-	return c.hooks.UserWalletDetail
 }

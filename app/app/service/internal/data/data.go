@@ -37,6 +37,17 @@ func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
 	return client
 }
 
+// NewData .
+func NewData(entClient *model.Client, logger log.Logger) (*Data, func(), error) {
+	cleanup := func() {
+		log.NewHelper(logger).Info("closing the data resources")
+	}
+	return &Data{
+		db:  entClient,
+		log: log.NewHelper(logger),
+	}, cleanup, nil
+}
+
 // func NewRedisClient(conf *conf.Data, logger log.Logger)*redis.Client {
 // 	l := log.NewHelper(logger)
 // 	rdb := redis.NewClient(&redis.Options{
@@ -50,14 +61,3 @@ func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
 // 	}
 // 	return rdb
 // }
-
-// NewData .
-func NewData(entClient *model.Client, logger log.Logger) (*Data, func(), error) {
-	cleanup := func() {
-		log.NewHelper(logger).Info("closing the data resources")
-	}
-	return &Data{
-		db:  entClient,
-		log: log.NewHelper(logger),
-	}, cleanup, nil
-}
