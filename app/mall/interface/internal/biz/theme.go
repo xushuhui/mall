@@ -39,7 +39,7 @@ type Spu struct {
 	Online int32 `json:"online,omitempty"`
 }
 type ThemeRepo interface {
-	GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error)
+	GetThemeByNames(ctx context.Context, names string) (t []Theme, err error)
 	GetThemeWithSpu(ctx context.Context, name string) (t ThemeSpu, err error)
 }
 
@@ -54,7 +54,7 @@ func NewThemeUsecase(repo ThemeRepo, logger log.Logger) *ThemeUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
-func (uc *ThemeUsecase) GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error) {
+func (uc *ThemeUsecase) GetThemeByNames(ctx context.Context, names string) (t []Theme, err error) {
 	t, err = uc.repo.GetThemeByNames(ctx, names)
 	return
 }

@@ -12,16 +12,21 @@ import (
 type Interface struct {
 	mall.UnimplementedInterfaceServer
 	bu *biz.BannerUsecase
+	tu *biz.ThemeUsecase
+	au *biz.ActivityUsecase
+	cu *biz.CategoryUsecase
 
 	log *log.Helper
 }
 
-func NewInterface(bu *biz.BannerUsecase,
+func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase,
 	logger log.Logger) *Interface {
 
 	return &Interface{
-		bu: bu,
-
+		bu:  bu,
+		tu:  tu,
+		au:  au,
+		cu:  cu,
 		log: log.NewHelper(logger),
 	}
 }
@@ -32,39 +37,212 @@ func (s *Interface) GetBannerById(ctx context.Context, in *mall.BannerByIdReques
 		return nil, err
 	}
 
+	var items []*mall.BannerItem
+	for _, v := range b.Items {
+		items = append(items, &mall.BannerItem{
+			Id:       v.ID,
+			Img:      v.Img,
+			Keyword:  v.Keyword,
+			Type:     int32(v.Type),
+			Name:     v.Name,
+			BannerId: v.BannerId,
+		})
+
+	}
 	return &mall.Banner{
 		Id:          b.Id,
 		Name:        b.Name,
 		Title:       b.Title,
 		Img:         b.Img,
 		Description: b.Description,
+		Items:       items,
 	}, nil
 
 }
 func (s *Interface) GetBannerByName(ctx context.Context, in *mall.BannerByNameRequest) (out *mall.Banner, err error) {
-	return
+	b, err := s.bu.GetBannerByName(ctx, in.Name)
+	if err != nil {
+		return
+	}
+	var items []*mall.BannerItem
+	for _, v := range b.Items {
+		items = append(items, &mall.BannerItem{
+			Id:       v.ID,
+			Img:      v.Img,
+			Name:     v.Name,
+			Keyword:  v.Keyword,
+			Type:     int32(v.Type),
+			BannerId: v.BannerId,
+		})
+	}
+	return &mall.Banner{
+		Id:          b.Id,
+		Name:        b.Name,
+		Title:       b.Title,
+		Img:         b.Img,
+		Description: b.Description,
+		Items:       items,
+	}, nil
 }
 func (s *Interface) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRequest) (out *mall.Themes, err error) {
-
-	return
+	t, err := s.tu.GetThemeByNames(ctx, in.Names)
+	if err != nil {
+		return
+	}
+	var thems []*mall.Theme
+	for _, v := range t {
+		thems = append(thems, &mall.Theme{
+			Id:             v.Id,
+			Title:          v.Title,
+			Description:    v.Description,
+			Name:           v.Name,
+			EntranceImg:    v.EntranceImg,
+			InternalTopImg: v.InternalTopImg,
+			TitleImg:       v.TitleImg,
+			TplName:        v.TplName,
+			Online:         v.Online,
+		})
+	}
+	return &mall.Themes{
+		Theme: thems,
+	}, nil
 }
 
 func (s *Interface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuRequest) (out *mall.ThemeSpu, err error) {
+	t, err := s.tu.GetThemeWithSpu(ctx, in.Name)
+	if err != nil {
+		return
+	}
+	var spuList []*mall.Spu
+	for _, v := range t.SpuList {
+		spuList = append(spuList, &mall.Spu{
+			Id:             v.Id,
+			Title:          v.Title,
+			Subtitle:       v.Subtitle,
+			CategoryId:     v.CategoryId,
+			RootCategoryId: v.RootCategoryId,
+			Price:          v.Price,
+			Img:            v.Img,
+			ForThemeImg:    v.ForThemeImg,
+			Description:    v.Description,
+			DiscountPrice:  v.DiscountPrice,
+			Tags:           v.Tags,
+			Online:         v.Online,
+		})
+	}
 
-	return
+	return &mall.ThemeSpu{
+		Id:             t.Id,
+		Title:          t.Title,
+		Description:    t.Description,
+		Name:           t.Name,
+		EntranceImg:    t.EntranceImg,
+		InternalTopImg: t.InternalTopImg,
+		TitleImg:       t.TitleImg,
+		TplName:        t.TplName,
+		Online:         t.Online,
+		SpuList:        spuList,
+	}, nil
 }
 func (s *Interface) GetActivityByName(ctx context.Context, in *mall.ActivityByNameRequest) (out *mall.Activity, err error) {
-	return
-
+	c, err := s.au.GetActivityByName(ctx, in.Name)
+	if err != nil {
+		return
+	}
+	out = &mall.Activity{
+		Id:          c.Id,
+		Title:       c.Title,
+		EntranceImg: c.EntranceImg,
+		Online:      c.Online,
+		Remark:      c.Remark,
+		StartTime:   c.StartTime,
+		EndTime:     c.EndTime,
+	}
+	return out, nil
 }
 func (s *Interface) GetActivityWithCoupon(ctx context.Context, in *mall.ActivityWithCouponRequest) (out *mall.ActivityCoupon, err error) {
-	return
+	c, err := s.au.GetActivityWithCoupon(ctx, in.Name)
+	if err != nil {
+		return
+	}
+	var coupons []*mall.CouponBo
+	for _, v := range c.Coupons {
+		coupons = append(coupons, &mall.CouponBo{
+			Id:          v.Id,
+			Title:       v.Title,
+			StartTime:   v.StartTime,
+			EndTime:     v.EndTime,
+			Description: v.Description,
+			FullMoney:   v.FullMoney,
+			Minus:       v.Minus,
+			Rate:        v.Rate,
+			Type:        v.Type,
+			Remark:      v.Remark,
+			WholeStore:  v.WholeStore,
+		})
+	}
+	return &mall.ActivityCoupon{
+		Id:          c.Id,
+		Title:       c.Title,
+		EntranceImg: c.EntranceImg,
+		Online:      c.Online,
+		Remark:      c.Remark,
+		StartTime:   c.StartTime,
+		EndTime:     c.EndTime,
+		Coupon:      coupons,
+	}, nil
 }
 func (s *Interface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *mall.AllCategory, err error) {
-	return
+	c, err := s.cu.GetAllCategory(ctx)
+	if err != nil {
+		return
+	}
+	var roots []*mall.Category
+	var subs []*mall.Category
+	for _, v := range c.Roots {
+		roots = append(roots, &mall.Category{
+			Id:       v.Id,
+			Name:     v.Name,
+			IsRoot:   v.IsRoot,
+			Img:      v.Img,
+			ParentId: v.ParentId,
+			Index:    v.Index,
+		})
+	}
+	for _, v := range c.Subs {
+		subs = append(subs, &mall.Category{
+			Id:       v.Id,
+			Name:     v.Name,
+			IsRoot:   v.IsRoot,
+			Img:      v.Img,
+			ParentId: v.ParentId,
+			Index:    v.Index,
+		})
+	}
+	return &mall.AllCategory{
+		Roots: roots,
+		Subs:  subs,
+	}, nil
 }
 func (s *Interface) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *mall.GridCategories, err error) {
-	return
+	c, err := s.cu.GetGridCategory(ctx)
+	if err != nil {
+		return
+	}
+	var category []*mall.GridCategories_GridCategory
+	for _, v := range c {
+		category = append(category, &mall.GridCategories_GridCategory{
+			Id:             v.Id,
+			Name:           v.Name,
+			Title:          v.Title,
+			Img:            v.Img,
+			CategoryId:     v.CategoryId,
+			RootCategoryId: v.RootCategoryId,
+		})
+	}
+	return &mall.GridCategories{
+		Category: category,
+	}, nil
 }
 func (s *Interface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
 	return

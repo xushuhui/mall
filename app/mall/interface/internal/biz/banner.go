@@ -14,14 +14,16 @@ type Banner struct {
 	Items       []BannerItem
 }
 type BannerItem struct {
-	ID      int64  `json:"id"`
-	Img     string `json:"img"`
-	Keyword string `json:"keyword"`
-	Type    int    `json:"type"`
-	Name    string `json:"name"`
+	ID       int64  `json:"id"`
+	Img      string `json:"img"`
+	Keyword  string `json:"keyword"`
+	Type     int    `json:"type"`
+	Name     string `json:"name"`
+	BannerId int64  `json:"banner_id"`
 }
 type BannerRepo interface {
 	GetBannerById(ctx context.Context, id int64) (b Banner, err error)
+	GetBannerByName(ctx context.Context, name string) (b Banner, err error)
 }
 
 type BannerUsecase struct {
@@ -40,6 +42,6 @@ func (uc *BannerUsecase) GetBannerById(ctx context.Context, id int64) (b Banner,
 	return
 }
 func (uc *BannerUsecase) GetBannerByName(ctx context.Context, name string) (b Banner, err error) {
-
+	b, err = uc.repo.GetBannerByName(ctx, name)
 	return
 }

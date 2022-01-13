@@ -30,16 +30,17 @@ func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner,
 	if err != nil {
 		return
 	}
-
+	r.log.Info(po.Edges.BannerItem)
 	var items []biz.BannerItem
 	for _, v := range po.Edges.BannerItem {
 
 		items = append(items, biz.BannerItem{
-			ID:      v.ID,
-			Name:    v.Name,
-			Img:     v.Img,
-			Keyword: v.Keyword,
-			Type:    v.Type,
+			ID:       v.ID,
+			Name:     v.Name,
+			Img:      v.Img,
+			Keyword:  v.Keyword,
+			Type:     v.Type,
+			BannerId: v.BannerID,
 		})
 	}
 	return biz.Banner{
@@ -65,11 +66,12 @@ func (r *bannerRepo) GetBannerByName(ctx context.Context, name string) (b biz.Ba
 	for _, v := range po.Edges.BannerItem {
 
 		items = append(items, biz.BannerItem{
-			ID:      v.ID,
-			Name:    v.Name,
-			Img:     v.Img,
-			Keyword: v.Keyword,
-			Type:    v.Type,
+			ID:       v.ID,
+			Name:     v.Name,
+			Img:      v.Img,
+			Keyword:  v.Keyword,
+			Type:     v.Type,
+			BannerId: v.BannerID,
 		})
 	}
 	return biz.Banner{

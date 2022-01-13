@@ -17,8 +17,8 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewBannerRepo, NewAppServiceClient, NewRegistrar,
-	NewDiscovery,
+var ProviderSet = wire.NewSet(NewData, NewBannerRepo, NewThemeRepo, NewAppServiceClient, NewRegistrar,
+	NewDiscovery, NewActivityRepo, NewCategoryRepo,
 )
 
 // Data .

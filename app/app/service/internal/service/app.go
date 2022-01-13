@@ -41,11 +41,12 @@ func (s *AppService) GetBannerById(ctx context.Context, in *app.IdRequest) (out 
 	for _, v := range rv.Items {
 
 		item := &app.BannerItem{
-			Id:      v.ID,
-			Name:    v.Name,
-			Img:     v.Img,
-			Keyword: v.Keyword,
-			Type:    int32(v.Type),
+			Id:       v.ID,
+			Name:     v.Name,
+			Img:      v.Img,
+			Keyword:  v.Keyword,
+			Type:     int32(v.Type),
+			BannerId: v.BannerId,
 		}
 		items = append(items, item)
 	}
@@ -67,11 +68,12 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *app.NameRequest) (
 	var items []*app.BannerItem
 	for _, v := range rv.Items {
 		items = append(items, &app.BannerItem{
-			Id:      v.ID,
-			Name:    v.Name,
-			Img:     v.Img,
-			Keyword: v.Keyword,
-			Type:    int32(v.Type),
+			Id:       v.ID,
+			Name:     v.Name,
+			Img:      v.Img,
+			Keyword:  v.Keyword,
+			Type:     int32(v.Type),
+			BannerId: v.BannerId,
 		})
 	}
 	return &app.Banner{
