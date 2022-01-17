@@ -9,7 +9,12 @@ option go_package = "mall-go/api/order/service";
 service Sku{
   rpc GetSkuById(IdRequest) returns (SkuVO) {
     option (google.api.http) = {
-      get : "/sku/{id}"
+      get : "/sku/id/{id}"
+    };
+  }
+  rpc GetSpuByTheme(IdRequest) returns (SpuByThemeReply) {
+    option (google.api.http) = {
+      get : "/sku/by/theme/{id}"
     };
   }
 }
@@ -18,4 +23,21 @@ message IdRequest{
 }
 message SkuVO{
   int64 id =1;
+}
+message SpuByThemeReply{
+  repeated SpuVO SpuVO=1;
+}
+message SpuVO{
+  int64 id = 1;
+  string title = 2;
+  string subtitle = 3;
+  int64 category_id = 4;
+  int64 root_category_id = 5;
+  string price = 6;
+  string img = 7;
+  string for_theme_img = 8;
+  string description = 9;
+  string discount_price = 10;
+  string tags = 11;
+  int32 online = 13;
 }

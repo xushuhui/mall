@@ -22,7 +22,7 @@ type AppClient interface {
 	GetBannerById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetBannerByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Themes, error)
-	GetThemeWithSpu(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*ThemeSpu, error)
+	GetThemeByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Theme, error)
 	GetActivityByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Activity, error)
 	GetActivityWithCoupon(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*ActivityCoupon, error)
 	ListCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Categories, error)
@@ -74,9 +74,9 @@ func (c *appClient) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest
 	return out, nil
 }
 
-func (c *appClient) GetThemeWithSpu(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*ThemeSpu, error) {
-	out := new(ThemeSpu)
-	err := c.cc.Invoke(ctx, "/app.App/GetThemeWithSpu", in, out, opts...)
+func (c *appClient) GetThemeByName(ctx context.Context, in *NameRequest, opts ...grpc.CallOption) (*Theme, error) {
+	out := new(Theme)
+	err := c.cc.Invoke(ctx, "/app.App/GetThemeByName", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +216,7 @@ type AppServer interface {
 	GetBannerById(context.Context, *IdRequest) (*Banner, error)
 	GetBannerByName(context.Context, *NameRequest) (*Banner, error)
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
-	GetThemeWithSpu(context.Context, *NameRequest) (*ThemeSpu, error)
+	GetThemeByName(context.Context, *NameRequest) (*Theme, error)
 	GetActivityByName(context.Context, *NameRequest) (*Activity, error)
 	GetActivityWithCoupon(context.Context, *NameRequest) (*ActivityCoupon, error)
 	ListCategory(context.Context, *emptypb.Empty) (*Categories, error)
@@ -247,8 +247,8 @@ func (UnimplementedAppServer) GetBannerByName(context.Context, *NameRequest) (*B
 func (UnimplementedAppServer) GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetThemeByNames not implemented")
 }
-func (UnimplementedAppServer) GetThemeWithSpu(context.Context, *NameRequest) (*ThemeSpu, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetThemeWithSpu not implemented")
+func (UnimplementedAppServer) GetThemeByName(context.Context, *NameRequest) (*Theme, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetThemeByName not implemented")
 }
 func (UnimplementedAppServer) GetActivityByName(context.Context, *NameRequest) (*Activity, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActivityByName not implemented")
@@ -359,20 +359,20 @@ func _App_GetThemeByNames_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetThemeWithSpu_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _App_GetThemeByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NameRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AppServer).GetThemeWithSpu(ctx, in)
+		return srv.(AppServer).GetThemeByName(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.App/GetThemeWithSpu",
+		FullMethod: "/app.App/GetThemeByName",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetThemeWithSpu(ctx, req.(*NameRequest))
+		return srv.(AppServer).GetThemeByName(ctx, req.(*NameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -649,8 +649,8 @@ var App_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _App_GetThemeByNames_Handler,
 		},
 		{
-			MethodName: "GetThemeWithSpu",
-			Handler:    _App_GetThemeWithSpu_Handler,
+			MethodName: "GetThemeByName",
+			Handler:    _App_GetThemeByName_Handler,
 		},
 		{
 			MethodName: "GetActivityByName",

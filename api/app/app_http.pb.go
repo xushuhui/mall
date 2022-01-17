@@ -31,8 +31,8 @@ type AppHTTPServer interface {
 	GetSpuById(context.Context, *IdRequest) (*SpuDetail, error)
 	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
 	GetTagByType(context.Context, *TypeRequest) (*Tags, error)
+	GetThemeByName(context.Context, *NameRequest) (*Theme, error)
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
-	GetThemeWithSpu(context.Context, *NameRequest) (*ThemeSpu, error)
 	GetUserCouponByStatus(context.Context, *StatusRequest) (*Coupons, error)
 	GetUserCouponByStatusWithCategory(context.Context, *StatusRequest) (*Coupons, error)
 	ListCategory(context.Context, *emptypb.Empty) (*Categories, error)
@@ -44,7 +44,7 @@ func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
 	r.GET("/banner/id/{id}", _App_GetBannerById0_HTTP_Handler(srv))
 	r.GET("/banner/name/{name}", _App_GetBannerByName0_HTTP_Handler(srv))
 	r.GET("/theme/by/names", _App_GetThemeByNames0_HTTP_Handler(srv))
-	r.GET("/theme/name/{name}/with_spu", _App_GetThemeWithSpu0_HTTP_Handler(srv))
+	r.GET("/theme/name/{name}", _App_GetThemeByName0_HTTP_Handler(srv))
 	r.GET("/activity/name/{name}", _App_GetActivityByName0_HTTP_Handler(srv))
 	r.GET("/activity/name/{name}/with_coupon", _App_GetActivityWithCoupon0_HTTP_Handler(srv))
 	r.GET("/category", _App_ListCategory0_HTTP_Handler(srv))
@@ -124,7 +124,7 @@ func _App_GetThemeByNames0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context
 	}
 }
 
-func _App_GetThemeWithSpu0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+func _App_GetThemeByName0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in NameRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -133,15 +133,15 @@ func _App_GetThemeWithSpu0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/app.App/GetThemeWithSpu")
+		http.SetOperation(ctx, "/app.App/GetThemeByName")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetThemeWithSpu(ctx, req.(*NameRequest))
+			return srv.GetThemeByName(ctx, req.(*NameRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*ThemeSpu)
+		reply := out.(*Theme)
 		return ctx.Result(200, reply)
 	}
 }
@@ -452,8 +452,8 @@ type AppHTTPClient interface {
 	GetSpuById(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SpuDetail, err error)
 	GetSpuLatest(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *SpuPage, err error)
 	GetTagByType(ctx context.Context, req *TypeRequest, opts ...http.CallOption) (rsp *Tags, err error)
+	GetThemeByName(ctx context.Context, req *NameRequest, opts ...http.CallOption) (rsp *Theme, err error)
 	GetThemeByNames(ctx context.Context, req *ThemeByNamesRequest, opts ...http.CallOption) (rsp *Themes, err error)
-	GetThemeWithSpu(ctx context.Context, req *NameRequest, opts ...http.CallOption) (rsp *ThemeSpu, err error)
 	GetUserCouponByStatus(ctx context.Context, req *StatusRequest, opts ...http.CallOption) (rsp *Coupons, err error)
 	GetUserCouponByStatusWithCategory(ctx context.Context, req *StatusRequest, opts ...http.CallOption) (rsp *Coupons, err error)
 	ListCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Categories, err error)
@@ -624,11 +624,11 @@ func (c *AppHTTPClientImpl) GetTagByType(ctx context.Context, in *TypeRequest, o
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...http.CallOption) (*Themes, error) {
-	var out Themes
-	pattern := "/theme/by/names"
+func (c *AppHTTPClientImpl) GetThemeByName(ctx context.Context, in *NameRequest, opts ...http.CallOption) (*Theme, error) {
+	var out Theme
+	pattern := "/theme/name/{name}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/app.App/GetThemeByNames"))
+	opts = append(opts, http.Operation("/app.App/GetThemeByName"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -637,11 +637,11 @@ func (c *AppHTTPClientImpl) GetThemeByNames(ctx context.Context, in *ThemeByName
 	return &out, err
 }
 
-func (c *AppHTTPClientImpl) GetThemeWithSpu(ctx context.Context, in *NameRequest, opts ...http.CallOption) (*ThemeSpu, error) {
-	var out ThemeSpu
-	pattern := "/theme/name/{name}/with_spu"
+func (c *AppHTTPClientImpl) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...http.CallOption) (*Themes, error) {
+	var out Themes
+	pattern := "/theme/by/names"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/app.App/GetThemeWithSpu"))
+	opts = append(opts, http.Operation("/app.App/GetThemeByNames"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

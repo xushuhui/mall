@@ -20,41 +20,23 @@ func NewThemeRepo(data *Data, logger log.Logger) biz.ThemeRepo {
 		log:  log.NewHelper(logger),
 	}
 }
-func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.ThemeSpu, err error) {
-	return biz.ThemeSpu{}, err
-	//po, err := r.data.db.Theme.Query().Where(theme.Name(name)).WithSpu().First(ctx)
-	//if err != nil {
-	//	return
-	//}
-	//spuList := make([]*biz2.Spu, 0)
-	//for _, v := range po.Edges.Spu {
-	//
-	//	spuList = append(spuList, &biz2.Spu{
-	//		Id:             v.ID,
-	//		Title:          v.Title,
-	//		Price:          v.Price,
-	//		Subtitle:       v.Subtitle,
-	//		CategoryId:     v.CategoryID,
-	//		RootCategoryId: v.RootCategoryID,
-	//		Img:            v.Img,
-	//		Online:         int32(po.Online),
-	//	})
-	//}
-	//theme := biz.Theme{
-	//	Id:             po.ID,
-	//	Name:           po.Name,
-	//	Title:          po.Title,
-	//	Description:    po.Description,
-	//	EntranceImg:    po.EntranceImg,
-	//	InternalTopImg: po.InternalTopImg,
-	//	TitleImg:       po.TitleImg,
-	//	TplName:        po.TplName,
-	//	Online:         int32(po.Online),
-	//}
-	//return biz.ThemeSpu{
-	//	Theme:   theme,
-	//	SpuList: spuList,
-	//}, nil
+func (r *themeRepo) GetThemeByName(ctx context.Context, name string) (t biz.Theme, err error) {
+	po, err := r.data.db.Theme.Query().Where(theme.Name(name)).First(ctx)
+	if err != nil {
+		return
+	}
+	return biz.Theme{
+		Id:             po.ID,
+		Name:           po.Name,
+		Title:          po.Title,
+		Description:    po.Description,
+		EntranceImg:    po.EntranceImg,
+		InternalTopImg: po.InternalTopImg,
+		TitleImg:       po.TitleImg,
+		TplName:        po.TplName,
+		Online:         int32(po.Online),
+	}, nil
+
 }
 func (r *themeRepo) GetThemeByNames(ctx context.Context, names []string) (themes []biz.Theme, err error) {
 	pos, err := r.data.db.Theme.Query().Where(theme.NameIn(names...)).All(ctx)

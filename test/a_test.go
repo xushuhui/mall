@@ -22,13 +22,52 @@ func (liyuanqi) Say() string {
 	return "liyuanqi"
 }
 
+type arr struct {
+	Id        int
+	OrderCode string  `json:"order_code"`
+	Mcode     string  `json:"mcode"`
+	Type      int     `json:"type"`
+	Radio     float64 `json:"radio"`
+	Mycat     int     `json:"mycat"`
+}
+type arr2 struct {
+	Mcode string  `json:"mcode"`
+	Radio float64 `json:"radio"`
+}
+
 func Test_Interface(t *testing.T) {
-	// 作为调用方，我直接调用NewPerson，获取接口，然后调用接口的say方法,我不管里面是什么，我只管调用，换句话说，我还可以写个xushuhui struct
-	// 同样实现say方法，然后调用NewPerson2，同样执行say 方法
-	person := NewPerson()
-	person.Say()
-	person2 := NewPerson2()
-	person2.Say()
+	var ex []arr
+	ex = []arr{
+		{1, "ORD00000000001", "m1", 1, 30.0, 125}, {2, "ORD00000000001", "m2", 2, 67.0, 125},
+		{3, "ORD00000000001", "m3", 2, 3.0, 216},
+		{4, "ORD00000000002", "m3", 2, 3.0, 216},
+	}
+
+	m1 := make(map[string][]arr)
+	for _, a := range ex {
+
+		m1[a.OrderCode] = append(m1[a.OrderCode], a)
+	}
+	var radio float64
+	for _, a := range m1["ORD00000000001"] {
+
+		if a.Type == 2 && a.Mycat == 216 {
+			radio += a.Radio
+
+		}
+
+	}
+	for i, a := range m1["ORD00000000001"] {
+
+		if a.Type == 1 {
+			m1["ORD00000000001"][i].Radio = a.Radio + radio
+			t.Log(a.Radio, radio, m1["ORD00000000001"][i].Radio)
+		}
+
+	}
+	t.Log(radio)
+
+	t.Log(m1)
 
 }
 

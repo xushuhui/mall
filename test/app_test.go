@@ -64,13 +64,13 @@ func TestGetThemeByNames(t *testing.T) {
 }
 
 func TestGetThemeWithSpu(t *testing.T) {
-	reply, err := appClient.GetThemeWithSpu(context.Background(), &app.NameRequest{Name: "t-1"})
-	if err != nil {
-		log.Fatal(err)
-	}
-	t.Log(reply)
-	assert.Equal(t, reply.Title, "清凉一夏，折扣季")
-	assert.Equal(t, reply.Name, "t-1")
+	//reply, err := appClient.GetThemeWithSpu(context.Background(), &app.NameRequest{Name: "t-1"})
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//t.Log(reply)
+	//assert.Equal(t, reply.Title, "清凉一夏，折扣季")
+	//assert.Equal(t, reply.Name, "t-1")
 }
 
 func TestListCategory(t *testing.T) {

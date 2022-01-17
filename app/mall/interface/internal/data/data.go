@@ -2,7 +2,9 @@ package data
 
 import (
 	"context"
+	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	"mall-go/api/app"
+	sku "mall-go/api/sku/service"
 	"mall-go/app/mall/interface/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -11,7 +13,6 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	_ "github.com/go-sql-driver/mysql"
 
-	consul "github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	"github.com/google/wire"
 	consulAPI "github.com/hashicorp/consul/api"
 )
@@ -24,6 +25,7 @@ var ProviderSet = wire.NewSet(NewData, NewBannerRepo, NewThemeRepo, NewAppServic
 // Data .
 type Data struct {
 	ac  app.AppClient
+	sc  sku.SkuClient
 	log *log.Helper
 	//rdb *redis.Client
 }

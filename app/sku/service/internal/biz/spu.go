@@ -25,6 +25,7 @@ type SpuRepo interface {
 	CreateSpu(ctx context.Context) (err error)
 	GetSpuById(ctx context.Context, id int64) (Spu Spu, err error)
 	GetSpuByCategory(ctx context.Context, id int64) (Spus []Spu, err error)
+	GetSpuByTheme(ctx context.Context, id int64) (Spus []Spu, err error)
 }
 type SpuUsecase struct {
 	repo SpuRepo

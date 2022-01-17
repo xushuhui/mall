@@ -9,7 +9,7 @@ import (
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
-type Interface struct {
+type MallInterface struct {
 	mall.UnimplementedInterfaceServer
 	bu *biz.BannerUsecase
 	tu *biz.ThemeUsecase
@@ -20,9 +20,9 @@ type Interface struct {
 }
 
 func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase,
-	logger log.Logger) *Interface {
+	logger log.Logger) *MallInterface {
 
-	return &Interface{
+	return &MallInterface{
 		bu:  bu,
 		tu:  tu,
 		au:  au,
@@ -31,7 +31,7 @@ func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityU
 	}
 }
 
-func (s *Interface) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (out *mall.Banner, err error) {
+func (s *MallInterface) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (out *mall.Banner, err error) {
 	b, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func (s *Interface) GetBannerById(ctx context.Context, in *mall.BannerByIdReques
 	}, nil
 
 }
-func (s *Interface) GetBannerByName(ctx context.Context, in *mall.BannerByNameRequest) (out *mall.Banner, err error) {
+func (s *MallInterface) GetBannerByName(ctx context.Context, in *mall.BannerByNameRequest) (out *mall.Banner, err error) {
 	b, err := s.bu.GetBannerByName(ctx, in.Name)
 	if err != nil {
 		return
@@ -84,7 +84,7 @@ func (s *Interface) GetBannerByName(ctx context.Context, in *mall.BannerByNameRe
 		Items:       items,
 	}, nil
 }
-func (s *Interface) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRequest) (out *mall.Themes, err error) {
+func (s *MallInterface) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRequest) (out *mall.Themes, err error) {
 	t, err := s.tu.GetThemeByNames(ctx, in.Names)
 	if err != nil {
 		return
@@ -108,7 +108,7 @@ func (s *Interface) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRe
 	}, nil
 }
 
-func (s *Interface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuRequest) (out *mall.ThemeSpu, err error) {
+func (s *MallInterface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuRequest) (out *mall.ThemeSpu, err error) {
 	t, err := s.tu.GetThemeWithSpu(ctx, in.Name)
 	if err != nil {
 		return
@@ -144,7 +144,7 @@ func (s *Interface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuRe
 		SpuList:        spuList,
 	}, nil
 }
-func (s *Interface) GetActivityByName(ctx context.Context, in *mall.ActivityByNameRequest) (out *mall.Activity, err error) {
+func (s *MallInterface) GetActivityByName(ctx context.Context, in *mall.ActivityByNameRequest) (out *mall.Activity, err error) {
 	c, err := s.au.GetActivityByName(ctx, in.Name)
 	if err != nil {
 		return
@@ -160,7 +160,7 @@ func (s *Interface) GetActivityByName(ctx context.Context, in *mall.ActivityByNa
 	}
 	return out, nil
 }
-func (s *Interface) GetActivityWithCoupon(ctx context.Context, in *mall.ActivityWithCouponRequest) (out *mall.ActivityCoupon, err error) {
+func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *mall.ActivityWithCouponRequest) (out *mall.ActivityCoupon, err error) {
 	c, err := s.au.GetActivityWithCoupon(ctx, in.Name)
 	if err != nil {
 		return
@@ -192,7 +192,7 @@ func (s *Interface) GetActivityWithCoupon(ctx context.Context, in *mall.Activity
 		Coupon:      coupons,
 	}, nil
 }
-func (s *Interface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *mall.AllCategory, err error) {
+func (s *MallInterface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *mall.AllCategory, err error) {
 	c, err := s.cu.GetAllCategory(ctx)
 	if err != nil {
 		return
@@ -224,7 +224,7 @@ func (s *Interface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out 
 		Subs:  subs,
 	}, nil
 }
-func (s *Interface) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *mall.GridCategories, err error) {
+func (s *MallInterface) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *mall.GridCategories, err error) {
 	c, err := s.cu.GetGridCategory(ctx)
 	if err != nil {
 		return
@@ -244,6 +244,6 @@ func (s *Interface) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out
 		Category: category,
 	}, nil
 }
-func (s *Interface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
+func (s *MallInterface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
 	return
 }

@@ -3,6 +3,8 @@ package data
 import (
 	"context"
 	"mall-go/api/app"
+	sku "mall-go/api/sku/service"
+
 	"mall-go/app/mall/interface/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -20,10 +22,20 @@ func NewThemeRepo(data *Data, logger log.Logger) biz.ThemeRepo {
 	}
 }
 func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.ThemeSpu, err error) {
-	po, err := r.data.ac.GetThemeWithSpu(ctx, &app.NameRequest{Name: name})
-	var themeSups []*biz.Spu
-	for _, v := range po.SpuList {
-		themeSups = append(themeSups, &biz.Spu{
+
+	po, err := r.data.ac.GetThemeByName(ctx, &app.NameRequest{Name: name})
+	if err != nil {
+		return biz.ThemeSpu{}, err
+	}
+	spuList, err := r.data.sc.GetSpuByTheme(ctx, &sku.IdRequest{Id: po.Id})
+	if err != nil {
+		return biz.ThemeSpu{}, err
+	}
+
+	var themeSpus []*biz.Spu
+
+	for _, v := range spuList.SpuVO {
+		themeSpus = append(themeSpus, &biz.Spu{
 			Id:             v.Id,
 			Title:          v.Title,
 			Subtitle:       v.Subtitle,
@@ -51,7 +63,7 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 	}
 	return biz.ThemeSpu{
 		Theme:   theme,
-		SpuList: themeSups,
+		SpuList: themeSpus,
 	}, nil
 }
 func (r *themeRepo) GetThemeByNames(ctx context.Context, names string) (themes []biz.Theme, err error) {

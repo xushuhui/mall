@@ -19,11 +19,13 @@ const _ = http.SupportPackageIsVersion1
 
 type SkuHTTPServer interface {
 	GetSkuById(context.Context, *IdRequest) (*SkuVO, error)
+	GetSpuByTheme(context.Context, *IdRequest) (*SpuByThemeReply, error)
 }
 
 func RegisterSkuHTTPServer(s *http.Server, srv SkuHTTPServer) {
 	r := s.Route("/")
-	r.GET("/sku/{id}", _Sku_GetSkuById0_HTTP_Handler(srv))
+	r.GET("/sku/id/{id}", _Sku_GetSkuById0_HTTP_Handler(srv))
+	r.GET("/sku/by/theme/{id}", _Sku_GetSpuByTheme0_HTTP_Handler(srv))
 }
 
 func _Sku_GetSkuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
@@ -48,8 +50,31 @@ func _Sku_GetSkuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) err
 	}
 }
 
+func _Sku_GetSpuByTheme0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in IdRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/order.service.Sku/GetSpuByTheme")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetSpuByTheme(ctx, req.(*IdRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SpuByThemeReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type SkuHTTPClient interface {
 	GetSkuById(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SkuVO, err error)
+	GetSpuByTheme(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SpuByThemeReply, err error)
 }
 
 type SkuHTTPClientImpl struct {
@@ -62,9 +87,22 @@ func NewSkuHTTPClient(client *http.Client) SkuHTTPClient {
 
 func (c *SkuHTTPClientImpl) GetSkuById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SkuVO, error) {
 	var out SkuVO
-	pattern := "/sku/{id}"
+	pattern := "/sku/id/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/order.service.Sku/GetSkuById"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *SkuHTTPClientImpl) GetSpuByTheme(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuByThemeReply, error) {
+	var out SpuByThemeReply
+	pattern := "/sku/by/theme/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/order.service.Sku/GetSpuByTheme"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

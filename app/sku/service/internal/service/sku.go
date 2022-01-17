@@ -21,3 +21,6 @@ func NewSkuService(su *biz.SkuUsecase) *SkuService {
 func (s *SkuService) GetSkuById(ctx context.Context, req *service.IdRequest) (*service.SkuVO, error) {
 	return &service.SkuVO{}, nil
 }
+func (s *SkuService) GetSpuByTheme(ctx context.Context, req *service.IdRequest) (*service.SpuByThemeReply, error) {
+	return &service.SpuByThemeReply{}, nil
+}

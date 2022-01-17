@@ -26,9 +26,9 @@ service App {
       get : "/theme/by/names"
     };
   }
-  rpc GetThemeWithSpu(nameRequest) returns (ThemeSpu) {
+  rpc GetThemeByName(nameRequest) returns (Theme) {
     option (google.api.http) = {
-      get : "/theme/name/{name}/with_spu"
+      get : "/theme/name/{name}"
     };
   }
   rpc GetActivityByName(nameRequest) returns (Activity) {
@@ -162,19 +162,6 @@ message Theme {
   string title_img = 8;
   string tpl_name = 9;
   int32 online = 10;
-}
-message ThemeSpu {
-  int64 id = 1;
-  string title = 2;
-  string description = 3;
-  string name = 4;
-  string entrance_img = 5;
-
-  string internal_top_img = 7;
-  string title_img = 8;
-  string tpl_name = 9;
-  int32 online = 10;
-  repeated Spu spu_list = 11;
 }
 
 message Banner {
