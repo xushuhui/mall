@@ -22,7 +22,7 @@ type Theme struct {
 
 type ThemeSpu struct {
 	Theme
-	SpuList []*Spu ` json:"spu_list,omitempty"`
+	//SpuList []*biz.Spu ` json:"spu_list,omitempty"`
 }
 type ThemeRepo interface {
 	GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error)

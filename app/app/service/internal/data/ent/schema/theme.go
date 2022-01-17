@@ -4,7 +4,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -37,7 +36,7 @@ func (Theme) Mixin() []ent.Mixin {
 }
 func (Theme) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("spu", Spu.Type).StorageKey(
-			edge.Table("theme_spu"), edge.Columns("theme_id", "spu_id")),
+		//edge.To("spu", schema2.Spu.Type).StorageKey(
+		//	edge.Table("theme_spu"), edge.Columns("theme_id", "spu_id")),
 	}
 }

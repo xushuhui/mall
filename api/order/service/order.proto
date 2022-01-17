@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package order.service;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+option go_package = "mall-go/api/order/service";
+
+service Order{
+  rpc CreateUser(CreateOrderRequest) returns (CreateOrderReply) {
+    option (google.api.http) = {
+      post : "/order"
+      body : "*"
+    };
+  }
+}
+message CreateOrderRequest{
+  int64 userId =1;
+}
+message CreateOrderReply{
+  int64 orderId=1;
+}

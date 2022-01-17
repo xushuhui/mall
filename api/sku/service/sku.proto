@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package order.service;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+option go_package = "mall-go/api/order/service";
+
+service Sku{
+  rpc GetSkuById(IdRequest) returns (SkuVO) {
+    option (google.api.http) = {
+      get : "/sku/{id}"
+    };
+  }
+}
+message IdRequest{
+  int64 id =1;
+}
+message SkuVO{
+  int64 id =1;
+}
