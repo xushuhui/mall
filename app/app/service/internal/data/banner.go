@@ -24,7 +24,7 @@ func NewBannerRepo(data *Data, logger log.Logger) biz.BannerRepo {
 func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner, err error) {
 	po, err := r.data.db.Banner.Query().Where(banner.ID(id)).WithBannerItem().First(ctx)
 	if model.IsNotFound(err) {
-		err = mall.ErrorNotfound("banner")
+		err = mall.ErrorNotFound("banner")
 		return
 	}
 	if err != nil {
@@ -56,7 +56,7 @@ func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner,
 func (r *bannerRepo) GetBannerByName(ctx context.Context, name string) (b biz.Banner, err error) {
 	po, err := r.data.db.Banner.Query().Where(banner.Name(name)).WithBannerItem().First(ctx)
 	if model.IsNotFound(err) {
-		err = mall.ErrorNotfound("banner")
+		err = mall.ErrorNotFound("banner")
 		return
 	}
 	if err != nil {

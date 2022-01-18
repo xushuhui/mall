@@ -10,13 +10,11 @@ import (
 	"mall-go/app/app/service/internal/data/model/banneritem"
 	"mall-go/app/app/service/internal/data/model/category"
 	"mall-go/app/app/service/internal/data/model/charge"
-	"mall-go/app/app/service/internal/data/model/coupon"
-	"mall-go/app/app/service/internal/data/model/coupontemplate"
-	"mall-go/app/app/service/internal/data/model/coupontype"
 	"mall-go/app/app/service/internal/data/model/gridcategory"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/refund"
 	"mall-go/app/app/service/internal/data/model/theme"
+	"mall-go/app/app/service/internal/data/model/themespu"
 	"sync"
 	"time"
 
@@ -32,17 +30,15 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeActivity       = "Activity"
-	TypeBanner         = "Banner"
-	TypeBannerItem     = "BannerItem"
-	TypeCategory       = "Category"
-	TypeCharge         = "Charge"
-	TypeCoupon         = "Coupon"
-	TypeCouponTemplate = "CouponTemplate"
-	TypeCouponType     = "CouponType"
-	TypeGridCategory   = "GridCategory"
-	TypeRefund         = "Refund"
-	TypeTheme          = "Theme"
+	TypeActivity     = "Activity"
+	TypeBanner       = "Banner"
+	TypeBannerItem   = "BannerItem"
+	TypeCategory     = "Category"
+	TypeCharge       = "Charge"
+	TypeGridCategory = "GridCategory"
+	TypeRefund       = "Refund"
+	TypeTheme        = "Theme"
+	TypeThemeSpu     = "ThemeSpu"
 )
 
 // ActivityMutation represents an operation that mutates the Activity nodes in the graph.
@@ -65,9 +61,6 @@ type ActivityMutation struct {
 	internal_top_img *string
 	name             *string
 	clearedFields    map[string]struct{}
-	coupon           map[int64]struct{}
-	removedcoupon    map[int64]struct{}
-	clearedcoupon    bool
 	done             bool
 	oldValue         func(context.Context) (*Activity, error)
 	predicates       []predicate.Activity
@@ -617,60 +610,6 @@ func (m *ActivityMutation) ResetName() {
 	m.name = nil
 }
 
-// AddCouponIDs adds the "coupon" edge to the Coupon entity by ids.
-func (m *ActivityMutation) AddCouponIDs(ids ...int64) {
-	if m.coupon == nil {
-		m.coupon = make(map[int64]struct{})
-	}
-	for i := range ids {
-		m.coupon[ids[i]] = struct{}{}
-	}
-}
-
-// ClearCoupon clears the "coupon" edge to the Coupon entity.
-func (m *ActivityMutation) ClearCoupon() {
-	m.clearedcoupon = true
-}
-
-// CouponCleared reports if the "coupon" edge to the Coupon entity was cleared.
-func (m *ActivityMutation) CouponCleared() bool {
-	return m.clearedcoupon
-}
-
-// RemoveCouponIDs removes the "coupon" edge to the Coupon entity by IDs.
-func (m *ActivityMutation) RemoveCouponIDs(ids ...int64) {
-	if m.removedcoupon == nil {
-		m.removedcoupon = make(map[int64]struct{})
-	}
-	for i := range ids {
-		delete(m.coupon, ids[i])
-		m.removedcoupon[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedCoupon returns the removed IDs of the "coupon" edge to the Coupon entity.
-func (m *ActivityMutation) RemovedCouponIDs() (ids []int64) {
-	for id := range m.removedcoupon {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// CouponIDs returns the "coupon" edge IDs in the mutation.
-func (m *ActivityMutation) CouponIDs() (ids []int64) {
-	for id := range m.coupon {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetCoupon resets all changes to the "coupon" edge.
-func (m *ActivityMutation) ResetCoupon() {
-	m.coupon = nil
-	m.clearedcoupon = false
-	m.removedcoupon = nil
-}
-
 // Where appends a list predicates to the ActivityMutation builder.
 func (m *ActivityMutation) Where(ps ...predicate.Activity) {
 	m.predicates = append(m.predicates, ps...)
@@ -1000,85 +939,49 @@ func (m *ActivityMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ActivityMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.coupon != nil {
-		edges = append(edges, activity.EdgeCoupon)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *ActivityMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case activity.EdgeCoupon:
-		ids := make([]ent.Value, 0, len(m.coupon))
-		for id := range m.coupon {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ActivityMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.removedcoupon != nil {
-		edges = append(edges, activity.EdgeCoupon)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *ActivityMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case activity.EdgeCoupon:
-		ids := make([]ent.Value, 0, len(m.removedcoupon))
-		for id := range m.removedcoupon {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ActivityMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.clearedcoupon {
-		edges = append(edges, activity.EdgeCoupon)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *ActivityMutation) EdgeCleared(name string) bool {
-	switch name {
-	case activity.EdgeCoupon:
-		return m.clearedcoupon
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *ActivityMutation) ClearEdge(name string) error {
-	switch name {
-	}
 	return fmt.Errorf("unknown Activity unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *ActivityMutation) ResetEdge(name string) error {
-	switch name {
-	case activity.EdgeCoupon:
-		m.ResetCoupon()
-		return nil
-	}
 	return fmt.Errorf("unknown Activity edge %s", name)
 }
 
@@ -2636,9 +2539,6 @@ type CategoryMutation struct {
 	level           *int
 	addlevel        *int
 	clearedFields   map[string]struct{}
-	coupon          map[int64]struct{}
-	removedcoupon   map[int64]struct{}
-	clearedcoupon   bool
 	parent          *int64
 	clearedparent   bool
 	children        map[int64]struct{}
@@ -3230,60 +3130,6 @@ func (m *CategoryMutation) ResetLevel() {
 	m.addlevel = nil
 }
 
-// AddCouponIDs adds the "coupon" edge to the Coupon entity by ids.
-func (m *CategoryMutation) AddCouponIDs(ids ...int64) {
-	if m.coupon == nil {
-		m.coupon = make(map[int64]struct{})
-	}
-	for i := range ids {
-		m.coupon[ids[i]] = struct{}{}
-	}
-}
-
-// ClearCoupon clears the "coupon" edge to the Coupon entity.
-func (m *CategoryMutation) ClearCoupon() {
-	m.clearedcoupon = true
-}
-
-// CouponCleared reports if the "coupon" edge to the Coupon entity was cleared.
-func (m *CategoryMutation) CouponCleared() bool {
-	return m.clearedcoupon
-}
-
-// RemoveCouponIDs removes the "coupon" edge to the Coupon entity by IDs.
-func (m *CategoryMutation) RemoveCouponIDs(ids ...int64) {
-	if m.removedcoupon == nil {
-		m.removedcoupon = make(map[int64]struct{})
-	}
-	for i := range ids {
-		delete(m.coupon, ids[i])
-		m.removedcoupon[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedCoupon returns the removed IDs of the "coupon" edge to the Coupon entity.
-func (m *CategoryMutation) RemovedCouponIDs() (ids []int64) {
-	for id := range m.removedcoupon {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// CouponIDs returns the "coupon" edge IDs in the mutation.
-func (m *CategoryMutation) CouponIDs() (ids []int64) {
-	for id := range m.coupon {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetCoupon resets all changes to the "coupon" edge.
-func (m *CategoryMutation) ResetCoupon() {
-	m.coupon = nil
-	m.clearedcoupon = false
-	m.removedcoupon = nil
-}
-
 // ClearParent clears the "parent" edge to the Category entity.
 func (m *CategoryMutation) ClearParent() {
 	m.clearedparent = true
@@ -3718,10 +3564,7 @@ func (m *CategoryMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CategoryMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.coupon != nil {
-		edges = append(edges, category.EdgeCoupon)
-	}
+	edges := make([]string, 0, 2)
 	if m.parent != nil {
 		edges = append(edges, category.EdgeParent)
 	}
@@ -3735,12 +3578,6 @@ func (m *CategoryMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *CategoryMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case category.EdgeCoupon:
-		ids := make([]ent.Value, 0, len(m.coupon))
-		for id := range m.coupon {
-			ids = append(ids, id)
-		}
-		return ids
 	case category.EdgeParent:
 		if id := m.parent; id != nil {
 			return []ent.Value{*id}
@@ -3757,10 +3594,7 @@ func (m *CategoryMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CategoryMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.removedcoupon != nil {
-		edges = append(edges, category.EdgeCoupon)
-	}
+	edges := make([]string, 0, 2)
 	if m.removedchildren != nil {
 		edges = append(edges, category.EdgeChildren)
 	}
@@ -3771,12 +3605,6 @@ func (m *CategoryMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *CategoryMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case category.EdgeCoupon:
-		ids := make([]ent.Value, 0, len(m.removedcoupon))
-		for id := range m.removedcoupon {
-			ids = append(ids, id)
-		}
-		return ids
 	case category.EdgeChildren:
 		ids := make([]ent.Value, 0, len(m.removedchildren))
 		for id := range m.removedchildren {
@@ -3789,10 +3617,7 @@ func (m *CategoryMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CategoryMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.clearedcoupon {
-		edges = append(edges, category.EdgeCoupon)
-	}
+	edges := make([]string, 0, 2)
 	if m.clearedparent {
 		edges = append(edges, category.EdgeParent)
 	}
@@ -3806,8 +3631,6 @@ func (m *CategoryMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *CategoryMutation) EdgeCleared(name string) bool {
 	switch name {
-	case category.EdgeCoupon:
-		return m.clearedcoupon
 	case category.EdgeParent:
 		return m.clearedparent
 	case category.EdgeChildren:
@@ -3831,9 +3654,6 @@ func (m *CategoryMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *CategoryMutation) ResetEdge(name string) error {
 	switch name {
-	case category.EdgeCoupon:
-		m.ResetCoupon()
-		return nil
 	case category.EdgeParent:
 		m.ResetParent()
 		return nil
@@ -4690,3007 +4510,6 @@ func (m *ChargeMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *ChargeMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Charge edge %s", name)
-}
-
-// CouponMutation represents an operation that mutates the Coupon nodes in the graph.
-type CouponMutation struct {
-	config
-	op              Op
-	typ             string
-	id              *int64
-	create_time     *time.Time
-	update_time     *time.Time
-	delete_time     *time.Time
-	title           *string
-	start_time      *time.Time
-	end_time        *time.Time
-	description     *string
-	full_money      *float64
-	addfull_money   *float64
-	minus           *float64
-	addminus        *float64
-	rate            *float64
-	addrate         *float64
-	_type           *int
-	add_type        *int
-	valitiy         *int
-	addvalitiy      *int
-	activity_id     *int64
-	addactivity_id  *int64
-	remark          *string
-	whole_store     *int
-	addwhole_store  *int
-	clearedFields   map[string]struct{}
-	category        map[int64]struct{}
-	removedcategory map[int64]struct{}
-	clearedcategory bool
-	activity        map[int64]struct{}
-	removedactivity map[int64]struct{}
-	clearedactivity bool
-	done            bool
-	oldValue        func(context.Context) (*Coupon, error)
-	predicates      []predicate.Coupon
-}
-
-var _ ent.Mutation = (*CouponMutation)(nil)
-
-// couponOption allows management of the mutation configuration using functional options.
-type couponOption func(*CouponMutation)
-
-// newCouponMutation creates new mutation for the Coupon entity.
-func newCouponMutation(c config, op Op, opts ...couponOption) *CouponMutation {
-	m := &CouponMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeCoupon,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withCouponID sets the ID field of the mutation.
-func withCouponID(id int64) couponOption {
-	return func(m *CouponMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *Coupon
-		)
-		m.oldValue = func(ctx context.Context) (*Coupon, error) {
-			once.Do(func() {
-				if m.done {
-					err = fmt.Errorf("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().Coupon.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withCoupon sets the old Coupon of the mutation.
-func withCoupon(node *Coupon) couponOption {
-	return func(m *CouponMutation) {
-		m.oldValue = func(context.Context) (*Coupon, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m CouponMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m CouponMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, fmt.Errorf("model: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *CouponMutation) ID() (id int64, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// SetCreateTime sets the "create_time" field.
-func (m *CouponMutation) SetCreateTime(t time.Time) {
-	m.create_time = &t
-}
-
-// CreateTime returns the value of the "create_time" field in the mutation.
-func (m *CouponMutation) CreateTime() (r time.Time, exists bool) {
-	v := m.create_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreateTime returns the old "create_time" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldCreateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldCreateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
-	}
-	return oldValue.CreateTime, nil
-}
-
-// ResetCreateTime resets all changes to the "create_time" field.
-func (m *CouponMutation) ResetCreateTime() {
-	m.create_time = nil
-}
-
-// SetUpdateTime sets the "update_time" field.
-func (m *CouponMutation) SetUpdateTime(t time.Time) {
-	m.update_time = &t
-}
-
-// UpdateTime returns the value of the "update_time" field in the mutation.
-func (m *CouponMutation) UpdateTime() (r time.Time, exists bool) {
-	v := m.update_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdateTime returns the old "update_time" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldUpdateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldUpdateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
-	}
-	return oldValue.UpdateTime, nil
-}
-
-// ResetUpdateTime resets all changes to the "update_time" field.
-func (m *CouponMutation) ResetUpdateTime() {
-	m.update_time = nil
-}
-
-// SetDeleteTime sets the "delete_time" field.
-func (m *CouponMutation) SetDeleteTime(t time.Time) {
-	m.delete_time = &t
-}
-
-// DeleteTime returns the value of the "delete_time" field in the mutation.
-func (m *CouponMutation) DeleteTime() (r time.Time, exists bool) {
-	v := m.delete_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDeleteTime returns the old "delete_time" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldDeleteTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDeleteTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDeleteTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDeleteTime: %w", err)
-	}
-	return oldValue.DeleteTime, nil
-}
-
-// ClearDeleteTime clears the value of the "delete_time" field.
-func (m *CouponMutation) ClearDeleteTime() {
-	m.delete_time = nil
-	m.clearedFields[coupon.FieldDeleteTime] = struct{}{}
-}
-
-// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
-func (m *CouponMutation) DeleteTimeCleared() bool {
-	_, ok := m.clearedFields[coupon.FieldDeleteTime]
-	return ok
-}
-
-// ResetDeleteTime resets all changes to the "delete_time" field.
-func (m *CouponMutation) ResetDeleteTime() {
-	m.delete_time = nil
-	delete(m.clearedFields, coupon.FieldDeleteTime)
-}
-
-// SetTitle sets the "title" field.
-func (m *CouponMutation) SetTitle(s string) {
-	m.title = &s
-}
-
-// Title returns the value of the "title" field in the mutation.
-func (m *CouponMutation) Title() (r string, exists bool) {
-	v := m.title
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldTitle returns the old "title" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldTitle(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldTitle is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldTitle requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
-	}
-	return oldValue.Title, nil
-}
-
-// ResetTitle resets all changes to the "title" field.
-func (m *CouponMutation) ResetTitle() {
-	m.title = nil
-}
-
-// SetStartTime sets the "start_time" field.
-func (m *CouponMutation) SetStartTime(t time.Time) {
-	m.start_time = &t
-}
-
-// StartTime returns the value of the "start_time" field in the mutation.
-func (m *CouponMutation) StartTime() (r time.Time, exists bool) {
-	v := m.start_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStartTime returns the old "start_time" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldStartTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldStartTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldStartTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartTime: %w", err)
-	}
-	return oldValue.StartTime, nil
-}
-
-// ResetStartTime resets all changes to the "start_time" field.
-func (m *CouponMutation) ResetStartTime() {
-	m.start_time = nil
-}
-
-// SetEndTime sets the "end_time" field.
-func (m *CouponMutation) SetEndTime(t time.Time) {
-	m.end_time = &t
-}
-
-// EndTime returns the value of the "end_time" field in the mutation.
-func (m *CouponMutation) EndTime() (r time.Time, exists bool) {
-	v := m.end_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldEndTime returns the old "end_time" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldEndTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldEndTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldEndTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEndTime: %w", err)
-	}
-	return oldValue.EndTime, nil
-}
-
-// ResetEndTime resets all changes to the "end_time" field.
-func (m *CouponMutation) ResetEndTime() {
-	m.end_time = nil
-}
-
-// SetDescription sets the "description" field.
-func (m *CouponMutation) SetDescription(s string) {
-	m.description = &s
-}
-
-// Description returns the value of the "description" field in the mutation.
-func (m *CouponMutation) Description() (r string, exists bool) {
-	v := m.description
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDescription returns the old "description" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldDescription(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDescription is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDescription requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
-	}
-	return oldValue.Description, nil
-}
-
-// ResetDescription resets all changes to the "description" field.
-func (m *CouponMutation) ResetDescription() {
-	m.description = nil
-}
-
-// SetFullMoney sets the "full_money" field.
-func (m *CouponMutation) SetFullMoney(f float64) {
-	m.full_money = &f
-	m.addfull_money = nil
-}
-
-// FullMoney returns the value of the "full_money" field in the mutation.
-func (m *CouponMutation) FullMoney() (r float64, exists bool) {
-	v := m.full_money
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldFullMoney returns the old "full_money" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldFullMoney(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldFullMoney is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldFullMoney requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldFullMoney: %w", err)
-	}
-	return oldValue.FullMoney, nil
-}
-
-// AddFullMoney adds f to the "full_money" field.
-func (m *CouponMutation) AddFullMoney(f float64) {
-	if m.addfull_money != nil {
-		*m.addfull_money += f
-	} else {
-		m.addfull_money = &f
-	}
-}
-
-// AddedFullMoney returns the value that was added to the "full_money" field in this mutation.
-func (m *CouponMutation) AddedFullMoney() (r float64, exists bool) {
-	v := m.addfull_money
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetFullMoney resets all changes to the "full_money" field.
-func (m *CouponMutation) ResetFullMoney() {
-	m.full_money = nil
-	m.addfull_money = nil
-}
-
-// SetMinus sets the "minus" field.
-func (m *CouponMutation) SetMinus(f float64) {
-	m.minus = &f
-	m.addminus = nil
-}
-
-// Minus returns the value of the "minus" field in the mutation.
-func (m *CouponMutation) Minus() (r float64, exists bool) {
-	v := m.minus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMinus returns the old "minus" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldMinus(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldMinus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldMinus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMinus: %w", err)
-	}
-	return oldValue.Minus, nil
-}
-
-// AddMinus adds f to the "minus" field.
-func (m *CouponMutation) AddMinus(f float64) {
-	if m.addminus != nil {
-		*m.addminus += f
-	} else {
-		m.addminus = &f
-	}
-}
-
-// AddedMinus returns the value that was added to the "minus" field in this mutation.
-func (m *CouponMutation) AddedMinus() (r float64, exists bool) {
-	v := m.addminus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetMinus resets all changes to the "minus" field.
-func (m *CouponMutation) ResetMinus() {
-	m.minus = nil
-	m.addminus = nil
-}
-
-// SetRate sets the "rate" field.
-func (m *CouponMutation) SetRate(f float64) {
-	m.rate = &f
-	m.addrate = nil
-}
-
-// Rate returns the value of the "rate" field in the mutation.
-func (m *CouponMutation) Rate() (r float64, exists bool) {
-	v := m.rate
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRate returns the old "rate" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldRate(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldRate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldRate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRate: %w", err)
-	}
-	return oldValue.Rate, nil
-}
-
-// AddRate adds f to the "rate" field.
-func (m *CouponMutation) AddRate(f float64) {
-	if m.addrate != nil {
-		*m.addrate += f
-	} else {
-		m.addrate = &f
-	}
-}
-
-// AddedRate returns the value that was added to the "rate" field in this mutation.
-func (m *CouponMutation) AddedRate() (r float64, exists bool) {
-	v := m.addrate
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetRate resets all changes to the "rate" field.
-func (m *CouponMutation) ResetRate() {
-	m.rate = nil
-	m.addrate = nil
-}
-
-// SetType sets the "type" field.
-func (m *CouponMutation) SetType(i int) {
-	m._type = &i
-	m.add_type = nil
-}
-
-// GetType returns the value of the "type" field in the mutation.
-func (m *CouponMutation) GetType() (r int, exists bool) {
-	v := m._type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldType returns the old "type" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldType(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldType is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldType requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldType: %w", err)
-	}
-	return oldValue.Type, nil
-}
-
-// AddType adds i to the "type" field.
-func (m *CouponMutation) AddType(i int) {
-	if m.add_type != nil {
-		*m.add_type += i
-	} else {
-		m.add_type = &i
-	}
-}
-
-// AddedType returns the value that was added to the "type" field in this mutation.
-func (m *CouponMutation) AddedType() (r int, exists bool) {
-	v := m.add_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetType resets all changes to the "type" field.
-func (m *CouponMutation) ResetType() {
-	m._type = nil
-	m.add_type = nil
-}
-
-// SetValitiy sets the "valitiy" field.
-func (m *CouponMutation) SetValitiy(i int) {
-	m.valitiy = &i
-	m.addvalitiy = nil
-}
-
-// Valitiy returns the value of the "valitiy" field in the mutation.
-func (m *CouponMutation) Valitiy() (r int, exists bool) {
-	v := m.valitiy
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldValitiy returns the old "valitiy" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldValitiy(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldValitiy is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldValitiy requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldValitiy: %w", err)
-	}
-	return oldValue.Valitiy, nil
-}
-
-// AddValitiy adds i to the "valitiy" field.
-func (m *CouponMutation) AddValitiy(i int) {
-	if m.addvalitiy != nil {
-		*m.addvalitiy += i
-	} else {
-		m.addvalitiy = &i
-	}
-}
-
-// AddedValitiy returns the value that was added to the "valitiy" field in this mutation.
-func (m *CouponMutation) AddedValitiy() (r int, exists bool) {
-	v := m.addvalitiy
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetValitiy resets all changes to the "valitiy" field.
-func (m *CouponMutation) ResetValitiy() {
-	m.valitiy = nil
-	m.addvalitiy = nil
-}
-
-// SetActivityID sets the "activity_id" field.
-func (m *CouponMutation) SetActivityID(i int64) {
-	m.activity_id = &i
-	m.addactivity_id = nil
-}
-
-// ActivityID returns the value of the "activity_id" field in the mutation.
-func (m *CouponMutation) ActivityID() (r int64, exists bool) {
-	v := m.activity_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldActivityID returns the old "activity_id" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldActivityID(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldActivityID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldActivityID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActivityID: %w", err)
-	}
-	return oldValue.ActivityID, nil
-}
-
-// AddActivityID adds i to the "activity_id" field.
-func (m *CouponMutation) AddActivityID(i int64) {
-	if m.addactivity_id != nil {
-		*m.addactivity_id += i
-	} else {
-		m.addactivity_id = &i
-	}
-}
-
-// AddedActivityID returns the value that was added to the "activity_id" field in this mutation.
-func (m *CouponMutation) AddedActivityID() (r int64, exists bool) {
-	v := m.addactivity_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearActivityID clears the value of the "activity_id" field.
-func (m *CouponMutation) ClearActivityID() {
-	m.activity_id = nil
-	m.addactivity_id = nil
-	m.clearedFields[coupon.FieldActivityID] = struct{}{}
-}
-
-// ActivityIDCleared returns if the "activity_id" field was cleared in this mutation.
-func (m *CouponMutation) ActivityIDCleared() bool {
-	_, ok := m.clearedFields[coupon.FieldActivityID]
-	return ok
-}
-
-// ResetActivityID resets all changes to the "activity_id" field.
-func (m *CouponMutation) ResetActivityID() {
-	m.activity_id = nil
-	m.addactivity_id = nil
-	delete(m.clearedFields, coupon.FieldActivityID)
-}
-
-// SetRemark sets the "remark" field.
-func (m *CouponMutation) SetRemark(s string) {
-	m.remark = &s
-}
-
-// Remark returns the value of the "remark" field in the mutation.
-func (m *CouponMutation) Remark() (r string, exists bool) {
-	v := m.remark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRemark returns the old "remark" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldRemark(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldRemark is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldRemark requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
-	}
-	return oldValue.Remark, nil
-}
-
-// ResetRemark resets all changes to the "remark" field.
-func (m *CouponMutation) ResetRemark() {
-	m.remark = nil
-}
-
-// SetWholeStore sets the "whole_store" field.
-func (m *CouponMutation) SetWholeStore(i int) {
-	m.whole_store = &i
-	m.addwhole_store = nil
-}
-
-// WholeStore returns the value of the "whole_store" field in the mutation.
-func (m *CouponMutation) WholeStore() (r int, exists bool) {
-	v := m.whole_store
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldWholeStore returns the old "whole_store" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldWholeStore(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldWholeStore is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldWholeStore requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWholeStore: %w", err)
-	}
-	return oldValue.WholeStore, nil
-}
-
-// AddWholeStore adds i to the "whole_store" field.
-func (m *CouponMutation) AddWholeStore(i int) {
-	if m.addwhole_store != nil {
-		*m.addwhole_store += i
-	} else {
-		m.addwhole_store = &i
-	}
-}
-
-// AddedWholeStore returns the value that was added to the "whole_store" field in this mutation.
-func (m *CouponMutation) AddedWholeStore() (r int, exists bool) {
-	v := m.addwhole_store
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetWholeStore resets all changes to the "whole_store" field.
-func (m *CouponMutation) ResetWholeStore() {
-	m.whole_store = nil
-	m.addwhole_store = nil
-}
-
-// AddCategoryIDs adds the "category" edge to the Category entity by ids.
-func (m *CouponMutation) AddCategoryIDs(ids ...int64) {
-	if m.category == nil {
-		m.category = make(map[int64]struct{})
-	}
-	for i := range ids {
-		m.category[ids[i]] = struct{}{}
-	}
-}
-
-// ClearCategory clears the "category" edge to the Category entity.
-func (m *CouponMutation) ClearCategory() {
-	m.clearedcategory = true
-}
-
-// CategoryCleared reports if the "category" edge to the Category entity was cleared.
-func (m *CouponMutation) CategoryCleared() bool {
-	return m.clearedcategory
-}
-
-// RemoveCategoryIDs removes the "category" edge to the Category entity by IDs.
-func (m *CouponMutation) RemoveCategoryIDs(ids ...int64) {
-	if m.removedcategory == nil {
-		m.removedcategory = make(map[int64]struct{})
-	}
-	for i := range ids {
-		delete(m.category, ids[i])
-		m.removedcategory[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedCategory returns the removed IDs of the "category" edge to the Category entity.
-func (m *CouponMutation) RemovedCategoryIDs() (ids []int64) {
-	for id := range m.removedcategory {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// CategoryIDs returns the "category" edge IDs in the mutation.
-func (m *CouponMutation) CategoryIDs() (ids []int64) {
-	for id := range m.category {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetCategory resets all changes to the "category" edge.
-func (m *CouponMutation) ResetCategory() {
-	m.category = nil
-	m.clearedcategory = false
-	m.removedcategory = nil
-}
-
-// AddActivityIDs adds the "activity" edge to the Activity entity by ids.
-func (m *CouponMutation) AddActivityIDs(ids ...int64) {
-	if m.activity == nil {
-		m.activity = make(map[int64]struct{})
-	}
-	for i := range ids {
-		m.activity[ids[i]] = struct{}{}
-	}
-}
-
-// ClearActivity clears the "activity" edge to the Activity entity.
-func (m *CouponMutation) ClearActivity() {
-	m.clearedactivity = true
-}
-
-// ActivityCleared reports if the "activity" edge to the Activity entity was cleared.
-func (m *CouponMutation) ActivityCleared() bool {
-	return m.clearedactivity
-}
-
-// RemoveActivityIDs removes the "activity" edge to the Activity entity by IDs.
-func (m *CouponMutation) RemoveActivityIDs(ids ...int64) {
-	if m.removedactivity == nil {
-		m.removedactivity = make(map[int64]struct{})
-	}
-	for i := range ids {
-		delete(m.activity, ids[i])
-		m.removedactivity[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedActivity returns the removed IDs of the "activity" edge to the Activity entity.
-func (m *CouponMutation) RemovedActivityIDs() (ids []int64) {
-	for id := range m.removedactivity {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ActivityIDs returns the "activity" edge IDs in the mutation.
-func (m *CouponMutation) ActivityIDs() (ids []int64) {
-	for id := range m.activity {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetActivity resets all changes to the "activity" edge.
-func (m *CouponMutation) ResetActivity() {
-	m.activity = nil
-	m.clearedactivity = false
-	m.removedactivity = nil
-}
-
-// Where appends a list predicates to the CouponMutation builder.
-func (m *CouponMutation) Where(ps ...predicate.Coupon) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// Op returns the operation name.
-func (m *CouponMutation) Op() Op {
-	return m.op
-}
-
-// Type returns the node type of this mutation (Coupon).
-func (m *CouponMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *CouponMutation) Fields() []string {
-	fields := make([]string, 0, 15)
-	if m.create_time != nil {
-		fields = append(fields, coupon.FieldCreateTime)
-	}
-	if m.update_time != nil {
-		fields = append(fields, coupon.FieldUpdateTime)
-	}
-	if m.delete_time != nil {
-		fields = append(fields, coupon.FieldDeleteTime)
-	}
-	if m.title != nil {
-		fields = append(fields, coupon.FieldTitle)
-	}
-	if m.start_time != nil {
-		fields = append(fields, coupon.FieldStartTime)
-	}
-	if m.end_time != nil {
-		fields = append(fields, coupon.FieldEndTime)
-	}
-	if m.description != nil {
-		fields = append(fields, coupon.FieldDescription)
-	}
-	if m.full_money != nil {
-		fields = append(fields, coupon.FieldFullMoney)
-	}
-	if m.minus != nil {
-		fields = append(fields, coupon.FieldMinus)
-	}
-	if m.rate != nil {
-		fields = append(fields, coupon.FieldRate)
-	}
-	if m._type != nil {
-		fields = append(fields, coupon.FieldType)
-	}
-	if m.valitiy != nil {
-		fields = append(fields, coupon.FieldValitiy)
-	}
-	if m.activity_id != nil {
-		fields = append(fields, coupon.FieldActivityID)
-	}
-	if m.remark != nil {
-		fields = append(fields, coupon.FieldRemark)
-	}
-	if m.whole_store != nil {
-		fields = append(fields, coupon.FieldWholeStore)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *CouponMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case coupon.FieldCreateTime:
-		return m.CreateTime()
-	case coupon.FieldUpdateTime:
-		return m.UpdateTime()
-	case coupon.FieldDeleteTime:
-		return m.DeleteTime()
-	case coupon.FieldTitle:
-		return m.Title()
-	case coupon.FieldStartTime:
-		return m.StartTime()
-	case coupon.FieldEndTime:
-		return m.EndTime()
-	case coupon.FieldDescription:
-		return m.Description()
-	case coupon.FieldFullMoney:
-		return m.FullMoney()
-	case coupon.FieldMinus:
-		return m.Minus()
-	case coupon.FieldRate:
-		return m.Rate()
-	case coupon.FieldType:
-		return m.GetType()
-	case coupon.FieldValitiy:
-		return m.Valitiy()
-	case coupon.FieldActivityID:
-		return m.ActivityID()
-	case coupon.FieldRemark:
-		return m.Remark()
-	case coupon.FieldWholeStore:
-		return m.WholeStore()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *CouponMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case coupon.FieldCreateTime:
-		return m.OldCreateTime(ctx)
-	case coupon.FieldUpdateTime:
-		return m.OldUpdateTime(ctx)
-	case coupon.FieldDeleteTime:
-		return m.OldDeleteTime(ctx)
-	case coupon.FieldTitle:
-		return m.OldTitle(ctx)
-	case coupon.FieldStartTime:
-		return m.OldStartTime(ctx)
-	case coupon.FieldEndTime:
-		return m.OldEndTime(ctx)
-	case coupon.FieldDescription:
-		return m.OldDescription(ctx)
-	case coupon.FieldFullMoney:
-		return m.OldFullMoney(ctx)
-	case coupon.FieldMinus:
-		return m.OldMinus(ctx)
-	case coupon.FieldRate:
-		return m.OldRate(ctx)
-	case coupon.FieldType:
-		return m.OldType(ctx)
-	case coupon.FieldValitiy:
-		return m.OldValitiy(ctx)
-	case coupon.FieldActivityID:
-		return m.OldActivityID(ctx)
-	case coupon.FieldRemark:
-		return m.OldRemark(ctx)
-	case coupon.FieldWholeStore:
-		return m.OldWholeStore(ctx)
-	}
-	return nil, fmt.Errorf("unknown Coupon field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *CouponMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case coupon.FieldCreateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreateTime(v)
-		return nil
-	case coupon.FieldUpdateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdateTime(v)
-		return nil
-	case coupon.FieldDeleteTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDeleteTime(v)
-		return nil
-	case coupon.FieldTitle:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetTitle(v)
-		return nil
-	case coupon.FieldStartTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStartTime(v)
-		return nil
-	case coupon.FieldEndTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetEndTime(v)
-		return nil
-	case coupon.FieldDescription:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDescription(v)
-		return nil
-	case coupon.FieldFullMoney:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetFullMoney(v)
-		return nil
-	case coupon.FieldMinus:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMinus(v)
-		return nil
-	case coupon.FieldRate:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRate(v)
-		return nil
-	case coupon.FieldType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetType(v)
-		return nil
-	case coupon.FieldValitiy:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetValitiy(v)
-		return nil
-	case coupon.FieldActivityID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetActivityID(v)
-		return nil
-	case coupon.FieldRemark:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRemark(v)
-		return nil
-	case coupon.FieldWholeStore:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetWholeStore(v)
-		return nil
-	}
-	return fmt.Errorf("unknown Coupon field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *CouponMutation) AddedFields() []string {
-	var fields []string
-	if m.addfull_money != nil {
-		fields = append(fields, coupon.FieldFullMoney)
-	}
-	if m.addminus != nil {
-		fields = append(fields, coupon.FieldMinus)
-	}
-	if m.addrate != nil {
-		fields = append(fields, coupon.FieldRate)
-	}
-	if m.add_type != nil {
-		fields = append(fields, coupon.FieldType)
-	}
-	if m.addvalitiy != nil {
-		fields = append(fields, coupon.FieldValitiy)
-	}
-	if m.addactivity_id != nil {
-		fields = append(fields, coupon.FieldActivityID)
-	}
-	if m.addwhole_store != nil {
-		fields = append(fields, coupon.FieldWholeStore)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *CouponMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case coupon.FieldFullMoney:
-		return m.AddedFullMoney()
-	case coupon.FieldMinus:
-		return m.AddedMinus()
-	case coupon.FieldRate:
-		return m.AddedRate()
-	case coupon.FieldType:
-		return m.AddedType()
-	case coupon.FieldValitiy:
-		return m.AddedValitiy()
-	case coupon.FieldActivityID:
-		return m.AddedActivityID()
-	case coupon.FieldWholeStore:
-		return m.AddedWholeStore()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *CouponMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case coupon.FieldFullMoney:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddFullMoney(v)
-		return nil
-	case coupon.FieldMinus:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMinus(v)
-		return nil
-	case coupon.FieldRate:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddRate(v)
-		return nil
-	case coupon.FieldType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddType(v)
-		return nil
-	case coupon.FieldValitiy:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddValitiy(v)
-		return nil
-	case coupon.FieldActivityID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddActivityID(v)
-		return nil
-	case coupon.FieldWholeStore:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddWholeStore(v)
-		return nil
-	}
-	return fmt.Errorf("unknown Coupon numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *CouponMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(coupon.FieldDeleteTime) {
-		fields = append(fields, coupon.FieldDeleteTime)
-	}
-	if m.FieldCleared(coupon.FieldActivityID) {
-		fields = append(fields, coupon.FieldActivityID)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *CouponMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *CouponMutation) ClearField(name string) error {
-	switch name {
-	case coupon.FieldDeleteTime:
-		m.ClearDeleteTime()
-		return nil
-	case coupon.FieldActivityID:
-		m.ClearActivityID()
-		return nil
-	}
-	return fmt.Errorf("unknown Coupon nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *CouponMutation) ResetField(name string) error {
-	switch name {
-	case coupon.FieldCreateTime:
-		m.ResetCreateTime()
-		return nil
-	case coupon.FieldUpdateTime:
-		m.ResetUpdateTime()
-		return nil
-	case coupon.FieldDeleteTime:
-		m.ResetDeleteTime()
-		return nil
-	case coupon.FieldTitle:
-		m.ResetTitle()
-		return nil
-	case coupon.FieldStartTime:
-		m.ResetStartTime()
-		return nil
-	case coupon.FieldEndTime:
-		m.ResetEndTime()
-		return nil
-	case coupon.FieldDescription:
-		m.ResetDescription()
-		return nil
-	case coupon.FieldFullMoney:
-		m.ResetFullMoney()
-		return nil
-	case coupon.FieldMinus:
-		m.ResetMinus()
-		return nil
-	case coupon.FieldRate:
-		m.ResetRate()
-		return nil
-	case coupon.FieldType:
-		m.ResetType()
-		return nil
-	case coupon.FieldValitiy:
-		m.ResetValitiy()
-		return nil
-	case coupon.FieldActivityID:
-		m.ResetActivityID()
-		return nil
-	case coupon.FieldRemark:
-		m.ResetRemark()
-		return nil
-	case coupon.FieldWholeStore:
-		m.ResetWholeStore()
-		return nil
-	}
-	return fmt.Errorf("unknown Coupon field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *CouponMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.category != nil {
-		edges = append(edges, coupon.EdgeCategory)
-	}
-	if m.activity != nil {
-		edges = append(edges, coupon.EdgeActivity)
-	}
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *CouponMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case coupon.EdgeCategory:
-		ids := make([]ent.Value, 0, len(m.category))
-		for id := range m.category {
-			ids = append(ids, id)
-		}
-		return ids
-	case coupon.EdgeActivity:
-		ids := make([]ent.Value, 0, len(m.activity))
-		for id := range m.activity {
-			ids = append(ids, id)
-		}
-		return ids
-	}
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *CouponMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.removedcategory != nil {
-		edges = append(edges, coupon.EdgeCategory)
-	}
-	if m.removedactivity != nil {
-		edges = append(edges, coupon.EdgeActivity)
-	}
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *CouponMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case coupon.EdgeCategory:
-		ids := make([]ent.Value, 0, len(m.removedcategory))
-		for id := range m.removedcategory {
-			ids = append(ids, id)
-		}
-		return ids
-	case coupon.EdgeActivity:
-		ids := make([]ent.Value, 0, len(m.removedactivity))
-		for id := range m.removedactivity {
-			ids = append(ids, id)
-		}
-		return ids
-	}
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *CouponMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.clearedcategory {
-		edges = append(edges, coupon.EdgeCategory)
-	}
-	if m.clearedactivity {
-		edges = append(edges, coupon.EdgeActivity)
-	}
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *CouponMutation) EdgeCleared(name string) bool {
-	switch name {
-	case coupon.EdgeCategory:
-		return m.clearedcategory
-	case coupon.EdgeActivity:
-		return m.clearedactivity
-	}
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *CouponMutation) ClearEdge(name string) error {
-	switch name {
-	}
-	return fmt.Errorf("unknown Coupon unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *CouponMutation) ResetEdge(name string) error {
-	switch name {
-	case coupon.EdgeCategory:
-		m.ResetCategory()
-		return nil
-	case coupon.EdgeActivity:
-		m.ResetActivity()
-		return nil
-	}
-	return fmt.Errorf("unknown Coupon edge %s", name)
-}
-
-// CouponTemplateMutation represents an operation that mutates the CouponTemplate nodes in the graph.
-type CouponTemplateMutation struct {
-	config
-	op            Op
-	typ           string
-	id            *int64
-	create_time   *time.Time
-	update_time   *time.Time
-	delete_time   *time.Time
-	title         *string
-	description   *string
-	full_money    *float64
-	addfull_money *float64
-	minus         *float64
-	addminus      *float64
-	discount      *float64
-	adddiscount   *float64
-	_type         *int
-	add_type      *int
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*CouponTemplate, error)
-	predicates    []predicate.CouponTemplate
-}
-
-var _ ent.Mutation = (*CouponTemplateMutation)(nil)
-
-// coupontemplateOption allows management of the mutation configuration using functional options.
-type coupontemplateOption func(*CouponTemplateMutation)
-
-// newCouponTemplateMutation creates new mutation for the CouponTemplate entity.
-func newCouponTemplateMutation(c config, op Op, opts ...coupontemplateOption) *CouponTemplateMutation {
-	m := &CouponTemplateMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeCouponTemplate,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withCouponTemplateID sets the ID field of the mutation.
-func withCouponTemplateID(id int64) coupontemplateOption {
-	return func(m *CouponTemplateMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *CouponTemplate
-		)
-		m.oldValue = func(ctx context.Context) (*CouponTemplate, error) {
-			once.Do(func() {
-				if m.done {
-					err = fmt.Errorf("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().CouponTemplate.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withCouponTemplate sets the old CouponTemplate of the mutation.
-func withCouponTemplate(node *CouponTemplate) coupontemplateOption {
-	return func(m *CouponTemplateMutation) {
-		m.oldValue = func(context.Context) (*CouponTemplate, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m CouponTemplateMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m CouponTemplateMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, fmt.Errorf("model: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *CouponTemplateMutation) ID() (id int64, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// SetCreateTime sets the "create_time" field.
-func (m *CouponTemplateMutation) SetCreateTime(t time.Time) {
-	m.create_time = &t
-}
-
-// CreateTime returns the value of the "create_time" field in the mutation.
-func (m *CouponTemplateMutation) CreateTime() (r time.Time, exists bool) {
-	v := m.create_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreateTime returns the old "create_time" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldCreateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldCreateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
-	}
-	return oldValue.CreateTime, nil
-}
-
-// ResetCreateTime resets all changes to the "create_time" field.
-func (m *CouponTemplateMutation) ResetCreateTime() {
-	m.create_time = nil
-}
-
-// SetUpdateTime sets the "update_time" field.
-func (m *CouponTemplateMutation) SetUpdateTime(t time.Time) {
-	m.update_time = &t
-}
-
-// UpdateTime returns the value of the "update_time" field in the mutation.
-func (m *CouponTemplateMutation) UpdateTime() (r time.Time, exists bool) {
-	v := m.update_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdateTime returns the old "update_time" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldUpdateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldUpdateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
-	}
-	return oldValue.UpdateTime, nil
-}
-
-// ResetUpdateTime resets all changes to the "update_time" field.
-func (m *CouponTemplateMutation) ResetUpdateTime() {
-	m.update_time = nil
-}
-
-// SetDeleteTime sets the "delete_time" field.
-func (m *CouponTemplateMutation) SetDeleteTime(t time.Time) {
-	m.delete_time = &t
-}
-
-// DeleteTime returns the value of the "delete_time" field in the mutation.
-func (m *CouponTemplateMutation) DeleteTime() (r time.Time, exists bool) {
-	v := m.delete_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDeleteTime returns the old "delete_time" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldDeleteTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDeleteTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDeleteTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDeleteTime: %w", err)
-	}
-	return oldValue.DeleteTime, nil
-}
-
-// ClearDeleteTime clears the value of the "delete_time" field.
-func (m *CouponTemplateMutation) ClearDeleteTime() {
-	m.delete_time = nil
-	m.clearedFields[coupontemplate.FieldDeleteTime] = struct{}{}
-}
-
-// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
-func (m *CouponTemplateMutation) DeleteTimeCleared() bool {
-	_, ok := m.clearedFields[coupontemplate.FieldDeleteTime]
-	return ok
-}
-
-// ResetDeleteTime resets all changes to the "delete_time" field.
-func (m *CouponTemplateMutation) ResetDeleteTime() {
-	m.delete_time = nil
-	delete(m.clearedFields, coupontemplate.FieldDeleteTime)
-}
-
-// SetTitle sets the "title" field.
-func (m *CouponTemplateMutation) SetTitle(s string) {
-	m.title = &s
-}
-
-// Title returns the value of the "title" field in the mutation.
-func (m *CouponTemplateMutation) Title() (r string, exists bool) {
-	v := m.title
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldTitle returns the old "title" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldTitle(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldTitle is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldTitle requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
-	}
-	return oldValue.Title, nil
-}
-
-// ResetTitle resets all changes to the "title" field.
-func (m *CouponTemplateMutation) ResetTitle() {
-	m.title = nil
-}
-
-// SetDescription sets the "description" field.
-func (m *CouponTemplateMutation) SetDescription(s string) {
-	m.description = &s
-}
-
-// Description returns the value of the "description" field in the mutation.
-func (m *CouponTemplateMutation) Description() (r string, exists bool) {
-	v := m.description
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDescription returns the old "description" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldDescription(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDescription is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDescription requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
-	}
-	return oldValue.Description, nil
-}
-
-// ResetDescription resets all changes to the "description" field.
-func (m *CouponTemplateMutation) ResetDescription() {
-	m.description = nil
-}
-
-// SetFullMoney sets the "full_money" field.
-func (m *CouponTemplateMutation) SetFullMoney(f float64) {
-	m.full_money = &f
-	m.addfull_money = nil
-}
-
-// FullMoney returns the value of the "full_money" field in the mutation.
-func (m *CouponTemplateMutation) FullMoney() (r float64, exists bool) {
-	v := m.full_money
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldFullMoney returns the old "full_money" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldFullMoney(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldFullMoney is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldFullMoney requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldFullMoney: %w", err)
-	}
-	return oldValue.FullMoney, nil
-}
-
-// AddFullMoney adds f to the "full_money" field.
-func (m *CouponTemplateMutation) AddFullMoney(f float64) {
-	if m.addfull_money != nil {
-		*m.addfull_money += f
-	} else {
-		m.addfull_money = &f
-	}
-}
-
-// AddedFullMoney returns the value that was added to the "full_money" field in this mutation.
-func (m *CouponTemplateMutation) AddedFullMoney() (r float64, exists bool) {
-	v := m.addfull_money
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetFullMoney resets all changes to the "full_money" field.
-func (m *CouponTemplateMutation) ResetFullMoney() {
-	m.full_money = nil
-	m.addfull_money = nil
-}
-
-// SetMinus sets the "minus" field.
-func (m *CouponTemplateMutation) SetMinus(f float64) {
-	m.minus = &f
-	m.addminus = nil
-}
-
-// Minus returns the value of the "minus" field in the mutation.
-func (m *CouponTemplateMutation) Minus() (r float64, exists bool) {
-	v := m.minus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMinus returns the old "minus" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldMinus(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldMinus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldMinus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMinus: %w", err)
-	}
-	return oldValue.Minus, nil
-}
-
-// AddMinus adds f to the "minus" field.
-func (m *CouponTemplateMutation) AddMinus(f float64) {
-	if m.addminus != nil {
-		*m.addminus += f
-	} else {
-		m.addminus = &f
-	}
-}
-
-// AddedMinus returns the value that was added to the "minus" field in this mutation.
-func (m *CouponTemplateMutation) AddedMinus() (r float64, exists bool) {
-	v := m.addminus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetMinus resets all changes to the "minus" field.
-func (m *CouponTemplateMutation) ResetMinus() {
-	m.minus = nil
-	m.addminus = nil
-}
-
-// SetDiscount sets the "discount" field.
-func (m *CouponTemplateMutation) SetDiscount(f float64) {
-	m.discount = &f
-	m.adddiscount = nil
-}
-
-// Discount returns the value of the "discount" field in the mutation.
-func (m *CouponTemplateMutation) Discount() (r float64, exists bool) {
-	v := m.discount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDiscount returns the old "discount" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldDiscount(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDiscount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDiscount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDiscount: %w", err)
-	}
-	return oldValue.Discount, nil
-}
-
-// AddDiscount adds f to the "discount" field.
-func (m *CouponTemplateMutation) AddDiscount(f float64) {
-	if m.adddiscount != nil {
-		*m.adddiscount += f
-	} else {
-		m.adddiscount = &f
-	}
-}
-
-// AddedDiscount returns the value that was added to the "discount" field in this mutation.
-func (m *CouponTemplateMutation) AddedDiscount() (r float64, exists bool) {
-	v := m.adddiscount
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetDiscount resets all changes to the "discount" field.
-func (m *CouponTemplateMutation) ResetDiscount() {
-	m.discount = nil
-	m.adddiscount = nil
-}
-
-// SetType sets the "type" field.
-func (m *CouponTemplateMutation) SetType(i int) {
-	m._type = &i
-	m.add_type = nil
-}
-
-// GetType returns the value of the "type" field in the mutation.
-func (m *CouponTemplateMutation) GetType() (r int, exists bool) {
-	v := m._type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldType returns the old "type" field's value of the CouponTemplate entity.
-// If the CouponTemplate object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTemplateMutation) OldType(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldType is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldType requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldType: %w", err)
-	}
-	return oldValue.Type, nil
-}
-
-// AddType adds i to the "type" field.
-func (m *CouponTemplateMutation) AddType(i int) {
-	if m.add_type != nil {
-		*m.add_type += i
-	} else {
-		m.add_type = &i
-	}
-}
-
-// AddedType returns the value that was added to the "type" field in this mutation.
-func (m *CouponTemplateMutation) AddedType() (r int, exists bool) {
-	v := m.add_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetType resets all changes to the "type" field.
-func (m *CouponTemplateMutation) ResetType() {
-	m._type = nil
-	m.add_type = nil
-}
-
-// Where appends a list predicates to the CouponTemplateMutation builder.
-func (m *CouponTemplateMutation) Where(ps ...predicate.CouponTemplate) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// Op returns the operation name.
-func (m *CouponTemplateMutation) Op() Op {
-	return m.op
-}
-
-// Type returns the node type of this mutation (CouponTemplate).
-func (m *CouponTemplateMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *CouponTemplateMutation) Fields() []string {
-	fields := make([]string, 0, 9)
-	if m.create_time != nil {
-		fields = append(fields, coupontemplate.FieldCreateTime)
-	}
-	if m.update_time != nil {
-		fields = append(fields, coupontemplate.FieldUpdateTime)
-	}
-	if m.delete_time != nil {
-		fields = append(fields, coupontemplate.FieldDeleteTime)
-	}
-	if m.title != nil {
-		fields = append(fields, coupontemplate.FieldTitle)
-	}
-	if m.description != nil {
-		fields = append(fields, coupontemplate.FieldDescription)
-	}
-	if m.full_money != nil {
-		fields = append(fields, coupontemplate.FieldFullMoney)
-	}
-	if m.minus != nil {
-		fields = append(fields, coupontemplate.FieldMinus)
-	}
-	if m.discount != nil {
-		fields = append(fields, coupontemplate.FieldDiscount)
-	}
-	if m._type != nil {
-		fields = append(fields, coupontemplate.FieldType)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *CouponTemplateMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case coupontemplate.FieldCreateTime:
-		return m.CreateTime()
-	case coupontemplate.FieldUpdateTime:
-		return m.UpdateTime()
-	case coupontemplate.FieldDeleteTime:
-		return m.DeleteTime()
-	case coupontemplate.FieldTitle:
-		return m.Title()
-	case coupontemplate.FieldDescription:
-		return m.Description()
-	case coupontemplate.FieldFullMoney:
-		return m.FullMoney()
-	case coupontemplate.FieldMinus:
-		return m.Minus()
-	case coupontemplate.FieldDiscount:
-		return m.Discount()
-	case coupontemplate.FieldType:
-		return m.GetType()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *CouponTemplateMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case coupontemplate.FieldCreateTime:
-		return m.OldCreateTime(ctx)
-	case coupontemplate.FieldUpdateTime:
-		return m.OldUpdateTime(ctx)
-	case coupontemplate.FieldDeleteTime:
-		return m.OldDeleteTime(ctx)
-	case coupontemplate.FieldTitle:
-		return m.OldTitle(ctx)
-	case coupontemplate.FieldDescription:
-		return m.OldDescription(ctx)
-	case coupontemplate.FieldFullMoney:
-		return m.OldFullMoney(ctx)
-	case coupontemplate.FieldMinus:
-		return m.OldMinus(ctx)
-	case coupontemplate.FieldDiscount:
-		return m.OldDiscount(ctx)
-	case coupontemplate.FieldType:
-		return m.OldType(ctx)
-	}
-	return nil, fmt.Errorf("unknown CouponTemplate field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *CouponTemplateMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case coupontemplate.FieldCreateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreateTime(v)
-		return nil
-	case coupontemplate.FieldUpdateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdateTime(v)
-		return nil
-	case coupontemplate.FieldDeleteTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDeleteTime(v)
-		return nil
-	case coupontemplate.FieldTitle:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetTitle(v)
-		return nil
-	case coupontemplate.FieldDescription:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDescription(v)
-		return nil
-	case coupontemplate.FieldFullMoney:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetFullMoney(v)
-		return nil
-	case coupontemplate.FieldMinus:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMinus(v)
-		return nil
-	case coupontemplate.FieldDiscount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDiscount(v)
-		return nil
-	case coupontemplate.FieldType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetType(v)
-		return nil
-	}
-	return fmt.Errorf("unknown CouponTemplate field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *CouponTemplateMutation) AddedFields() []string {
-	var fields []string
-	if m.addfull_money != nil {
-		fields = append(fields, coupontemplate.FieldFullMoney)
-	}
-	if m.addminus != nil {
-		fields = append(fields, coupontemplate.FieldMinus)
-	}
-	if m.adddiscount != nil {
-		fields = append(fields, coupontemplate.FieldDiscount)
-	}
-	if m.add_type != nil {
-		fields = append(fields, coupontemplate.FieldType)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *CouponTemplateMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case coupontemplate.FieldFullMoney:
-		return m.AddedFullMoney()
-	case coupontemplate.FieldMinus:
-		return m.AddedMinus()
-	case coupontemplate.FieldDiscount:
-		return m.AddedDiscount()
-	case coupontemplate.FieldType:
-		return m.AddedType()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *CouponTemplateMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case coupontemplate.FieldFullMoney:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddFullMoney(v)
-		return nil
-	case coupontemplate.FieldMinus:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMinus(v)
-		return nil
-	case coupontemplate.FieldDiscount:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddDiscount(v)
-		return nil
-	case coupontemplate.FieldType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddType(v)
-		return nil
-	}
-	return fmt.Errorf("unknown CouponTemplate numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *CouponTemplateMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(coupontemplate.FieldDeleteTime) {
-		fields = append(fields, coupontemplate.FieldDeleteTime)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *CouponTemplateMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *CouponTemplateMutation) ClearField(name string) error {
-	switch name {
-	case coupontemplate.FieldDeleteTime:
-		m.ClearDeleteTime()
-		return nil
-	}
-	return fmt.Errorf("unknown CouponTemplate nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *CouponTemplateMutation) ResetField(name string) error {
-	switch name {
-	case coupontemplate.FieldCreateTime:
-		m.ResetCreateTime()
-		return nil
-	case coupontemplate.FieldUpdateTime:
-		m.ResetUpdateTime()
-		return nil
-	case coupontemplate.FieldDeleteTime:
-		m.ResetDeleteTime()
-		return nil
-	case coupontemplate.FieldTitle:
-		m.ResetTitle()
-		return nil
-	case coupontemplate.FieldDescription:
-		m.ResetDescription()
-		return nil
-	case coupontemplate.FieldFullMoney:
-		m.ResetFullMoney()
-		return nil
-	case coupontemplate.FieldMinus:
-		m.ResetMinus()
-		return nil
-	case coupontemplate.FieldDiscount:
-		m.ResetDiscount()
-		return nil
-	case coupontemplate.FieldType:
-		m.ResetType()
-		return nil
-	}
-	return fmt.Errorf("unknown CouponTemplate field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *CouponTemplateMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *CouponTemplateMutation) AddedIDs(name string) []ent.Value {
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *CouponTemplateMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *CouponTemplateMutation) RemovedIDs(name string) []ent.Value {
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *CouponTemplateMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *CouponTemplateMutation) EdgeCleared(name string) bool {
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *CouponTemplateMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown CouponTemplate unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *CouponTemplateMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown CouponTemplate edge %s", name)
-}
-
-// CouponTypeMutation represents an operation that mutates the CouponType nodes in the graph.
-type CouponTypeMutation struct {
-	config
-	op            Op
-	typ           string
-	id            *int64
-	create_time   *time.Time
-	update_time   *time.Time
-	delete_time   *time.Time
-	name          *string
-	code          *int
-	addcode       *int
-	description   *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*CouponType, error)
-	predicates    []predicate.CouponType
-}
-
-var _ ent.Mutation = (*CouponTypeMutation)(nil)
-
-// coupontypeOption allows management of the mutation configuration using functional options.
-type coupontypeOption func(*CouponTypeMutation)
-
-// newCouponTypeMutation creates new mutation for the CouponType entity.
-func newCouponTypeMutation(c config, op Op, opts ...coupontypeOption) *CouponTypeMutation {
-	m := &CouponTypeMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeCouponType,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withCouponTypeID sets the ID field of the mutation.
-func withCouponTypeID(id int64) coupontypeOption {
-	return func(m *CouponTypeMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *CouponType
-		)
-		m.oldValue = func(ctx context.Context) (*CouponType, error) {
-			once.Do(func() {
-				if m.done {
-					err = fmt.Errorf("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().CouponType.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withCouponType sets the old CouponType of the mutation.
-func withCouponType(node *CouponType) coupontypeOption {
-	return func(m *CouponTypeMutation) {
-		m.oldValue = func(context.Context) (*CouponType, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m CouponTypeMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m CouponTypeMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, fmt.Errorf("model: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *CouponTypeMutation) ID() (id int64, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// SetCreateTime sets the "create_time" field.
-func (m *CouponTypeMutation) SetCreateTime(t time.Time) {
-	m.create_time = &t
-}
-
-// CreateTime returns the value of the "create_time" field in the mutation.
-func (m *CouponTypeMutation) CreateTime() (r time.Time, exists bool) {
-	v := m.create_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreateTime returns the old "create_time" field's value of the CouponType entity.
-// If the CouponType object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTypeMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldCreateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldCreateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
-	}
-	return oldValue.CreateTime, nil
-}
-
-// ResetCreateTime resets all changes to the "create_time" field.
-func (m *CouponTypeMutation) ResetCreateTime() {
-	m.create_time = nil
-}
-
-// SetUpdateTime sets the "update_time" field.
-func (m *CouponTypeMutation) SetUpdateTime(t time.Time) {
-	m.update_time = &t
-}
-
-// UpdateTime returns the value of the "update_time" field in the mutation.
-func (m *CouponTypeMutation) UpdateTime() (r time.Time, exists bool) {
-	v := m.update_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdateTime returns the old "update_time" field's value of the CouponType entity.
-// If the CouponType object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTypeMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldUpdateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldUpdateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
-	}
-	return oldValue.UpdateTime, nil
-}
-
-// ResetUpdateTime resets all changes to the "update_time" field.
-func (m *CouponTypeMutation) ResetUpdateTime() {
-	m.update_time = nil
-}
-
-// SetDeleteTime sets the "delete_time" field.
-func (m *CouponTypeMutation) SetDeleteTime(t time.Time) {
-	m.delete_time = &t
-}
-
-// DeleteTime returns the value of the "delete_time" field in the mutation.
-func (m *CouponTypeMutation) DeleteTime() (r time.Time, exists bool) {
-	v := m.delete_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDeleteTime returns the old "delete_time" field's value of the CouponType entity.
-// If the CouponType object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTypeMutation) OldDeleteTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDeleteTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDeleteTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDeleteTime: %w", err)
-	}
-	return oldValue.DeleteTime, nil
-}
-
-// ClearDeleteTime clears the value of the "delete_time" field.
-func (m *CouponTypeMutation) ClearDeleteTime() {
-	m.delete_time = nil
-	m.clearedFields[coupontype.FieldDeleteTime] = struct{}{}
-}
-
-// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
-func (m *CouponTypeMutation) DeleteTimeCleared() bool {
-	_, ok := m.clearedFields[coupontype.FieldDeleteTime]
-	return ok
-}
-
-// ResetDeleteTime resets all changes to the "delete_time" field.
-func (m *CouponTypeMutation) ResetDeleteTime() {
-	m.delete_time = nil
-	delete(m.clearedFields, coupontype.FieldDeleteTime)
-}
-
-// SetName sets the "name" field.
-func (m *CouponTypeMutation) SetName(s string) {
-	m.name = &s
-}
-
-// Name returns the value of the "name" field in the mutation.
-func (m *CouponTypeMutation) Name() (r string, exists bool) {
-	v := m.name
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldName returns the old "name" field's value of the CouponType entity.
-// If the CouponType object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTypeMutation) OldName(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldName is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldName requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
-	}
-	return oldValue.Name, nil
-}
-
-// ResetName resets all changes to the "name" field.
-func (m *CouponTypeMutation) ResetName() {
-	m.name = nil
-}
-
-// SetCode sets the "code" field.
-func (m *CouponTypeMutation) SetCode(i int) {
-	m.code = &i
-	m.addcode = nil
-}
-
-// Code returns the value of the "code" field in the mutation.
-func (m *CouponTypeMutation) Code() (r int, exists bool) {
-	v := m.code
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCode returns the old "code" field's value of the CouponType entity.
-// If the CouponType object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTypeMutation) OldCode(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldCode is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldCode requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCode: %w", err)
-	}
-	return oldValue.Code, nil
-}
-
-// AddCode adds i to the "code" field.
-func (m *CouponTypeMutation) AddCode(i int) {
-	if m.addcode != nil {
-		*m.addcode += i
-	} else {
-		m.addcode = &i
-	}
-}
-
-// AddedCode returns the value that was added to the "code" field in this mutation.
-func (m *CouponTypeMutation) AddedCode() (r int, exists bool) {
-	v := m.addcode
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetCode resets all changes to the "code" field.
-func (m *CouponTypeMutation) ResetCode() {
-	m.code = nil
-	m.addcode = nil
-}
-
-// SetDescription sets the "description" field.
-func (m *CouponTypeMutation) SetDescription(s string) {
-	m.description = &s
-}
-
-// Description returns the value of the "description" field in the mutation.
-func (m *CouponTypeMutation) Description() (r string, exists bool) {
-	v := m.description
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDescription returns the old "description" field's value of the CouponType entity.
-// If the CouponType object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponTypeMutation) OldDescription(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDescription is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDescription requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
-	}
-	return oldValue.Description, nil
-}
-
-// ResetDescription resets all changes to the "description" field.
-func (m *CouponTypeMutation) ResetDescription() {
-	m.description = nil
-}
-
-// Where appends a list predicates to the CouponTypeMutation builder.
-func (m *CouponTypeMutation) Where(ps ...predicate.CouponType) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// Op returns the operation name.
-func (m *CouponTypeMutation) Op() Op {
-	return m.op
-}
-
-// Type returns the node type of this mutation (CouponType).
-func (m *CouponTypeMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *CouponTypeMutation) Fields() []string {
-	fields := make([]string, 0, 6)
-	if m.create_time != nil {
-		fields = append(fields, coupontype.FieldCreateTime)
-	}
-	if m.update_time != nil {
-		fields = append(fields, coupontype.FieldUpdateTime)
-	}
-	if m.delete_time != nil {
-		fields = append(fields, coupontype.FieldDeleteTime)
-	}
-	if m.name != nil {
-		fields = append(fields, coupontype.FieldName)
-	}
-	if m.code != nil {
-		fields = append(fields, coupontype.FieldCode)
-	}
-	if m.description != nil {
-		fields = append(fields, coupontype.FieldDescription)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *CouponTypeMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case coupontype.FieldCreateTime:
-		return m.CreateTime()
-	case coupontype.FieldUpdateTime:
-		return m.UpdateTime()
-	case coupontype.FieldDeleteTime:
-		return m.DeleteTime()
-	case coupontype.FieldName:
-		return m.Name()
-	case coupontype.FieldCode:
-		return m.Code()
-	case coupontype.FieldDescription:
-		return m.Description()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *CouponTypeMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case coupontype.FieldCreateTime:
-		return m.OldCreateTime(ctx)
-	case coupontype.FieldUpdateTime:
-		return m.OldUpdateTime(ctx)
-	case coupontype.FieldDeleteTime:
-		return m.OldDeleteTime(ctx)
-	case coupontype.FieldName:
-		return m.OldName(ctx)
-	case coupontype.FieldCode:
-		return m.OldCode(ctx)
-	case coupontype.FieldDescription:
-		return m.OldDescription(ctx)
-	}
-	return nil, fmt.Errorf("unknown CouponType field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *CouponTypeMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case coupontype.FieldCreateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreateTime(v)
-		return nil
-	case coupontype.FieldUpdateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdateTime(v)
-		return nil
-	case coupontype.FieldDeleteTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDeleteTime(v)
-		return nil
-	case coupontype.FieldName:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetName(v)
-		return nil
-	case coupontype.FieldCode:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCode(v)
-		return nil
-	case coupontype.FieldDescription:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDescription(v)
-		return nil
-	}
-	return fmt.Errorf("unknown CouponType field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *CouponTypeMutation) AddedFields() []string {
-	var fields []string
-	if m.addcode != nil {
-		fields = append(fields, coupontype.FieldCode)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *CouponTypeMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case coupontype.FieldCode:
-		return m.AddedCode()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *CouponTypeMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case coupontype.FieldCode:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddCode(v)
-		return nil
-	}
-	return fmt.Errorf("unknown CouponType numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *CouponTypeMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(coupontype.FieldDeleteTime) {
-		fields = append(fields, coupontype.FieldDeleteTime)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *CouponTypeMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *CouponTypeMutation) ClearField(name string) error {
-	switch name {
-	case coupontype.FieldDeleteTime:
-		m.ClearDeleteTime()
-		return nil
-	}
-	return fmt.Errorf("unknown CouponType nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *CouponTypeMutation) ResetField(name string) error {
-	switch name {
-	case coupontype.FieldCreateTime:
-		m.ResetCreateTime()
-		return nil
-	case coupontype.FieldUpdateTime:
-		m.ResetUpdateTime()
-		return nil
-	case coupontype.FieldDeleteTime:
-		m.ResetDeleteTime()
-		return nil
-	case coupontype.FieldName:
-		m.ResetName()
-		return nil
-	case coupontype.FieldCode:
-		m.ResetCode()
-		return nil
-	case coupontype.FieldDescription:
-		m.ResetDescription()
-		return nil
-	}
-	return fmt.Errorf("unknown CouponType field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *CouponTypeMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *CouponTypeMutation) AddedIDs(name string) []ent.Value {
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *CouponTypeMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *CouponTypeMutation) RemovedIDs(name string) []ent.Value {
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *CouponTypeMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *CouponTypeMutation) EdgeCleared(name string) bool {
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *CouponTypeMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown CouponType unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *CouponTypeMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown CouponType edge %s", name)
 }
 
 // GridCategoryMutation represents an operation that mutates the GridCategory nodes in the graph.
@@ -9469,6 +6288,9 @@ type ThemeMutation struct {
 	online           *int
 	addonline        *int
 	clearedFields    map[string]struct{}
+	theme_spu        map[int64]struct{}
+	removedtheme_spu map[int64]struct{}
+	clearedtheme_spu bool
 	done             bool
 	oldValue         func(context.Context) (*Theme, error)
 	predicates       []predicate.Theme
@@ -10018,6 +6840,60 @@ func (m *ThemeMutation) ResetOnline() {
 	m.addonline = nil
 }
 
+// AddThemeSpuIDs adds the "theme_spu" edge to the ThemeSpu entity by ids.
+func (m *ThemeMutation) AddThemeSpuIDs(ids ...int64) {
+	if m.theme_spu == nil {
+		m.theme_spu = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.theme_spu[ids[i]] = struct{}{}
+	}
+}
+
+// ClearThemeSpu clears the "theme_spu" edge to the ThemeSpu entity.
+func (m *ThemeMutation) ClearThemeSpu() {
+	m.clearedtheme_spu = true
+}
+
+// ThemeSpuCleared reports if the "theme_spu" edge to the ThemeSpu entity was cleared.
+func (m *ThemeMutation) ThemeSpuCleared() bool {
+	return m.clearedtheme_spu
+}
+
+// RemoveThemeSpuIDs removes the "theme_spu" edge to the ThemeSpu entity by IDs.
+func (m *ThemeMutation) RemoveThemeSpuIDs(ids ...int64) {
+	if m.removedtheme_spu == nil {
+		m.removedtheme_spu = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.theme_spu, ids[i])
+		m.removedtheme_spu[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedThemeSpu returns the removed IDs of the "theme_spu" edge to the ThemeSpu entity.
+func (m *ThemeMutation) RemovedThemeSpuIDs() (ids []int64) {
+	for id := range m.removedtheme_spu {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ThemeSpuIDs returns the "theme_spu" edge IDs in the mutation.
+func (m *ThemeMutation) ThemeSpuIDs() (ids []int64) {
+	for id := range m.theme_spu {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetThemeSpu resets all changes to the "theme_spu" edge.
+func (m *ThemeMutation) ResetThemeSpu() {
+	m.theme_spu = nil
+	m.clearedtheme_spu = false
+	m.removedtheme_spu = nil
+}
+
 // Where appends a list predicates to the ThemeMutation builder.
 func (m *ThemeMutation) Where(ps ...predicate.Theme) {
 	m.predicates = append(m.predicates, ps...)
@@ -10347,48 +7223,543 @@ func (m *ThemeMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ThemeMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.theme_spu != nil {
+		edges = append(edges, theme.EdgeThemeSpu)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *ThemeMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case theme.EdgeThemeSpu:
+		ids := make([]ent.Value, 0, len(m.theme_spu))
+		for id := range m.theme_spu {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ThemeMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.removedtheme_spu != nil {
+		edges = append(edges, theme.EdgeThemeSpu)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *ThemeMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case theme.EdgeThemeSpu:
+		ids := make([]ent.Value, 0, len(m.removedtheme_spu))
+		for id := range m.removedtheme_spu {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ThemeMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedtheme_spu {
+		edges = append(edges, theme.EdgeThemeSpu)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *ThemeMutation) EdgeCleared(name string) bool {
+	switch name {
+	case theme.EdgeThemeSpu:
+		return m.clearedtheme_spu
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *ThemeMutation) ClearEdge(name string) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Theme unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *ThemeMutation) ResetEdge(name string) error {
+	switch name {
+	case theme.EdgeThemeSpu:
+		m.ResetThemeSpu()
+		return nil
+	}
 	return fmt.Errorf("unknown Theme edge %s", name)
+}
+
+// ThemeSpuMutation represents an operation that mutates the ThemeSpu nodes in the graph.
+type ThemeSpuMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	spu_id        *int64
+	addspu_id     *int64
+	clearedFields map[string]struct{}
+	theme         *int64
+	clearedtheme  bool
+	done          bool
+	oldValue      func(context.Context) (*ThemeSpu, error)
+	predicates    []predicate.ThemeSpu
+}
+
+var _ ent.Mutation = (*ThemeSpuMutation)(nil)
+
+// themespuOption allows management of the mutation configuration using functional options.
+type themespuOption func(*ThemeSpuMutation)
+
+// newThemeSpuMutation creates new mutation for the ThemeSpu entity.
+func newThemeSpuMutation(c config, op Op, opts ...themespuOption) *ThemeSpuMutation {
+	m := &ThemeSpuMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeThemeSpu,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withThemeSpuID sets the ID field of the mutation.
+func withThemeSpuID(id int64) themespuOption {
+	return func(m *ThemeSpuMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ThemeSpu
+		)
+		m.oldValue = func(ctx context.Context) (*ThemeSpu, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ThemeSpu.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withThemeSpu sets the old ThemeSpu of the mutation.
+func withThemeSpu(node *ThemeSpu) themespuOption {
+	return func(m *ThemeSpuMutation) {
+		m.oldValue = func(context.Context) (*ThemeSpu, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ThemeSpuMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ThemeSpuMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("model: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ThemeSpuMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetThemeID sets the "theme_id" field.
+func (m *ThemeSpuMutation) SetThemeID(i int64) {
+	m.theme = &i
+}
+
+// ThemeID returns the value of the "theme_id" field in the mutation.
+func (m *ThemeSpuMutation) ThemeID() (r int64, exists bool) {
+	v := m.theme
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldThemeID returns the old "theme_id" field's value of the ThemeSpu entity.
+// If the ThemeSpu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ThemeSpuMutation) OldThemeID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldThemeID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldThemeID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldThemeID: %w", err)
+	}
+	return oldValue.ThemeID, nil
+}
+
+// ClearThemeID clears the value of the "theme_id" field.
+func (m *ThemeSpuMutation) ClearThemeID() {
+	m.theme = nil
+	m.clearedFields[themespu.FieldThemeID] = struct{}{}
+}
+
+// ThemeIDCleared returns if the "theme_id" field was cleared in this mutation.
+func (m *ThemeSpuMutation) ThemeIDCleared() bool {
+	_, ok := m.clearedFields[themespu.FieldThemeID]
+	return ok
+}
+
+// ResetThemeID resets all changes to the "theme_id" field.
+func (m *ThemeSpuMutation) ResetThemeID() {
+	m.theme = nil
+	delete(m.clearedFields, themespu.FieldThemeID)
+}
+
+// SetSpuID sets the "spu_id" field.
+func (m *ThemeSpuMutation) SetSpuID(i int64) {
+	m.spu_id = &i
+	m.addspu_id = nil
+}
+
+// SpuID returns the value of the "spu_id" field in the mutation.
+func (m *ThemeSpuMutation) SpuID() (r int64, exists bool) {
+	v := m.spu_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSpuID returns the old "spu_id" field's value of the ThemeSpu entity.
+// If the ThemeSpu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ThemeSpuMutation) OldSpuID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldSpuID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldSpuID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSpuID: %w", err)
+	}
+	return oldValue.SpuID, nil
+}
+
+// AddSpuID adds i to the "spu_id" field.
+func (m *ThemeSpuMutation) AddSpuID(i int64) {
+	if m.addspu_id != nil {
+		*m.addspu_id += i
+	} else {
+		m.addspu_id = &i
+	}
+}
+
+// AddedSpuID returns the value that was added to the "spu_id" field in this mutation.
+func (m *ThemeSpuMutation) AddedSpuID() (r int64, exists bool) {
+	v := m.addspu_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSpuID resets all changes to the "spu_id" field.
+func (m *ThemeSpuMutation) ResetSpuID() {
+	m.spu_id = nil
+	m.addspu_id = nil
+}
+
+// ClearTheme clears the "theme" edge to the Theme entity.
+func (m *ThemeSpuMutation) ClearTheme() {
+	m.clearedtheme = true
+}
+
+// ThemeCleared reports if the "theme" edge to the Theme entity was cleared.
+func (m *ThemeSpuMutation) ThemeCleared() bool {
+	return m.ThemeIDCleared() || m.clearedtheme
+}
+
+// ThemeIDs returns the "theme" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ThemeID instead. It exists only for internal usage by the builders.
+func (m *ThemeSpuMutation) ThemeIDs() (ids []int64) {
+	if id := m.theme; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetTheme resets all changes to the "theme" edge.
+func (m *ThemeSpuMutation) ResetTheme() {
+	m.theme = nil
+	m.clearedtheme = false
+}
+
+// Where appends a list predicates to the ThemeSpuMutation builder.
+func (m *ThemeSpuMutation) Where(ps ...predicate.ThemeSpu) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *ThemeSpuMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (ThemeSpu).
+func (m *ThemeSpuMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ThemeSpuMutation) Fields() []string {
+	fields := make([]string, 0, 2)
+	if m.theme != nil {
+		fields = append(fields, themespu.FieldThemeID)
+	}
+	if m.spu_id != nil {
+		fields = append(fields, themespu.FieldSpuID)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ThemeSpuMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case themespu.FieldThemeID:
+		return m.ThemeID()
+	case themespu.FieldSpuID:
+		return m.SpuID()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ThemeSpuMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case themespu.FieldThemeID:
+		return m.OldThemeID(ctx)
+	case themespu.FieldSpuID:
+		return m.OldSpuID(ctx)
+	}
+	return nil, fmt.Errorf("unknown ThemeSpu field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ThemeSpuMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case themespu.FieldThemeID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetThemeID(v)
+		return nil
+	case themespu.FieldSpuID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSpuID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ThemeSpu field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ThemeSpuMutation) AddedFields() []string {
+	var fields []string
+	if m.addspu_id != nil {
+		fields = append(fields, themespu.FieldSpuID)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ThemeSpuMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case themespu.FieldSpuID:
+		return m.AddedSpuID()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ThemeSpuMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case themespu.FieldSpuID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSpuID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ThemeSpu numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ThemeSpuMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(themespu.FieldThemeID) {
+		fields = append(fields, themespu.FieldThemeID)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ThemeSpuMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ThemeSpuMutation) ClearField(name string) error {
+	switch name {
+	case themespu.FieldThemeID:
+		m.ClearThemeID()
+		return nil
+	}
+	return fmt.Errorf("unknown ThemeSpu nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ThemeSpuMutation) ResetField(name string) error {
+	switch name {
+	case themespu.FieldThemeID:
+		m.ResetThemeID()
+		return nil
+	case themespu.FieldSpuID:
+		m.ResetSpuID()
+		return nil
+	}
+	return fmt.Errorf("unknown ThemeSpu field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ThemeSpuMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.theme != nil {
+		edges = append(edges, themespu.EdgeTheme)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ThemeSpuMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case themespu.EdgeTheme:
+		if id := m.theme; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ThemeSpuMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ThemeSpuMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ThemeSpuMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedtheme {
+		edges = append(edges, themespu.EdgeTheme)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ThemeSpuMutation) EdgeCleared(name string) bool {
+	switch name {
+	case themespu.EdgeTheme:
+		return m.clearedtheme
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ThemeSpuMutation) ClearEdge(name string) error {
+	switch name {
+	case themespu.EdgeTheme:
+		m.ClearTheme()
+		return nil
+	}
+	return fmt.Errorf("unknown ThemeSpu unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ThemeSpuMutation) ResetEdge(name string) error {
+	switch name {
+	case themespu.EdgeTheme:
+		m.ResetTheme()
+		return nil
+	}
+	return fmt.Errorf("unknown ThemeSpu edge %s", name)
 }

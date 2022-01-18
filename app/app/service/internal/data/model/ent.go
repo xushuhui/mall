@@ -10,12 +10,10 @@ import (
 	"mall-go/app/app/service/internal/data/model/banneritem"
 	"mall-go/app/app/service/internal/data/model/category"
 	"mall-go/app/app/service/internal/data/model/charge"
-	"mall-go/app/app/service/internal/data/model/coupon"
-	"mall-go/app/app/service/internal/data/model/coupontemplate"
-	"mall-go/app/app/service/internal/data/model/coupontype"
 	"mall-go/app/app/service/internal/data/model/gridcategory"
 	"mall-go/app/app/service/internal/data/model/refund"
 	"mall-go/app/app/service/internal/data/model/theme"
+	"mall-go/app/app/service/internal/data/model/themespu"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -39,17 +37,15 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		activity.Table:       activity.ValidColumn,
-		banner.Table:         banner.ValidColumn,
-		banneritem.Table:     banneritem.ValidColumn,
-		category.Table:       category.ValidColumn,
-		charge.Table:         charge.ValidColumn,
-		coupon.Table:         coupon.ValidColumn,
-		coupontemplate.Table: coupontemplate.ValidColumn,
-		coupontype.Table:     coupontype.ValidColumn,
-		gridcategory.Table:   gridcategory.ValidColumn,
-		refund.Table:         refund.ValidColumn,
-		theme.Table:          theme.ValidColumn,
+		activity.Table:     activity.ValidColumn,
+		banner.Table:       banner.ValidColumn,
+		banneritem.Table:   banneritem.ValidColumn,
+		category.Table:     category.ValidColumn,
+		charge.Table:       charge.ValidColumn,
+		gridcategory.Table: gridcategory.ValidColumn,
+		refund.Table:       refund.ValidColumn,
+		theme.Table:        theme.ValidColumn,
+		themespu.Table:     themespu.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

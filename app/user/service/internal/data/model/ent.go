@@ -5,7 +5,6 @@ package model
 import (
 	"errors"
 	"fmt"
-	"mall-go/app/user/service/internal/data/model/usercoupon"
 	"mall-go/app/user/service/internal/data/model/useridentiy"
 	"mall-go/app/user/service/internal/data/model/userinfo"
 	"mall-go/app/user/service/internal/data/model/userpoint"
@@ -35,7 +34,6 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		usercoupon.Table:       usercoupon.ValidColumn,
 		useridentiy.Table:      useridentiy.ValidColumn,
 		userinfo.Table:         userinfo.ValidColumn,
 		userpoint.Table:        userpoint.ValidColumn,

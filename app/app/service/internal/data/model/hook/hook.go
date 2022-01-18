@@ -73,45 +73,6 @@ func (f ChargeFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, 
 	return f(ctx, mv)
 }
 
-// The CouponFunc type is an adapter to allow the use of ordinary
-// function as Coupon mutator.
-type CouponFunc func(context.Context, *model.CouponMutation) (model.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f CouponFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
-	mv, ok := m.(*model.CouponMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.CouponMutation", m)
-	}
-	return f(ctx, mv)
-}
-
-// The CouponTemplateFunc type is an adapter to allow the use of ordinary
-// function as CouponTemplate mutator.
-type CouponTemplateFunc func(context.Context, *model.CouponTemplateMutation) (model.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f CouponTemplateFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
-	mv, ok := m.(*model.CouponTemplateMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.CouponTemplateMutation", m)
-	}
-	return f(ctx, mv)
-}
-
-// The CouponTypeFunc type is an adapter to allow the use of ordinary
-// function as CouponType mutator.
-type CouponTypeFunc func(context.Context, *model.CouponTypeMutation) (model.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f CouponTypeFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
-	mv, ok := m.(*model.CouponTypeMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.CouponTypeMutation", m)
-	}
-	return f(ctx, mv)
-}
-
 // The GridCategoryFunc type is an adapter to allow the use of ordinary
 // function as GridCategory mutator.
 type GridCategoryFunc func(context.Context, *model.GridCategoryMutation) (model.Value, error)
@@ -147,6 +108,19 @@ func (f ThemeFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, e
 	mv, ok := m.(*model.ThemeMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.ThemeMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The ThemeSpuFunc type is an adapter to allow the use of ordinary
+// function as ThemeSpu mutator.
+type ThemeSpuFunc func(context.Context, *model.ThemeSpuMutation) (model.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ThemeSpuFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
+	mv, ok := m.(*model.ThemeSpuMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.ThemeSpuMutation", m)
 	}
 	return f(ctx, mv)
 }

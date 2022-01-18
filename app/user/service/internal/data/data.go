@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/wire"
 	"github.com/pkg/errors"
 	"mall-go/app/user/service/internal/conf"

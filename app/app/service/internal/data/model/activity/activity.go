@@ -35,15 +35,8 @@ const (
 	FieldInternalTopImg = "internal_top_img"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// EdgeCoupon holds the string denoting the coupon edge name in mutations.
-	EdgeCoupon = "coupon"
 	// Table holds the table name of the activity in the database.
 	Table = "activity"
-	// CouponTable is the table that holds the coupon relation/edge. The primary key declared below.
-	CouponTable = "activity_coupon"
-	// CouponInverseTable is the table name for the Coupon entity.
-	// It exists in this package in order to avoid lower111 circular dependency with the "coupon" package.
-	CouponInverseTable = "coupon"
 )
 
 // Columns holds all SQL columns for activity fields.
@@ -62,12 +55,6 @@ var Columns = []string{
 	FieldInternalTopImg,
 	FieldName,
 }
-
-var (
-	// CouponPrimaryKey and CouponColumn2 are the table columns denoting the
-	// primary key for the coupon relation (M2M).
-	CouponPrimaryKey = []string{"activity_id", "coupon_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {

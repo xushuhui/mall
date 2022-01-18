@@ -4,10 +4,12 @@ package model
 
 import (
 	"context"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/theme"
+	"mall-go/app/app/service/internal/data/model/themespu"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
@@ -24,6 +26,8 @@ type ThemeQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.Theme
+	// eager-loading edges.
+	withThemeSpu *ThemeSpuQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -58,6 +62,28 @@ func (tq *ThemeQuery) Unique(unique bool) *ThemeQuery {
 func (tq *ThemeQuery) Order(o ...OrderFunc) *ThemeQuery {
 	tq.order = append(tq.order, o...)
 	return tq
+}
+
+// QueryThemeSpu chains the current query on the "theme_spu" edge.
+func (tq *ThemeQuery) QueryThemeSpu() *ThemeSpuQuery {
+	query := &ThemeSpuQuery{config: tq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(theme.Table, theme.FieldID, selector),
+			sqlgraph.To(themespu.Table, themespu.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, theme.ThemeSpuTable, theme.ThemeSpuColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Theme entity from the query.
@@ -281,15 +307,27 @@ func (tq *ThemeQuery) Clone() *ThemeQuery {
 		return nil
 	}
 	return &ThemeQuery{
-		config:     tq.config,
-		limit:      tq.limit,
-		offset:     tq.offset,
-		order:      append([]OrderFunc{}, tq.order...),
-		predicates: append([]predicate.Theme{}, tq.predicates...),
+		config:       tq.config,
+		limit:        tq.limit,
+		offset:       tq.offset,
+		order:        append([]OrderFunc{}, tq.order...),
+		predicates:   append([]predicate.Theme{}, tq.predicates...),
+		withThemeSpu: tq.withThemeSpu.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
 	}
+}
+
+// WithThemeSpu tells the query-builder to eager-load the nodes that are connected to
+// the "theme_spu" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *ThemeQuery) WithThemeSpu(opts ...func(*ThemeSpuQuery)) *ThemeQuery {
+	query := &ThemeSpuQuery{config: tq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withThemeSpu = query
+	return tq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -355,8 +393,11 @@ func (tq *ThemeQuery) prepareQuery(ctx context.Context) error {
 
 func (tq *ThemeQuery) sqlAll(ctx context.Context) ([]*Theme, error) {
 	var (
-		nodes = []*Theme{}
-		_spec = tq.querySpec()
+		nodes       = []*Theme{}
+		_spec       = tq.querySpec()
+		loadedTypes = [1]bool{
+			tq.withThemeSpu != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Theme{config: tq.config}
@@ -368,6 +409,7 @@ func (tq *ThemeQuery) sqlAll(ctx context.Context) ([]*Theme, error) {
 			return fmt.Errorf("model: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, tq.driver, _spec); err != nil {
@@ -376,6 +418,32 @@ func (tq *ThemeQuery) sqlAll(ctx context.Context) ([]*Theme, error) {
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+
+	if query := tq.withThemeSpu; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int64]*Theme)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.ThemeSpu = []*ThemeSpu{}
+		}
+		query.Where(predicate.ThemeSpu(func(s *sql.Selector) {
+			s.Where(sql.InValues(theme.ThemeSpuColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.ThemeID
+			node, ok := nodeids[fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "theme_id" returned %v for node %v`, fk, n.ID)
+			}
+			node.Edges.ThemeSpu = append(node.Edges.ThemeSpu, n)
+		}
+	}
+
 	return nodes, nil
 }
 

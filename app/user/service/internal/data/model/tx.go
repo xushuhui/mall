@@ -12,8 +12,6 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
-	// UserCoupon is the client for interacting with the UserCoupon builders.
-	UserCoupon *UserCouponClient
 	// UserIdentiy is the client for interacting with the UserIdentiy builders.
 	UserIdentiy *UserIdentiyClient
 	// UserInfo is the client for interacting with the UserInfo builders.
@@ -161,7 +159,6 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
-	tx.UserCoupon = NewUserCouponClient(tx.config)
 	tx.UserIdentiy = NewUserIdentiyClient(tx.config)
 	tx.UserInfo = NewUserInfoClient(tx.config)
 	tx.UserPoint = NewUserPointClient(tx.config)
@@ -177,7 +174,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: UserCoupon.QueryXXX(), the query will be executed
+// applies a query, for example: UserIdentiy.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

@@ -18,6 +18,6 @@ func NewUserService(ou *biz.OrderUsecase) *OrderService {
 	}
 }
 
-func (s *OrderService) CreateOrder(ctx context.Context, req *service.CreateOrderRequest) (*service.CreateOrderReply, error) {
-	return &service.CreateOrderReply{}, nil
+func (s *OrderService) GetOrderById(ctx context.Context, req *service.IdRequest) (*service.OrderVO, error) {
+	return &service.OrderVO{}, nil
 }

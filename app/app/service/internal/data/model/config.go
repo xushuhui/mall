@@ -24,17 +24,15 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
-	Activity       []ent.Hook
-	Banner         []ent.Hook
-	BannerItem     []ent.Hook
-	Category       []ent.Hook
-	Charge         []ent.Hook
-	Coupon         []ent.Hook
-	CouponTemplate []ent.Hook
-	CouponType     []ent.Hook
-	GridCategory   []ent.Hook
-	Refund         []ent.Hook
-	Theme          []ent.Hook
+	Activity     []ent.Hook
+	Banner       []ent.Hook
+	BannerItem   []ent.Hook
+	Category     []ent.Hook
+	Charge       []ent.Hook
+	GridCategory []ent.Hook
+	Refund       []ent.Hook
+	Theme        []ent.Hook
+	ThemeSpu     []ent.Hook
 }
 
 // Options applies the options on the config object.

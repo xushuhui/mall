@@ -8,7 +8,7 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	app "mall-go/api/app/service"
-	sku "mall-go/api/sku/service"
+	sku "mall-go/api/spu/service"
 	user "mall-go/api/user/service"
 	"mall-go/app/mall/interface/internal/conf"
 

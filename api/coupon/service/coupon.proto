@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package coupon.service;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+option go_package = "mall-go/api/coupon/service";
+service Coupon{
+
+}

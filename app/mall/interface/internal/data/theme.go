@@ -4,7 +4,7 @@ import (
 	"context"
 
 	app "mall-go/api/app/service"
-	sku "mall-go/api/sku/service"
+	sku "mall-go/api/spu/service"
 	"mall-go/app/mall/interface/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"

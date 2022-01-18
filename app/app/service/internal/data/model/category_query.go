@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/category"
-	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"math"
 
@@ -27,7 +26,6 @@ type CategoryQuery struct {
 	fields     []string
 	predicates []predicate.Category
 	// eager-loading edges.
-	withCoupon   *CouponQuery
 	withParent   *CategoryQuery
 	withChildren *CategoryQuery
 	// intermediate query (i.e. traversal path).
@@ -64,28 +62,6 @@ func (cq *CategoryQuery) Unique(unique bool) *CategoryQuery {
 func (cq *CategoryQuery) Order(o ...OrderFunc) *CategoryQuery {
 	cq.order = append(cq.order, o...)
 	return cq
-}
-
-// QueryCoupon chains the current query on the "coupon" edge.
-func (cq *CategoryQuery) QueryCoupon() *CouponQuery {
-	query := &CouponQuery{config: cq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := cq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := cq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(category.Table, category.FieldID, selector),
-			sqlgraph.To(coupon.Table, coupon.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, category.CouponTable, category.CouponPrimaryKey...),
-		)
-		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
 }
 
 // QueryParent chains the current query on the "parent" edge.
@@ -358,24 +334,12 @@ func (cq *CategoryQuery) Clone() *CategoryQuery {
 		offset:       cq.offset,
 		order:        append([]OrderFunc{}, cq.order...),
 		predicates:   append([]predicate.Category{}, cq.predicates...),
-		withCoupon:   cq.withCoupon.Clone(),
 		withParent:   cq.withParent.Clone(),
 		withChildren: cq.withChildren.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
 	}
-}
-
-// WithCoupon tells the query-builder to eager-load the nodes that are connected to
-// the "coupon" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CategoryQuery) WithCoupon(opts ...func(*CouponQuery)) *CategoryQuery {
-	query := &CouponQuery{config: cq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	cq.withCoupon = query
-	return cq
 }
 
 // WithParent tells the query-builder to eager-load the nodes that are connected to
@@ -465,8 +429,7 @@ func (cq *CategoryQuery) sqlAll(ctx context.Context) ([]*Category, error) {
 	var (
 		nodes       = []*Category{}
 		_spec       = cq.querySpec()
-		loadedTypes = [3]bool{
-			cq.withCoupon != nil,
+		loadedTypes = [2]bool{
 			cq.withParent != nil,
 			cq.withChildren != nil,
 		}
@@ -489,71 +452,6 @@ func (cq *CategoryQuery) sqlAll(ctx context.Context) ([]*Category, error) {
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
-	}
-
-	if query := cq.withCoupon; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		ids := make(map[int64]*Category, len(nodes))
-		for _, node := range nodes {
-			ids[node.ID] = node
-			fks = append(fks, node.ID)
-			node.Edges.Coupon = []*Coupon{}
-		}
-		var (
-			edgeids []int64
-			edges   = make(map[int64][]*Category)
-		)
-		_spec := &sqlgraph.EdgeQuerySpec{
-			Edge: &sqlgraph.EdgeSpec{
-				Inverse: true,
-				Table:   category.CouponTable,
-				Columns: category.CouponPrimaryKey,
-			},
-			Predicate: func(s *sql.Selector) {
-				s.Where(sql.InValues(category.CouponPrimaryKey[1], fks...))
-			},
-			ScanValues: func() [2]interface{} {
-				return [2]interface{}{new(sql.NullInt64), new(sql.NullInt64)}
-			},
-			Assign: func(out, in interface{}) error {
-				eout, ok := out.(*sql.NullInt64)
-				if !ok || eout == nil {
-					return fmt.Errorf("unexpected id value for edge-out")
-				}
-				ein, ok := in.(*sql.NullInt64)
-				if !ok || ein == nil {
-					return fmt.Errorf("unexpected id value for edge-in")
-				}
-				outValue := eout.Int64
-				inValue := ein.Int64
-				node, ok := ids[outValue]
-				if !ok {
-					return fmt.Errorf("unexpected node id in edges: %v", outValue)
-				}
-				if _, ok := edges[inValue]; !ok {
-					edgeids = append(edgeids, inValue)
-				}
-				edges[inValue] = append(edges[inValue], node)
-				return nil
-			},
-		}
-		if err := sqlgraph.QueryEdges(ctx, cq.driver, _spec); err != nil {
-			return nil, fmt.Errorf(`query edges "coupon": %w`, err)
-		}
-		query.Where(coupon.IDIn(edgeids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := edges[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected "coupon" node returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.Coupon = append(nodes[i].Edges.Coupon, n)
-			}
-		}
 	}
 
 	if query := cq.withParent; query != nil {

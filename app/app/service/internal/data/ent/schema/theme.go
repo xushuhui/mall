@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -29,6 +30,7 @@ func (Theme) Fields() []ent.Field {
 		field.Int("online").Comment(""),
 	}
 }
+
 func (Theme) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
@@ -36,7 +38,30 @@ func (Theme) Mixin() []ent.Mixin {
 }
 func (Theme) Edges() []ent.Edge {
 	return []ent.Edge{
-		//edge.To("spu", schema2.Spu.Type).StorageKey(
-		//	edge.Table("theme_spu"), edge.Columns("theme_id", "spu_id")),
+		edge.To("theme_spu", ThemeSpu.Type),
+	}
+}
+
+type ThemeSpu struct {
+	ent.Schema
+}
+
+func (ThemeSpu) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "theme_spu"},
+	}
+}
+func (ThemeSpu) Fields() []ent.Field {
+	return []ent.Field{
+
+		field.Int64("theme_id").Optional().Comment(""),
+		field.Int64("spu_id").Comment(""),
+	}
+}
+func (ThemeSpu) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.From("theme", Theme.Type).
+			Ref("theme_spu").
+			Unique().Field("theme_id"),
 	}
 }

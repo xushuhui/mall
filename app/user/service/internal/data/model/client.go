@@ -9,7 +9,6 @@ import (
 
 	"mall-go/app/user/service/internal/data/model/migrate"
 
-	"mall-go/app/user/service/internal/data/model/usercoupon"
 	"mall-go/app/user/service/internal/data/model/useridentiy"
 	"mall-go/app/user/service/internal/data/model/userinfo"
 	"mall-go/app/user/service/internal/data/model/userpoint"
@@ -26,8 +25,6 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// UserCoupon is the client for interacting with the UserCoupon builders.
-	UserCoupon *UserCouponClient
 	// UserIdentiy is the client for interacting with the UserIdentiy builders.
 	UserIdentiy *UserIdentiyClient
 	// UserInfo is the client for interacting with the UserInfo builders.
@@ -53,7 +50,6 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.UserCoupon = NewUserCouponClient(c.config)
 	c.UserIdentiy = NewUserIdentiyClient(c.config)
 	c.UserInfo = NewUserInfoClient(c.config)
 	c.UserPoint = NewUserPointClient(c.config)
@@ -93,7 +89,6 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:              ctx,
 		config:           cfg,
-		UserCoupon:       NewUserCouponClient(cfg),
 		UserIdentiy:      NewUserIdentiyClient(cfg),
 		UserInfo:         NewUserInfoClient(cfg),
 		UserPoint:        NewUserPointClient(cfg),
@@ -118,7 +113,6 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
 		config:           cfg,
-		UserCoupon:       NewUserCouponClient(cfg),
 		UserIdentiy:      NewUserIdentiyClient(cfg),
 		UserInfo:         NewUserInfoClient(cfg),
 		UserPoint:        NewUserPointClient(cfg),
@@ -131,7 +125,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		UserCoupon.
+//		UserIdentiy.
 //		Query().
 //		Count(ctx)
 //
@@ -154,103 +148,12 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.UserCoupon.Use(hooks...)
 	c.UserIdentiy.Use(hooks...)
 	c.UserInfo.Use(hooks...)
 	c.UserPoint.Use(hooks...)
 	c.UserPointDetail.Use(hooks...)
 	c.UserWallet.Use(hooks...)
 	c.UserWalletDetail.Use(hooks...)
-}
-
-// UserCouponClient is a client for the UserCoupon schema.
-type UserCouponClient struct {
-	config
-}
-
-// NewUserCouponClient returns a client for the UserCoupon from the given config.
-func NewUserCouponClient(c config) *UserCouponClient {
-	return &UserCouponClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `usercoupon.Hooks(f(g(h())))`.
-func (c *UserCouponClient) Use(hooks ...Hook) {
-	c.hooks.UserCoupon = append(c.hooks.UserCoupon, hooks...)
-}
-
-// Create returns a create builder for UserCoupon.
-func (c *UserCouponClient) Create() *UserCouponCreate {
-	mutation := newUserCouponMutation(c.config, OpCreate)
-	return &UserCouponCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of UserCoupon entities.
-func (c *UserCouponClient) CreateBulk(builders ...*UserCouponCreate) *UserCouponCreateBulk {
-	return &UserCouponCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for UserCoupon.
-func (c *UserCouponClient) Update() *UserCouponUpdate {
-	mutation := newUserCouponMutation(c.config, OpUpdate)
-	return &UserCouponUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserCouponClient) UpdateOne(uc *UserCoupon) *UserCouponUpdateOne {
-	mutation := newUserCouponMutation(c.config, OpUpdateOne, withUserCoupon(uc))
-	return &UserCouponUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserCouponClient) UpdateOneID(id int64) *UserCouponUpdateOne {
-	mutation := newUserCouponMutation(c.config, OpUpdateOne, withUserCouponID(id))
-	return &UserCouponUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for UserCoupon.
-func (c *UserCouponClient) Delete() *UserCouponDelete {
-	mutation := newUserCouponMutation(c.config, OpDelete)
-	return &UserCouponDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserCouponClient) DeleteOne(uc *UserCoupon) *UserCouponDeleteOne {
-	return c.DeleteOneID(uc.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserCouponClient) DeleteOneID(id int64) *UserCouponDeleteOne {
-	builder := c.Delete().Where(usercoupon.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserCouponDeleteOne{builder}
-}
-
-// Query returns a query builder for UserCoupon.
-func (c *UserCouponClient) Query() *UserCouponQuery {
-	return &UserCouponQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a UserCoupon entity by its id.
-func (c *UserCouponClient) Get(ctx context.Context, id int64) (*UserCoupon, error) {
-	return c.Query().Where(usercoupon.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserCouponClient) GetX(ctx context.Context, id int64) *UserCoupon {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserCouponClient) Hooks() []Hook {
-	return c.hooks.UserCoupon
 }
 
 // UserIdentiyClient is a client for the UserIdentiy schema.

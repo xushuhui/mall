@@ -4,11 +4,9 @@ package model
 
 import (
 	"context"
-	"database/sql/driver"
 	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/activity"
-	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"math"
 
@@ -26,8 +24,6 @@ type ActivityQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.Activity
-	// eager-loading edges.
-	withCoupon *CouponQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -62,28 +58,6 @@ func (aq *ActivityQuery) Unique(unique bool) *ActivityQuery {
 func (aq *ActivityQuery) Order(o ...OrderFunc) *ActivityQuery {
 	aq.order = append(aq.order, o...)
 	return aq
-}
-
-// QueryCoupon chains the current query on the "coupon" edge.
-func (aq *ActivityQuery) QueryCoupon() *CouponQuery {
-	query := &CouponQuery{config: aq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := aq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := aq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(activity.Table, activity.FieldID, selector),
-			sqlgraph.To(coupon.Table, coupon.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, activity.CouponTable, activity.CouponPrimaryKey...),
-		)
-		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
 }
 
 // First returns the first Activity entity from the query.
@@ -312,22 +286,10 @@ func (aq *ActivityQuery) Clone() *ActivityQuery {
 		offset:     aq.offset,
 		order:      append([]OrderFunc{}, aq.order...),
 		predicates: append([]predicate.Activity{}, aq.predicates...),
-		withCoupon: aq.withCoupon.Clone(),
 		// clone intermediate query.
 		sql:  aq.sql.Clone(),
 		path: aq.path,
 	}
-}
-
-// WithCoupon tells the query-builder to eager-load the nodes that are connected to
-// the "coupon" edge. The optional arguments are used to configure the query builder of the edge.
-func (aq *ActivityQuery) WithCoupon(opts ...func(*CouponQuery)) *ActivityQuery {
-	query := &CouponQuery{config: aq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	aq.withCoupon = query
-	return aq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -393,11 +355,8 @@ func (aq *ActivityQuery) prepareQuery(ctx context.Context) error {
 
 func (aq *ActivityQuery) sqlAll(ctx context.Context) ([]*Activity, error) {
 	var (
-		nodes       = []*Activity{}
-		_spec       = aq.querySpec()
-		loadedTypes = [1]bool{
-			aq.withCoupon != nil,
-		}
+		nodes = []*Activity{}
+		_spec = aq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Activity{config: aq.config}
@@ -409,7 +368,6 @@ func (aq *ActivityQuery) sqlAll(ctx context.Context) ([]*Activity, error) {
 			return fmt.Errorf("model: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
-		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, aq.driver, _spec); err != nil {
@@ -418,72 +376,6 @@ func (aq *ActivityQuery) sqlAll(ctx context.Context) ([]*Activity, error) {
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-
-	if query := aq.withCoupon; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		ids := make(map[int64]*Activity, len(nodes))
-		for _, node := range nodes {
-			ids[node.ID] = node
-			fks = append(fks, node.ID)
-			node.Edges.Coupon = []*Coupon{}
-		}
-		var (
-			edgeids []int64
-			edges   = make(map[int64][]*Activity)
-		)
-		_spec := &sqlgraph.EdgeQuerySpec{
-			Edge: &sqlgraph.EdgeSpec{
-				Inverse: false,
-				Table:   activity.CouponTable,
-				Columns: activity.CouponPrimaryKey,
-			},
-			Predicate: func(s *sql.Selector) {
-				s.Where(sql.InValues(activity.CouponPrimaryKey[0], fks...))
-			},
-			ScanValues: func() [2]interface{} {
-				return [2]interface{}{new(sql.NullInt64), new(sql.NullInt64)}
-			},
-			Assign: func(out, in interface{}) error {
-				eout, ok := out.(*sql.NullInt64)
-				if !ok || eout == nil {
-					return fmt.Errorf("unexpected id value for edge-out")
-				}
-				ein, ok := in.(*sql.NullInt64)
-				if !ok || ein == nil {
-					return fmt.Errorf("unexpected id value for edge-in")
-				}
-				outValue := eout.Int64
-				inValue := ein.Int64
-				node, ok := ids[outValue]
-				if !ok {
-					return fmt.Errorf("unexpected node id in edges: %v", outValue)
-				}
-				if _, ok := edges[inValue]; !ok {
-					edgeids = append(edgeids, inValue)
-				}
-				edges[inValue] = append(edges[inValue], node)
-				return nil
-			},
-		}
-		if err := sqlgraph.QueryEdges(ctx, aq.driver, _spec); err != nil {
-			return nil, fmt.Errorf(`query edges "coupon": %w`, err)
-		}
-		query.Where(coupon.IDIn(edgeids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := edges[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected "coupon" node returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.Coupon = append(nodes[i].Edges.Coupon, n)
-			}
-		}
-	}
-
 	return nodes, nil
 }
 

@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderClient interface {
-	CreateUser(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderReply, error)
+	GetOrderById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*OrderVO, error)
 }
 
 type orderClient struct {
@@ -29,9 +29,9 @@ func NewOrderClient(cc grpc.ClientConnInterface) OrderClient {
 	return &orderClient{cc}
 }
 
-func (c *orderClient) CreateUser(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderReply, error) {
-	out := new(CreateOrderReply)
-	err := c.cc.Invoke(ctx, "/order.service.Order/CreateUser", in, out, opts...)
+func (c *orderClient) GetOrderById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*OrderVO, error) {
+	out := new(OrderVO)
+	err := c.cc.Invoke(ctx, "/order.service.Order/GetOrderById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *orderClient) CreateUser(ctx context.Context, in *CreateOrderRequest, op
 // All implementations must embed UnimplementedOrderServer
 // for forward compatibility
 type OrderServer interface {
-	CreateUser(context.Context, *CreateOrderRequest) (*CreateOrderReply, error)
+	GetOrderById(context.Context, *IdRequest) (*OrderVO, error)
 	mustEmbedUnimplementedOrderServer()
 }
 
@@ -50,8 +50,8 @@ type OrderServer interface {
 type UnimplementedOrderServer struct {
 }
 
-func (UnimplementedOrderServer) CreateUser(context.Context, *CreateOrderRequest) (*CreateOrderReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+func (UnimplementedOrderServer) GetOrderById(context.Context, *IdRequest) (*OrderVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrderById not implemented")
 }
 func (UnimplementedOrderServer) mustEmbedUnimplementedOrderServer() {}
 
@@ -66,20 +66,20 @@ func RegisterOrderServer(s grpc.ServiceRegistrar, srv OrderServer) {
 	s.RegisterService(&Order_ServiceDesc, srv)
 }
 
-func _Order_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOrderRequest)
+func _Order_GetOrderById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderServer).CreateUser(ctx, in)
+		return srv.(OrderServer).GetOrderById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/order.service.Order/CreateUser",
+		FullMethod: "/order.service.Order/GetOrderById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServer).CreateUser(ctx, req.(*CreateOrderRequest))
+		return srv.(OrderServer).GetOrderById(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,8 +92,8 @@ var Order_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*OrderServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateUser",
-			Handler:    _Order_CreateUser_Handler,
+			MethodName: "GetOrderById",
+			Handler:    _Order_GetOrderById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

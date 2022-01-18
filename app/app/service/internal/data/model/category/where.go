@@ -1111,34 +1111,6 @@ func LevelLTE(v int) predicate.Category {
 	})
 }
 
-// HasCoupon applies the HasEdge predicate on the "coupon" edge.
-func HasCoupon() predicate.Category {
-	return predicate.Category(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CouponTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, CouponTable, CouponPrimaryKey...),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasCouponWith applies the HasEdge predicate on the "coupon" edge with a given conditions (other predicates).
-func HasCouponWith(preds ...predicate.Coupon) predicate.Category {
-	return predicate.Category(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CouponInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, CouponTable, CouponPrimaryKey...),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
 // HasParent applies the HasEdge predicate on the "parent" edge.
 func HasParent() predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {

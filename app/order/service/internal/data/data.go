@@ -2,6 +2,7 @@ package data
 
 import (
 	"github.com/go-kratos/kratos/v2/log"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/wire"
 	"mall-go/app/order/service/internal/conf"
 	"mall-go/app/order/service/internal/data/model"

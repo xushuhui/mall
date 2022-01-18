@@ -19,8 +19,8 @@ func NewUserService(uu *biz.UserUsecase) *UserService {
 	}
 }
 
-func (s *UserService) CreateUser(ctx context.Context, req *service.CreateUserRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
+func (s *UserService) CreateUser(ctx context.Context, req *service.CreateUserRequest) (*service.UserVO, error) {
+	return &service.UserVO{}, nil
 }
 func (s *UserService) GetUser(ctx context.Context, req *service.IdRequest) (*service.UserVO, error) {
 	return &service.UserVO{}, nil

@@ -14,6 +14,7 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/hashicorp/consul/api v1.9.1
 	github.com/medivhzhan/weapp/v2 v2.4.2
+	github.com/pkg/errors v0.8.1 // indirect
 	github.com/stretchr/testify v1.7.0
 	github.com/xushuhui/goal v0.1.0
 	golang.org/x/sys v0.0.0-20211124211545-fe61309f8881 // indirect

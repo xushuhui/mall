@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/theme"
+	"mall-go/app/app/service/internal/data/model/themespu"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -114,6 +115,21 @@ func (tc *ThemeCreate) SetTitleImg(s string) *ThemeCreate {
 func (tc *ThemeCreate) SetOnline(i int) *ThemeCreate {
 	tc.mutation.SetOnline(i)
 	return tc
+}
+
+// AddThemeSpuIDs adds the "theme_spu" edge to the ThemeSpu entity by IDs.
+func (tc *ThemeCreate) AddThemeSpuIDs(ids ...int64) *ThemeCreate {
+	tc.mutation.AddThemeSpuIDs(ids...)
+	return tc
+}
+
+// AddThemeSpu adds the "theme_spu" edges to the ThemeSpu entity.
+func (tc *ThemeCreate) AddThemeSpu(t ...*ThemeSpu) *ThemeCreate {
+	ids := make([]int64, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tc.AddThemeSpuIDs(ids...)
 }
 
 // Mutation returns the ThemeMutation object of the builder.
@@ -354,6 +370,25 @@ func (tc *ThemeCreate) createSpec() (*Theme, *sqlgraph.CreateSpec) {
 			Column: theme.FieldOnline,
 		})
 		_node.Online = value
+	}
+	if nodes := tc.mutation.ThemeSpuIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   theme.ThemeSpuTable,
+			Columns: []string{theme.ThemeSpuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: themespu.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

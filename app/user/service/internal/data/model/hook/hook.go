@@ -8,19 +8,6 @@ import (
 	"mall-go/app/user/service/internal/data/model"
 )
 
-// The UserCouponFunc type is an adapter to allow the use of ordinary
-// function as UserCoupon mutator.
-type UserCouponFunc func(context.Context, *model.UserCouponMutation) (model.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f UserCouponFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
-	mv, ok := m.(*model.UserCouponMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.UserCouponMutation", m)
-	}
-	return f(ctx, mv)
-}
-
 // The UserIdentiyFunc type is an adapter to allow the use of ordinary
 // function as UserIdentiy mutator.
 type UserIdentiyFunc func(context.Context, *model.UserIdentiyMutation) (model.Value, error)

@@ -21,15 +21,6 @@ type Category func(*sql.Selector)
 // Charge is the predicate function for charge builders.
 type Charge func(*sql.Selector)
 
-// Coupon is the predicate function for coupon builders.
-type Coupon func(*sql.Selector)
-
-// CouponTemplate is the predicate function for coupontemplate builders.
-type CouponTemplate func(*sql.Selector)
-
-// CouponType is the predicate function for coupontype builders.
-type CouponType func(*sql.Selector)
-
 // GridCategory is the predicate function for gridcategory builders.
 type GridCategory func(*sql.Selector)
 
@@ -38,3 +29,6 @@ type Refund func(*sql.Selector)
 
 // Theme is the predicate function for theme builders.
 type Theme func(*sql.Selector)
+
+// ThemeSpu is the predicate function for themespu builders.
+type ThemeSpu func(*sql.Selector)

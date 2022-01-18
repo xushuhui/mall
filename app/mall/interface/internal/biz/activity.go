@@ -20,20 +20,6 @@ type ActivityCoupon struct {
 	Coupons []Coupon
 }
 
-type Coupon struct {
-	Id          int64
-	Title       string
-	StartTime   int64
-	EndTime     int64
-	Description string
-	FullMoney   float64
-	Rate        float64
-	Minus       float64
-	Type        int32
-	Remark      string
-	WholeStore  bool
-}
-
 type ActivityRepo interface {
 	GetActivityByName(ctx context.Context, name string) (c Activity, err error)
 	GetActivityWithCoupon(ctx context.Context, name string) (c ActivityCoupon, err error)

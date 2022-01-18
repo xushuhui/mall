@@ -22,18 +22,14 @@ type Tx struct {
 	Category *CategoryClient
 	// Charge is the client for interacting with the Charge builders.
 	Charge *ChargeClient
-	// Coupon is the client for interacting with the Coupon builders.
-	Coupon *CouponClient
-	// CouponTemplate is the client for interacting with the CouponTemplate builders.
-	CouponTemplate *CouponTemplateClient
-	// CouponType is the client for interacting with the CouponType builders.
-	CouponType *CouponTypeClient
 	// GridCategory is the client for interacting with the GridCategory builders.
 	GridCategory *GridCategoryClient
 	// Refund is the client for interacting with the Refund builders.
 	Refund *RefundClient
 	// Theme is the client for interacting with the Theme builders.
 	Theme *ThemeClient
+	// ThemeSpu is the client for interacting with the ThemeSpu builders.
+	ThemeSpu *ThemeSpuClient
 
 	// lazily loaded.
 	client     *Client
@@ -174,12 +170,10 @@ func (tx *Tx) init() {
 	tx.BannerItem = NewBannerItemClient(tx.config)
 	tx.Category = NewCategoryClient(tx.config)
 	tx.Charge = NewChargeClient(tx.config)
-	tx.Coupon = NewCouponClient(tx.config)
-	tx.CouponTemplate = NewCouponTemplateClient(tx.config)
-	tx.CouponType = NewCouponTypeClient(tx.config)
 	tx.GridCategory = NewGridCategoryClient(tx.config)
 	tx.Refund = NewRefundClient(tx.config)
 	tx.Theme = NewThemeClient(tx.config)
+	tx.ThemeSpu = NewThemeSpuClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/activity"
-	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"time"
 
@@ -115,45 +114,9 @@ func (au *ActivityUpdate) SetName(s string) *ActivityUpdate {
 	return au
 }
 
-// AddCouponIDs adds the "coupon" edge to the Coupon entity by IDs.
-func (au *ActivityUpdate) AddCouponIDs(ids ...int64) *ActivityUpdate {
-	au.mutation.AddCouponIDs(ids...)
-	return au
-}
-
-// AddCoupon adds the "coupon" edges to the Coupon entity.
-func (au *ActivityUpdate) AddCoupon(c ...*Coupon) *ActivityUpdate {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return au.AddCouponIDs(ids...)
-}
-
 // Mutation returns the ActivityMutation object of the builder.
 func (au *ActivityUpdate) Mutation() *ActivityMutation {
 	return au.mutation
-}
-
-// ClearCoupon clears all "coupon" edges to the Coupon entity.
-func (au *ActivityUpdate) ClearCoupon() *ActivityUpdate {
-	au.mutation.ClearCoupon()
-	return au
-}
-
-// RemoveCouponIDs removes the "coupon" edge to Coupon entities by IDs.
-func (au *ActivityUpdate) RemoveCouponIDs(ids ...int64) *ActivityUpdate {
-	au.mutation.RemoveCouponIDs(ids...)
-	return au
-}
-
-// RemoveCoupon removes "coupon" edges to Coupon entities.
-func (au *ActivityUpdate) RemoveCoupon(c ...*Coupon) *ActivityUpdate {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return au.RemoveCouponIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -327,60 +290,6 @@ func (au *ActivityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: activity.FieldName,
 		})
 	}
-	if au.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   activity.CouponTable,
-			Columns: activity.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := au.mutation.RemovedCouponIDs(); len(nodes) > 0 && !au.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   activity.CouponTable,
-			Columns: activity.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := au.mutation.CouponIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   activity.CouponTable,
-			Columns: activity.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{activity.Label}
@@ -487,45 +396,9 @@ func (auo *ActivityUpdateOne) SetName(s string) *ActivityUpdateOne {
 	return auo
 }
 
-// AddCouponIDs adds the "coupon" edge to the Coupon entity by IDs.
-func (auo *ActivityUpdateOne) AddCouponIDs(ids ...int64) *ActivityUpdateOne {
-	auo.mutation.AddCouponIDs(ids...)
-	return auo
-}
-
-// AddCoupon adds the "coupon" edges to the Coupon entity.
-func (auo *ActivityUpdateOne) AddCoupon(c ...*Coupon) *ActivityUpdateOne {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return auo.AddCouponIDs(ids...)
-}
-
 // Mutation returns the ActivityMutation object of the builder.
 func (auo *ActivityUpdateOne) Mutation() *ActivityMutation {
 	return auo.mutation
-}
-
-// ClearCoupon clears all "coupon" edges to the Coupon entity.
-func (auo *ActivityUpdateOne) ClearCoupon() *ActivityUpdateOne {
-	auo.mutation.ClearCoupon()
-	return auo
-}
-
-// RemoveCouponIDs removes the "coupon" edge to Coupon entities by IDs.
-func (auo *ActivityUpdateOne) RemoveCouponIDs(ids ...int64) *ActivityUpdateOne {
-	auo.mutation.RemoveCouponIDs(ids...)
-	return auo
-}
-
-// RemoveCoupon removes "coupon" edges to Coupon entities.
-func (auo *ActivityUpdateOne) RemoveCoupon(c ...*Coupon) *ActivityUpdateOne {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return auo.RemoveCouponIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -722,60 +595,6 @@ func (auo *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err
 			Value:  value,
 			Column: activity.FieldName,
 		})
-	}
-	if auo.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   activity.CouponTable,
-			Columns: activity.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := auo.mutation.RemovedCouponIDs(); len(nodes) > 0 && !auo.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   activity.CouponTable,
-			Columns: activity.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := auo.mutation.CouponIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   activity.CouponTable,
-			Columns: activity.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Activity{config: auo.config}
 	_spec.Assign = _node.assignValues

@@ -2,7 +2,7 @@ package biz
 
 import (
 	"context"
-	"mall-go/api/app"
+	app "mall-go/api/app/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

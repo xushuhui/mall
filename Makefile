@@ -4,7 +4,7 @@ VERSION=$(shell git describe --tags --always)
 API_PROTO_FILES=$(shell find api -name *.proto)
 MODEL_PATH=$(shell find . -name model -type d)
 INTERNAL_PATH=$(shell find . -name internal -type d)
-INTERNAL_PROTO_FILES=$(shell find . -name conf.proto )
+INTERNAL_PROTO_FILES=$(shell find . -name conf.proto)
 .PHONY: init
 # init env
 init:
@@ -29,7 +29,7 @@ config:
 	protoc --proto_path=. \
 	       --proto_path=./third_party \
  	       --go_out=paths=source_relative:. \
-	       $(INTERNAL_PROTO_FILES)
+	       ./app/order/service/internal/conf/conf.proto
 
 .PHONY: api
 # generate api proto
@@ -46,6 +46,28 @@ api:
 build:
 	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
 
+.PHONY: app
+app:
+	cd 	app/app/service && mkdir -p bin/ && \
+	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
+	 ./bin/server -conf ./configs
+
+.PHONY: user
+user:
+	cd 	app/user/service && mkdir -p bin/ && \
+	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
+	 ./bin/server -conf ./configs
+.PHONY: order
+order:
+	cd 	app/order/service && mkdir -p bin/ && \
+	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
+	 ./bin/server -conf ./configs
+
+.PHONY: spu
+spu:
+	cd 	app/spu/service && mkdir -p bin/ && \
+	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
+	 ./bin/server -conf ./configs
 .PHONY: generate
 # generate
 generate:
@@ -73,6 +95,11 @@ all:
 	make config;
 	make generate;
 
+.PHONY: run
+run:
+	make user;
+	make order;
+	make spu;
 # show help
 help:
 	@echo ''

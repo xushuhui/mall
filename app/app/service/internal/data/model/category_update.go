@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/category"
-	"mall-go/app/app/service/internal/data/model/coupon"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"time"
 
@@ -144,21 +143,6 @@ func (cu *CategoryUpdate) AddLevel(i int) *CategoryUpdate {
 	return cu
 }
 
-// AddCouponIDs adds the "coupon" edge to the Coupon entity by IDs.
-func (cu *CategoryUpdate) AddCouponIDs(ids ...int64) *CategoryUpdate {
-	cu.mutation.AddCouponIDs(ids...)
-	return cu
-}
-
-// AddCoupon adds the "coupon" edges to the Coupon entity.
-func (cu *CategoryUpdate) AddCoupon(c ...*Coupon) *CategoryUpdate {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return cu.AddCouponIDs(ids...)
-}
-
 // SetParent sets the "parent" edge to the Category entity.
 func (cu *CategoryUpdate) SetParent(c *Category) *CategoryUpdate {
 	return cu.SetParentID(c.ID)
@@ -182,27 +166,6 @@ func (cu *CategoryUpdate) AddChildren(c ...*Category) *CategoryUpdate {
 // Mutation returns the CategoryMutation object of the builder.
 func (cu *CategoryUpdate) Mutation() *CategoryMutation {
 	return cu.mutation
-}
-
-// ClearCoupon clears all "coupon" edges to the Coupon entity.
-func (cu *CategoryUpdate) ClearCoupon() *CategoryUpdate {
-	cu.mutation.ClearCoupon()
-	return cu
-}
-
-// RemoveCouponIDs removes the "coupon" edge to Coupon entities by IDs.
-func (cu *CategoryUpdate) RemoveCouponIDs(ids ...int64) *CategoryUpdate {
-	cu.mutation.RemoveCouponIDs(ids...)
-	return cu
-}
-
-// RemoveCoupon removes "coupon" edges to Coupon entities.
-func (cu *CategoryUpdate) RemoveCoupon(c ...*Coupon) *CategoryUpdate {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return cu.RemoveCouponIDs(ids...)
 }
 
 // ClearParent clears the "parent" edge to the Category entity.
@@ -409,60 +372,6 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Value:  value,
 			Column: category.FieldLevel,
 		})
-	}
-	if cu.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CouponTable,
-			Columns: category.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.RemovedCouponIDs(); len(nodes) > 0 && !cu.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CouponTable,
-			Columns: category.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.CouponIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CouponTable,
-			Columns: category.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if cu.mutation.ParentCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -688,21 +597,6 @@ func (cuo *CategoryUpdateOne) AddLevel(i int) *CategoryUpdateOne {
 	return cuo
 }
 
-// AddCouponIDs adds the "coupon" edge to the Coupon entity by IDs.
-func (cuo *CategoryUpdateOne) AddCouponIDs(ids ...int64) *CategoryUpdateOne {
-	cuo.mutation.AddCouponIDs(ids...)
-	return cuo
-}
-
-// AddCoupon adds the "coupon" edges to the Coupon entity.
-func (cuo *CategoryUpdateOne) AddCoupon(c ...*Coupon) *CategoryUpdateOne {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return cuo.AddCouponIDs(ids...)
-}
-
 // SetParent sets the "parent" edge to the Category entity.
 func (cuo *CategoryUpdateOne) SetParent(c *Category) *CategoryUpdateOne {
 	return cuo.SetParentID(c.ID)
@@ -726,27 +620,6 @@ func (cuo *CategoryUpdateOne) AddChildren(c ...*Category) *CategoryUpdateOne {
 // Mutation returns the CategoryMutation object of the builder.
 func (cuo *CategoryUpdateOne) Mutation() *CategoryMutation {
 	return cuo.mutation
-}
-
-// ClearCoupon clears all "coupon" edges to the Coupon entity.
-func (cuo *CategoryUpdateOne) ClearCoupon() *CategoryUpdateOne {
-	cuo.mutation.ClearCoupon()
-	return cuo
-}
-
-// RemoveCouponIDs removes the "coupon" edge to Coupon entities by IDs.
-func (cuo *CategoryUpdateOne) RemoveCouponIDs(ids ...int64) *CategoryUpdateOne {
-	cuo.mutation.RemoveCouponIDs(ids...)
-	return cuo
-}
-
-// RemoveCoupon removes "coupon" edges to Coupon entities.
-func (cuo *CategoryUpdateOne) RemoveCoupon(c ...*Coupon) *CategoryUpdateOne {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return cuo.RemoveCouponIDs(ids...)
 }
 
 // ClearParent clears the "parent" edge to the Category entity.
@@ -977,60 +850,6 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 			Value:  value,
 			Column: category.FieldLevel,
 		})
-	}
-	if cuo.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CouponTable,
-			Columns: category.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.RemovedCouponIDs(); len(nodes) > 0 && !cuo.mutation.CouponCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CouponTable,
-			Columns: category.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.CouponIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CouponTable,
-			Columns: category.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if cuo.mutation.ParentCleared() {
 		edge := &sqlgraph.EdgeSpec{

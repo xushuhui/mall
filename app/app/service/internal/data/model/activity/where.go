@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -1310,34 +1309,6 @@ func NameEqualFold(v string) predicate.Activity {
 func NameContainsFold(v string) predicate.Activity {
 	return predicate.Activity(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
-	})
-}
-
-// HasCoupon applies the HasEdge predicate on the "coupon" edge.
-func HasCoupon() predicate.Activity {
-	return predicate.Activity(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CouponTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, CouponTable, CouponPrimaryKey...),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasCouponWith applies the HasEdge predicate on the "coupon" edge with a given conditions (other predicates).
-func HasCouponWith(preds ...predicate.Coupon) predicate.Activity {
-	return predicate.Activity(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CouponInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, CouponTable, CouponPrimaryKey...),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
 	})
 }
 

@@ -14,12 +14,10 @@ import (
 	"mall-go/app/app/service/internal/data/model/banneritem"
 	"mall-go/app/app/service/internal/data/model/category"
 	"mall-go/app/app/service/internal/data/model/charge"
-	"mall-go/app/app/service/internal/data/model/coupon"
-	"mall-go/app/app/service/internal/data/model/coupontemplate"
-	"mall-go/app/app/service/internal/data/model/coupontype"
 	"mall-go/app/app/service/internal/data/model/gridcategory"
 	"mall-go/app/app/service/internal/data/model/refund"
 	"mall-go/app/app/service/internal/data/model/theme"
+	"mall-go/app/app/service/internal/data/model/themespu"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -41,18 +39,14 @@ type Client struct {
 	Category *CategoryClient
 	// Charge is the client for interacting with the Charge builders.
 	Charge *ChargeClient
-	// Coupon is the client for interacting with the Coupon builders.
-	Coupon *CouponClient
-	// CouponTemplate is the client for interacting with the CouponTemplate builders.
-	CouponTemplate *CouponTemplateClient
-	// CouponType is the client for interacting with the CouponType builders.
-	CouponType *CouponTypeClient
 	// GridCategory is the client for interacting with the GridCategory builders.
 	GridCategory *GridCategoryClient
 	// Refund is the client for interacting with the Refund builders.
 	Refund *RefundClient
 	// Theme is the client for interacting with the Theme builders.
 	Theme *ThemeClient
+	// ThemeSpu is the client for interacting with the ThemeSpu builders.
+	ThemeSpu *ThemeSpuClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -71,12 +65,10 @@ func (c *Client) init() {
 	c.BannerItem = NewBannerItemClient(c.config)
 	c.Category = NewCategoryClient(c.config)
 	c.Charge = NewChargeClient(c.config)
-	c.Coupon = NewCouponClient(c.config)
-	c.CouponTemplate = NewCouponTemplateClient(c.config)
-	c.CouponType = NewCouponTypeClient(c.config)
 	c.GridCategory = NewGridCategoryClient(c.config)
 	c.Refund = NewRefundClient(c.config)
 	c.Theme = NewThemeClient(c.config)
+	c.ThemeSpu = NewThemeSpuClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -108,19 +100,17 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:            ctx,
-		config:         cfg,
-		Activity:       NewActivityClient(cfg),
-		Banner:         NewBannerClient(cfg),
-		BannerItem:     NewBannerItemClient(cfg),
-		Category:       NewCategoryClient(cfg),
-		Charge:         NewChargeClient(cfg),
-		Coupon:         NewCouponClient(cfg),
-		CouponTemplate: NewCouponTemplateClient(cfg),
-		CouponType:     NewCouponTypeClient(cfg),
-		GridCategory:   NewGridCategoryClient(cfg),
-		Refund:         NewRefundClient(cfg),
-		Theme:          NewThemeClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		Activity:     NewActivityClient(cfg),
+		Banner:       NewBannerClient(cfg),
+		BannerItem:   NewBannerItemClient(cfg),
+		Category:     NewCategoryClient(cfg),
+		Charge:       NewChargeClient(cfg),
+		GridCategory: NewGridCategoryClient(cfg),
+		Refund:       NewRefundClient(cfg),
+		Theme:        NewThemeClient(cfg),
+		ThemeSpu:     NewThemeSpuClient(cfg),
 	}, nil
 }
 
@@ -138,18 +128,16 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		config:         cfg,
-		Activity:       NewActivityClient(cfg),
-		Banner:         NewBannerClient(cfg),
-		BannerItem:     NewBannerItemClient(cfg),
-		Category:       NewCategoryClient(cfg),
-		Charge:         NewChargeClient(cfg),
-		Coupon:         NewCouponClient(cfg),
-		CouponTemplate: NewCouponTemplateClient(cfg),
-		CouponType:     NewCouponTypeClient(cfg),
-		GridCategory:   NewGridCategoryClient(cfg),
-		Refund:         NewRefundClient(cfg),
-		Theme:          NewThemeClient(cfg),
+		config:       cfg,
+		Activity:     NewActivityClient(cfg),
+		Banner:       NewBannerClient(cfg),
+		BannerItem:   NewBannerItemClient(cfg),
+		Category:     NewCategoryClient(cfg),
+		Charge:       NewChargeClient(cfg),
+		GridCategory: NewGridCategoryClient(cfg),
+		Refund:       NewRefundClient(cfg),
+		Theme:        NewThemeClient(cfg),
+		ThemeSpu:     NewThemeSpuClient(cfg),
 	}, nil
 }
 
@@ -184,12 +172,10 @@ func (c *Client) Use(hooks ...Hook) {
 	c.BannerItem.Use(hooks...)
 	c.Category.Use(hooks...)
 	c.Charge.Use(hooks...)
-	c.Coupon.Use(hooks...)
-	c.CouponTemplate.Use(hooks...)
-	c.CouponType.Use(hooks...)
 	c.GridCategory.Use(hooks...)
 	c.Refund.Use(hooks...)
 	c.Theme.Use(hooks...)
+	c.ThemeSpu.Use(hooks...)
 }
 
 // ActivityClient is a client for the Activity schema.
@@ -275,22 +261,6 @@ func (c *ActivityClient) GetX(ctx context.Context, id int64) *Activity {
 		panic(err)
 	}
 	return obj
-}
-
-// QueryCoupon queries the coupon edge of a Activity.
-func (c *ActivityClient) QueryCoupon(a *Activity) *CouponQuery {
-	query := &CouponQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := a.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(activity.Table, activity.FieldID, id),
-			sqlgraph.To(coupon.Table, coupon.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, activity.CouponTable, activity.CouponPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.
@@ -595,22 +565,6 @@ func (c *CategoryClient) GetX(ctx context.Context, id int64) *Category {
 	return obj
 }
 
-// QueryCoupon queries the coupon edge of a Category.
-func (c *CategoryClient) QueryCoupon(ca *Category) *CouponQuery {
-	query := &CouponQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := ca.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(category.Table, category.FieldID, id),
-			sqlgraph.To(coupon.Table, coupon.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, category.CouponTable, category.CouponPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(ca.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // QueryParent queries the parent edge of a Category.
 func (c *CategoryClient) QueryParent(ca *Category) *CategoryQuery {
 	query := &CategoryQuery{config: c.config}
@@ -736,308 +690,6 @@ func (c *ChargeClient) GetX(ctx context.Context, id int64) *Charge {
 // Hooks returns the client hooks.
 func (c *ChargeClient) Hooks() []Hook {
 	return c.hooks.Charge
-}
-
-// CouponClient is a client for the Coupon schema.
-type CouponClient struct {
-	config
-}
-
-// NewCouponClient returns a client for the Coupon from the given config.
-func NewCouponClient(c config) *CouponClient {
-	return &CouponClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `coupon.Hooks(f(g(h())))`.
-func (c *CouponClient) Use(hooks ...Hook) {
-	c.hooks.Coupon = append(c.hooks.Coupon, hooks...)
-}
-
-// Create returns a create builder for Coupon.
-func (c *CouponClient) Create() *CouponCreate {
-	mutation := newCouponMutation(c.config, OpCreate)
-	return &CouponCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of Coupon entities.
-func (c *CouponClient) CreateBulk(builders ...*CouponCreate) *CouponCreateBulk {
-	return &CouponCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for Coupon.
-func (c *CouponClient) Update() *CouponUpdate {
-	mutation := newCouponMutation(c.config, OpUpdate)
-	return &CouponUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *CouponClient) UpdateOne(co *Coupon) *CouponUpdateOne {
-	mutation := newCouponMutation(c.config, OpUpdateOne, withCoupon(co))
-	return &CouponUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *CouponClient) UpdateOneID(id int64) *CouponUpdateOne {
-	mutation := newCouponMutation(c.config, OpUpdateOne, withCouponID(id))
-	return &CouponUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for Coupon.
-func (c *CouponClient) Delete() *CouponDelete {
-	mutation := newCouponMutation(c.config, OpDelete)
-	return &CouponDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *CouponClient) DeleteOne(co *Coupon) *CouponDeleteOne {
-	return c.DeleteOneID(co.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *CouponClient) DeleteOneID(id int64) *CouponDeleteOne {
-	builder := c.Delete().Where(coupon.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &CouponDeleteOne{builder}
-}
-
-// Query returns a query builder for Coupon.
-func (c *CouponClient) Query() *CouponQuery {
-	return &CouponQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a Coupon entity by its id.
-func (c *CouponClient) Get(ctx context.Context, id int64) (*Coupon, error) {
-	return c.Query().Where(coupon.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *CouponClient) GetX(ctx context.Context, id int64) *Coupon {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryCategory queries the category edge of a Coupon.
-func (c *CouponClient) QueryCategory(co *Coupon) *CategoryQuery {
-	query := &CategoryQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := co.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(coupon.Table, coupon.FieldID, id),
-			sqlgraph.To(category.Table, category.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, coupon.CategoryTable, coupon.CategoryPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryActivity queries the activity edge of a Coupon.
-func (c *CouponClient) QueryActivity(co *Coupon) *ActivityQuery {
-	query := &ActivityQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := co.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(coupon.Table, coupon.FieldID, id),
-			sqlgraph.To(activity.Table, activity.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, coupon.ActivityTable, coupon.ActivityPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *CouponClient) Hooks() []Hook {
-	return c.hooks.Coupon
-}
-
-// CouponTemplateClient is a client for the CouponTemplate schema.
-type CouponTemplateClient struct {
-	config
-}
-
-// NewCouponTemplateClient returns a client for the CouponTemplate from the given config.
-func NewCouponTemplateClient(c config) *CouponTemplateClient {
-	return &CouponTemplateClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `coupontemplate.Hooks(f(g(h())))`.
-func (c *CouponTemplateClient) Use(hooks ...Hook) {
-	c.hooks.CouponTemplate = append(c.hooks.CouponTemplate, hooks...)
-}
-
-// Create returns a create builder for CouponTemplate.
-func (c *CouponTemplateClient) Create() *CouponTemplateCreate {
-	mutation := newCouponTemplateMutation(c.config, OpCreate)
-	return &CouponTemplateCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of CouponTemplate entities.
-func (c *CouponTemplateClient) CreateBulk(builders ...*CouponTemplateCreate) *CouponTemplateCreateBulk {
-	return &CouponTemplateCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for CouponTemplate.
-func (c *CouponTemplateClient) Update() *CouponTemplateUpdate {
-	mutation := newCouponTemplateMutation(c.config, OpUpdate)
-	return &CouponTemplateUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *CouponTemplateClient) UpdateOne(ct *CouponTemplate) *CouponTemplateUpdateOne {
-	mutation := newCouponTemplateMutation(c.config, OpUpdateOne, withCouponTemplate(ct))
-	return &CouponTemplateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *CouponTemplateClient) UpdateOneID(id int64) *CouponTemplateUpdateOne {
-	mutation := newCouponTemplateMutation(c.config, OpUpdateOne, withCouponTemplateID(id))
-	return &CouponTemplateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for CouponTemplate.
-func (c *CouponTemplateClient) Delete() *CouponTemplateDelete {
-	mutation := newCouponTemplateMutation(c.config, OpDelete)
-	return &CouponTemplateDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *CouponTemplateClient) DeleteOne(ct *CouponTemplate) *CouponTemplateDeleteOne {
-	return c.DeleteOneID(ct.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *CouponTemplateClient) DeleteOneID(id int64) *CouponTemplateDeleteOne {
-	builder := c.Delete().Where(coupontemplate.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &CouponTemplateDeleteOne{builder}
-}
-
-// Query returns a query builder for CouponTemplate.
-func (c *CouponTemplateClient) Query() *CouponTemplateQuery {
-	return &CouponTemplateQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a CouponTemplate entity by its id.
-func (c *CouponTemplateClient) Get(ctx context.Context, id int64) (*CouponTemplate, error) {
-	return c.Query().Where(coupontemplate.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *CouponTemplateClient) GetX(ctx context.Context, id int64) *CouponTemplate {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *CouponTemplateClient) Hooks() []Hook {
-	return c.hooks.CouponTemplate
-}
-
-// CouponTypeClient is a client for the CouponType schema.
-type CouponTypeClient struct {
-	config
-}
-
-// NewCouponTypeClient returns a client for the CouponType from the given config.
-func NewCouponTypeClient(c config) *CouponTypeClient {
-	return &CouponTypeClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `coupontype.Hooks(f(g(h())))`.
-func (c *CouponTypeClient) Use(hooks ...Hook) {
-	c.hooks.CouponType = append(c.hooks.CouponType, hooks...)
-}
-
-// Create returns a create builder for CouponType.
-func (c *CouponTypeClient) Create() *CouponTypeCreate {
-	mutation := newCouponTypeMutation(c.config, OpCreate)
-	return &CouponTypeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of CouponType entities.
-func (c *CouponTypeClient) CreateBulk(builders ...*CouponTypeCreate) *CouponTypeCreateBulk {
-	return &CouponTypeCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for CouponType.
-func (c *CouponTypeClient) Update() *CouponTypeUpdate {
-	mutation := newCouponTypeMutation(c.config, OpUpdate)
-	return &CouponTypeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *CouponTypeClient) UpdateOne(ct *CouponType) *CouponTypeUpdateOne {
-	mutation := newCouponTypeMutation(c.config, OpUpdateOne, withCouponType(ct))
-	return &CouponTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *CouponTypeClient) UpdateOneID(id int64) *CouponTypeUpdateOne {
-	mutation := newCouponTypeMutation(c.config, OpUpdateOne, withCouponTypeID(id))
-	return &CouponTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for CouponType.
-func (c *CouponTypeClient) Delete() *CouponTypeDelete {
-	mutation := newCouponTypeMutation(c.config, OpDelete)
-	return &CouponTypeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *CouponTypeClient) DeleteOne(ct *CouponType) *CouponTypeDeleteOne {
-	return c.DeleteOneID(ct.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *CouponTypeClient) DeleteOneID(id int64) *CouponTypeDeleteOne {
-	builder := c.Delete().Where(coupontype.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &CouponTypeDeleteOne{builder}
-}
-
-// Query returns a query builder for CouponType.
-func (c *CouponTypeClient) Query() *CouponTypeQuery {
-	return &CouponTypeQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a CouponType entity by its id.
-func (c *CouponTypeClient) Get(ctx context.Context, id int64) (*CouponType, error) {
-	return c.Query().Where(coupontype.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *CouponTypeClient) GetX(ctx context.Context, id int64) *CouponType {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *CouponTypeClient) Hooks() []Hook {
-	return c.hooks.CouponType
 }
 
 // GridCategoryClient is a client for the GridCategory schema.
@@ -1305,7 +957,129 @@ func (c *ThemeClient) GetX(ctx context.Context, id int64) *Theme {
 	return obj
 }
 
+// QueryThemeSpu queries the theme_spu edge of a Theme.
+func (c *ThemeClient) QueryThemeSpu(t *Theme) *ThemeSpuQuery {
+	query := &ThemeSpuQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(theme.Table, theme.FieldID, id),
+			sqlgraph.To(themespu.Table, themespu.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, theme.ThemeSpuTable, theme.ThemeSpuColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *ThemeClient) Hooks() []Hook {
 	return c.hooks.Theme
+}
+
+// ThemeSpuClient is a client for the ThemeSpu schema.
+type ThemeSpuClient struct {
+	config
+}
+
+// NewThemeSpuClient returns a client for the ThemeSpu from the given config.
+func NewThemeSpuClient(c config) *ThemeSpuClient {
+	return &ThemeSpuClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `themespu.Hooks(f(g(h())))`.
+func (c *ThemeSpuClient) Use(hooks ...Hook) {
+	c.hooks.ThemeSpu = append(c.hooks.ThemeSpu, hooks...)
+}
+
+// Create returns a create builder for ThemeSpu.
+func (c *ThemeSpuClient) Create() *ThemeSpuCreate {
+	mutation := newThemeSpuMutation(c.config, OpCreate)
+	return &ThemeSpuCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ThemeSpu entities.
+func (c *ThemeSpuClient) CreateBulk(builders ...*ThemeSpuCreate) *ThemeSpuCreateBulk {
+	return &ThemeSpuCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ThemeSpu.
+func (c *ThemeSpuClient) Update() *ThemeSpuUpdate {
+	mutation := newThemeSpuMutation(c.config, OpUpdate)
+	return &ThemeSpuUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ThemeSpuClient) UpdateOne(ts *ThemeSpu) *ThemeSpuUpdateOne {
+	mutation := newThemeSpuMutation(c.config, OpUpdateOne, withThemeSpu(ts))
+	return &ThemeSpuUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ThemeSpuClient) UpdateOneID(id int64) *ThemeSpuUpdateOne {
+	mutation := newThemeSpuMutation(c.config, OpUpdateOne, withThemeSpuID(id))
+	return &ThemeSpuUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ThemeSpu.
+func (c *ThemeSpuClient) Delete() *ThemeSpuDelete {
+	mutation := newThemeSpuMutation(c.config, OpDelete)
+	return &ThemeSpuDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *ThemeSpuClient) DeleteOne(ts *ThemeSpu) *ThemeSpuDeleteOne {
+	return c.DeleteOneID(ts.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *ThemeSpuClient) DeleteOneID(id int64) *ThemeSpuDeleteOne {
+	builder := c.Delete().Where(themespu.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ThemeSpuDeleteOne{builder}
+}
+
+// Query returns a query builder for ThemeSpu.
+func (c *ThemeSpuClient) Query() *ThemeSpuQuery {
+	return &ThemeSpuQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a ThemeSpu entity by its id.
+func (c *ThemeSpuClient) Get(ctx context.Context, id int64) (*ThemeSpu, error) {
+	return c.Query().Where(themespu.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ThemeSpuClient) GetX(ctx context.Context, id int64) *ThemeSpu {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryTheme queries the theme edge of a ThemeSpu.
+func (c *ThemeSpuClient) QueryTheme(ts *ThemeSpu) *ThemeQuery {
+	query := &ThemeQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ts.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(themespu.Table, themespu.FieldID, id),
+			sqlgraph.To(theme.Table, theme.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, themespu.ThemeTable, themespu.ThemeColumn),
+		)
+		fromV = sqlgraph.Neighbors(ts.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ThemeSpuClient) Hooks() []Hook {
+	return c.hooks.ThemeSpu
 }

@@ -25,14 +25,14 @@ func NewCategoryRepo(data *Data, logger log.Logger) biz.CategoryRepo {
 func (r *categoryRepo) ListCategory(ctx context.Context) (c biz.AllCateGory, err error) {
 	rootList, err := r.data.db.Category.Query().Where(category.IsRoot(enum.ROOT)).All(ctx)
 	if model.IsNotFound(err) {
-		err = mall.ErrorNotfound("category")
+		err = mall.ErrorNotFound("category")
 	}
 	if err != nil {
 		return
 	}
 	subList, err := r.data.db.Category.Query().Where(category.IsRoot(enum.SUB)).All(ctx)
 	if model.IsNotFound(err) {
-		err = mall.ErrorNotfound("category")
+		err = mall.ErrorNotFound("category")
 	}
 	if err != nil {
 		return
@@ -69,7 +69,7 @@ func (r *categoryRepo) ListCategory(ctx context.Context) (c biz.AllCateGory, err
 func (r *categoryRepo) ListGridCategory(ctx context.Context) (c []biz.GridCategory, err error) {
 	po, err := r.data.db.GridCategory.Query().All(ctx)
 	if model.IsNotFound(err) {
-		err = mall.ErrorNotfound("gridCategory")
+		err = mall.ErrorNotFound("gridCategory")
 	}
 	if err != nil {
 		return

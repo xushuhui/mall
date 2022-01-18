@@ -4,7 +4,6 @@ package model
 
 import (
 	"mall-go/app/user/service/internal/data/ent/schema"
-	"mall-go/app/user/service/internal/data/model/usercoupon"
 	"mall-go/app/user/service/internal/data/model/useridentiy"
 	"mall-go/app/user/service/internal/data/model/userinfo"
 	"mall-go/app/user/service/internal/data/model/userpoint"
@@ -18,25 +17,6 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	usercouponMixin := schema.UserCoupon{}.Mixin()
-	usercouponMixinFields0 := usercouponMixin[0].Fields()
-	_ = usercouponMixinFields0
-	usercouponFields := schema.UserCoupon{}.Fields()
-	_ = usercouponFields
-	// usercouponDescCreateTime is the schema descriptor for create_time field.
-	usercouponDescCreateTime := usercouponMixinFields0[0].Descriptor()
-	// usercoupon.DefaultCreateTime holds the default value on creation for the create_time field.
-	usercoupon.DefaultCreateTime = usercouponDescCreateTime.Default.(func() time.Time)
-	// usercouponDescUpdateTime is the schema descriptor for update_time field.
-	usercouponDescUpdateTime := usercouponMixinFields0[1].Descriptor()
-	// usercoupon.DefaultUpdateTime holds the default value on creation for the update_time field.
-	usercoupon.DefaultUpdateTime = usercouponDescUpdateTime.Default.(func() time.Time)
-	// usercoupon.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
-	usercoupon.UpdateDefaultUpdateTime = usercouponDescUpdateTime.UpdateDefault.(func() time.Time)
-	// usercouponDescStatus is the schema descriptor for status field.
-	usercouponDescStatus := usercouponFields[2].Descriptor()
-	// usercoupon.DefaultStatus holds the default value on creation for the status field.
-	usercoupon.DefaultStatus = usercouponDescStatus.Default.(int)
 	useridentiyMixin := schema.UserIdentiy{}.Mixin()
 	useridentiyMixinFields0 := useridentiyMixin[0].Fields()
 	_ = useridentiyMixinFields0

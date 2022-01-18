@@ -2,7 +2,7 @@ package data
 
 import (
 	"context"
-	"mall-go/api/app"
+	app "mall-go/api/app/service"
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/app/app/service/internal/data/model/theme"
 

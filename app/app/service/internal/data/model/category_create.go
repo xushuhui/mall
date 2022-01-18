@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/category"
-	"mall-go/app/app/service/internal/data/model/coupon"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -117,21 +116,6 @@ func (cc *CategoryCreate) SetOnline(i int) *CategoryCreate {
 func (cc *CategoryCreate) SetLevel(i int) *CategoryCreate {
 	cc.mutation.SetLevel(i)
 	return cc
-}
-
-// AddCouponIDs adds the "coupon" edge to the Coupon entity by IDs.
-func (cc *CategoryCreate) AddCouponIDs(ids ...int64) *CategoryCreate {
-	cc.mutation.AddCouponIDs(ids...)
-	return cc
-}
-
-// AddCoupon adds the "coupon" edges to the Coupon entity.
-func (cc *CategoryCreate) AddCoupon(c ...*Coupon) *CategoryCreate {
-	ids := make([]int64, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
-	}
-	return cc.AddCouponIDs(ids...)
 }
 
 // SetParent sets the "parent" edge to the Category entity.
@@ -370,25 +354,6 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 			Column: category.FieldLevel,
 		})
 		_node.Level = value
-	}
-	if nodes := cc.mutation.CouponIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CouponTable,
-			Columns: category.CouponPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt64,
-					Column: coupon.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := cc.mutation.ParentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

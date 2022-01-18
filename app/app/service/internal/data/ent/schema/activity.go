@@ -2,7 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/schema/edge"
+
 	"entgo.io/ent/schema/field"
 )
 
@@ -33,7 +33,7 @@ func (Activity) Edges() []ent.Edge {
 	return []ent.Edge{
 		//edge.To("spu", schema.Spu.Type).StorageKey(
 		//	edge.Table("activity_spu"), edge.Columns("activity_id", "spu_id")),
-		edge.To("coupon", Coupon.Type).StorageKey(
-			edge.Table("activity_coupon"), edge.Columns("activity_id", "coupon_id")),
+		//edge.To("coupon", Coupon.Type).StorageKey(
+		//	edge.Table("activity_coupon"), edge.Columns("activity_id", "coupon_id")),
 	}
 }

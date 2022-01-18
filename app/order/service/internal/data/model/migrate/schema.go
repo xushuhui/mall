@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	// OrdersColumns holds the columns for the "orders" table.
-	OrdersColumns = []*schema.Column{
+	// OrderColumns holds the columns for the "order" table.
+	OrderColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -22,14 +22,14 @@ var (
 		{Name: "final_total_price", Type: field.TypeFloat64},
 		{Name: "status", Type: field.TypeInt},
 	}
-	// OrdersTable holds the schema information for the "orders" table.
-	OrdersTable = &schema.Table{
-		Name:       "orders",
-		Columns:    OrdersColumns,
-		PrimaryKey: []*schema.Column{OrdersColumns[0]},
+	// OrderTable holds the schema information for the "order" table.
+	OrderTable = &schema.Table{
+		Name:       "order",
+		Columns:    OrderColumns,
+		PrimaryKey: []*schema.Column{OrderColumns[0]},
 	}
-	// OrderDetailsColumns holds the columns for the "order_details" table.
-	OrderDetailsColumns = []*schema.Column{
+	// OrderDetailColumns holds the columns for the "order_detail" table.
+	OrderDetailColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -39,14 +39,14 @@ var (
 		{Name: "client_type", Type: field.TypeInt, Default: 1},
 		{Name: "ship_no", Type: field.TypeString},
 	}
-	// OrderDetailsTable holds the schema information for the "order_details" table.
-	OrderDetailsTable = &schema.Table{
-		Name:       "order_details",
-		Columns:    OrderDetailsColumns,
-		PrimaryKey: []*schema.Column{OrderDetailsColumns[0]},
+	// OrderDetailTable holds the schema information for the "order_detail" table.
+	OrderDetailTable = &schema.Table{
+		Name:       "order_detail",
+		Columns:    OrderDetailColumns,
+		PrimaryKey: []*schema.Column{OrderDetailColumns[0]},
 	}
-	// OrderSnapsColumns holds the columns for the "order_snaps" table.
-	OrderSnapsColumns = []*schema.Column{
+	// OrderSnapColumns holds the columns for the "order_snap" table.
+	OrderSnapColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "snap_img", Type: field.TypeString},
 		{Name: "snap_title", Type: field.TypeString},
@@ -54,22 +54,22 @@ var (
 		{Name: "snap_address", Type: field.TypeString},
 		{Name: "order_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// OrderSnapsTable holds the schema information for the "order_snaps" table.
-	OrderSnapsTable = &schema.Table{
-		Name:       "order_snaps",
-		Columns:    OrderSnapsColumns,
-		PrimaryKey: []*schema.Column{OrderSnapsColumns[0]},
+	// OrderSnapTable holds the schema information for the "order_snap" table.
+	OrderSnapTable = &schema.Table{
+		Name:       "order_snap",
+		Columns:    OrderSnapColumns,
+		PrimaryKey: []*schema.Column{OrderSnapColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "order_snaps_orders_order_snap",
-				Columns:    []*schema.Column{OrderSnapsColumns[5]},
-				RefColumns: []*schema.Column{OrdersColumns[0]},
+				Symbol:     "order_snap_order_order_snap",
+				Columns:    []*schema.Column{OrderSnapColumns[5]},
+				RefColumns: []*schema.Column{OrderColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// OrderSubsColumns holds the columns for the "order_subs" table.
-	OrderSubsColumns = []*schema.Column{
+	// OrderSubColumns holds the columns for the "order_sub" table.
+	OrderSubColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -82,30 +82,30 @@ var (
 		{Name: "status", Type: field.TypeInt},
 		{Name: "order_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// OrderSubsTable holds the schema information for the "order_subs" table.
-	OrderSubsTable = &schema.Table{
-		Name:       "order_subs",
-		Columns:    OrderSubsColumns,
-		PrimaryKey: []*schema.Column{OrderSubsColumns[0]},
+	// OrderSubTable holds the schema information for the "order_sub" table.
+	OrderSubTable = &schema.Table{
+		Name:       "order_sub",
+		Columns:    OrderSubColumns,
+		PrimaryKey: []*schema.Column{OrderSubColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "order_subs_orders_order_sub",
-				Columns:    []*schema.Column{OrderSubsColumns[10]},
-				RefColumns: []*schema.Column{OrdersColumns[0]},
+				Symbol:     "order_sub_order_order_sub",
+				Columns:    []*schema.Column{OrderSubColumns[10]},
+				RefColumns: []*schema.Column{OrderColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		OrdersTable,
-		OrderDetailsTable,
-		OrderSnapsTable,
-		OrderSubsTable,
+		OrderTable,
+		OrderDetailTable,
+		OrderSnapTable,
+		OrderSubTable,
 	}
 )
 
 func init() {
-	OrderSnapsTable.ForeignKeys[0].RefTable = OrdersTable
-	OrderSubsTable.ForeignKeys[0].RefTable = OrdersTable
+	OrderSnapTable.ForeignKeys[0].RefTable = OrderTable
+	OrderSubTable.ForeignKeys[0].RefTable = OrderTable
 }

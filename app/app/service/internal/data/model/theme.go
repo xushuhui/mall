@@ -40,6 +40,27 @@ type Theme struct {
 	TitleImg string `json:"title_img,omitempty"`
 	// Online holds the value of the "online" field.
 	Online int `json:"online,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the ThemeQuery when eager-loading is set.
+	Edges ThemeEdges `json:"edges"`
+}
+
+// ThemeEdges holds the relations/edges for other nodes in the graph.
+type ThemeEdges struct {
+	// ThemeSpu holds the value of the theme_spu edge.
+	ThemeSpu []*ThemeSpu `json:"theme_spu,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// ThemeSpuOrErr returns the ThemeSpu value or an error if the edge
+// was not loaded in eager-loading.
+func (e ThemeEdges) ThemeSpuOrErr() ([]*ThemeSpu, error) {
+	if e.loadedTypes[0] {
+		return e.ThemeSpu, nil
+	}
+	return nil, &NotLoadedError{edge: "theme_spu"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -149,6 +170,11 @@ func (t *Theme) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
+}
+
+// QueryThemeSpu queries the "theme_spu" edge of the Theme entity.
+func (t *Theme) QueryThemeSpu() *ThemeSpuQuery {
+	return (&ThemeClient{config: t.config}).QueryThemeSpu(t)
 }
 
 // Update returns a builder for updating this Theme.

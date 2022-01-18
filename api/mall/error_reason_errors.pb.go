@@ -20,21 +20,21 @@ func ErrorOk(format string, args ...interface{}) *errors.Error {
 	return errors.New(200, ErrorReason_Ok.String(), fmt.Sprintf(format, args...))
 }
 
-func IsNotfound(err error) bool {
+func IsNotFound(err error) bool {
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_NotFound.String() && e.Code == 404
 }
 
-func ErrorNotfound(format string, args ...interface{}) *errors.Error {
+func ErrorNotFound(format string, args ...interface{}) *errors.Error {
 	return errors.New(404, ErrorReason_NotFound.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInvalidparams(err error) bool {
+func IsInvalidParams(err error) bool {
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_InvalidParams.String() && e.Code == 400
 }
 
-func ErrorInvalidparams(format string, args ...interface{}) *errors.Error {
+func ErrorInvalidParams(format string, args ...interface{}) *errors.Error {
 	return errors.New(400, ErrorReason_InvalidParams.String(), fmt.Sprintf(format, args...))
 }
 
@@ -56,21 +56,21 @@ func ErrorForbidden(format string, args ...interface{}) *errors.Error {
 	return errors.New(403, ErrorReason_Forbidden.String(), fmt.Sprintf(format, args...))
 }
 
-func IsInternalserver(err error) bool {
+func IsInternalServer(err error) bool {
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_InternalServer.String() && e.Code == 500
 }
 
-func ErrorInternalserver(format string, args ...interface{}) *errors.Error {
+func ErrorInternalServer(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_InternalServer.String(), fmt.Sprintf(format, args...))
 }
 
-func IsLoginfail(err error) bool {
+func IsLoginFail(err error) bool {
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_LoginFail.String() && e.Code == 400
 }
 
-func ErrorLoginfail(format string, args ...interface{}) *errors.Error {
+func ErrorLoginFail(format string, args ...interface{}) *errors.Error {
 	return errors.New(400, ErrorReason_LoginFail.String(), fmt.Sprintf(format, args...))
 }
 

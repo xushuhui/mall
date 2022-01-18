@@ -39,7 +39,7 @@ type Coupons struct {
 
 type ActivityRepo interface {
 	GetActivityByName(ctx context.Context, name string) (a Activity, err error)
-	GetActivityWithCoupon(ctx context.Context, name string) (a ActivityCoupon, err error)
+	//GetActivityWithCoupon(ctx context.Context, name string) (a ActivityCoupon, err error)
 }
 type ActivityUsecase struct {
 	repo ActivityRepo
@@ -59,6 +59,6 @@ func (uc *ActivityUsecase) GetActivityByName(ctx context.Context, name string) (
 }
 
 func (uc *ActivityUsecase) GetActivityWithCoupon(ctx context.Context, name string) (a ActivityCoupon, err error) {
-	a, err = uc.repo.GetActivityWithCoupon(ctx, name)
+	//a, err = uc.repo.GetActivityWithCoupon(ctx, name)
 	return
 }

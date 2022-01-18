@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/theme"
+	"mall-go/app/app/service/internal/data/model/themespu"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -114,9 +115,45 @@ func (tu *ThemeUpdate) AddOnline(i int) *ThemeUpdate {
 	return tu
 }
 
+// AddThemeSpuIDs adds the "theme_spu" edge to the ThemeSpu entity by IDs.
+func (tu *ThemeUpdate) AddThemeSpuIDs(ids ...int64) *ThemeUpdate {
+	tu.mutation.AddThemeSpuIDs(ids...)
+	return tu
+}
+
+// AddThemeSpu adds the "theme_spu" edges to the ThemeSpu entity.
+func (tu *ThemeUpdate) AddThemeSpu(t ...*ThemeSpu) *ThemeUpdate {
+	ids := make([]int64, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.AddThemeSpuIDs(ids...)
+}
+
 // Mutation returns the ThemeMutation object of the builder.
 func (tu *ThemeUpdate) Mutation() *ThemeMutation {
 	return tu.mutation
+}
+
+// ClearThemeSpu clears all "theme_spu" edges to the ThemeSpu entity.
+func (tu *ThemeUpdate) ClearThemeSpu() *ThemeUpdate {
+	tu.mutation.ClearThemeSpu()
+	return tu
+}
+
+// RemoveThemeSpuIDs removes the "theme_spu" edge to ThemeSpu entities by IDs.
+func (tu *ThemeUpdate) RemoveThemeSpuIDs(ids ...int64) *ThemeUpdate {
+	tu.mutation.RemoveThemeSpuIDs(ids...)
+	return tu
+}
+
+// RemoveThemeSpu removes "theme_spu" edges to ThemeSpu entities.
+func (tu *ThemeUpdate) RemoveThemeSpu(t ...*ThemeSpu) *ThemeUpdate {
+	ids := make([]int64, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.RemoveThemeSpuIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -290,6 +327,60 @@ func (tu *ThemeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: theme.FieldOnline,
 		})
 	}
+	if tu.mutation.ThemeSpuCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   theme.ThemeSpuTable,
+			Columns: []string{theme.ThemeSpuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: themespu.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedThemeSpuIDs(); len(nodes) > 0 && !tu.mutation.ThemeSpuCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   theme.ThemeSpuTable,
+			Columns: []string{theme.ThemeSpuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: themespu.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.ThemeSpuIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   theme.ThemeSpuTable,
+			Columns: []string{theme.ThemeSpuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: themespu.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{theme.Label}
@@ -396,9 +487,45 @@ func (tuo *ThemeUpdateOne) AddOnline(i int) *ThemeUpdateOne {
 	return tuo
 }
 
+// AddThemeSpuIDs adds the "theme_spu" edge to the ThemeSpu entity by IDs.
+func (tuo *ThemeUpdateOne) AddThemeSpuIDs(ids ...int64) *ThemeUpdateOne {
+	tuo.mutation.AddThemeSpuIDs(ids...)
+	return tuo
+}
+
+// AddThemeSpu adds the "theme_spu" edges to the ThemeSpu entity.
+func (tuo *ThemeUpdateOne) AddThemeSpu(t ...*ThemeSpu) *ThemeUpdateOne {
+	ids := make([]int64, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.AddThemeSpuIDs(ids...)
+}
+
 // Mutation returns the ThemeMutation object of the builder.
 func (tuo *ThemeUpdateOne) Mutation() *ThemeMutation {
 	return tuo.mutation
+}
+
+// ClearThemeSpu clears all "theme_spu" edges to the ThemeSpu entity.
+func (tuo *ThemeUpdateOne) ClearThemeSpu() *ThemeUpdateOne {
+	tuo.mutation.ClearThemeSpu()
+	return tuo
+}
+
+// RemoveThemeSpuIDs removes the "theme_spu" edge to ThemeSpu entities by IDs.
+func (tuo *ThemeUpdateOne) RemoveThemeSpuIDs(ids ...int64) *ThemeUpdateOne {
+	tuo.mutation.RemoveThemeSpuIDs(ids...)
+	return tuo
+}
+
+// RemoveThemeSpu removes "theme_spu" edges to ThemeSpu entities.
+func (tuo *ThemeUpdateOne) RemoveThemeSpu(t ...*ThemeSpu) *ThemeUpdateOne {
+	ids := make([]int64, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.RemoveThemeSpuIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -595,6 +722,60 @@ func (tuo *ThemeUpdateOne) sqlSave(ctx context.Context) (_node *Theme, err error
 			Value:  value,
 			Column: theme.FieldOnline,
 		})
+	}
+	if tuo.mutation.ThemeSpuCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   theme.ThemeSpuTable,
+			Columns: []string{theme.ThemeSpuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: themespu.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedThemeSpuIDs(); len(nodes) > 0 && !tuo.mutation.ThemeSpuCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   theme.ThemeSpuTable,
+			Columns: []string{theme.ThemeSpuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: themespu.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.ThemeSpuIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   theme.ThemeSpuTable,
+			Columns: []string{theme.ThemeSpuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt64,
+					Column: themespu.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Theme{config: tuo.config}
 	_spec.Assign = _node.assignValues

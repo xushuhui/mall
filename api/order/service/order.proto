@@ -7,16 +7,16 @@ import "google/protobuf/empty.proto";
 option go_package = "mall-go/api/order/service";
 
 service Order{
-  rpc CreateUser(CreateOrderRequest) returns (CreateOrderReply) {
+  rpc GetOrderById(IdRequest) returns (OrderVO) {
     option (google.api.http) = {
-      post : "/order"
-      body : "*"
+      get : "/order/{id}"
     };
   }
 }
-message CreateOrderRequest{
-  int64 userId =1;
+message IdRequest{
+  int64 id=1;
 }
-message CreateOrderReply{
-  int64 orderId=1;
+message OrderVO {
+  int64 id=1;
+  string orderNo =2;
 }

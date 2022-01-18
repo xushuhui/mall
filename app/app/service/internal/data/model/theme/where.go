@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -1379,6 +1380,34 @@ func OnlineLT(v int) predicate.Theme {
 func OnlineLTE(v int) predicate.Theme {
 	return predicate.Theme(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldOnline), v))
+	})
+}
+
+// HasThemeSpu applies the HasEdge predicate on the "theme_spu" edge.
+func HasThemeSpu() predicate.Theme {
+	return predicate.Theme(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ThemeSpuTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ThemeSpuTable, ThemeSpuColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasThemeSpuWith applies the HasEdge predicate on the "theme_spu" edge with a given conditions (other predicates).
+func HasThemeSpuWith(preds ...predicate.ThemeSpu) predicate.Theme {
+	return predicate.Theme(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ThemeSpuInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ThemeSpuTable, ThemeSpuColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
 	})
 }
 

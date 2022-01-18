@@ -33,19 +33,12 @@ const (
 	FieldOnline = "online"
 	// FieldLevel holds the string denoting the level field in the database.
 	FieldLevel = "level"
-	// EdgeCoupon holds the string denoting the coupon edge name in mutations.
-	EdgeCoupon = "coupon"
 	// EdgeParent holds the string denoting the parent edge name in mutations.
 	EdgeParent = "parent"
 	// EdgeChildren holds the string denoting the children edge name in mutations.
 	EdgeChildren = "children"
 	// Table holds the table name of the category in the database.
 	Table = "category"
-	// CouponTable is the table that holds the coupon relation/edge. The primary key declared below.
-	CouponTable = "coupon_category"
-	// CouponInverseTable is the table name for the Coupon entity.
-	// It exists in this package in order to avoid lower111 circular dependency with the "coupon" package.
-	CouponInverseTable = "coupon"
 	// ParentTable is the table that holds the parent relation/edge.
 	ParentTable = "category"
 	// ParentColumn is the table column denoting the parent relation/edge.
@@ -71,12 +64,6 @@ var Columns = []string{
 	FieldOnline,
 	FieldLevel,
 }
-
-var (
-	// CouponPrimaryKey and CouponColumn2 are the table columns denoting the
-	// primary key for the coupon relation (M2M).
-	CouponPrimaryKey = []string{"coupon_id", "category_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
