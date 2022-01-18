@@ -1,5 +1,5 @@
 syntax = "proto3";
-package kratos.api;
+package user.service.internal.conf;
 
 option go_package = "mall-go/app/app/service/internal/conf;conf";
 

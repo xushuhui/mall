@@ -32,6 +32,8 @@ type Tx struct {
 	SpuImg *SpuImgClient
 	// Tag is the client for interacting with the Tag builders.
 	Tag *TagClient
+	// UserFavor is the client for interacting with the UserFavor builders.
+	UserFavor *UserFavorClient
 
 	// lazily loaded.
 	client     *Client
@@ -177,6 +179,7 @@ func (tx *Tx) init() {
 	tx.SpuDetailImg = NewSpuDetailImgClient(tx.config)
 	tx.SpuImg = NewSpuImgClient(tx.config)
 	tx.Tag = NewTagClient(tx.config)
+	tx.UserFavor = NewUserFavorClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

@@ -26,3 +26,6 @@ func (r *userRepo) CreateUser(ctx context.Context) (err error) {
 func (r *userRepo) GetUserByAccount(ctx context.Context, account string) {
 	panic("not implemented") // TODO: Implement
 }
+func (r *userRepo) GetUserIdentiy(ctx context.Context, identifier, credential, identityType string) (biz.User, error) {
+	panic("not implemented") // TODO: Implement
+}

@@ -221,6 +221,22 @@ var (
 		Columns:    TagsColumns,
 		PrimaryKey: []*schema.Column{TagsColumns[0]},
 	}
+	// UserFavorColumns holds the columns for the "user_favor" table.
+	UserFavorColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
+		{Name: "user_id", Type: field.TypeInt64},
+		{Name: "spu_id", Type: field.TypeInt64},
+		{Name: "status", Type: field.TypeInt, Default: 1},
+	}
+	// UserFavorTable holds the schema information for the "user_favor" table.
+	UserFavorTable = &schema.Table{
+		Name:       "user_favor",
+		Columns:    UserFavorColumns,
+		PrimaryKey: []*schema.Column{UserFavorColumns[0]},
+	}
 	// SpuKeyColumns holds the columns for the "spu_key" table.
 	SpuKeyColumns = []*schema.Column{
 		{Name: "spu_id", Type: field.TypeInt},
@@ -283,6 +299,7 @@ var (
 		SpuDetailImgTable,
 		SpuImgsTable,
 		TagsTable,
+		UserFavorTable,
 		SpuKeyTable,
 		SpuTagTable,
 	}
@@ -296,6 +313,9 @@ func init() {
 		Table: "spu_detail_img",
 	}
 	SpuImgsTable.ForeignKeys[0].RefTable = SpusTable
+	UserFavorTable.Annotation = &entsql.Annotation{
+		Table: "user_favor",
+	}
 	SpuKeyTable.ForeignKeys[0].RefTable = SpusTable
 	SpuKeyTable.ForeignKeys[1].RefTable = SpecKeysTable
 	SpuTagTable.ForeignKeys[0].RefTable = SpusTable

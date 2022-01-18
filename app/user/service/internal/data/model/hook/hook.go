@@ -8,19 +8,6 @@ import (
 	"mall-go/app/user/service/internal/data/model"
 )
 
-// The UserFunc type is an adapter to allow the use of ordinary
-// function as User mutator.
-type UserFunc func(context.Context, *model.UserMutation) (model.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f UserFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
-	mv, ok := m.(*model.UserMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.UserMutation", m)
-	}
-	return f(ctx, mv)
-}
-
 // The UserCouponFunc type is an adapter to allow the use of ordinary
 // function as UserCoupon mutator.
 type UserCouponFunc func(context.Context, *model.UserCouponMutation) (model.Value, error)
@@ -34,15 +21,15 @@ func (f UserCouponFunc) Mutate(ctx context.Context, m model.Mutation) (model.Val
 	return f(ctx, mv)
 }
 
-// The UserFavorFunc type is an adapter to allow the use of ordinary
-// function as UserFavor mutator.
-type UserFavorFunc func(context.Context, *model.UserFavorMutation) (model.Value, error)
+// The UserIdentiyFunc type is an adapter to allow the use of ordinary
+// function as UserIdentiy mutator.
+type UserIdentiyFunc func(context.Context, *model.UserIdentiyMutation) (model.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f UserFavorFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
-	mv, ok := m.(*model.UserFavorMutation)
+func (f UserIdentiyFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
+	mv, ok := m.(*model.UserIdentiyMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.UserFavorMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.UserIdentiyMutation", m)
 	}
 	return f(ctx, mv)
 }

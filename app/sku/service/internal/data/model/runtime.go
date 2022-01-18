@@ -13,6 +13,7 @@ import (
 	"mall-go/app/sku/service/internal/data/model/spudetailimg"
 	"mall-go/app/sku/service/internal/data/model/spuimg"
 	"mall-go/app/sku/service/internal/data/model/tag"
+	"mall-go/app/sku/service/internal/data/model/userfavor"
 	"time"
 )
 
@@ -155,4 +156,23 @@ func init() {
 	tag.DefaultUpdateTime = tagDescUpdateTime.Default.(func() time.Time)
 	// tag.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	tag.UpdateDefaultUpdateTime = tagDescUpdateTime.UpdateDefault.(func() time.Time)
+	userfavorMixin := schema.UserFavor{}.Mixin()
+	userfavorMixinFields0 := userfavorMixin[0].Fields()
+	_ = userfavorMixinFields0
+	userfavorFields := schema.UserFavor{}.Fields()
+	_ = userfavorFields
+	// userfavorDescCreateTime is the schema descriptor for create_time field.
+	userfavorDescCreateTime := userfavorMixinFields0[0].Descriptor()
+	// userfavor.DefaultCreateTime holds the default value on creation for the create_time field.
+	userfavor.DefaultCreateTime = userfavorDescCreateTime.Default.(func() time.Time)
+	// userfavorDescUpdateTime is the schema descriptor for update_time field.
+	userfavorDescUpdateTime := userfavorMixinFields0[1].Descriptor()
+	// userfavor.DefaultUpdateTime holds the default value on creation for the update_time field.
+	userfavor.DefaultUpdateTime = userfavorDescUpdateTime.Default.(func() time.Time)
+	// userfavor.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	userfavor.UpdateDefaultUpdateTime = userfavorDescUpdateTime.UpdateDefault.(func() time.Time)
+	// userfavorDescStatus is the schema descriptor for status field.
+	userfavorDescStatus := userfavorFields[2].Descriptor()
+	// userfavor.DefaultStatus holds the default value on creation for the status field.
+	userfavor.DefaultStatus = userfavorDescStatus.Default.(int)
 }

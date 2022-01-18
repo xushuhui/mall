@@ -25,7 +25,7 @@ func (s *UserService) CreateUser(ctx context.Context, req *service.CreateUserReq
 func (s *UserService) GetUser(ctx context.Context, req *service.IdRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
-func (s *UserService) GetUserByAccount(ctx context.Context, req *service.AccountRequest) (*emptypb.Empty, error) {
+func (s *UserService) GetUserIdentiy(context.Context, *service.UserIdentiyRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
 func (s *UserService) ListUser(ctx context.Context, req *service.IdsRequest) (*emptypb.Empty, error) {

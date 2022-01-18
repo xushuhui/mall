@@ -15,6 +15,7 @@ import (
 	"mall-go/app/sku/service/internal/data/model/spudetailimg"
 	"mall-go/app/sku/service/internal/data/model/spuimg"
 	"mall-go/app/sku/service/internal/data/model/tag"
+	"mall-go/app/sku/service/internal/data/model/userfavor"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -48,6 +49,7 @@ func columnChecker(table string) func(string) error {
 		spudetailimg.Table: spudetailimg.ValidColumn,
 		spuimg.Table:       spuimg.ValidColumn,
 		tag.Table:          tag.ValidColumn,
+		userfavor.Table:    userfavor.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

@@ -20,21 +20,29 @@ service User{
 
     };
   }
-  rpc GetUserByAccount(AccountRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      get : "/user/{account}"
 
+  rpc GetUserIdentiy(UserIdentiyRequest) returns (UserVO) {
+    option (google.api.http) = {
+      get : "/user/identiy"
+
+    };
+  }
+  rpc CreateUserIdentiy(UserIdentiyRequest) returns (UserVO) {
+    option (google.api.http) = {
+      post : "/user/identiy"
+      body : "*"
     };
   }
   rpc ListUser(IdsRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       get : "/user"
-
     };
   }
 }
-message AccountRequest{
-  string account =1;
+message UserIdentiyRequest{
+  string identifier =1;
+  string credential=2;
+  string identityType=3;
 }
 message IdsRequest{
   string ids=1;

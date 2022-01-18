@@ -9,9 +9,8 @@ import (
 
 	"mall-go/app/user/service/internal/data/model/migrate"
 
-	"mall-go/app/user/service/internal/data/model/user"
 	"mall-go/app/user/service/internal/data/model/usercoupon"
-	"mall-go/app/user/service/internal/data/model/userfavor"
+	"mall-go/app/user/service/internal/data/model/useridentiy"
 	"mall-go/app/user/service/internal/data/model/userinfo"
 	"mall-go/app/user/service/internal/data/model/userpoint"
 	"mall-go/app/user/service/internal/data/model/userpointdetail"
@@ -27,12 +26,10 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// User is the client for interacting with the User builders.
-	User *UserClient
 	// UserCoupon is the client for interacting with the UserCoupon builders.
 	UserCoupon *UserCouponClient
-	// UserFavor is the client for interacting with the UserFavor builders.
-	UserFavor *UserFavorClient
+	// UserIdentiy is the client for interacting with the UserIdentiy builders.
+	UserIdentiy *UserIdentiyClient
 	// UserInfo is the client for interacting with the UserInfo builders.
 	UserInfo *UserInfoClient
 	// UserPoint is the client for interacting with the UserPoint builders.
@@ -56,9 +53,8 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.User = NewUserClient(c.config)
 	c.UserCoupon = NewUserCouponClient(c.config)
-	c.UserFavor = NewUserFavorClient(c.config)
+	c.UserIdentiy = NewUserIdentiyClient(c.config)
 	c.UserInfo = NewUserInfoClient(c.config)
 	c.UserPoint = NewUserPointClient(c.config)
 	c.UserPointDetail = NewUserPointDetailClient(c.config)
@@ -97,9 +93,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:              ctx,
 		config:           cfg,
-		User:             NewUserClient(cfg),
 		UserCoupon:       NewUserCouponClient(cfg),
-		UserFavor:        NewUserFavorClient(cfg),
+		UserIdentiy:      NewUserIdentiyClient(cfg),
 		UserInfo:         NewUserInfoClient(cfg),
 		UserPoint:        NewUserPointClient(cfg),
 		UserPointDetail:  NewUserPointDetailClient(cfg),
@@ -123,9 +118,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
 		config:           cfg,
-		User:             NewUserClient(cfg),
 		UserCoupon:       NewUserCouponClient(cfg),
-		UserFavor:        NewUserFavorClient(cfg),
+		UserIdentiy:      NewUserIdentiyClient(cfg),
 		UserInfo:         NewUserInfoClient(cfg),
 		UserPoint:        NewUserPointClient(cfg),
 		UserPointDetail:  NewUserPointDetailClient(cfg),
@@ -137,7 +131,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		User.
+//		UserCoupon.
 //		Query().
 //		Count(ctx)
 //
@@ -160,104 +154,13 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.User.Use(hooks...)
 	c.UserCoupon.Use(hooks...)
-	c.UserFavor.Use(hooks...)
+	c.UserIdentiy.Use(hooks...)
 	c.UserInfo.Use(hooks...)
 	c.UserPoint.Use(hooks...)
 	c.UserPointDetail.Use(hooks...)
 	c.UserWallet.Use(hooks...)
 	c.UserWalletDetail.Use(hooks...)
-}
-
-// UserClient is a client for the User schema.
-type UserClient struct {
-	config
-}
-
-// NewUserClient returns a client for the User from the given config.
-func NewUserClient(c config) *UserClient {
-	return &UserClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `user.Hooks(f(g(h())))`.
-func (c *UserClient) Use(hooks ...Hook) {
-	c.hooks.User = append(c.hooks.User, hooks...)
-}
-
-// Create returns a create builder for User.
-func (c *UserClient) Create() *UserCreate {
-	mutation := newUserMutation(c.config, OpCreate)
-	return &UserCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of User entities.
-func (c *UserClient) CreateBulk(builders ...*UserCreate) *UserCreateBulk {
-	return &UserCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for User.
-func (c *UserClient) Update() *UserUpdate {
-	mutation := newUserMutation(c.config, OpUpdate)
-	return &UserUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *UserClient) UpdateOne(u *User) *UserUpdateOne {
-	mutation := newUserMutation(c.config, OpUpdateOne, withUser(u))
-	return &UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *UserClient) UpdateOneID(id int64) *UserUpdateOne {
-	mutation := newUserMutation(c.config, OpUpdateOne, withUserID(id))
-	return &UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for User.
-func (c *UserClient) Delete() *UserDelete {
-	mutation := newUserMutation(c.config, OpDelete)
-	return &UserDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *UserClient) DeleteOne(u *User) *UserDeleteOne {
-	return c.DeleteOneID(u.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *UserClient) DeleteOneID(id int64) *UserDeleteOne {
-	builder := c.Delete().Where(user.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &UserDeleteOne{builder}
-}
-
-// Query returns a query builder for User.
-func (c *UserClient) Query() *UserQuery {
-	return &UserQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a User entity by its id.
-func (c *UserClient) Get(ctx context.Context, id int64) (*User, error) {
-	return c.Query().Where(user.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *UserClient) GetX(ctx context.Context, id int64) *User {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *UserClient) Hooks() []Hook {
-	return c.hooks.User
 }
 
 // UserCouponClient is a client for the UserCoupon schema.
@@ -350,84 +253,84 @@ func (c *UserCouponClient) Hooks() []Hook {
 	return c.hooks.UserCoupon
 }
 
-// UserFavorClient is a client for the UserFavor schema.
-type UserFavorClient struct {
+// UserIdentiyClient is a client for the UserIdentiy schema.
+type UserIdentiyClient struct {
 	config
 }
 
-// NewUserFavorClient returns a client for the UserFavor from the given config.
-func NewUserFavorClient(c config) *UserFavorClient {
-	return &UserFavorClient{config: c}
+// NewUserIdentiyClient returns a client for the UserIdentiy from the given config.
+func NewUserIdentiyClient(c config) *UserIdentiyClient {
+	return &UserIdentiyClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `userfavor.Hooks(f(g(h())))`.
-func (c *UserFavorClient) Use(hooks ...Hook) {
-	c.hooks.UserFavor = append(c.hooks.UserFavor, hooks...)
+// A call to `Use(f, g, h)` equals to `useridentiy.Hooks(f(g(h())))`.
+func (c *UserIdentiyClient) Use(hooks ...Hook) {
+	c.hooks.UserIdentiy = append(c.hooks.UserIdentiy, hooks...)
 }
 
-// Create returns a create builder for UserFavor.
-func (c *UserFavorClient) Create() *UserFavorCreate {
-	mutation := newUserFavorMutation(c.config, OpCreate)
-	return &UserFavorCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a create builder for UserIdentiy.
+func (c *UserIdentiyClient) Create() *UserIdentiyCreate {
+	mutation := newUserIdentiyMutation(c.config, OpCreate)
+	return &UserIdentiyCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of UserFavor entities.
-func (c *UserFavorClient) CreateBulk(builders ...*UserFavorCreate) *UserFavorCreateBulk {
-	return &UserFavorCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of UserIdentiy entities.
+func (c *UserIdentiyClient) CreateBulk(builders ...*UserIdentiyCreate) *UserIdentiyCreateBulk {
+	return &UserIdentiyCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for UserFavor.
-func (c *UserFavorClient) Update() *UserFavorUpdate {
-	mutation := newUserFavorMutation(c.config, OpUpdate)
-	return &UserFavorUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for UserIdentiy.
+func (c *UserIdentiyClient) Update() *UserIdentiyUpdate {
+	mutation := newUserIdentiyMutation(c.config, OpUpdate)
+	return &UserIdentiyUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *UserFavorClient) UpdateOne(uf *UserFavor) *UserFavorUpdateOne {
-	mutation := newUserFavorMutation(c.config, OpUpdateOne, withUserFavor(uf))
-	return &UserFavorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *UserIdentiyClient) UpdateOne(ui *UserIdentiy) *UserIdentiyUpdateOne {
+	mutation := newUserIdentiyMutation(c.config, OpUpdateOne, withUserIdentiy(ui))
+	return &UserIdentiyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *UserFavorClient) UpdateOneID(id int64) *UserFavorUpdateOne {
-	mutation := newUserFavorMutation(c.config, OpUpdateOne, withUserFavorID(id))
-	return &UserFavorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *UserIdentiyClient) UpdateOneID(id int64) *UserIdentiyUpdateOne {
+	mutation := newUserIdentiyMutation(c.config, OpUpdateOne, withUserIdentiyID(id))
+	return &UserIdentiyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for UserFavor.
-func (c *UserFavorClient) Delete() *UserFavorDelete {
-	mutation := newUserFavorMutation(c.config, OpDelete)
-	return &UserFavorDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for UserIdentiy.
+func (c *UserIdentiyClient) Delete() *UserIdentiyDelete {
+	mutation := newUserIdentiyMutation(c.config, OpDelete)
+	return &UserIdentiyDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a delete builder for the given entity.
-func (c *UserFavorClient) DeleteOne(uf *UserFavor) *UserFavorDeleteOne {
-	return c.DeleteOneID(uf.ID)
+func (c *UserIdentiyClient) DeleteOne(ui *UserIdentiy) *UserIdentiyDeleteOne {
+	return c.DeleteOneID(ui.ID)
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *UserFavorClient) DeleteOneID(id int64) *UserFavorDeleteOne {
-	builder := c.Delete().Where(userfavor.ID(id))
+func (c *UserIdentiyClient) DeleteOneID(id int64) *UserIdentiyDeleteOne {
+	builder := c.Delete().Where(useridentiy.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &UserFavorDeleteOne{builder}
+	return &UserIdentiyDeleteOne{builder}
 }
 
-// Query returns a query builder for UserFavor.
-func (c *UserFavorClient) Query() *UserFavorQuery {
-	return &UserFavorQuery{
+// Query returns a query builder for UserIdentiy.
+func (c *UserIdentiyClient) Query() *UserIdentiyQuery {
+	return &UserIdentiyQuery{
 		config: c.config,
 	}
 }
 
-// Get returns a UserFavor entity by its id.
-func (c *UserFavorClient) Get(ctx context.Context, id int64) (*UserFavor, error) {
-	return c.Query().Where(userfavor.ID(id)).Only(ctx)
+// Get returns a UserIdentiy entity by its id.
+func (c *UserIdentiyClient) Get(ctx context.Context, id int64) (*UserIdentiy, error) {
+	return c.Query().Where(useridentiy.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *UserFavorClient) GetX(ctx context.Context, id int64) *UserFavor {
+func (c *UserIdentiyClient) GetX(ctx context.Context, id int64) *UserIdentiy {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -436,8 +339,8 @@ func (c *UserFavorClient) GetX(ctx context.Context, id int64) *UserFavor {
 }
 
 // Hooks returns the client hooks.
-func (c *UserFavorClient) Hooks() []Hook {
-	return c.hooks.UserFavor
+func (c *UserIdentiyClient) Hooks() []Hook {
+	return c.hooks.UserIdentiy
 }
 
 // UserInfoClient is a client for the UserInfo schema.

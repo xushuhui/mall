@@ -120,17 +120,10 @@ func Nickname(v string) predicate.UserInfo {
 	})
 }
 
-// UnifyUID applies equality check predicate on the "unify_uid" field. It's identical to UnifyUIDEQ.
-func UnifyUID(v int) predicate.UserInfo {
+// Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
+func Phone(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldUnifyUID), v))
-	})
-}
-
-// Email applies equality check predicate on the "email" field. It's identical to EmailEQ.
-func Email(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldEmail), v))
+		s.Where(sql.EQ(s.C(FieldPhone), v))
 	})
 }
 
@@ -501,22 +494,22 @@ func NicknameContainsFold(v string) predicate.UserInfo {
 	})
 }
 
-// UnifyUIDEQ applies the EQ predicate on the "unify_uid" field.
-func UnifyUIDEQ(v int) predicate.UserInfo {
+// PhoneEQ applies the EQ predicate on the "phone" field.
+func PhoneEQ(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldUnifyUID), v))
+		s.Where(sql.EQ(s.C(FieldPhone), v))
 	})
 }
 
-// UnifyUIDNEQ applies the NEQ predicate on the "unify_uid" field.
-func UnifyUIDNEQ(v int) predicate.UserInfo {
+// PhoneNEQ applies the NEQ predicate on the "phone" field.
+func PhoneNEQ(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldUnifyUID), v))
+		s.Where(sql.NEQ(s.C(FieldPhone), v))
 	})
 }
 
-// UnifyUIDIn applies the In predicate on the "unify_uid" field.
-func UnifyUIDIn(vs ...int) predicate.UserInfo {
+// PhoneIn applies the In predicate on the "phone" field.
+func PhoneIn(vs ...string) predicate.UserInfo {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -528,12 +521,12 @@ func UnifyUIDIn(vs ...int) predicate.UserInfo {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldUnifyUID), v...))
+		s.Where(sql.In(s.C(FieldPhone), v...))
 	})
 }
 
-// UnifyUIDNotIn applies the NotIn predicate on the "unify_uid" field.
-func UnifyUIDNotIn(vs ...int) predicate.UserInfo {
+// PhoneNotIn applies the NotIn predicate on the "phone" field.
+func PhoneNotIn(vs ...string) predicate.UserInfo {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -545,146 +538,70 @@ func UnifyUIDNotIn(vs ...int) predicate.UserInfo {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldUnifyUID), v...))
+		s.Where(sql.NotIn(s.C(FieldPhone), v...))
 	})
 }
 
-// UnifyUIDGT applies the GT predicate on the "unify_uid" field.
-func UnifyUIDGT(v int) predicate.UserInfo {
+// PhoneGT applies the GT predicate on the "phone" field.
+func PhoneGT(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldUnifyUID), v))
+		s.Where(sql.GT(s.C(FieldPhone), v))
 	})
 }
 
-// UnifyUIDGTE applies the GTE predicate on the "unify_uid" field.
-func UnifyUIDGTE(v int) predicate.UserInfo {
+// PhoneGTE applies the GTE predicate on the "phone" field.
+func PhoneGTE(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldUnifyUID), v))
+		s.Where(sql.GTE(s.C(FieldPhone), v))
 	})
 }
 
-// UnifyUIDLT applies the LT predicate on the "unify_uid" field.
-func UnifyUIDLT(v int) predicate.UserInfo {
+// PhoneLT applies the LT predicate on the "phone" field.
+func PhoneLT(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldUnifyUID), v))
+		s.Where(sql.LT(s.C(FieldPhone), v))
 	})
 }
 
-// UnifyUIDLTE applies the LTE predicate on the "unify_uid" field.
-func UnifyUIDLTE(v int) predicate.UserInfo {
+// PhoneLTE applies the LTE predicate on the "phone" field.
+func PhoneLTE(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldUnifyUID), v))
+		s.Where(sql.LTE(s.C(FieldPhone), v))
 	})
 }
 
-// EmailEQ applies the EQ predicate on the "email" field.
-func EmailEQ(v string) predicate.UserInfo {
+// PhoneContains applies the Contains predicate on the "phone" field.
+func PhoneContains(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldEmail), v))
+		s.Where(sql.Contains(s.C(FieldPhone), v))
 	})
 }
 
-// EmailNEQ applies the NEQ predicate on the "email" field.
-func EmailNEQ(v string) predicate.UserInfo {
+// PhoneHasPrefix applies the HasPrefix predicate on the "phone" field.
+func PhoneHasPrefix(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldEmail), v))
+		s.Where(sql.HasPrefix(s.C(FieldPhone), v))
 	})
 }
 
-// EmailIn applies the In predicate on the "email" field.
-func EmailIn(vs ...string) predicate.UserInfo {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
+// PhoneHasSuffix applies the HasSuffix predicate on the "phone" field.
+func PhoneHasSuffix(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldEmail), v...))
+		s.Where(sql.HasSuffix(s.C(FieldPhone), v))
 	})
 }
 
-// EmailNotIn applies the NotIn predicate on the "email" field.
-func EmailNotIn(vs ...string) predicate.UserInfo {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
+// PhoneEqualFold applies the EqualFold predicate on the "phone" field.
+func PhoneEqualFold(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldEmail), v...))
+		s.Where(sql.EqualFold(s.C(FieldPhone), v))
 	})
 }
 
-// EmailGT applies the GT predicate on the "email" field.
-func EmailGT(v string) predicate.UserInfo {
+// PhoneContainsFold applies the ContainsFold predicate on the "phone" field.
+func PhoneContainsFold(v string) predicate.UserInfo {
 	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldEmail), v))
-	})
-}
-
-// EmailGTE applies the GTE predicate on the "email" field.
-func EmailGTE(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldEmail), v))
-	})
-}
-
-// EmailLT applies the LT predicate on the "email" field.
-func EmailLT(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldEmail), v))
-	})
-}
-
-// EmailLTE applies the LTE predicate on the "email" field.
-func EmailLTE(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldEmail), v))
-	})
-}
-
-// EmailContains applies the Contains predicate on the "email" field.
-func EmailContains(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldEmail), v))
-	})
-}
-
-// EmailHasPrefix applies the HasPrefix predicate on the "email" field.
-func EmailHasPrefix(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldEmail), v))
-	})
-}
-
-// EmailHasSuffix applies the HasSuffix predicate on the "email" field.
-func EmailHasSuffix(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldEmail), v))
-	})
-}
-
-// EmailEqualFold applies the EqualFold predicate on the "email" field.
-func EmailEqualFold(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldEmail), v))
-	})
-}
-
-// EmailContainsFold applies the ContainsFold predicate on the "email" field.
-func EmailContainsFold(v string) predicate.UserInfo {
-	return predicate.UserInfo(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldEmail), v))
+		s.Where(sql.ContainsFold(s.C(FieldPhone), v))
 	})
 }
 

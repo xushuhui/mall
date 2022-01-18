@@ -77,7 +77,7 @@ func main() {
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
-	app, cleanup, err := initApp(bc.Server, bc.Data, &rc, logger)
+	app, cleanup, err := initApp(&bc, &rc, logger)
 	if err != nil {
 		panic(err)
 	}

@@ -3,7 +3,6 @@ VERSION=$(shell git describe --tags --always)
 INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
 API_PROTO_FILES=$(shell find api -name *.proto)
 THIRD_PATH= $(shell pwd)/../../../third_party
-MODEL_PATH=$(shell -name model -type d)
 
 .PHONY: init
 # init env

@@ -138,6 +138,19 @@ func (f TagFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, err
 	return f(ctx, mv)
 }
 
+// The UserFavorFunc type is an adapter to allow the use of ordinary
+// function as UserFavor mutator.
+type UserFavorFunc func(context.Context, *model.UserFavorMutation) (model.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f UserFavorFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
+	mv, ok := m.(*model.UserFavorMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.UserFavorMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, model.Mutation) bool
 

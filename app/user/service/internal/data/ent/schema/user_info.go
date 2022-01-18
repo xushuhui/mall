@@ -20,8 +20,7 @@ func (UserInfo) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("id").Unique().Immutable().Comment(""),
 		field.String("nickname").Comment(""),
-		field.Int("unify_uid").Comment(""),
-		field.String("email").Comment(""),
+		field.String("phone").Comment(""),
 		field.String("avatar").Comment(""),
 		field.String("wx_profile").Comment(""),
 	}

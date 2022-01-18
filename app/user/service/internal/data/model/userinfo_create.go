@@ -68,15 +68,9 @@ func (uic *UserInfoCreate) SetNickname(s string) *UserInfoCreate {
 	return uic
 }
 
-// SetUnifyUID sets the "unify_uid" field.
-func (uic *UserInfoCreate) SetUnifyUID(i int) *UserInfoCreate {
-	uic.mutation.SetUnifyUID(i)
-	return uic
-}
-
-// SetEmail sets the "email" field.
-func (uic *UserInfoCreate) SetEmail(s string) *UserInfoCreate {
-	uic.mutation.SetEmail(s)
+// SetPhone sets the "phone" field.
+func (uic *UserInfoCreate) SetPhone(s string) *UserInfoCreate {
+	uic.mutation.SetPhone(s)
 	return uic
 }
 
@@ -190,11 +184,8 @@ func (uic *UserInfoCreate) check() error {
 	if _, ok := uic.mutation.Nickname(); !ok {
 		return &ValidationError{Name: "nickname", err: errors.New(`model: missing required field "nickname"`)}
 	}
-	if _, ok := uic.mutation.UnifyUID(); !ok {
-		return &ValidationError{Name: "unify_uid", err: errors.New(`model: missing required field "unify_uid"`)}
-	}
-	if _, ok := uic.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`model: missing required field "email"`)}
+	if _, ok := uic.mutation.Phone(); !ok {
+		return &ValidationError{Name: "phone", err: errors.New(`model: missing required field "phone"`)}
 	}
 	if _, ok := uic.mutation.Avatar(); !ok {
 		return &ValidationError{Name: "avatar", err: errors.New(`model: missing required field "avatar"`)}
@@ -267,21 +258,13 @@ func (uic *UserInfoCreate) createSpec() (*UserInfo, *sqlgraph.CreateSpec) {
 		})
 		_node.Nickname = value
 	}
-	if value, ok := uic.mutation.UnifyUID(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: userinfo.FieldUnifyUID,
-		})
-		_node.UnifyUID = value
-	}
-	if value, ok := uic.mutation.Email(); ok {
+	if value, ok := uic.mutation.Phone(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: userinfo.FieldEmail,
+			Column: userinfo.FieldPhone,
 		})
-		_node.Email = value
+		_node.Phone = value
 	}
 	if value, ok := uic.mutation.Avatar(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

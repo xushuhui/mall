@@ -19,10 +19,8 @@ const (
 	FieldDeleteTime = "delete_time"
 	// FieldNickname holds the string denoting the nickname field in the database.
 	FieldNickname = "nickname"
-	// FieldUnifyUID holds the string denoting the unify_uid field in the database.
-	FieldUnifyUID = "unify_uid"
-	// FieldEmail holds the string denoting the email field in the database.
-	FieldEmail = "email"
+	// FieldPhone holds the string denoting the phone field in the database.
+	FieldPhone = "phone"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
 	// FieldWxProfile holds the string denoting the wx_profile field in the database.
@@ -38,8 +36,7 @@ var Columns = []string{
 	FieldUpdateTime,
 	FieldDeleteTime,
 	FieldNickname,
-	FieldUnifyUID,
-	FieldEmail,
+	FieldPhone,
 	FieldAvatar,
 	FieldWxProfile,
 }

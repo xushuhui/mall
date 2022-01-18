@@ -9,24 +9,6 @@ import (
 )
 
 var (
-	// UserColumns holds the columns for the "user" table.
-	UserColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "openid", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString},
-		{Name: "password", Type: field.TypeString},
-		{Name: "mobile", Type: field.TypeString},
-		{Name: "status", Type: field.TypeInt, Default: 1},
-	}
-	// UserTable holds the schema information for the "user" table.
-	UserTable = &schema.Table{
-		Name:       "user",
-		Columns:    UserColumns,
-		PrimaryKey: []*schema.Column{UserColumns[0]},
-	}
 	// UserCouponColumns holds the columns for the "user_coupon" table.
 	UserCouponColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
@@ -44,21 +26,22 @@ var (
 		Columns:    UserCouponColumns,
 		PrimaryKey: []*schema.Column{UserCouponColumns[0]},
 	}
-	// UserFavorColumns holds the columns for the "user_favor" table.
-	UserFavorColumns = []*schema.Column{
+	// LinUserIdentiyColumns holds the columns for the "lin_user_identiy" table.
+	LinUserIdentiyColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "user_id", Type: field.TypeInt64},
-		{Name: "spu_id", Type: field.TypeInt64},
-		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "identity_type", Type: field.TypeString},
+		{Name: "identifier", Type: field.TypeString},
+		{Name: "credential", Type: field.TypeString},
 	}
-	// UserFavorTable holds the schema information for the "user_favor" table.
-	UserFavorTable = &schema.Table{
-		Name:       "user_favor",
-		Columns:    UserFavorColumns,
-		PrimaryKey: []*schema.Column{UserFavorColumns[0]},
+	// LinUserIdentiyTable holds the schema information for the "lin_user_identiy" table.
+	LinUserIdentiyTable = &schema.Table{
+		Name:       "lin_user_identiy",
+		Columns:    LinUserIdentiyColumns,
+		PrimaryKey: []*schema.Column{LinUserIdentiyColumns[0]},
 	}
 	// UserInfoColumns holds the columns for the "user_info" table.
 	UserInfoColumns = []*schema.Column{
@@ -67,8 +50,7 @@ var (
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "nickname", Type: field.TypeString},
-		{Name: "unify_uid", Type: field.TypeInt},
-		{Name: "email", Type: field.TypeString},
+		{Name: "phone", Type: field.TypeString},
 		{Name: "avatar", Type: field.TypeString},
 		{Name: "wx_profile", Type: field.TypeString},
 	}
@@ -142,9 +124,8 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		UserTable,
 		UserCouponTable,
-		UserFavorTable,
+		LinUserIdentiyTable,
 		UserInfoTable,
 		UserPointsTable,
 		UserPointDetailTable,
@@ -154,14 +135,11 @@ var (
 )
 
 func init() {
-	UserTable.Annotation = &entsql.Annotation{
-		Table: "user",
-	}
 	UserCouponTable.Annotation = &entsql.Annotation{
 		Table: "user_coupon",
 	}
-	UserFavorTable.Annotation = &entsql.Annotation{
-		Table: "user_favor",
+	LinUserIdentiyTable.Annotation = &entsql.Annotation{
+		Table: "lin_user_identiy",
 	}
 	UserInfoTable.Annotation = &entsql.Annotation{
 		Table: "user_info",

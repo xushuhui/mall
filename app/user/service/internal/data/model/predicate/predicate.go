@@ -6,14 +6,11 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// User is the predicate function for user builders.
-type User func(*sql.Selector)
-
 // UserCoupon is the predicate function for usercoupon builders.
 type UserCoupon func(*sql.Selector)
 
-// UserFavor is the predicate function for userfavor builders.
-type UserFavor func(*sql.Selector)
+// UserIdentiy is the predicate function for useridentiy builders.
+type UserIdentiy func(*sql.Selector)
 
 // UserInfo is the predicate function for userinfo builders.
 type UserInfo func(*sql.Selector)

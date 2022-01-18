@@ -34,6 +34,7 @@ type hooks struct {
 	SpuDetailImg []ent.Hook
 	SpuImg       []ent.Hook
 	Tag          []ent.Hook
+	UserFavor    []ent.Hook
 }
 
 // Options applies the options on the config object.

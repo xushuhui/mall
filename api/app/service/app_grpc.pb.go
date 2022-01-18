@@ -33,10 +33,6 @@ type AppClient interface {
 	GetUserCouponByStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error)
 	GetUserCouponByStatusWithCategory(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error)
 	CreateUserCoupon(ctx context.Context, in *CreateUserCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error)
-	GetSpuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuDetail, error)
-	GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error)
-	GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuPage, error)
 }
 
 type appClient struct {
@@ -173,42 +169,6 @@ func (c *appClient) CreateUserCoupon(ctx context.Context, in *CreateUserCouponRe
 	return out, nil
 }
 
-func (c *appClient) GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error) {
-	out := new(SaleExplains)
-	err := c.cc.Invoke(ctx, "/app.service.App/GetSaleExplain", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetSpuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuDetail, error) {
-	out := new(SpuDetail)
-	err := c.cc.Invoke(ctx, "/app.service.App/GetSpuById", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error) {
-	out := new(SpuPage)
-	err := c.cc.Invoke(ctx, "/app.service.App/GetSpuLatest", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuPage, error) {
-	out := new(SpuPage)
-	err := c.cc.Invoke(ctx, "/app.service.App/GetSpuByCategory", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AppServer is the server API for App service.
 // All implementations must embed UnimplementedAppServer
 // for forward compatibility
@@ -227,10 +187,6 @@ type AppServer interface {
 	GetUserCouponByStatus(context.Context, *StatusRequest) (*Coupons, error)
 	GetUserCouponByStatusWithCategory(context.Context, *StatusRequest) (*Coupons, error)
 	CreateUserCoupon(context.Context, *CreateUserCouponRequest) (*emptypb.Empty, error)
-	GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error)
-	GetSpuById(context.Context, *IdRequest) (*SpuDetail, error)
-	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
-	GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error)
 	mustEmbedUnimplementedAppServer()
 }
 
@@ -279,18 +235,6 @@ func (UnimplementedAppServer) GetUserCouponByStatusWithCategory(context.Context,
 }
 func (UnimplementedAppServer) CreateUserCoupon(context.Context, *CreateUserCouponRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUserCoupon not implemented")
-}
-func (UnimplementedAppServer) GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSaleExplain not implemented")
-}
-func (UnimplementedAppServer) GetSpuById(context.Context, *IdRequest) (*SpuDetail, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSpuById not implemented")
-}
-func (UnimplementedAppServer) GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSpuLatest not implemented")
-}
-func (UnimplementedAppServer) GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSpuByCategory not implemented")
 }
 func (UnimplementedAppServer) mustEmbedUnimplementedAppServer() {}
 
@@ -557,78 +501,6 @@ func _App_CreateUserCoupon_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetSaleExplain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetSaleExplain(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/GetSaleExplain",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetSaleExplain(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetSpuById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetSpuById(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/GetSpuById",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetSpuById(ctx, req.(*IdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetSpuLatest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetSpuLatest(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/GetSpuLatest",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetSpuLatest(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetSpuByCategory(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/GetSpuByCategory",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetSpuByCategory(ctx, req.(*IdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // App_ServiceDesc is the grpc.ServiceDesc for App service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -691,22 +563,6 @@ var App_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUserCoupon",
 			Handler:    _App_CreateUserCoupon_Handler,
-		},
-		{
-			MethodName: "GetSaleExplain",
-			Handler:    _App_GetSaleExplain_Handler,
-		},
-		{
-			MethodName: "GetSpuById",
-			Handler:    _App_GetSpuById_Handler,
-		},
-		{
-			MethodName: "GetSpuLatest",
-			Handler:    _App_GetSpuLatest_Handler,
-		},
-		{
-			MethodName: "GetSpuByCategory",
-			Handler:    _App_GetSpuByCategory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

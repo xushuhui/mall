@@ -1,8 +1,10 @@
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
-INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
-API_PROTO_FILES=$(shell find api -name *.proto)
 
+API_PROTO_FILES=$(shell find api -name *.proto)
+MODEL_PATH=$(shell find . -name model -type d)
+INTERNAL_PATH=$(shell find . -name internal -type d)
+INTERNAL_PROTO_FILES=$(shell find . -name conf.proto )
 .PHONY: init
 # init env
 init:
@@ -48,6 +50,7 @@ build:
 # generate
 generate:
 	go generate ./...
+
 
 .PHONY: ent
 ent:

@@ -17,6 +17,7 @@ import (
 	"mall-go/app/sku/service/internal/data/model/spudetailimg"
 	"mall-go/app/sku/service/internal/data/model/spuimg"
 	"mall-go/app/sku/service/internal/data/model/tag"
+	"mall-go/app/sku/service/internal/data/model/userfavor"
 	"sync"
 	"time"
 
@@ -42,6 +43,7 @@ const (
 	TypeSpuDetailImg = "SpuDetailImg"
 	TypeSpuImg       = "SpuImg"
 	TypeTag          = "Tag"
+	TypeUserFavor    = "UserFavor"
 )
 
 // BrandMutation represents an operation that mutates the Brand nodes in the graph.
@@ -8651,4 +8653,690 @@ func (m *TagMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Tag edge %s", name)
+}
+
+// UserFavorMutation represents an operation that mutates the UserFavor nodes in the graph.
+type UserFavorMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	create_time   *time.Time
+	update_time   *time.Time
+	delete_time   *time.Time
+	user_id       *int64
+	adduser_id    *int64
+	spu_id        *int64
+	addspu_id     *int64
+	status        *int
+	addstatus     *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*UserFavor, error)
+	predicates    []predicate.UserFavor
+}
+
+var _ ent.Mutation = (*UserFavorMutation)(nil)
+
+// userfavorOption allows management of the mutation configuration using functional options.
+type userfavorOption func(*UserFavorMutation)
+
+// newUserFavorMutation creates new mutation for the UserFavor entity.
+func newUserFavorMutation(c config, op Op, opts ...userfavorOption) *UserFavorMutation {
+	m := &UserFavorMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeUserFavor,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withUserFavorID sets the ID field of the mutation.
+func withUserFavorID(id int64) userfavorOption {
+	return func(m *UserFavorMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *UserFavor
+		)
+		m.oldValue = func(ctx context.Context) (*UserFavor, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().UserFavor.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withUserFavor sets the old UserFavor of the mutation.
+func withUserFavor(node *UserFavor) userfavorOption {
+	return func(m *UserFavorMutation) {
+		m.oldValue = func(context.Context) (*UserFavor, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m UserFavorMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m UserFavorMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("model: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *UserFavorMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *UserFavorMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *UserFavorMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the UserFavor entity.
+// If the UserFavor object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserFavorMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *UserFavorMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *UserFavorMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *UserFavorMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the UserFavor entity.
+// If the UserFavor object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserFavorMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *UserFavorMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (m *UserFavorMutation) SetDeleteTime(t time.Time) {
+	m.delete_time = &t
+}
+
+// DeleteTime returns the value of the "delete_time" field in the mutation.
+func (m *UserFavorMutation) DeleteTime() (r time.Time, exists bool) {
+	v := m.delete_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteTime returns the old "delete_time" field's value of the UserFavor entity.
+// If the UserFavor object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserFavorMutation) OldDeleteTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeleteTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeleteTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteTime: %w", err)
+	}
+	return oldValue.DeleteTime, nil
+}
+
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (m *UserFavorMutation) ClearDeleteTime() {
+	m.delete_time = nil
+	m.clearedFields[userfavor.FieldDeleteTime] = struct{}{}
+}
+
+// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
+func (m *UserFavorMutation) DeleteTimeCleared() bool {
+	_, ok := m.clearedFields[userfavor.FieldDeleteTime]
+	return ok
+}
+
+// ResetDeleteTime resets all changes to the "delete_time" field.
+func (m *UserFavorMutation) ResetDeleteTime() {
+	m.delete_time = nil
+	delete(m.clearedFields, userfavor.FieldDeleteTime)
+}
+
+// SetUserID sets the "user_id" field.
+func (m *UserFavorMutation) SetUserID(i int64) {
+	m.user_id = &i
+	m.adduser_id = nil
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *UserFavorMutation) UserID() (r int64, exists bool) {
+	v := m.user_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the UserFavor entity.
+// If the UserFavor object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserFavorMutation) OldUserID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// AddUserID adds i to the "user_id" field.
+func (m *UserFavorMutation) AddUserID(i int64) {
+	if m.adduser_id != nil {
+		*m.adduser_id += i
+	} else {
+		m.adduser_id = &i
+	}
+}
+
+// AddedUserID returns the value that was added to the "user_id" field in this mutation.
+func (m *UserFavorMutation) AddedUserID() (r int64, exists bool) {
+	v := m.adduser_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *UserFavorMutation) ResetUserID() {
+	m.user_id = nil
+	m.adduser_id = nil
+}
+
+// SetSpuID sets the "spu_id" field.
+func (m *UserFavorMutation) SetSpuID(i int64) {
+	m.spu_id = &i
+	m.addspu_id = nil
+}
+
+// SpuID returns the value of the "spu_id" field in the mutation.
+func (m *UserFavorMutation) SpuID() (r int64, exists bool) {
+	v := m.spu_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSpuID returns the old "spu_id" field's value of the UserFavor entity.
+// If the UserFavor object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserFavorMutation) OldSpuID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldSpuID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldSpuID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSpuID: %w", err)
+	}
+	return oldValue.SpuID, nil
+}
+
+// AddSpuID adds i to the "spu_id" field.
+func (m *UserFavorMutation) AddSpuID(i int64) {
+	if m.addspu_id != nil {
+		*m.addspu_id += i
+	} else {
+		m.addspu_id = &i
+	}
+}
+
+// AddedSpuID returns the value that was added to the "spu_id" field in this mutation.
+func (m *UserFavorMutation) AddedSpuID() (r int64, exists bool) {
+	v := m.addspu_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSpuID resets all changes to the "spu_id" field.
+func (m *UserFavorMutation) ResetSpuID() {
+	m.spu_id = nil
+	m.addspu_id = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *UserFavorMutation) SetStatus(i int) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *UserFavorMutation) Status() (r int, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the UserFavor entity.
+// If the UserFavor object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserFavorMutation) OldStatus(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *UserFavorMutation) AddStatus(i int) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *UserFavorMutation) AddedStatus() (r int, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *UserFavorMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
+// Where appends a list predicates to the UserFavorMutation builder.
+func (m *UserFavorMutation) Where(ps ...predicate.UserFavor) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *UserFavorMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (UserFavor).
+func (m *UserFavorMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *UserFavorMutation) Fields() []string {
+	fields := make([]string, 0, 6)
+	if m.create_time != nil {
+		fields = append(fields, userfavor.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, userfavor.FieldUpdateTime)
+	}
+	if m.delete_time != nil {
+		fields = append(fields, userfavor.FieldDeleteTime)
+	}
+	if m.user_id != nil {
+		fields = append(fields, userfavor.FieldUserID)
+	}
+	if m.spu_id != nil {
+		fields = append(fields, userfavor.FieldSpuID)
+	}
+	if m.status != nil {
+		fields = append(fields, userfavor.FieldStatus)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *UserFavorMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case userfavor.FieldCreateTime:
+		return m.CreateTime()
+	case userfavor.FieldUpdateTime:
+		return m.UpdateTime()
+	case userfavor.FieldDeleteTime:
+		return m.DeleteTime()
+	case userfavor.FieldUserID:
+		return m.UserID()
+	case userfavor.FieldSpuID:
+		return m.SpuID()
+	case userfavor.FieldStatus:
+		return m.Status()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *UserFavorMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case userfavor.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case userfavor.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case userfavor.FieldDeleteTime:
+		return m.OldDeleteTime(ctx)
+	case userfavor.FieldUserID:
+		return m.OldUserID(ctx)
+	case userfavor.FieldSpuID:
+		return m.OldSpuID(ctx)
+	case userfavor.FieldStatus:
+		return m.OldStatus(ctx)
+	}
+	return nil, fmt.Errorf("unknown UserFavor field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *UserFavorMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case userfavor.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case userfavor.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case userfavor.FieldDeleteTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteTime(v)
+		return nil
+	case userfavor.FieldUserID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	case userfavor.FieldSpuID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSpuID(v)
+		return nil
+	case userfavor.FieldStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown UserFavor field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *UserFavorMutation) AddedFields() []string {
+	var fields []string
+	if m.adduser_id != nil {
+		fields = append(fields, userfavor.FieldUserID)
+	}
+	if m.addspu_id != nil {
+		fields = append(fields, userfavor.FieldSpuID)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, userfavor.FieldStatus)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *UserFavorMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case userfavor.FieldUserID:
+		return m.AddedUserID()
+	case userfavor.FieldSpuID:
+		return m.AddedSpuID()
+	case userfavor.FieldStatus:
+		return m.AddedStatus()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *UserFavorMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case userfavor.FieldUserID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUserID(v)
+		return nil
+	case userfavor.FieldSpuID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSpuID(v)
+		return nil
+	case userfavor.FieldStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown UserFavor numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *UserFavorMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(userfavor.FieldDeleteTime) {
+		fields = append(fields, userfavor.FieldDeleteTime)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *UserFavorMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *UserFavorMutation) ClearField(name string) error {
+	switch name {
+	case userfavor.FieldDeleteTime:
+		m.ClearDeleteTime()
+		return nil
+	}
+	return fmt.Errorf("unknown UserFavor nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *UserFavorMutation) ResetField(name string) error {
+	switch name {
+	case userfavor.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case userfavor.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case userfavor.FieldDeleteTime:
+		m.ResetDeleteTime()
+		return nil
+	case userfavor.FieldUserID:
+		m.ResetUserID()
+		return nil
+	case userfavor.FieldSpuID:
+		m.ResetSpuID()
+		return nil
+	case userfavor.FieldStatus:
+		m.ResetStatus()
+		return nil
+	}
+	return fmt.Errorf("unknown UserFavor field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *UserFavorMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *UserFavorMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *UserFavorMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *UserFavorMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *UserFavorMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *UserFavorMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *UserFavorMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown UserFavor unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *UserFavorMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown UserFavor edge %s", name)
 }

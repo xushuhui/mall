@@ -235,22 +235,6 @@ func (s *AppService) GetUserCouponByStatus(ctx context.Context, in *service.Stat
 	panic("implement me")
 }
 
-func (s *AppService) GetSaleExplain(ctx context.Context, empty *emptypb.Empty) (out *service.SaleExplains, err error) {
-	panic("implement me")
-}
-
-func (s *AppService) GetSpuByCategory(ctx context.Context, in *service.IdRequest) (out *service.SpuPage, err error) {
-	panic("implement me")
-}
-
-func (s *AppService) GetSpuById(ctx context.Context, in *service.IdRequest) (out *service.SpuDetail, err error) {
-	panic("implement me")
-}
-
-func (s *AppService) GetSpuLatest(ctx context.Context, empty *emptypb.Empty) (out *service.SpuPage, err error) {
-	panic("implement me")
-}
-
 func (s *AppService) GetCouponByType(ctx context.Context, in *service.TypeRequest) (out *service.Coupons, err error) {
 	panic("implement me")
 }

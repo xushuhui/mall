@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt"
+	"github.com/medivhzhan/weapp/v2"
 	"mall-go/api/mall"
 )
 
@@ -12,8 +13,9 @@ type User struct {
 }
 
 type UserRepo interface {
-	CreateUser(ctx context.Context) (err error)
-	GetUserByAccount(ctx context.Context, account string)
+	GetOpenidByCode(ctx context.Context, code string) (resp *weapp.LoginResponse, err error)
+	GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
+	CreateUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
 }
 type UserUsecase struct {
 	repo   UserRepo
@@ -29,13 +31,25 @@ func NewUserUsecase(repo UserRepo, logger log.Logger) *UserUsecase {
 }
 
 func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out *mall.LoginReply, err error) {
-	// verify
+	resp, err := u.repo.GetOpenidByCode(ctx, code)
+	if err != nil {
+		return
+	}
+	user, err := u.repo.GetUserIdentiy(ctx, "weapp", resp.OpenID, "")
+	if err != nil {
+		return
+	}
+	//TODO notfound error
+	if user.Id == 0 {
+		user, err = u.repo.CreateUserIdentiy(ctx, "weapp", resp.OpenID, "")
+		if err != nil {
+			return
+		}
+	}
 
 	// generate token
-
-	var userId int64
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": userId,
+		"user_id": user.Id,
 	})
 	signedString, err := claims.SignedString([]byte(u.jwtKey))
 	if err != nil {

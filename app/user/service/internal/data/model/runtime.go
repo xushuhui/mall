@@ -4,9 +4,8 @@ package model
 
 import (
 	"mall-go/app/user/service/internal/data/ent/schema"
-	"mall-go/app/user/service/internal/data/model/user"
 	"mall-go/app/user/service/internal/data/model/usercoupon"
-	"mall-go/app/user/service/internal/data/model/userfavor"
+	"mall-go/app/user/service/internal/data/model/useridentiy"
 	"mall-go/app/user/service/internal/data/model/userinfo"
 	"mall-go/app/user/service/internal/data/model/userpoint"
 	"mall-go/app/user/service/internal/data/model/userpointdetail"
@@ -19,25 +18,6 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	userMixin := schema.User{}.Mixin()
-	userMixinFields0 := userMixin[0].Fields()
-	_ = userMixinFields0
-	userFields := schema.User{}.Fields()
-	_ = userFields
-	// userDescCreateTime is the schema descriptor for create_time field.
-	userDescCreateTime := userMixinFields0[0].Descriptor()
-	// user.DefaultCreateTime holds the default value on creation for the create_time field.
-	user.DefaultCreateTime = userDescCreateTime.Default.(func() time.Time)
-	// userDescUpdateTime is the schema descriptor for update_time field.
-	userDescUpdateTime := userMixinFields0[1].Descriptor()
-	// user.DefaultUpdateTime holds the default value on creation for the update_time field.
-	user.DefaultUpdateTime = userDescUpdateTime.Default.(func() time.Time)
-	// user.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
-	user.UpdateDefaultUpdateTime = userDescUpdateTime.UpdateDefault.(func() time.Time)
-	// userDescStatus is the schema descriptor for status field.
-	userDescStatus := userFields[4].Descriptor()
-	// user.DefaultStatus holds the default value on creation for the status field.
-	user.DefaultStatus = userDescStatus.Default.(int)
 	usercouponMixin := schema.UserCoupon{}.Mixin()
 	usercouponMixinFields0 := usercouponMixin[0].Fields()
 	_ = usercouponMixinFields0
@@ -57,25 +37,21 @@ func init() {
 	usercouponDescStatus := usercouponFields[2].Descriptor()
 	// usercoupon.DefaultStatus holds the default value on creation for the status field.
 	usercoupon.DefaultStatus = usercouponDescStatus.Default.(int)
-	userfavorMixin := schema.UserFavor{}.Mixin()
-	userfavorMixinFields0 := userfavorMixin[0].Fields()
-	_ = userfavorMixinFields0
-	userfavorFields := schema.UserFavor{}.Fields()
-	_ = userfavorFields
-	// userfavorDescCreateTime is the schema descriptor for create_time field.
-	userfavorDescCreateTime := userfavorMixinFields0[0].Descriptor()
-	// userfavor.DefaultCreateTime holds the default value on creation for the create_time field.
-	userfavor.DefaultCreateTime = userfavorDescCreateTime.Default.(func() time.Time)
-	// userfavorDescUpdateTime is the schema descriptor for update_time field.
-	userfavorDescUpdateTime := userfavorMixinFields0[1].Descriptor()
-	// userfavor.DefaultUpdateTime holds the default value on creation for the update_time field.
-	userfavor.DefaultUpdateTime = userfavorDescUpdateTime.Default.(func() time.Time)
-	// userfavor.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
-	userfavor.UpdateDefaultUpdateTime = userfavorDescUpdateTime.UpdateDefault.(func() time.Time)
-	// userfavorDescStatus is the schema descriptor for status field.
-	userfavorDescStatus := userfavorFields[2].Descriptor()
-	// userfavor.DefaultStatus holds the default value on creation for the status field.
-	userfavor.DefaultStatus = userfavorDescStatus.Default.(int)
+	useridentiyMixin := schema.UserIdentiy{}.Mixin()
+	useridentiyMixinFields0 := useridentiyMixin[0].Fields()
+	_ = useridentiyMixinFields0
+	useridentiyFields := schema.UserIdentiy{}.Fields()
+	_ = useridentiyFields
+	// useridentiyDescCreateTime is the schema descriptor for create_time field.
+	useridentiyDescCreateTime := useridentiyMixinFields0[0].Descriptor()
+	// useridentiy.DefaultCreateTime holds the default value on creation for the create_time field.
+	useridentiy.DefaultCreateTime = useridentiyDescCreateTime.Default.(func() time.Time)
+	// useridentiyDescUpdateTime is the schema descriptor for update_time field.
+	useridentiyDescUpdateTime := useridentiyMixinFields0[1].Descriptor()
+	// useridentiy.DefaultUpdateTime holds the default value on creation for the update_time field.
+	useridentiy.DefaultUpdateTime = useridentiyDescUpdateTime.Default.(func() time.Time)
+	// useridentiy.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	useridentiy.UpdateDefaultUpdateTime = useridentiyDescUpdateTime.UpdateDefault.(func() time.Time)
 	userinfoMixin := schema.UserInfo{}.Mixin()
 	userinfoMixinFields0 := userinfoMixin[0].Fields()
 	_ = userinfoMixinFields0

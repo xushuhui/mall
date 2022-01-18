@@ -12,12 +12,10 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
-	// User is the client for interacting with the User builders.
-	User *UserClient
 	// UserCoupon is the client for interacting with the UserCoupon builders.
 	UserCoupon *UserCouponClient
-	// UserFavor is the client for interacting with the UserFavor builders.
-	UserFavor *UserFavorClient
+	// UserIdentiy is the client for interacting with the UserIdentiy builders.
+	UserIdentiy *UserIdentiyClient
 	// UserInfo is the client for interacting with the UserInfo builders.
 	UserInfo *UserInfoClient
 	// UserPoint is the client for interacting with the UserPoint builders.
@@ -163,9 +161,8 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
-	tx.User = NewUserClient(tx.config)
 	tx.UserCoupon = NewUserCouponClient(tx.config)
-	tx.UserFavor = NewUserFavorClient(tx.config)
+	tx.UserIdentiy = NewUserIdentiyClient(tx.config)
 	tx.UserInfo = NewUserInfoClient(tx.config)
 	tx.UserPoint = NewUserPointClient(tx.config)
 	tx.UserPointDetail = NewUserPointDetailClient(tx.config)
@@ -180,7 +177,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: User.QueryXXX(), the query will be executed
+// applies a query, for example: UserCoupon.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

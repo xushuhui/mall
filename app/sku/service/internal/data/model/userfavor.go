@@ -4,7 +4,7 @@ package model
 
 import (
 	"fmt"
-	"mall-go/app/user/service/internal/data/model/userfavor"
+	"mall-go/app/sku/service/internal/data/model/userfavor"
 	"strings"
 	"time"
 

@@ -27,7 +27,9 @@ func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Regist
 	}
 	skuRepo := data.NewSkuRepo(dataData, logger)
 	skuUsecase := biz.NewSkuUsecase(skuRepo, logger)
-	skuService := service.NewSkuService(skuUsecase)
+	spuRepo := data.NewSpuRepo(dataData, logger)
+	spuUsecase := biz.NewSpuUsecase(spuRepo, logger)
+	skuService := service.NewSkuService(skuUsecase, spuUsecase)
 	httpServer := server.NewHTTPServer(confServer, skuService, logger)
 	grpcServer := server.NewGRPCServer(confServer, skuService, logger)
 	registrar := server.NewRegistrar(registry)

@@ -35,3 +35,6 @@ type SpuImg func(*sql.Selector)
 
 // Tag is the predicate function for tag builders.
 type Tag func(*sql.Selector)
+
+// UserFavor is the predicate function for userfavor builders.
+type UserFavor func(*sql.Selector)

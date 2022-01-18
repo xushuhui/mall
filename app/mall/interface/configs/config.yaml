@@ -16,3 +16,6 @@ data:
 auth:
   service_key: some-secret-key
   api_key: some-secret-key-for-forntend
+weapp:
+  appid: appid
+  secret: secret

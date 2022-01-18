@@ -19,6 +19,7 @@ import (
 	"mall-go/app/sku/service/internal/data/model/spudetailimg"
 	"mall-go/app/sku/service/internal/data/model/spuimg"
 	"mall-go/app/sku/service/internal/data/model/tag"
+	"mall-go/app/sku/service/internal/data/model/userfavor"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -50,6 +51,8 @@ type Client struct {
 	SpuImg *SpuImgClient
 	// Tag is the client for interacting with the Tag builders.
 	Tag *TagClient
+	// UserFavor is the client for interacting with the UserFavor builders.
+	UserFavor *UserFavorClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -73,6 +76,7 @@ func (c *Client) init() {
 	c.SpuDetailImg = NewSpuDetailImgClient(c.config)
 	c.SpuImg = NewSpuImgClient(c.config)
 	c.Tag = NewTagClient(c.config)
+	c.UserFavor = NewUserFavorClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -116,6 +120,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		SpuDetailImg: NewSpuDetailImgClient(cfg),
 		SpuImg:       NewSpuImgClient(cfg),
 		Tag:          NewTagClient(cfg),
+		UserFavor:    NewUserFavorClient(cfg),
 	}, nil
 }
 
@@ -144,6 +149,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		SpuDetailImg: NewSpuDetailImgClient(cfg),
 		SpuImg:       NewSpuImgClient(cfg),
 		Tag:          NewTagClient(cfg),
+		UserFavor:    NewUserFavorClient(cfg),
 	}, nil
 }
 
@@ -183,6 +189,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.SpuDetailImg.Use(hooks...)
 	c.SpuImg.Use(hooks...)
 	c.Tag.Use(hooks...)
+	c.UserFavor.Use(hooks...)
 }
 
 // BrandClient is a client for the Brand schema.
@@ -1259,4 +1266,94 @@ func (c *TagClient) QuerySpu(t *Tag) *SpuQuery {
 // Hooks returns the client hooks.
 func (c *TagClient) Hooks() []Hook {
 	return c.hooks.Tag
+}
+
+// UserFavorClient is a client for the UserFavor schema.
+type UserFavorClient struct {
+	config
+}
+
+// NewUserFavorClient returns a client for the UserFavor from the given config.
+func NewUserFavorClient(c config) *UserFavorClient {
+	return &UserFavorClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `userfavor.Hooks(f(g(h())))`.
+func (c *UserFavorClient) Use(hooks ...Hook) {
+	c.hooks.UserFavor = append(c.hooks.UserFavor, hooks...)
+}
+
+// Create returns a create builder for UserFavor.
+func (c *UserFavorClient) Create() *UserFavorCreate {
+	mutation := newUserFavorMutation(c.config, OpCreate)
+	return &UserFavorCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of UserFavor entities.
+func (c *UserFavorClient) CreateBulk(builders ...*UserFavorCreate) *UserFavorCreateBulk {
+	return &UserFavorCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for UserFavor.
+func (c *UserFavorClient) Update() *UserFavorUpdate {
+	mutation := newUserFavorMutation(c.config, OpUpdate)
+	return &UserFavorUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *UserFavorClient) UpdateOne(uf *UserFavor) *UserFavorUpdateOne {
+	mutation := newUserFavorMutation(c.config, OpUpdateOne, withUserFavor(uf))
+	return &UserFavorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *UserFavorClient) UpdateOneID(id int64) *UserFavorUpdateOne {
+	mutation := newUserFavorMutation(c.config, OpUpdateOne, withUserFavorID(id))
+	return &UserFavorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for UserFavor.
+func (c *UserFavorClient) Delete() *UserFavorDelete {
+	mutation := newUserFavorMutation(c.config, OpDelete)
+	return &UserFavorDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *UserFavorClient) DeleteOne(uf *UserFavor) *UserFavorDeleteOne {
+	return c.DeleteOneID(uf.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *UserFavorClient) DeleteOneID(id int64) *UserFavorDeleteOne {
+	builder := c.Delete().Where(userfavor.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &UserFavorDeleteOne{builder}
+}
+
+// Query returns a query builder for UserFavor.
+func (c *UserFavorClient) Query() *UserFavorQuery {
+	return &UserFavorQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a UserFavor entity by its id.
+func (c *UserFavorClient) Get(ctx context.Context, id int64) (*UserFavor, error) {
+	return c.Query().Where(userfavor.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *UserFavorClient) GetX(ctx context.Context, id int64) *UserFavor {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *UserFavorClient) Hooks() []Hook {
+	return c.hooks.UserFavor
 }

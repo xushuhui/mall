@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mall-go/app/user/service/internal/data/model/userfavor"
+	"mall-go/app/sku/service/internal/data/model/userfavor"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"

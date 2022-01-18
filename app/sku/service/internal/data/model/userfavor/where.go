@@ -3,7 +3,7 @@
 package userfavor
 
 import (
-	"mall-go/app/user/service/internal/data/model/predicate"
+	"mall-go/app/sku/service/internal/data/model/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"

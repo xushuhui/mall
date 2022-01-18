@@ -24,10 +24,8 @@ type UserInfo struct {
 	DeleteTime time.Time `json:"delete_time,omitempty"`
 	// Nickname holds the value of the "nickname" field.
 	Nickname string `json:"nickname,omitempty"`
-	// UnifyUID holds the value of the "unify_uid" field.
-	UnifyUID int `json:"unify_uid,omitempty"`
-	// Email holds the value of the "email" field.
-	Email string `json:"email,omitempty"`
+	// Phone holds the value of the "phone" field.
+	Phone string `json:"phone,omitempty"`
 	// Avatar holds the value of the "avatar" field.
 	Avatar string `json:"avatar,omitempty"`
 	// WxProfile holds the value of the "wx_profile" field.
@@ -39,9 +37,9 @@ func (*UserInfo) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case userinfo.FieldID, userinfo.FieldUnifyUID:
+		case userinfo.FieldID:
 			values[i] = new(sql.NullInt64)
-		case userinfo.FieldNickname, userinfo.FieldEmail, userinfo.FieldAvatar, userinfo.FieldWxProfile:
+		case userinfo.FieldNickname, userinfo.FieldPhone, userinfo.FieldAvatar, userinfo.FieldWxProfile:
 			values[i] = new(sql.NullString)
 		case userinfo.FieldCreateTime, userinfo.FieldUpdateTime, userinfo.FieldDeleteTime:
 			values[i] = new(sql.NullTime)
@@ -90,17 +88,11 @@ func (ui *UserInfo) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				ui.Nickname = value.String
 			}
-		case userinfo.FieldUnifyUID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field unify_uid", values[i])
-			} else if value.Valid {
-				ui.UnifyUID = int(value.Int64)
-			}
-		case userinfo.FieldEmail:
+		case userinfo.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field email", values[i])
+				return fmt.Errorf("unexpected type %T for field phone", values[i])
 			} else if value.Valid {
-				ui.Email = value.String
+				ui.Phone = value.String
 			}
 		case userinfo.FieldAvatar:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -150,10 +142,8 @@ func (ui *UserInfo) String() string {
 	builder.WriteString(ui.DeleteTime.Format(time.ANSIC))
 	builder.WriteString(", nickname=")
 	builder.WriteString(ui.Nickname)
-	builder.WriteString(", unify_uid=")
-	builder.WriteString(fmt.Sprintf("%v", ui.UnifyUID))
-	builder.WriteString(", email=")
-	builder.WriteString(ui.Email)
+	builder.WriteString(", phone=")
+	builder.WriteString(ui.Phone)
 	builder.WriteString(", avatar=")
 	builder.WriteString(ui.Avatar)
 	builder.WriteString(", wx_profile=")

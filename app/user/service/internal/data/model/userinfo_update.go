@@ -59,22 +59,9 @@ func (uiu *UserInfoUpdate) SetNickname(s string) *UserInfoUpdate {
 	return uiu
 }
 
-// SetUnifyUID sets the "unify_uid" field.
-func (uiu *UserInfoUpdate) SetUnifyUID(i int) *UserInfoUpdate {
-	uiu.mutation.ResetUnifyUID()
-	uiu.mutation.SetUnifyUID(i)
-	return uiu
-}
-
-// AddUnifyUID adds i to the "unify_uid" field.
-func (uiu *UserInfoUpdate) AddUnifyUID(i int) *UserInfoUpdate {
-	uiu.mutation.AddUnifyUID(i)
-	return uiu
-}
-
-// SetEmail sets the "email" field.
-func (uiu *UserInfoUpdate) SetEmail(s string) *UserInfoUpdate {
-	uiu.mutation.SetEmail(s)
+// SetPhone sets the "phone" field.
+func (uiu *UserInfoUpdate) SetPhone(s string) *UserInfoUpdate {
+	uiu.mutation.SetPhone(s)
 	return uiu
 }
 
@@ -203,25 +190,11 @@ func (uiu *UserInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: userinfo.FieldNickname,
 		})
 	}
-	if value, ok := uiu.mutation.UnifyUID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: userinfo.FieldUnifyUID,
-		})
-	}
-	if value, ok := uiu.mutation.AddedUnifyUID(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: userinfo.FieldUnifyUID,
-		})
-	}
-	if value, ok := uiu.mutation.Email(); ok {
+	if value, ok := uiu.mutation.Phone(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: userinfo.FieldEmail,
+			Column: userinfo.FieldPhone,
 		})
 	}
 	if value, ok := uiu.mutation.Avatar(); ok {
@@ -289,22 +262,9 @@ func (uiuo *UserInfoUpdateOne) SetNickname(s string) *UserInfoUpdateOne {
 	return uiuo
 }
 
-// SetUnifyUID sets the "unify_uid" field.
-func (uiuo *UserInfoUpdateOne) SetUnifyUID(i int) *UserInfoUpdateOne {
-	uiuo.mutation.ResetUnifyUID()
-	uiuo.mutation.SetUnifyUID(i)
-	return uiuo
-}
-
-// AddUnifyUID adds i to the "unify_uid" field.
-func (uiuo *UserInfoUpdateOne) AddUnifyUID(i int) *UserInfoUpdateOne {
-	uiuo.mutation.AddUnifyUID(i)
-	return uiuo
-}
-
-// SetEmail sets the "email" field.
-func (uiuo *UserInfoUpdateOne) SetEmail(s string) *UserInfoUpdateOne {
-	uiuo.mutation.SetEmail(s)
+// SetPhone sets the "phone" field.
+func (uiuo *UserInfoUpdateOne) SetPhone(s string) *UserInfoUpdateOne {
+	uiuo.mutation.SetPhone(s)
 	return uiuo
 }
 
@@ -457,25 +417,11 @@ func (uiuo *UserInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserInfo, er
 			Column: userinfo.FieldNickname,
 		})
 	}
-	if value, ok := uiuo.mutation.UnifyUID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: userinfo.FieldUnifyUID,
-		})
-	}
-	if value, ok := uiuo.mutation.AddedUnifyUID(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: userinfo.FieldUnifyUID,
-		})
-	}
-	if value, ok := uiuo.mutation.Email(); ok {
+	if value, ok := uiuo.mutation.Phone(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: userinfo.FieldEmail,
+			Column: userinfo.FieldPhone,
 		})
 	}
 	if value, ok := uiuo.mutation.Avatar(); ok {

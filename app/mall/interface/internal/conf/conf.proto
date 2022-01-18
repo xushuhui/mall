@@ -1,5 +1,5 @@
 syntax = "proto3";
-package kratos.api;
+package mall.interface.internal.conf;
 
 option go_package = "mall-go/app/mall/interface/internal/conf;conf";
 
@@ -9,6 +9,7 @@ message Bootstrap {
   Server server = 1;
   Data data = 2;
   Auth auth = 3;
+  Weapp weapp=4;
 }
 
 message Server {
@@ -43,6 +44,10 @@ message Data {
 message Auth {
   string service_key = 1;
   string api_key = 2;
+}
+message Weapp{
+  string appid=1;
+  string sercret=2;
 }
 message Registry {
   message Consul {
