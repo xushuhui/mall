@@ -39,7 +39,7 @@ type InterfaceClient interface {
 	GetSpuById(ctx context.Context, in *SpuByIdRequest, opts ...grpc.CallOption) (*SpuDetail, error)
 	GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error)
 	GetSpuByCategory(ctx context.Context, in *SpuByCategoryRequest, opts ...grpc.CallOption) (*SpuPage, error)
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
+	MiniappLogin(ctx context.Context, in *MiniappLoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
 	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenReply, error)
 	UpdateInfo(ctx context.Context, in *UpdateInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -229,9 +229,9 @@ func (c *interfaceClient) GetSpuByCategory(ctx context.Context, in *SpuByCategor
 	return out, nil
 }
 
-func (c *interfaceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
+func (c *interfaceClient) MiniappLogin(ctx context.Context, in *MiniappLoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
 	out := new(LoginReply)
-	err := c.cc.Invoke(ctx, "/mall.Interface/Login", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/mall.Interface/MiniappLogin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +334,7 @@ type InterfaceServer interface {
 	GetSpuById(context.Context, *SpuByIdRequest) (*SpuDetail, error)
 	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
 	GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error)
-	Login(context.Context, *LoginRequest) (*LoginReply, error)
+	MiniappLogin(context.Context, *MiniappLoginRequest) (*LoginReply, error)
 	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error)
 	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
 	Charge(context.Context, *ChargeRequest) (*emptypb.Empty, error)
@@ -407,8 +407,8 @@ func (UnimplementedInterfaceServer) GetSpuLatest(context.Context, *emptypb.Empty
 func (UnimplementedInterfaceServer) GetSpuByCategory(context.Context, *SpuByCategoryRequest) (*SpuPage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuByCategory not implemented")
 }
-func (UnimplementedInterfaceServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+func (UnimplementedInterfaceServer) MiniappLogin(context.Context, *MiniappLoginRequest) (*LoginReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MiniappLogin not implemented")
 }
 func (UnimplementedInterfaceServer) VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
@@ -789,20 +789,20 @@ func _Interface_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Interface_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
+func _Interface_MiniappLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MiniappLoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InterfaceServer).Login(ctx, in)
+		return srv.(InterfaceServer).MiniappLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mall.Interface/Login",
+		FullMethod: "/mall.Interface/MiniappLogin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InterfaceServer).Login(ctx, req.(*LoginRequest))
+		return srv.(InterfaceServer).MiniappLogin(ctx, req.(*MiniappLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1035,8 +1035,8 @@ var Interface_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Interface_GetSpuByCategory_Handler,
 		},
 		{
-			MethodName: "Login",
-			Handler:    _Interface_Login_Handler,
+			MethodName: "MiniappLogin",
+			Handler:    _Interface_MiniappLogin_Handler,
 		},
 		{
 			MethodName: "VerifyToken",

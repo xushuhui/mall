@@ -74,19 +74,19 @@ var (
 		Columns:    SkusColumns,
 		PrimaryKey: []*schema.Column{SkusColumns[0]},
 	}
-	// SkuSpecColumns holds the columns for the "sku_spec" table.
-	SkuSpecColumns = []*schema.Column{
+	// SkuSpecsColumns holds the columns for the "sku_specs" table.
+	SkuSpecsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "spu_id", Type: field.TypeInt64},
 		{Name: "sku_id", Type: field.TypeInt64},
 		{Name: "key_id", Type: field.TypeInt64},
 		{Name: "value_id", Type: field.TypeInt64},
 	}
-	// SkuSpecTable holds the schema information for the "sku_spec" table.
-	SkuSpecTable = &schema.Table{
-		Name:       "sku_spec",
-		Columns:    SkuSpecColumns,
-		PrimaryKey: []*schema.Column{SkuSpecColumns[0]},
+	// SkuSpecsTable holds the schema information for the "sku_specs" table.
+	SkuSpecsTable = &schema.Table{
+		Name:       "sku_specs",
+		Columns:    SkuSpecsColumns,
+		PrimaryKey: []*schema.Column{SkuSpecsColumns[0]},
 	}
 	// SpecKeysColumns holds the columns for the "spec_keys" table.
 	SpecKeysColumns = []*schema.Column{
@@ -276,7 +276,7 @@ var (
 		BrandsTable,
 		SaleExplainsTable,
 		SkusTable,
-		SkuSpecTable,
+		SkuSpecsTable,
 		SpecKeysTable,
 		SpecValuesTable,
 		SpusTable,
@@ -290,9 +290,6 @@ var (
 
 func init() {
 	SaleExplainsTable.ForeignKeys[0].RefTable = SpusTable
-	SkuSpecTable.Annotation = &entsql.Annotation{
-		Table: "sku_spec",
-	}
 	SpusTable.ForeignKeys[0].RefTable = BrandsTable
 	SpuDetailImgTable.ForeignKeys[0].RefTable = SpusTable
 	SpuDetailImgTable.Annotation = &entsql.Annotation{

@@ -247,3 +247,6 @@ func (s *MallInterface) GetGridCategory(ctx context.Context, in *emptypb.Empty) 
 func (s *MallInterface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
 	return
 }
+func (s *MallInterface) MiniappLogin(ctx context.Context, in *mall.MiniappLoginRequest) (out *mall.LoginReply, err error) {
+	return
+}

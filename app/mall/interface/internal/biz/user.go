@@ -28,8 +28,9 @@ func NewUserUsecase(repo UserRepo, logger log.Logger) *UserUsecase {
 	}
 }
 
-func (u *UserUsecase) Login(ctx context.Context, account string) (out *mall.LoginReply, err error) {
+func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out *mall.LoginReply, err error) {
 	// verify
+
 	// generate token
 
 	var userId int64

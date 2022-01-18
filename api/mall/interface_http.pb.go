@@ -42,7 +42,7 @@ type InterfaceHTTPServer interface {
 	GetThemeWithSpu(context.Context, *ThemeWithSpuRequest) (*ThemeSpu, error)
 	GetWholeCoupon(context.Context, *emptypb.Empty) (*Coupons, error)
 	ListAddress(context.Context, *CreateAddressRequest) (*emptypb.Empty, error)
-	Login(context.Context, *LoginRequest) (*LoginReply, error)
+	MiniappLogin(context.Context, *MiniappLoginRequest) (*LoginReply, error)
 	Search(context.Context, *SearchRequest) (*SpuPage, error)
 	SetDefaultAddr(context.Context, *SetDefaultAddrRequest) (*emptypb.Empty, error)
 	UpdateInfo(context.Context, *UpdateInfoRequest) (*emptypb.Empty, error)
@@ -70,7 +70,7 @@ func RegisterInterfaceHTTPServer(s *http.Server, srv InterfaceHTTPServer) {
 	r.GET("/spu/id/{id}/detail", _Interface_GetSpuById0_HTTP_Handler(srv))
 	r.GET("/spu/latest", _Interface_GetSpuLatest0_HTTP_Handler(srv))
 	r.GET("/spu/by/category/{id}", _Interface_GetSpuByCategory0_HTTP_Handler(srv))
-	r.POST("/login", _Interface_Login0_HTTP_Handler(srv))
+	r.POST("/login/miniapp", _Interface_MiniappLogin0_HTTP_Handler(srv))
 	r.POST("/verify", _Interface_VerifyToken0_HTTP_Handler(srv))
 	r.PUT("/info", _Interface_UpdateInfo0_HTTP_Handler(srv))
 	r.POST("/charge", _Interface_Charge0_HTTP_Handler(srv))
@@ -475,15 +475,15 @@ func _Interface_GetSpuByCategory0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx
 	}
 }
 
-func _Interface_Login0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
+func _Interface_MiniappLogin0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in LoginRequest
+		var in MiniappLoginRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/mall.Interface/Login")
+		http.SetOperation(ctx, "/mall.Interface/MiniappLogin")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.Login(ctx, req.(*LoginRequest))
+			return srv.MiniappLogin(ctx, req.(*MiniappLoginRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -679,7 +679,7 @@ type InterfaceHTTPClient interface {
 	GetThemeWithSpu(ctx context.Context, req *ThemeWithSpuRequest, opts ...http.CallOption) (rsp *ThemeSpu, err error)
 	GetWholeCoupon(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *Coupons, err error)
 	ListAddress(ctx context.Context, req *CreateAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
+	MiniappLogin(ctx context.Context, req *MiniappLoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
 	Search(ctx context.Context, req *SearchRequest, opts ...http.CallOption) (rsp *SpuPage, err error)
 	SetDefaultAddr(ctx context.Context, req *SetDefaultAddrRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	UpdateInfo(ctx context.Context, req *UpdateInfoRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
@@ -993,11 +993,11 @@ func (c *InterfaceHTTPClientImpl) ListAddress(ctx context.Context, in *CreateAdd
 	return &out, err
 }
 
-func (c *InterfaceHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginReply, error) {
+func (c *InterfaceHTTPClientImpl) MiniappLogin(ctx context.Context, in *MiniappLoginRequest, opts ...http.CallOption) (*LoginReply, error) {
 	var out LoginReply
-	pattern := "/login"
+	pattern := "/login/miniapp"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/mall.Interface/Login"))
+	opts = append(opts, http.Operation("/mall.Interface/MiniappLogin"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

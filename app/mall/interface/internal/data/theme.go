@@ -2,9 +2,9 @@ package data
 
 import (
 	"context"
-	"mall-go/api/app"
-	sku "mall-go/api/sku/service"
 
+	app "mall-go/api/app/service"
+	sku "mall-go/api/sku/service"
 	"mall-go/app/mall/interface/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"

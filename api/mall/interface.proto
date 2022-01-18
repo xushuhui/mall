@@ -111,9 +111,9 @@ service Interface {
       get : "/spu/by/category/{id}"
     };
   }
-  rpc Login(LoginRequest) returns (LoginReply) {
+  rpc MiniappLogin(MiniappLoginRequest) returns (LoginReply) {
     option (google.api.http) = {
-      post : "/login"
+      post : "/login/miniapp"
       body : "*"
     };
   }
@@ -437,6 +437,10 @@ message SaleExplains {
 message LoginRequest{
   string account=1;
   string password=2;
+}
+message MiniappLoginRequest{
+  string code=1;
+
 }
 message VerifyTokenRequest{
   string token = 1;

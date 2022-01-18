@@ -4,7 +4,7 @@ import (
 	"context"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
-	"mall-go/api/app"
+	app "mall-go/api/app/service"
 	"testing"
 
 	"github.com/go-kratos/kratos/v2/middleware/recovery"

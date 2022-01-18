@@ -3,10 +3,10 @@ package server
 import (
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
-	"mall-go/api/app"
+	"mall-go/api/app/service"
 
 	"mall-go/app/app/service/internal/conf"
-	"mall-go/app/app/service/internal/service"
+	internal "mall-go/app/app/service/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -14,7 +14,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, as *service.AppService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, as *internal.AppService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -33,6 +33,6 @@ func NewGRPCServer(c *conf.Server, as *service.AppService, logger log.Logger) *g
 	}
 	srv := grpc.NewServer(opts...)
 
-	app.RegisterAppServer(srv, as)
+	service.RegisterAppServer(srv, as)
 	return srv
 }

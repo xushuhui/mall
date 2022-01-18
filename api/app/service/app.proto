@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package app;
+package app.service;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 import "api/mall/common.proto";
 import "validate/validate.proto";
-option go_package = "mall-go/app";
+option go_package = "mall-go/api/app/service";
 
 service App {
 

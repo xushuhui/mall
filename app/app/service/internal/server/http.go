@@ -2,9 +2,9 @@ package server
 
 import (
 	"github.com/go-kratos/kratos/v2/middleware/validate"
-	"mall-go/api/app"
+	"mall-go/api/app/service"
 	"mall-go/app/app/service/internal/conf"
-	"mall-go/app/app/service/internal/service"
+	internal "mall-go/app/app/service/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
@@ -14,7 +14,7 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, as *service.AppService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, as *internal.AppService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -39,7 +39,7 @@ func NewHTTPServer(c *conf.Server, as *service.AppService, logger log.Logger) *h
 	}
 	srv := http.NewServer(opts...)
 
-	app.RegisterAppHTTPServer(srv, as)
+	service.RegisterAppHTTPServer(srv, as)
 
 	return srv
 }

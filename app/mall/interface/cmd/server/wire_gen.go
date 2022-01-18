@@ -34,9 +34,9 @@ func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Regist
 	activityUsecase := biz.NewActivityUsecase(activityRepo, logger)
 	categoryRepo := data.NewCategoryRepo(dataData, logger)
 	categoryUsecase := biz.NewCategoryUsecase(categoryRepo, logger)
-	serviceInterface := service.NewInterface(bannerUsecase, themeUsecase, activityUsecase, categoryUsecase, logger)
-	httpServer := server.NewHTTPServer(confServer, serviceInterface, logger)
-	grpcServer := server.NewGRPCServer(confServer, serviceInterface, logger)
+	mallInterface := service.NewInterface(bannerUsecase, themeUsecase, activityUsecase, categoryUsecase, logger)
+	httpServer := server.NewHTTPServer(confServer, mallInterface, logger)
+	grpcServer := server.NewGRPCServer(confServer, mallInterface, logger)
 	registrar := data.NewRegistrar(registry)
 	app := newApp(logger, httpServer, grpcServer, registrar)
 	return app, func() {

@@ -4,14 +4,15 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	"mall-go/api/app"
+	"mall-go/api/app/service"
+
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/pkg/utils"
 	"strings"
 )
 
 type AppService struct {
-	app.UnimplementedAppServer
+	service.UnimplementedAppServer
 	bu *biz.BannerUsecase
 	tu *biz.ThemeUsecase
 	au *biz.ActivityUsecase
@@ -32,15 +33,15 @@ func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.Activity
 	}
 }
 
-func (s *AppService) GetBannerById(ctx context.Context, in *app.IdRequest) (out *app.Banner, err error) {
+func (s *AppService) GetBannerById(ctx context.Context, in *service.IdRequest) (out *service.Banner, err error) {
 	rv, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
-	var items []*app.BannerItem
+	var items []*service.BannerItem
 	for _, v := range rv.Items {
 
-		item := &app.BannerItem{
+		item := &service.BannerItem{
 			Id:       v.ID,
 			Name:     v.Name,
 			Img:      v.Img,
@@ -50,7 +51,7 @@ func (s *AppService) GetBannerById(ctx context.Context, in *app.IdRequest) (out 
 		}
 		items = append(items, item)
 	}
-	return &app.Banner{
+	return &service.Banner{
 		Id:          rv.Id,
 		Name:        rv.Name,
 		Img:         rv.Img,
@@ -60,14 +61,14 @@ func (s *AppService) GetBannerById(ctx context.Context, in *app.IdRequest) (out 
 	}, nil
 
 }
-func (s *AppService) GetBannerByName(ctx context.Context, in *app.NameRequest) (out *app.Banner, err error) {
+func (s *AppService) GetBannerByName(ctx context.Context, in *service.NameRequest) (out *service.Banner, err error) {
 	rv, err := s.bu.GetBannerByName(ctx, in.Name)
 	if err != nil {
 		return nil, err
 	}
-	var items []*app.BannerItem
+	var items []*service.BannerItem
 	for _, v := range rv.Items {
-		items = append(items, &app.BannerItem{
+		items = append(items, &service.BannerItem{
 			Id:       v.ID,
 			Name:     v.Name,
 			Img:      v.Img,
@@ -76,7 +77,7 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *app.NameRequest) (
 			BannerId: v.BannerId,
 		})
 	}
-	return &app.Banner{
+	return &service.Banner{
 		Id:          rv.Id,
 		Name:        rv.Name,
 		Img:         rv.Img,
@@ -86,14 +87,14 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *app.NameRequest) (
 	}, nil
 
 }
-func (s *AppService) GetThemeByNames(ctx context.Context, in *app.ThemeByNamesRequest) (out *app.Themes, err error) {
+func (s *AppService) GetThemeByNames(ctx context.Context, in *service.ThemeByNamesRequest) (out *service.Themes, err error) {
 	rv, err := s.tu.GetThemeByNames(ctx, strings.Split(in.Names, `,`))
 	if err != nil {
 		return nil, err
 	}
-	var items []*app.Theme
+	var items []*service.Theme
 	for _, v := range rv {
-		items = append(items, &app.Theme{
+		items = append(items, &service.Theme{
 			Id:     v.Id,
 			Online: v.Online,
 			Name:   v.Name,
@@ -101,50 +102,19 @@ func (s *AppService) GetThemeByNames(ctx context.Context, in *app.ThemeByNamesRe
 		})
 	}
 
-	return &app.Themes{
+	return &service.Themes{
 		Theme: items,
 	}, nil
 }
 
-func (s *AppService) GetThemeWithSpu(ctx context.Context, in *app.NameRequest) (out *app.ThemeSpu, err error) {
-	rv, err := s.tu.GetThemeWithSpu(ctx, in.Name)
-	if err != nil {
-		return nil, err
-	}
-	var items []*app.Spu
-	for _, v := range rv.SpuList {
-		items = append(items, &app.Spu{
-			Id:       v.Id,
-			Title:    v.Title,
-			Subtitle: v.Subtitle,
-			Online:   v.Online,
-
-			Img:            v.Img,
-			ForThemeImg:    v.ForThemeImg,
-			RootCategoryId: v.RootCategoryId,
-			CategoryId:     v.CategoryId,
-		})
-	}
-	return &app.ThemeSpu{
-		Id:          rv.Id,
-		Title:       rv.Title,
-		Name:        rv.Name,
-		EntranceImg: rv.EntranceImg,
-		Online:      rv.Online,
-		TitleImg:    rv.TitleImg,
-		SpuList:     items,
-	}, nil
-
-}
-
-func (s *AppService) GetActivityByName(ctx context.Context, in *app.NameRequest) (out *app.Activity, err error) {
+func (s *AppService) GetActivityByName(ctx context.Context, in *service.NameRequest) (out *service.Activity, err error) {
 
 	rv, err := s.au.GetActivityByName(ctx, in.Name)
 	if err != nil {
 		return
 	}
 
-	return &app.Activity{
+	return &service.Activity{
 		Id:          rv.Id,
 		Title:       rv.Title,
 		EntranceImg: rv.EntranceImg,
@@ -155,16 +125,16 @@ func (s *AppService) GetActivityByName(ctx context.Context, in *app.NameRequest)
 	}, nil
 }
 
-func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *app.NameRequest) (out *app.ActivityCoupon, err error) {
+func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *service.NameRequest) (out *service.ActivityCoupon, err error) {
 	rv, err := s.au.GetActivityWithCoupon(ctx, in.Name)
 	if err != nil {
 		return
 	}
 
-	var coupons []*app.CouponBo
+	var coupons []*service.CouponBo
 	for _, v := range rv.Coupons {
 
-		coupons = append(coupons, &app.CouponBo{
+		coupons = append(coupons, &service.CouponBo{
 			Id:          v.Id,
 			Title:       v.Title,
 			StartTime:   v.StartTime.Unix(),
@@ -179,7 +149,7 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *app.NameRequ
 		})
 	}
 
-	out = &app.ActivityCoupon{
+	out = &service.ActivityCoupon{
 		Id:          rv.Activity.Id,
 		Title:       rv.Activity.Title,
 		EntranceImg: rv.Activity.EntranceImg,
@@ -192,16 +162,16 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *app.NameRequ
 	return
 
 }
-func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *app.Categories, err error) {
+func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *service.Categories, err error) {
 	rv, err := s.cu.ListCategory(ctx)
 	if err != nil {
 		return
 	}
 
-	var roots []*app.Category
-	var subs []*app.Category
+	var roots []*service.Category
+	var subs []*service.Category
 	for _, v := range rv.Roots {
-		roots = append(roots, &app.Category{
+		roots = append(roots, &service.Category{
 			Id:       v.Id,
 			Name:     v.Name,
 			IsRoot:   utils.Int2Bool(v.IsRoot),
@@ -212,7 +182,7 @@ func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *
 	}
 
 	for _, v := range rv.Subs {
-		subs = append(subs, &app.Category{
+		subs = append(subs, &service.Category{
 			Id:       v.Id,
 			Name:     v.Name,
 			IsRoot:   utils.Int2Bool(v.IsRoot),
@@ -221,20 +191,20 @@ func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *
 			Index:    int32(v.Index),
 		})
 	}
-	out = &app.Categories{
+	out = &service.Categories{
 		Roots: roots,
 		Subs:  subs,
 	}
 	return out, nil
 }
-func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (out *app.GridCategories, err error) {
+func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (out *service.GridCategories, err error) {
 	rv, err := s.cu.ListGridCategory(ctx)
 	if err != nil {
 		return
 	}
-	var category []*app.GridCategories_GridCategory
+	var category []*service.GridCategories_GridCategory
 	for _, v := range rv {
-		category = append(category, &app.GridCategories_GridCategory{
+		category = append(category, &service.GridCategories_GridCategory{
 			Id:             v.Id,
 			Name:           v.Name,
 			Title:          v.Title,
@@ -243,44 +213,44 @@ func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (o
 			RootCategoryId: int64(v.RootCategoryId),
 		})
 	}
-	out = &app.GridCategories{Category: category}
+	out = &service.GridCategories{Category: category}
 	return out, nil
 }
-func (s *AppService) GetTagByType(ctx context.Context, in *app.TypeRequest) (out *app.Tags, err error) {
+func (s *AppService) GetTagByType(ctx context.Context, in *service.TypeRequest) (out *service.Tags, err error) {
 	return
 }
-func (s *AppService) CreateUserCoupon(ctx context.Context, in *app.CreateUserCouponRequest) (out *emptypb.Empty, err error) {
+func (s *AppService) CreateUserCoupon(ctx context.Context, in *service.CreateUserCouponRequest) (out *emptypb.Empty, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetCouponByCategory(ctx context.Context, in *app.IdRequest) (out *app.Coupons, err error) {
+func (s *AppService) GetCouponByCategory(ctx context.Context, in *service.IdRequest) (out *service.Coupons, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetUserCouponByStatusWithCategory(ctx context.Context, in *app.StatusRequest) (out *app.Coupons, err error) {
+func (s *AppService) GetUserCouponByStatusWithCategory(ctx context.Context, in *service.StatusRequest) (out *service.Coupons, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetUserCouponByStatus(ctx context.Context, in *app.StatusRequest) (out *app.Coupons, err error) {
+func (s *AppService) GetUserCouponByStatus(ctx context.Context, in *service.StatusRequest) (out *service.Coupons, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetSaleExplain(ctx context.Context, empty *emptypb.Empty) (out *app.SaleExplains, err error) {
+func (s *AppService) GetSaleExplain(ctx context.Context, empty *emptypb.Empty) (out *service.SaleExplains, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetSpuByCategory(ctx context.Context, in *app.IdRequest) (out *app.SpuPage, err error) {
+func (s *AppService) GetSpuByCategory(ctx context.Context, in *service.IdRequest) (out *service.SpuPage, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetSpuById(ctx context.Context, in *app.IdRequest) (out *app.SpuDetail, err error) {
+func (s *AppService) GetSpuById(ctx context.Context, in *service.IdRequest) (out *service.SpuDetail, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetSpuLatest(ctx context.Context, empty *emptypb.Empty) (out *app.SpuPage, err error) {
+func (s *AppService) GetSpuLatest(ctx context.Context, empty *emptypb.Empty) (out *service.SpuPage, err error) {
 	panic("implement me")
 }
 
-func (s *AppService) GetCouponByType(ctx context.Context, in *app.TypeRequest) (out *app.Coupons, err error) {
+func (s *AppService) GetCouponByType(ctx context.Context, in *service.TypeRequest) (out *service.Coupons, err error) {
 	panic("implement me")
 }
