@@ -1,8 +1,10 @@
 package data
 
 import (
+	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"github.com/pkg/errors"
 	"mall-go/app/user/service/internal/conf"
 	"mall-go/app/user/service/internal/data/model"
 )
@@ -42,4 +44,26 @@ func NewData(entClient *model.Client, logger log.Logger) (*Data, func(), error) 
 		db:  entClient,
 		log: log.NewHelper(logger),
 	}, cleanup, nil
+}
+func WithTx(ctx context.Context, client *model.Client, fn func(tx *model.Tx) error) error {
+	tx, err := client.Tx(ctx)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if v := recover(); v != nil {
+			tx.Rollback()
+			panic(v)
+		}
+	}()
+	if err := fn(tx); err != nil {
+		if rerr := tx.Rollback(); rerr != nil {
+			err = errors.Wrapf(err, "rolling back transaction: %v", rerr)
+		}
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return errors.Wrapf(err, "committing transaction: %v", err)
+	}
+	return nil
 }

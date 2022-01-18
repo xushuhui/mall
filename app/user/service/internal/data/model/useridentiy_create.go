@@ -6,28 +6,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mall-go/app/user/service/internal/data/model/userinfo"
+	"mall-go/app/user/service/internal/data/model/useridentiy"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 )
 
-// UserInfoCreate is the builder for creating a UserInfo entity.
-type UserInfoCreate struct {
+// UserIdentiyCreate is the builder for creating a UserIdentiy entity.
+type UserIdentiyCreate struct {
 	config
-	mutation *UserInfoMutation
+	mutation *UserIdentiyMutation
 	hooks    []Hook
 }
 
 // SetCreateTime sets the "create_time" field.
-func (uic *UserInfoCreate) SetCreateTime(t time.Time) *UserInfoCreate {
+func (uic *UserIdentiyCreate) SetCreateTime(t time.Time) *UserIdentiyCreate {
 	uic.mutation.SetCreateTime(t)
 	return uic
 }
 
 // SetNillableCreateTime sets the "create_time" field if the given value is not nil.
-func (uic *UserInfoCreate) SetNillableCreateTime(t *time.Time) *UserInfoCreate {
+func (uic *UserIdentiyCreate) SetNillableCreateTime(t *time.Time) *UserIdentiyCreate {
 	if t != nil {
 		uic.SetCreateTime(*t)
 	}
@@ -35,13 +35,13 @@ func (uic *UserInfoCreate) SetNillableCreateTime(t *time.Time) *UserInfoCreate {
 }
 
 // SetUpdateTime sets the "update_time" field.
-func (uic *UserInfoCreate) SetUpdateTime(t time.Time) *UserInfoCreate {
+func (uic *UserIdentiyCreate) SetUpdateTime(t time.Time) *UserIdentiyCreate {
 	uic.mutation.SetUpdateTime(t)
 	return uic
 }
 
 // SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
-func (uic *UserInfoCreate) SetNillableUpdateTime(t *time.Time) *UserInfoCreate {
+func (uic *UserIdentiyCreate) SetNillableUpdateTime(t *time.Time) *UserIdentiyCreate {
 	if t != nil {
 		uic.SetUpdateTime(*t)
 	}
@@ -49,53 +49,53 @@ func (uic *UserInfoCreate) SetNillableUpdateTime(t *time.Time) *UserInfoCreate {
 }
 
 // SetDeleteTime sets the "delete_time" field.
-func (uic *UserInfoCreate) SetDeleteTime(t time.Time) *UserInfoCreate {
+func (uic *UserIdentiyCreate) SetDeleteTime(t time.Time) *UserIdentiyCreate {
 	uic.mutation.SetDeleteTime(t)
 	return uic
 }
 
 // SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
-func (uic *UserInfoCreate) SetNillableDeleteTime(t *time.Time) *UserInfoCreate {
+func (uic *UserIdentiyCreate) SetNillableDeleteTime(t *time.Time) *UserIdentiyCreate {
 	if t != nil {
 		uic.SetDeleteTime(*t)
 	}
 	return uic
 }
 
-// SetNickname sets the "nickname" field.
-func (uic *UserInfoCreate) SetNickname(s string) *UserInfoCreate {
-	uic.mutation.SetNickname(s)
+// SetUserID sets the "user_id" field.
+func (uic *UserIdentiyCreate) SetUserID(i int64) *UserIdentiyCreate {
+	uic.mutation.SetUserID(i)
 	return uic
 }
 
-// SetPhone sets the "phone" field.
-func (uic *UserInfoCreate) SetPhone(s string) *UserInfoCreate {
-	uic.mutation.SetPhone(s)
+// SetIdentityType sets the "identity_type" field.
+func (uic *UserIdentiyCreate) SetIdentityType(s string) *UserIdentiyCreate {
+	uic.mutation.SetIdentityType(s)
 	return uic
 }
 
-// SetAvatar sets the "avatar" field.
-func (uic *UserInfoCreate) SetAvatar(s string) *UserInfoCreate {
-	uic.mutation.SetAvatar(s)
+// SetIdentifier sets the "identifier" field.
+func (uic *UserIdentiyCreate) SetIdentifier(s string) *UserIdentiyCreate {
+	uic.mutation.SetIdentifier(s)
 	return uic
 }
 
-// SetWxProfile sets the "wx_profile" field.
-func (uic *UserInfoCreate) SetWxProfile(s string) *UserInfoCreate {
-	uic.mutation.SetWxProfile(s)
+// SetCredential sets the "credential" field.
+func (uic *UserIdentiyCreate) SetCredential(s string) *UserIdentiyCreate {
+	uic.mutation.SetCredential(s)
 	return uic
 }
 
-// Mutation returns the UserInfoMutation object of the builder.
-func (uic *UserInfoCreate) Mutation() *UserInfoMutation {
+// Mutation returns the UserIdentiyMutation object of the builder.
+func (uic *UserIdentiyCreate) Mutation() *UserIdentiyMutation {
 	return uic.mutation
 }
 
-// Save creates the UserInfo in the database.
-func (uic *UserInfoCreate) Save(ctx context.Context) (*UserInfo, error) {
+// Save creates the UserIdentiy in the database.
+func (uic *UserIdentiyCreate) Save(ctx context.Context) (*UserIdentiy, error) {
 	var (
 		err  error
-		node *UserInfo
+		node *UserIdentiy
 	)
 	uic.defaults()
 	if len(uic.hooks) == 0 {
@@ -105,7 +105,7 @@ func (uic *UserInfoCreate) Save(ctx context.Context) (*UserInfo, error) {
 		node, err = uic.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*UserInfoMutation)
+			mutation, ok := m.(*UserIdentiyMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -134,7 +134,7 @@ func (uic *UserInfoCreate) Save(ctx context.Context) (*UserInfo, error) {
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (uic *UserInfoCreate) SaveX(ctx context.Context) *UserInfo {
+func (uic *UserIdentiyCreate) SaveX(ctx context.Context) *UserIdentiy {
 	v, err := uic.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -143,54 +143,54 @@ func (uic *UserInfoCreate) SaveX(ctx context.Context) *UserInfo {
 }
 
 // Exec executes the query.
-func (uic *UserInfoCreate) Exec(ctx context.Context) error {
+func (uic *UserIdentiyCreate) Exec(ctx context.Context) error {
 	_, err := uic.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (uic *UserInfoCreate) ExecX(ctx context.Context) {
+func (uic *UserIdentiyCreate) ExecX(ctx context.Context) {
 	if err := uic.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (uic *UserInfoCreate) defaults() {
+func (uic *UserIdentiyCreate) defaults() {
 	if _, ok := uic.mutation.CreateTime(); !ok {
-		v := userinfo.DefaultCreateTime()
+		v := useridentiy.DefaultCreateTime()
 		uic.mutation.SetCreateTime(v)
 	}
 	if _, ok := uic.mutation.UpdateTime(); !ok {
-		v := userinfo.DefaultUpdateTime()
+		v := useridentiy.DefaultUpdateTime()
 		uic.mutation.SetUpdateTime(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (uic *UserInfoCreate) check() error {
+func (uic *UserIdentiyCreate) check() error {
 	if _, ok := uic.mutation.CreateTime(); !ok {
 		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
 	}
 	if _, ok := uic.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
 	}
-	if _, ok := uic.mutation.Nickname(); !ok {
-		return &ValidationError{Name: "nickname", err: errors.New(`model: missing required field "nickname"`)}
+	if _, ok := uic.mutation.UserID(); !ok {
+		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "user_id"`)}
 	}
-	if _, ok := uic.mutation.Phone(); !ok {
-		return &ValidationError{Name: "phone", err: errors.New(`model: missing required field "phone"`)}
+	if _, ok := uic.mutation.IdentityType(); !ok {
+		return &ValidationError{Name: "identity_type", err: errors.New(`model: missing required field "identity_type"`)}
 	}
-	if _, ok := uic.mutation.Avatar(); !ok {
-		return &ValidationError{Name: "avatar", err: errors.New(`model: missing required field "avatar"`)}
+	if _, ok := uic.mutation.Identifier(); !ok {
+		return &ValidationError{Name: "identifier", err: errors.New(`model: missing required field "identifier"`)}
 	}
-	if _, ok := uic.mutation.WxProfile(); !ok {
-		return &ValidationError{Name: "wx_profile", err: errors.New(`model: missing required field "wx_profile"`)}
+	if _, ok := uic.mutation.Credential(); !ok {
+		return &ValidationError{Name: "credential", err: errors.New(`model: missing required field "credential"`)}
 	}
 	return nil
 }
 
-func (uic *UserInfoCreate) sqlSave(ctx context.Context) (*UserInfo, error) {
+func (uic *UserIdentiyCreate) sqlSave(ctx context.Context) (*UserIdentiy, error) {
 	_node, _spec := uic.createSpec()
 	if err := sqlgraph.CreateNode(ctx, uic.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
@@ -203,14 +203,14 @@ func (uic *UserInfoCreate) sqlSave(ctx context.Context) (*UserInfo, error) {
 	return _node, nil
 }
 
-func (uic *UserInfoCreate) createSpec() (*UserInfo, *sqlgraph.CreateSpec) {
+func (uic *UserIdentiyCreate) createSpec() (*UserIdentiy, *sqlgraph.CreateSpec) {
 	var (
-		_node = &UserInfo{config: uic.config}
+		_node = &UserIdentiy{config: uic.config}
 		_spec = &sqlgraph.CreateSpec{
-			Table: userinfo.Table,
+			Table: useridentiy.Table,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeInt64,
-				Column: userinfo.FieldID,
+				Column: useridentiy.FieldID,
 			},
 		}
 	)
@@ -218,7 +218,7 @@ func (uic *UserInfoCreate) createSpec() (*UserInfo, *sqlgraph.CreateSpec) {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: userinfo.FieldCreateTime,
+			Column: useridentiy.FieldCreateTime,
 		})
 		_node.CreateTime = value
 	}
@@ -226,7 +226,7 @@ func (uic *UserInfoCreate) createSpec() (*UserInfo, *sqlgraph.CreateSpec) {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: userinfo.FieldUpdateTime,
+			Column: useridentiy.FieldUpdateTime,
 		})
 		_node.UpdateTime = value
 	}
@@ -234,62 +234,62 @@ func (uic *UserInfoCreate) createSpec() (*UserInfo, *sqlgraph.CreateSpec) {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: userinfo.FieldDeleteTime,
+			Column: useridentiy.FieldDeleteTime,
 		})
 		_node.DeleteTime = value
 	}
-	if value, ok := uic.mutation.Nickname(); ok {
+	if value, ok := uic.mutation.UserID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeInt64,
 			Value:  value,
-			Column: userinfo.FieldNickname,
+			Column: useridentiy.FieldUserID,
 		})
-		_node.Nickname = value
+		_node.UserID = value
 	}
-	if value, ok := uic.mutation.Phone(); ok {
+	if value, ok := uic.mutation.IdentityType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: userinfo.FieldPhone,
+			Column: useridentiy.FieldIdentityType,
 		})
-		_node.Phone = value
+		_node.IdentityType = value
 	}
-	if value, ok := uic.mutation.Avatar(); ok {
+	if value, ok := uic.mutation.Identifier(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: userinfo.FieldAvatar,
+			Column: useridentiy.FieldIdentifier,
 		})
-		_node.Avatar = value
+		_node.Identifier = value
 	}
-	if value, ok := uic.mutation.WxProfile(); ok {
+	if value, ok := uic.mutation.Credential(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: userinfo.FieldWxProfile,
+			Column: useridentiy.FieldCredential,
 		})
-		_node.WxProfile = value
+		_node.Credential = value
 	}
 	return _node, _spec
 }
 
-// UserInfoCreateBulk is the builder for creating many UserInfo entities in bulk.
-type UserInfoCreateBulk struct {
+// UserIdentiyCreateBulk is the builder for creating many UserIdentiy entities in bulk.
+type UserIdentiyCreateBulk struct {
 	config
-	builders []*UserInfoCreate
+	builders []*UserIdentiyCreate
 }
 
-// Save creates the UserInfo entities in the database.
-func (uicb *UserInfoCreateBulk) Save(ctx context.Context) ([]*UserInfo, error) {
+// Save creates the UserIdentiy entities in the database.
+func (uicb *UserIdentiyCreateBulk) Save(ctx context.Context) ([]*UserIdentiy, error) {
 	specs := make([]*sqlgraph.CreateSpec, len(uicb.builders))
-	nodes := make([]*UserInfo, len(uicb.builders))
+	nodes := make([]*UserIdentiy, len(uicb.builders))
 	mutators := make([]Mutator, len(uicb.builders))
 	for i := range uicb.builders {
 		func(i int, root context.Context) {
 			builder := uicb.builders[i]
 			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-				mutation, ok := m.(*UserInfoMutation)
+				mutation, ok := m.(*UserIdentiyMutation)
 				if !ok {
 					return nil, fmt.Errorf("unexpected mutation type %T", m)
 				}
@@ -336,7 +336,7 @@ func (uicb *UserInfoCreateBulk) Save(ctx context.Context) ([]*UserInfo, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (uicb *UserInfoCreateBulk) SaveX(ctx context.Context) []*UserInfo {
+func (uicb *UserIdentiyCreateBulk) SaveX(ctx context.Context) []*UserIdentiy {
 	v, err := uicb.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -345,13 +345,13 @@ func (uicb *UserInfoCreateBulk) SaveX(ctx context.Context) []*UserInfo {
 }
 
 // Exec executes the query.
-func (uicb *UserInfoCreateBulk) Exec(ctx context.Context) error {
+func (uicb *UserIdentiyCreateBulk) Exec(ctx context.Context) error {
 	_, err := uicb.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (uicb *UserInfoCreateBulk) ExecX(ctx context.Context) {
+func (uicb *UserIdentiyCreateBulk) ExecX(ctx context.Context) {
 	if err := uicb.Exec(ctx); err != nil {
 		panic(err)
 	}

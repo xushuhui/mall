@@ -18,7 +18,7 @@ func (UserIdentiy) Annotations() []schema.Annotation {
 }
 func (UserIdentiy) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("user_id").Comment("用户id"),
+		field.Int64("user_id").Comment("用户id"),
 		field.String("identity_type").Comment("phone,weapp"),
 		field.String("identifier").Comment(""),
 		field.String("credential").Comment(""),

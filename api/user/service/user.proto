@@ -8,13 +8,13 @@ option go_package = "mall-go/api/user/service";
 
 service User{
 
-  rpc CreateUser(CreateUserRequest) returns (google.protobuf.Empty) {
+  rpc CreateUser(CreateUserRequest) returns (UserVO) {
     option (google.api.http) = {
       post : "/user"
       body : "*"
     };
   }
-  rpc GetUser(IdRequest) returns (google.protobuf.Empty) {
+  rpc GetUser(IdRequest) returns (UserVO) {
     option (google.api.http) = {
       get : "/user/{id}"
 
@@ -51,8 +51,10 @@ message IdRequest{
   int64 id=1;
 }
 message CreateUserRequest{
-  string name =1;
-
+  string nickname =1;
+  string identifier =3;
+  string credential=2;
+  string identityType=4;
 }
 message UserVO{
   int64 id=1;

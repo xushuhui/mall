@@ -32,7 +32,7 @@ var (
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
-		{Name: "user_id", Type: field.TypeInt},
+		{Name: "user_id", Type: field.TypeInt64},
 		{Name: "identity_type", Type: field.TypeString},
 		{Name: "identifier", Type: field.TypeString},
 		{Name: "credential", Type: field.TypeString},

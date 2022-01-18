@@ -22,11 +22,14 @@ func NewUserService(uu *biz.UserUsecase) *UserService {
 func (s *UserService) CreateUser(ctx context.Context, req *service.CreateUserRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
-func (s *UserService) GetUser(ctx context.Context, req *service.IdRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
+func (s *UserService) GetUser(ctx context.Context, req *service.IdRequest) (*service.UserVO, error) {
+	return &service.UserVO{}, nil
 }
-func (s *UserService) GetUserIdentiy(context.Context, *service.UserIdentiyRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
+func (s *UserService) GetUserIdentiy(context.Context, *service.UserIdentiyRequest) (*service.UserVO, error) {
+	return &service.UserVO{}, nil
+}
+func (s *UserService) CreateUserIdentiy(context.Context, *service.UserIdentiyRequest) (*service.UserVO, error) {
+	return &service.UserVO{}, nil
 }
 func (s *UserService) ListUser(ctx context.Context, req *service.IdsRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil

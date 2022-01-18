@@ -839,8 +839,8 @@ type UserIdentiyMutation struct {
 	create_time   *time.Time
 	update_time   *time.Time
 	delete_time   *time.Time
-	user_id       *int
-	adduser_id    *int
+	user_id       *int64
+	adduser_id    *int64
 	identity_type *string
 	identifier    *string
 	credential    *string
@@ -1051,13 +1051,13 @@ func (m *UserIdentiyMutation) ResetDeleteTime() {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *UserIdentiyMutation) SetUserID(i int) {
+func (m *UserIdentiyMutation) SetUserID(i int64) {
 	m.user_id = &i
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *UserIdentiyMutation) UserID() (r int, exists bool) {
+func (m *UserIdentiyMutation) UserID() (r int64, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -1068,7 +1068,7 @@ func (m *UserIdentiyMutation) UserID() (r int, exists bool) {
 // OldUserID returns the old "user_id" field's value of the UserIdentiy entity.
 // If the UserIdentiy object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserIdentiyMutation) OldUserID(ctx context.Context) (v int, err error) {
+func (m *UserIdentiyMutation) OldUserID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -1083,7 +1083,7 @@ func (m *UserIdentiyMutation) OldUserID(ctx context.Context) (v int, err error) 
 }
 
 // AddUserID adds i to the "user_id" field.
-func (m *UserIdentiyMutation) AddUserID(i int) {
+func (m *UserIdentiyMutation) AddUserID(i int64) {
 	if m.adduser_id != nil {
 		*m.adduser_id += i
 	} else {
@@ -1092,7 +1092,7 @@ func (m *UserIdentiyMutation) AddUserID(i int) {
 }
 
 // AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *UserIdentiyMutation) AddedUserID() (r int, exists bool) {
+func (m *UserIdentiyMutation) AddedUserID() (r int64, exists bool) {
 	v := m.adduser_id
 	if v == nil {
 		return
@@ -1331,7 +1331,7 @@ func (m *UserIdentiyMutation) SetField(name string, value ent.Value) error {
 		m.SetDeleteTime(v)
 		return nil
 	case useridentiy.FieldUserID:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1389,7 +1389,7 @@ func (m *UserIdentiyMutation) AddedField(name string) (ent.Value, bool) {
 func (m *UserIdentiyMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case useridentiy.FieldUserID:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1591,12 +1591,6 @@ func (m UserInfoMutation) Tx() (*Tx, error) {
 	tx := &Tx{config: m.config}
 	tx.init()
 	return tx, nil
-}
-
-// SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of UserInfo entities.
-func (m *UserInfoMutation) SetID(id int64) {
-	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID is only available

@@ -18,7 +18,6 @@ func (UserInfo) Annotations() []schema.Annotation {
 }
 func (UserInfo) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("id").Unique().Immutable().Comment(""),
 		field.String("nickname").Comment(""),
 		field.String("phone").Comment(""),
 		field.String("avatar").Comment(""),

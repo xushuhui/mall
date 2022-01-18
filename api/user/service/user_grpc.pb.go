@@ -19,8 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*UserVO, error)
+	GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserVO, error)
 	GetUserIdentiy(ctx context.Context, in *UserIdentiyRequest, opts ...grpc.CallOption) (*UserVO, error)
 	CreateUserIdentiy(ctx context.Context, in *UserIdentiyRequest, opts ...grpc.CallOption) (*UserVO, error)
 	ListUser(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -34,8 +34,8 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *userClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*UserVO, error) {
+	out := new(UserVO)
 	err := c.cc.Invoke(ctx, "/user.service.User/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -43,8 +43,8 @@ func (c *userClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts
 	return out, nil
 }
 
-func (c *userClient) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *userClient) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserVO, error) {
+	out := new(UserVO)
 	err := c.cc.Invoke(ctx, "/user.service.User/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,8 +83,8 @@ func (c *userClient) ListUser(ctx context.Context, in *IdsRequest, opts ...grpc.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	CreateUser(context.Context, *CreateUserRequest) (*emptypb.Empty, error)
-	GetUser(context.Context, *IdRequest) (*emptypb.Empty, error)
+	CreateUser(context.Context, *CreateUserRequest) (*UserVO, error)
+	GetUser(context.Context, *IdRequest) (*UserVO, error)
 	GetUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error)
 	CreateUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error)
 	ListUser(context.Context, *IdsRequest) (*emptypb.Empty, error)
@@ -95,10 +95,10 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) CreateUser(context.Context, *CreateUserRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserServer) CreateUser(context.Context, *CreateUserRequest) (*UserVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedUserServer) GetUser(context.Context, *IdRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserServer) GetUser(context.Context, *IdRequest) (*UserVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (UnimplementedUserServer) GetUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error) {

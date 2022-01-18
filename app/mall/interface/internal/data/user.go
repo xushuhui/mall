@@ -49,3 +49,13 @@ func (r *userRepo) CreateUserIdentiy(ctx context.Context, identityType, identifi
 		Id: po.Id,
 	}, nil
 }
+func (r *userRepo) CreateUser(ctx context.Context, in *user.CreateUserRequest) (u biz.User, err error) {
+	po, err := r.data.uc.CreateUser(ctx, in)
+	if err != nil {
+		return
+	}
+
+	return biz.User{
+		Id: po.Id,
+	}, nil
+}

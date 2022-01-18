@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	"mall-go/api/user/service"
 )
 
 type User struct {
@@ -10,9 +11,10 @@ type User struct {
 }
 
 type UserRepo interface {
-	CreateUser(ctx context.Context) (err error)
-	GetUserByAccount(ctx context.Context, account string)
-	GetUserIdentiy(ctx context.Context, identifier, credential, identityType string) (User, error)
+	CreateUser(ctx context.Context, in *service.CreateUserRequest) (userId int64, err error)
+
+	GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
+	CreateUserIdentiy(ctx context.Context, userId int64, identityType, identifier, credential string) (err error)
 }
 type UserUsecase struct {
 	repo   UserRepo

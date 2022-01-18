@@ -19,9 +19,9 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
-	CreateUser(context.Context, *CreateUserRequest) (*emptypb.Empty, error)
+	CreateUser(context.Context, *CreateUserRequest) (*UserVO, error)
 	CreateUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error)
-	GetUser(context.Context, *IdRequest) (*emptypb.Empty, error)
+	GetUser(context.Context, *IdRequest) (*UserVO, error)
 	GetUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error)
 	ListUser(context.Context, *IdsRequest) (*emptypb.Empty, error)
 }
@@ -49,7 +49,7 @@ func _User_CreateUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) e
 		if err != nil {
 			return err
 		}
-		reply := out.(*emptypb.Empty)
+		reply := out.(*UserVO)
 		return ctx.Result(200, reply)
 	}
 }
@@ -71,7 +71,7 @@ func _User_GetUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) erro
 		if err != nil {
 			return err
 		}
-		reply := out.(*emptypb.Empty)
+		reply := out.(*UserVO)
 		return ctx.Result(200, reply)
 	}
 }
@@ -134,9 +134,9 @@ func _User_ListUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) err
 }
 
 type UserHTTPClient interface {
-	CreateUser(ctx context.Context, req *CreateUserRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	CreateUser(ctx context.Context, req *CreateUserRequest, opts ...http.CallOption) (rsp *UserVO, err error)
 	CreateUserIdentiy(ctx context.Context, req *UserIdentiyRequest, opts ...http.CallOption) (rsp *UserVO, err error)
-	GetUser(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	GetUser(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *UserVO, err error)
 	GetUserIdentiy(ctx context.Context, req *UserIdentiyRequest, opts ...http.CallOption) (rsp *UserVO, err error)
 	ListUser(ctx context.Context, req *IdsRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 }
@@ -149,8 +149,8 @@ func NewUserHTTPClient(client *http.Client) UserHTTPClient {
 	return &UserHTTPClientImpl{client}
 }
 
-func (c *UserHTTPClientImpl) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
+func (c *UserHTTPClientImpl) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...http.CallOption) (*UserVO, error) {
+	var out UserVO
 	pattern := "/user"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/user.service.User/CreateUser"))
@@ -175,8 +175,8 @@ func (c *UserHTTPClientImpl) CreateUserIdentiy(ctx context.Context, in *UserIden
 	return &out, err
 }
 
-func (c *UserHTTPClientImpl) GetUser(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
+func (c *UserHTTPClientImpl) GetUser(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*UserVO, error) {
+	var out UserVO
 	pattern := "/user/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/user.service.User/GetUser"))

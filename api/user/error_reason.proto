@@ -1,8 +1,8 @@
 syntax = "proto3";
-package mall;
+package user;
 import "errors/errors.proto";
 
-option go_package = "mall-go/api/mall";
+option go_package = "mall-go/api/user";
 
 enum ErrorReason {
   option (errors.default_code) = 400;
@@ -12,8 +12,5 @@ enum ErrorReason {
   Unauthorized = 3 [ (errors.code) = 401 ];
   Forbidden = 4 [ (errors.code) = 403 ];
   InternalServer = 5 [ (errors.code) = 500 ];
-  
 
-  LoginFail = 10001;
-  Token=10002;         
 }

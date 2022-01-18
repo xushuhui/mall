@@ -6,6 +6,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/medivhzhan/weapp/v2"
 	"mall-go/api/mall"
+	"mall-go/api/user/service"
 )
 
 type User struct {
@@ -13,6 +14,7 @@ type User struct {
 }
 
 type UserRepo interface {
+	CreateUser(ctx context.Context, in *service.CreateUserRequest) (u User, err error)
 	GetOpenidByCode(ctx context.Context, code string) (resp *weapp.LoginResponse, err error)
 	GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
 	CreateUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
@@ -37,16 +39,15 @@ func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out *mall.L
 	}
 	user, err := u.repo.GetUserIdentiy(ctx, "weapp", resp.OpenID, "")
 	if err != nil {
-		return
+		return nil, mall.ErrorLoginfail("GetUserIdentiy failed: %s", err.Error())
 	}
 	//TODO notfound error
 	if user.Id == 0 {
-		user, err = u.repo.CreateUserIdentiy(ctx, "weapp", resp.OpenID, "")
+		user, err = u.repo.CreateUser(ctx, &service.CreateUserRequest{Nickname: "小程序用户", IdentityType: "weapp", Identifier: resp.OpenID})
 		if err != nil {
-			return
+			return nil, mall.ErrorLoginfail("CreateUserIdentiy failed: %s", err.Error())
 		}
 	}
-
 	// generate token
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": user.Id,
