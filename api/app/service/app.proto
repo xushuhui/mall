@@ -4,8 +4,8 @@ package app.service;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-    import "google/protobuf/timestamp.proto";
-import "api/mall/common.proto";
+import "google/protobuf/timestamp.proto";
+
 import "validate/validate.proto";
 option go_package = "mall-go/api/app/service";
 

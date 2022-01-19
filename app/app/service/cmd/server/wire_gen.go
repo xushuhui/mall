@@ -16,6 +16,10 @@ import (
 	"mall-go/app/app/service/internal/service"
 )
 
+import (
+	_ "github.com/go-kratos/kratos/v2/encoding"
+)
+
 // Injectors from wire.go:
 
 // initApp init kratos application.

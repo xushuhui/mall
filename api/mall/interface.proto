@@ -5,7 +5,7 @@ package mall;
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
-import "api/mall/common.proto";
+
 
 option go_package = "mall-go/api/mall";
 
@@ -165,6 +165,16 @@ service Interface {
 
     };
   }
+}
+message PageReply {
+  int32 total = 1;
+  int32 page = 3;
+  int32 count = 4;
+}
+message PageRequest {
+
+  int32 page = 3;
+  int32 count = 4;
 }
 message Banner {
   int64 id = 1;
