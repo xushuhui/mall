@@ -18,26 +18,26 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-type SkuHTTPServer interface {
+type SpuHTTPServer interface {
 	GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error)
 	GetSkuById(context.Context, *IdRequest) (*SkuVO, error)
 	GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error)
 	GetSpuById(context.Context, *IdRequest) (*SpuDetail, error)
-	GetSpuByTheme(context.Context, *IdRequest) (*SpuByThemeReply, error)
 	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
+	ListSpuByIds(context.Context, *IdsRequest) (*Spus, error)
 }
 
-func RegisterSkuHTTPServer(s *http.Server, srv SkuHTTPServer) {
+func RegisterSpuHTTPServer(s *http.Server, srv SpuHTTPServer) {
 	r := s.Route("/")
-	r.GET("/sku/id/{id}", _Sku_GetSkuById0_HTTP_Handler(srv))
-	r.GET("/sku/by/theme/{id}", _Sku_GetSpuByTheme0_HTTP_Handler(srv))
-	r.GET("/sale_explain", _Sku_GetSaleExplain0_HTTP_Handler(srv))
-	r.GET("/spu/{id}", _Sku_GetSpuById0_HTTP_Handler(srv))
-	r.GET("/spu/latest", _Sku_GetSpuLatest0_HTTP_Handler(srv))
-	r.GET("/spu/category/{id}", _Sku_GetSpuByCategory0_HTTP_Handler(srv))
+	r.GET("/sku/id/{id}", _Spu_GetSkuById0_HTTP_Handler(srv))
+	r.GET("/spu/list", _Spu_ListSpuByIds0_HTTP_Handler(srv))
+	r.GET("/sale_explain", _Spu_GetSaleExplain0_HTTP_Handler(srv))
+	r.GET("/spu/{id}", _Spu_GetSpuById0_HTTP_Handler(srv))
+	r.GET("/spu/latest", _Spu_GetSpuLatest0_HTTP_Handler(srv))
+	r.GET("/spu/category/{id}", _Spu_GetSpuByCategory0_HTTP_Handler(srv))
 }
 
-func _Sku_GetSkuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
+func _Spu_GetSkuById0_HTTP_Handler(srv SpuHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -46,7 +46,7 @@ func _Sku_GetSkuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) err
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/sku.service.Sku/GetSkuById")
+		http.SetOperation(ctx, "/sku.service.Spu/GetSkuById")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetSkuById(ctx, req.(*IdRequest))
 		})
@@ -59,35 +59,32 @@ func _Sku_GetSkuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) err
 	}
 }
 
-func _Sku_GetSpuByTheme0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
+func _Spu_ListSpuByIds0_HTTP_Handler(srv SpuHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in IdRequest
+		var in IdsRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		if err := ctx.BindVars(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/sku.service.Sku/GetSpuByTheme")
+		http.SetOperation(ctx, "/sku.service.Spu/ListSpuByIds")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetSpuByTheme(ctx, req.(*IdRequest))
+			return srv.ListSpuByIds(ctx, req.(*IdsRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*SpuByThemeReply)
+		reply := out.(*Spus)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Sku_GetSaleExplain0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
+func _Spu_GetSaleExplain0_HTTP_Handler(srv SpuHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/sku.service.Sku/GetSaleExplain")
+		http.SetOperation(ctx, "/sku.service.Spu/GetSaleExplain")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetSaleExplain(ctx, req.(*emptypb.Empty))
 		})
@@ -100,7 +97,7 @@ func _Sku_GetSaleExplain0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context)
 	}
 }
 
-func _Sku_GetSpuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
+func _Spu_GetSpuById0_HTTP_Handler(srv SpuHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -109,7 +106,7 @@ func _Sku_GetSpuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) err
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/sku.service.Sku/GetSpuById")
+		http.SetOperation(ctx, "/sku.service.Spu/GetSpuById")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetSpuById(ctx, req.(*IdRequest))
 		})
@@ -122,13 +119,13 @@ func _Sku_GetSpuById0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) err
 	}
 }
 
-func _Sku_GetSpuLatest0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
+func _Spu_GetSpuLatest0_HTTP_Handler(srv SpuHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in emptypb.Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/sku.service.Sku/GetSpuLatest")
+		http.SetOperation(ctx, "/sku.service.Spu/GetSpuLatest")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetSpuLatest(ctx, req.(*emptypb.Empty))
 		})
@@ -141,7 +138,7 @@ func _Sku_GetSpuLatest0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) e
 	}
 }
 
-func _Sku_GetSpuByCategory0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Context) error {
+func _Spu_GetSpuByCategory0_HTTP_Handler(srv SpuHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -150,7 +147,7 @@ func _Sku_GetSpuByCategory0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Contex
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/sku.service.Sku/GetSpuByCategory")
+		http.SetOperation(ctx, "/sku.service.Spu/GetSpuByCategory")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetSpuByCategory(ctx, req.(*IdRequest))
 		})
@@ -163,28 +160,28 @@ func _Sku_GetSpuByCategory0_HTTP_Handler(srv SkuHTTPServer) func(ctx http.Contex
 	}
 }
 
-type SkuHTTPClient interface {
+type SpuHTTPClient interface {
 	GetSaleExplain(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *SaleExplains, err error)
 	GetSkuById(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SkuVO, err error)
 	GetSpuByCategory(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SpuPage, err error)
 	GetSpuById(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SpuDetail, err error)
-	GetSpuByTheme(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *SpuByThemeReply, err error)
 	GetSpuLatest(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *SpuPage, err error)
+	ListSpuByIds(ctx context.Context, req *IdsRequest, opts ...http.CallOption) (rsp *Spus, err error)
 }
 
-type SkuHTTPClientImpl struct {
+type SpuHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewSkuHTTPClient(client *http.Client) SkuHTTPClient {
-	return &SkuHTTPClientImpl{client}
+func NewSpuHTTPClient(client *http.Client) SpuHTTPClient {
+	return &SpuHTTPClientImpl{client}
 }
 
-func (c *SkuHTTPClientImpl) GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*SaleExplains, error) {
+func (c *SpuHTTPClientImpl) GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*SaleExplains, error) {
 	var out SaleExplains
 	pattern := "/sale_explain"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/sku.service.Sku/GetSaleExplain"))
+	opts = append(opts, http.Operation("/sku.service.Spu/GetSaleExplain"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -193,11 +190,11 @@ func (c *SkuHTTPClientImpl) GetSaleExplain(ctx context.Context, in *emptypb.Empt
 	return &out, err
 }
 
-func (c *SkuHTTPClientImpl) GetSkuById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SkuVO, error) {
+func (c *SpuHTTPClientImpl) GetSkuById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SkuVO, error) {
 	var out SkuVO
 	pattern := "/sku/id/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/sku.service.Sku/GetSkuById"))
+	opts = append(opts, http.Operation("/sku.service.Spu/GetSkuById"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -206,11 +203,11 @@ func (c *SkuHTTPClientImpl) GetSkuById(ctx context.Context, in *IdRequest, opts 
 	return &out, err
 }
 
-func (c *SkuHTTPClientImpl) GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuPage, error) {
+func (c *SpuHTTPClientImpl) GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuPage, error) {
 	var out SpuPage
 	pattern := "/spu/category/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/sku.service.Sku/GetSpuByCategory"))
+	opts = append(opts, http.Operation("/sku.service.Spu/GetSpuByCategory"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -219,11 +216,11 @@ func (c *SkuHTTPClientImpl) GetSpuByCategory(ctx context.Context, in *IdRequest,
 	return &out, err
 }
 
-func (c *SkuHTTPClientImpl) GetSpuById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuDetail, error) {
+func (c *SpuHTTPClientImpl) GetSpuById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuDetail, error) {
 	var out SpuDetail
 	pattern := "/spu/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/sku.service.Sku/GetSpuById"))
+	opts = append(opts, http.Operation("/sku.service.Spu/GetSpuById"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -232,24 +229,24 @@ func (c *SkuHTTPClientImpl) GetSpuById(ctx context.Context, in *IdRequest, opts 
 	return &out, err
 }
 
-func (c *SkuHTTPClientImpl) GetSpuByTheme(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*SpuByThemeReply, error) {
-	var out SpuByThemeReply
-	pattern := "/sku/by/theme/{id}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/sku.service.Sku/GetSpuByTheme"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *SkuHTTPClientImpl) GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*SpuPage, error) {
+func (c *SpuHTTPClientImpl) GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*SpuPage, error) {
 	var out SpuPage
 	pattern := "/spu/latest"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/sku.service.Sku/GetSpuLatest"))
+	opts = append(opts, http.Operation("/sku.service.Spu/GetSpuLatest"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *SpuHTTPClientImpl) ListSpuByIds(ctx context.Context, in *IdsRequest, opts ...http.CallOption) (*Spus, error) {
+	var out Spus
+	pattern := "/spu/list"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/sku.service.Spu/ListSpuByIds"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

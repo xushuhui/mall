@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"mall-go/api/app/service"
-
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/pkg/utils"
 	"strings"
@@ -87,6 +87,21 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *service.NameReques
 	}, nil
 
 }
+
+func (s *AppService) GetThemeByName(ctx context.Context, in *service.NameRequest) (out *service.ThemeSpu, err error) {
+	rv, err := s.tu.GetThemeByName(ctx, in.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	return &service.ThemeSpu{
+		Id:     rv.Id,
+		Online: rv.Online,
+		Name:   rv.Name,
+		Title:  rv.Title,
+		SpuIds: rv.SpuIds,
+	}, nil
+}
 func (s *AppService) GetThemeByNames(ctx context.Context, in *service.ThemeByNamesRequest) (out *service.Themes, err error) {
 	rv, err := s.tu.GetThemeByNames(ctx, strings.Split(in.Names, `,`))
 	if err != nil {
@@ -120,8 +135,8 @@ func (s *AppService) GetActivityByName(ctx context.Context, in *service.NameRequ
 		EntranceImg: rv.EntranceImg,
 		Online:      int32(rv.Online),
 		Remark:      rv.Remark,
-		StartTime:   rv.StartTime.Unix(),
-		EndTime:     rv.EndTime.Unix(),
+		StartTime:   timestamppb.New(rv.StartTime),
+		EndTime:     timestamppb.New(rv.EndTime),
 	}, nil
 }
 
@@ -137,15 +152,15 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *service.Name
 		coupons = append(coupons, &service.CouponBo{
 			Id:          v.Id,
 			Title:       v.Title,
-			StartTime:   v.StartTime.Unix(),
-			EndTime:     v.EndTime.Unix(),
+			StartTime:   timestamppb.New(v.StartTime),
+			EndTime:     timestamppb.New(v.EndTime),
 			Description: rv.Description,
 			FullMoney:   v.FullMoney,
 			Minus:       v.Minus,
 			Rate:        v.Rate,
 			Type:        int32(v.Type),
 			Remark:      v.Remark,
-			WholeStore:  true,
+			WholeStore:  int32(v.WholeStore),
 		})
 	}
 
@@ -155,8 +170,8 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *service.Name
 		EntranceImg: rv.Activity.EntranceImg,
 		Online:      int32(rv.Activity.Online),
 		Remark:      rv.Activity.Remark,
-		StartTime:   rv.Activity.StartTime.Unix(),
-		EndTime:     rv.Activity.EndTime.Unix(),
+		StartTime:   timestamppb.New(rv.StartTime),
+		EndTime:     timestamppb.New(rv.EndTime),
 		Coupon:      coupons,
 	}
 	return

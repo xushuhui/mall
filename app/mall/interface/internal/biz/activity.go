@@ -3,14 +3,15 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	"time"
 )
 
 type Activity struct {
 	Id          int64
 	Title       string
 	EntranceImg string
-	StartTime   int64
-	EndTime     int64
+	StartTime   time.Time
+	EndTime     time.Time
 	Remark      string
 	Online      int32
 }

@@ -19,266 +19,266 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// SkuClient is the client API for Sku service.
+// SpuClient is the client API for Spu service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SkuClient interface {
+type SpuClient interface {
 	GetSkuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SkuVO, error)
-	GetSpuByTheme(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuByThemeReply, error)
+	ListSpuByIds(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*Spus, error)
 	GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error)
 	GetSpuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuDetail, error)
 	GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error)
 	GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuPage, error)
 }
 
-type skuClient struct {
+type spuClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSkuClient(cc grpc.ClientConnInterface) SkuClient {
-	return &skuClient{cc}
+func NewSpuClient(cc grpc.ClientConnInterface) SpuClient {
+	return &spuClient{cc}
 }
 
-func (c *skuClient) GetSkuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SkuVO, error) {
+func (c *spuClient) GetSkuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SkuVO, error) {
 	out := new(SkuVO)
-	err := c.cc.Invoke(ctx, "/sku.service.Sku/GetSkuById", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/sku.service.Spu/GetSkuById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *skuClient) GetSpuByTheme(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuByThemeReply, error) {
-	out := new(SpuByThemeReply)
-	err := c.cc.Invoke(ctx, "/sku.service.Sku/GetSpuByTheme", in, out, opts...)
+func (c *spuClient) ListSpuByIds(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*Spus, error) {
+	out := new(Spus)
+	err := c.cc.Invoke(ctx, "/sku.service.Spu/ListSpuByIds", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *skuClient) GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error) {
+func (c *spuClient) GetSaleExplain(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SaleExplains, error) {
 	out := new(SaleExplains)
-	err := c.cc.Invoke(ctx, "/sku.service.Sku/GetSaleExplain", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/sku.service.Spu/GetSaleExplain", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *skuClient) GetSpuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuDetail, error) {
+func (c *spuClient) GetSpuById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuDetail, error) {
 	out := new(SpuDetail)
-	err := c.cc.Invoke(ctx, "/sku.service.Sku/GetSpuById", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/sku.service.Spu/GetSpuById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *skuClient) GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error) {
+func (c *spuClient) GetSpuLatest(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SpuPage, error) {
 	out := new(SpuPage)
-	err := c.cc.Invoke(ctx, "/sku.service.Sku/GetSpuLatest", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/sku.service.Spu/GetSpuLatest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *skuClient) GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuPage, error) {
+func (c *spuClient) GetSpuByCategory(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*SpuPage, error) {
 	out := new(SpuPage)
-	err := c.cc.Invoke(ctx, "/sku.service.Sku/GetSpuByCategory", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/sku.service.Spu/GetSpuByCategory", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SkuServer is the server API for Sku service.
-// All implementations must embed UnimplementedSkuServer
+// SpuServer is the server API for Spu service.
+// All implementations must embed UnimplementedSpuServer
 // for forward compatibility
-type SkuServer interface {
+type SpuServer interface {
 	GetSkuById(context.Context, *IdRequest) (*SkuVO, error)
-	GetSpuByTheme(context.Context, *IdRequest) (*SpuByThemeReply, error)
+	ListSpuByIds(context.Context, *IdsRequest) (*Spus, error)
 	GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error)
 	GetSpuById(context.Context, *IdRequest) (*SpuDetail, error)
 	GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error)
 	GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error)
-	mustEmbedUnimplementedSkuServer()
+	mustEmbedUnimplementedSpuServer()
 }
 
-// UnimplementedSkuServer must be embedded to have forward compatible implementations.
-type UnimplementedSkuServer struct {
+// UnimplementedSpuServer must be embedded to have forward compatible implementations.
+type UnimplementedSpuServer struct {
 }
 
-func (UnimplementedSkuServer) GetSkuById(context.Context, *IdRequest) (*SkuVO, error) {
+func (UnimplementedSpuServer) GetSkuById(context.Context, *IdRequest) (*SkuVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSkuById not implemented")
 }
-func (UnimplementedSkuServer) GetSpuByTheme(context.Context, *IdRequest) (*SpuByThemeReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSpuByTheme not implemented")
+func (UnimplementedSpuServer) ListSpuByIds(context.Context, *IdsRequest) (*Spus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSpuByIds not implemented")
 }
-func (UnimplementedSkuServer) GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error) {
+func (UnimplementedSpuServer) GetSaleExplain(context.Context, *emptypb.Empty) (*SaleExplains, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSaleExplain not implemented")
 }
-func (UnimplementedSkuServer) GetSpuById(context.Context, *IdRequest) (*SpuDetail, error) {
+func (UnimplementedSpuServer) GetSpuById(context.Context, *IdRequest) (*SpuDetail, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuById not implemented")
 }
-func (UnimplementedSkuServer) GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error) {
+func (UnimplementedSpuServer) GetSpuLatest(context.Context, *emptypb.Empty) (*SpuPage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuLatest not implemented")
 }
-func (UnimplementedSkuServer) GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error) {
+func (UnimplementedSpuServer) GetSpuByCategory(context.Context, *IdRequest) (*SpuPage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpuByCategory not implemented")
 }
-func (UnimplementedSkuServer) mustEmbedUnimplementedSkuServer() {}
+func (UnimplementedSpuServer) mustEmbedUnimplementedSpuServer() {}
 
-// UnsafeSkuServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SkuServer will
+// UnsafeSpuServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SpuServer will
 // result in compilation errors.
-type UnsafeSkuServer interface {
-	mustEmbedUnimplementedSkuServer()
+type UnsafeSpuServer interface {
+	mustEmbedUnimplementedSpuServer()
 }
 
-func RegisterSkuServer(s grpc.ServiceRegistrar, srv SkuServer) {
-	s.RegisterService(&Sku_ServiceDesc, srv)
+func RegisterSpuServer(s grpc.ServiceRegistrar, srv SpuServer) {
+	s.RegisterService(&Spu_ServiceDesc, srv)
 }
 
-func _Sku_GetSkuById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Spu_GetSkuById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SkuServer).GetSkuById(ctx, in)
+		return srv.(SpuServer).GetSkuById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sku.service.Sku/GetSkuById",
+		FullMethod: "/sku.service.Spu/GetSkuById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SkuServer).GetSkuById(ctx, req.(*IdRequest))
+		return srv.(SpuServer).GetSkuById(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sku_GetSpuByTheme_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
+func _Spu_ListSpuByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IdsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SkuServer).GetSpuByTheme(ctx, in)
+		return srv.(SpuServer).ListSpuByIds(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sku.service.Sku/GetSpuByTheme",
+		FullMethod: "/sku.service.Spu/ListSpuByIds",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SkuServer).GetSpuByTheme(ctx, req.(*IdRequest))
+		return srv.(SpuServer).ListSpuByIds(ctx, req.(*IdsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sku_GetSaleExplain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Spu_GetSaleExplain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SkuServer).GetSaleExplain(ctx, in)
+		return srv.(SpuServer).GetSaleExplain(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sku.service.Sku/GetSaleExplain",
+		FullMethod: "/sku.service.Spu/GetSaleExplain",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SkuServer).GetSaleExplain(ctx, req.(*emptypb.Empty))
+		return srv.(SpuServer).GetSaleExplain(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sku_GetSpuById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Spu_GetSpuById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SkuServer).GetSpuById(ctx, in)
+		return srv.(SpuServer).GetSpuById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sku.service.Sku/GetSpuById",
+		FullMethod: "/sku.service.Spu/GetSpuById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SkuServer).GetSpuById(ctx, req.(*IdRequest))
+		return srv.(SpuServer).GetSpuById(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sku_GetSpuLatest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Spu_GetSpuLatest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SkuServer).GetSpuLatest(ctx, in)
+		return srv.(SpuServer).GetSpuLatest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sku.service.Sku/GetSpuLatest",
+		FullMethod: "/sku.service.Spu/GetSpuLatest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SkuServer).GetSpuLatest(ctx, req.(*emptypb.Empty))
+		return srv.(SpuServer).GetSpuLatest(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sku_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Spu_GetSpuByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SkuServer).GetSpuByCategory(ctx, in)
+		return srv.(SpuServer).GetSpuByCategory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sku.service.Sku/GetSpuByCategory",
+		FullMethod: "/sku.service.Spu/GetSpuByCategory",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SkuServer).GetSpuByCategory(ctx, req.(*IdRequest))
+		return srv.(SpuServer).GetSpuByCategory(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Sku_ServiceDesc is the grpc.ServiceDesc for Sku service.
+// Spu_ServiceDesc is the grpc.ServiceDesc for Spu service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Sku_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "sku.service.Sku",
-	HandlerType: (*SkuServer)(nil),
+var Spu_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sku.service.Spu",
+	HandlerType: (*SpuServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetSkuById",
-			Handler:    _Sku_GetSkuById_Handler,
+			Handler:    _Spu_GetSkuById_Handler,
 		},
 		{
-			MethodName: "GetSpuByTheme",
-			Handler:    _Sku_GetSpuByTheme_Handler,
+			MethodName: "ListSpuByIds",
+			Handler:    _Spu_ListSpuByIds_Handler,
 		},
 		{
 			MethodName: "GetSaleExplain",
-			Handler:    _Sku_GetSaleExplain_Handler,
+			Handler:    _Spu_GetSaleExplain_Handler,
 		},
 		{
 			MethodName: "GetSpuById",
-			Handler:    _Sku_GetSpuById_Handler,
+			Handler:    _Spu_GetSpuById_Handler,
 		},
 		{
 			MethodName: "GetSpuLatest",
-			Handler:    _Sku_GetSpuLatest_Handler,
+			Handler:    _Spu_GetSpuLatest_Handler,
 		},
 		{
 			MethodName: "GetSpuByCategory",
-			Handler:    _Sku_GetSpuByCategory_Handler,
+			Handler:    _Spu_GetSpuByCategory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

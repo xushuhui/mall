@@ -39,13 +39,13 @@ func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out *mall.L
 	}
 	user, err := u.repo.GetUserIdentiy(ctx, "weapp", resp.OpenID, "")
 	if err != nil {
-		return nil, mall.ErrorLoginfail("GetUserIdentiy failed: %s", err.Error())
+		return nil, mall.ErrorLoginFail("GetUserIdentiy failed: %s", err.Error())
 	}
 	//TODO notfound error
 	if user.Id == 0 {
 		user, err = u.repo.CreateUser(ctx, &service.CreateUserRequest{Nickname: "小程序用户", IdentityType: "weapp", Identifier: resp.OpenID})
 		if err != nil {
-			return nil, mall.ErrorLoginfail("CreateUserIdentiy failed: %s", err.Error())
+			return nil, mall.ErrorLoginFail("CreateUserIdentiy failed: %s", err.Error())
 		}
 	}
 	// generate token
@@ -54,7 +54,7 @@ func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out *mall.L
 	})
 	signedString, err := claims.SignedString([]byte(u.jwtKey))
 	if err != nil {
-		return nil, mall.ErrorLoginfail("generate token failed: %s", err.Error())
+		return nil, mall.ErrorLoginFail("generate token failed: %s", err.Error())
 	}
 	return &mall.LoginReply{
 		Token: signedString,

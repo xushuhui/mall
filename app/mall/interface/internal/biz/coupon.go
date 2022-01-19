@@ -12,7 +12,7 @@ type Coupon struct {
 	StartTime   time.Time  `json:"start_time"`
 	EndTime     time.Time  `json:"end_time"`
 	Description string     `json:"description"`
-	WholeStore  int8       `json:"whole_store"`
+	WholeStore  int        `json:"whole_store"`
 	Category    []Category `json:"category"`
 	Type        int        `json:"type"`
 	FullMoney   float64    `json:"full_money"`

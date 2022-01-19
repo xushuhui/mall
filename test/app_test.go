@@ -5,6 +5,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 	app "mall-go/api/app/service"
+	spu "mall-go/api/spu/service"
 	"testing"
 
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -12,7 +13,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var appClient app.AppHTTPClient
+var (
+	appClient app.AppHTTPClient
+	spuClient spu.SpuHTTPClient
+)
 
 func TestGetBannerById(t *testing.T) {
 
@@ -63,14 +67,13 @@ func TestGetThemeByNames(t *testing.T) {
 	assert.Equal(t, reply.Theme[0].Title, "风袖甄选")
 }
 
-func TestGetThemeWithSpu(t *testing.T) {
-	//reply, err := appClient.GetThemeWithSpu(context.Background(), &app.NameRequest{Name: "t-1"})
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//t.Log(reply)
-	//assert.Equal(t, reply.Title, "清凉一夏，折扣季")
-	//assert.Equal(t, reply.Name, "t-1")
+func TestGetThemeByName(t *testing.T) {
+	reply, err := appClient.GetThemeByName(context.Background(), &app.NameRequest{Name: "t-1"})
+	if err != nil {
+		log.Fatal(err)
+	}
+	t.Log(reply)
+
 }
 
 func TestListCategory(t *testing.T) {
@@ -94,17 +97,22 @@ func TestListGridCategory(t *testing.T) {
 
 func TestMain(m *testing.M) {
 	var err error
-	conn, err := transhttp.NewClient(
+	appconn, err := transhttp.NewClient(
 		context.Background(),
 		transhttp.WithMiddleware(
 			recovery.Recovery(),
 		),
 		transhttp.WithEndpoint("127.0.0.1:8001"),
 	)
+	spuconn, err := transhttp.NewClient(
+		context.Background(),
+		transhttp.WithEndpoint("127.0.0.1:8002"),
+	)
 	if err != nil {
 		panic(err)
 	}
+	appClient = app.NewAppHTTPClient(appconn)
+	spuClient = spu.NewSpuHTTPClient(spuconn)
 
-	appClient = app.NewAppHTTPClient(conn)
 	m.Run()
 }

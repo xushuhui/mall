@@ -22,10 +22,10 @@ import (
 func initApp(bootstrap *conf.Bootstrap, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
 	discovery := data.NewDiscovery(registry)
 	appClient := data.NewAppServiceClient(discovery)
-	skuClient := data.NewSkuServiceClient(discovery)
+	spuClient := data.NewSpuServiceClient(discovery)
 	userClient := data.NewUserServiceClient(discovery)
 	weappClient := data.NewWeappClient(bootstrap)
-	dataData, cleanup, err := data.NewData(appClient, skuClient, userClient, weappClient, logger)
+	dataData, cleanup, err := data.NewData(appClient, spuClient, userClient, weappClient, logger)
 	if err != nil {
 		return nil, nil, err
 	}

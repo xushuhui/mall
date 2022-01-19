@@ -29,9 +29,9 @@ func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Regist
 	skuUsecase := biz.NewSkuUsecase(skuRepo, logger)
 	spuRepo := data.NewSpuRepo(dataData, logger)
 	spuUsecase := biz.NewSpuUsecase(spuRepo, logger)
-	skuService := service.NewSkuService(skuUsecase, spuUsecase)
-	httpServer := server.NewHTTPServer(confServer, skuService, logger)
-	grpcServer := server.NewGRPCServer(confServer, skuService, logger)
+	spuService := service.NewSpuService(skuUsecase, spuUsecase)
+	httpServer := server.NewHTTPServer(confServer, spuService, logger)
+	grpcServer := server.NewGRPCServer(confServer, spuService, logger)
 	registrar := server.NewRegistrar(registry)
 	app := newApp(logger, httpServer, grpcServer, registrar)
 	return app, func() {

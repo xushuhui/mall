@@ -8,7 +8,7 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	app "mall-go/api/app/service"
-	sku "mall-go/api/spu/service"
+	spu "mall-go/api/spu/service"
 	user "mall-go/api/user/service"
 	"mall-go/app/mall/interface/internal/conf"
 
@@ -18,13 +18,13 @@ import (
 
 // ProviderSet is data providers.
 var ProviderSet = wire.NewSet(NewData, NewBannerRepo, NewThemeRepo, NewRegistrar,
-	NewDiscovery, NewActivityRepo, NewCategoryRepo, NewAppServiceClient, NewSkuServiceClient, NewUserRepo, NewWeappClient, NewUserServiceClient,
+	NewDiscovery, NewActivityRepo, NewCategoryRepo, NewAppServiceClient, NewSpuServiceClient, NewUserRepo, NewWeappClient, NewUserServiceClient,
 )
 
 // Data .
 type Data struct {
 	ac  app.AppClient
-	sc  sku.SkuClient
+	sc  spu.SpuClient
 	uc  user.UserClient
 	wc  *WeappClient
 	log *log.Helper
@@ -43,7 +43,7 @@ func NewWeappClient(c *conf.Bootstrap) *WeappClient {
 }
 
 // NewData .
-func NewData(ac app.AppClient, sc sku.SkuClient, uc user.UserClient, wc *WeappClient, logger log.Logger) (*Data, func(), error) {
+func NewData(ac app.AppClient, sc spu.SpuClient, uc user.UserClient, wc *WeappClient, logger log.Logger) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
@@ -107,10 +107,10 @@ func NewUserServiceClient(r registry.Discovery) user.UserClient {
 	c := user.NewUserClient(conn)
 	return c
 }
-func NewSkuServiceClient(r registry.Discovery) sku.SkuClient {
+func NewSpuServiceClient(r registry.Discovery) spu.SpuClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("discovery:///sku.service"),
+		grpc.WithEndpoint("discovery:///spu.service"),
 		grpc.WithDiscovery(r),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -119,6 +119,6 @@ func NewSkuServiceClient(r registry.Discovery) sku.SkuClient {
 	if err != nil {
 		panic(err)
 	}
-	c := sku.NewSkuClient(conn)
+	c := spu.NewSpuClient(conn)
 	return c
 }

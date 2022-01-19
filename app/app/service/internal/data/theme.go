@@ -20,12 +20,12 @@ func NewThemeRepo(data *Data, logger log.Logger) biz.ThemeRepo {
 		log:  log.NewHelper(logger),
 	}
 }
-func (r *themeRepo) GetThemeByName(ctx context.Context, name string) (t biz.Theme, err error) {
-	po, err := r.data.db.Theme.Query().Where(theme.Name(name)).First(ctx)
+func (r *themeRepo) GetThemeByName(ctx context.Context, name string) (t biz.ThemeSpu, err error) {
+	po, err := r.data.db.Theme.Query().Where(theme.Name(name)).WithThemeSpu().First(ctx)
 	if err != nil {
 		return
 	}
-	return biz.Theme{
+	theme := biz.Theme{
 		Id:             po.ID,
 		Name:           po.Name,
 		Title:          po.Title,
@@ -35,6 +35,13 @@ func (r *themeRepo) GetThemeByName(ctx context.Context, name string) (t biz.Them
 		TitleImg:       po.TitleImg,
 		TplName:        po.TplName,
 		Online:         int32(po.Online),
+	}
+	var spuIds []int64
+	for _, spu := range po.Edges.ThemeSpu {
+		spuIds = append(spuIds, spu.SpuID)
+	}
+	return biz.ThemeSpu{
+		Theme: theme, SpuIds: spuIds,
 	}, nil
 
 }

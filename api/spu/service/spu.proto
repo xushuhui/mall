@@ -6,15 +6,16 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 option go_package = "mall-go/api/order/service";
 
-service Sku{
+service Spu{
   rpc GetSkuById(IdRequest) returns (SkuVO) {
     option (google.api.http) = {
       get : "/sku/id/{id}"
     };
   }
-  rpc GetSpuByTheme(IdRequest) returns (SpuByThemeReply) {
+
+  rpc ListSpuByIds(IdsRequest) returns (Spus) {
     option (google.api.http) = {
-      get : "/sku/by/theme/{id}"
+      get : "/spu/list"
     };
   }
   rpc GetSaleExplain(google.protobuf.Empty) returns (SaleExplains) {
@@ -41,11 +42,14 @@ service Sku{
 message IdRequest{
   int64 id =1;
 }
+message IdsRequest{
+ repeated int64 ids =1;
+}
 message SkuVO{
   int64 id =1;
 }
-message SpuByThemeReply{
-  repeated SpuVO SpuVO=1;
+message Spus{
+  repeated SpuVO Spus=1;
 }
 message SpuVO{
   int64 id = 1;

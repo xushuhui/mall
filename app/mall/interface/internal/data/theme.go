@@ -27,14 +27,13 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 	if err != nil {
 		return biz.ThemeSpu{}, err
 	}
-	spuList, err := r.data.sc.GetSpuByTheme(ctx, &sku.IdRequest{Id: po.Id})
+	spuList, err := r.data.sc.ListSpuByIds(ctx, &sku.IdsRequest{Ids: po.SpuIds})
 	if err != nil {
 		return biz.ThemeSpu{}, err
 	}
 
 	var themeSpus []*biz.Spu
-
-	for _, v := range spuList.SpuVO {
+	for _, v := range spuList.Spus {
 		themeSpus = append(themeSpus, &biz.Spu{
 			Id:             v.Id,
 			Title:          v.Title,

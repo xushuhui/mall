@@ -155,8 +155,8 @@ func (s *MallInterface) GetActivityByName(ctx context.Context, in *mall.Activity
 		EntranceImg: c.EntranceImg,
 		Online:      c.Online,
 		Remark:      c.Remark,
-		StartTime:   c.StartTime,
-		EndTime:     c.EndTime,
+		StartTime:   c.StartTime.Unix(),
+		EndTime:     c.EndTime.Unix(),
 	}
 	return out, nil
 }
@@ -187,8 +187,8 @@ func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *mall.Acti
 		EntranceImg: c.EntranceImg,
 		Online:      c.Online,
 		Remark:      c.Remark,
-		StartTime:   c.StartTime,
-		EndTime:     c.EndTime,
+		StartTime:   c.StartTime.Unix(),
+		EndTime:     c.EndTime.Unix(),
 		Coupon:      coupons,
 	}, nil
 }

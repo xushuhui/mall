@@ -25,7 +25,7 @@ type SpuRepo interface {
 	CreateSpu(ctx context.Context) (err error)
 	GetSpuById(ctx context.Context, id int64) (Spu Spu, err error)
 	GetSpuByCategory(ctx context.Context, id int64) (Spus []Spu, err error)
-	GetSpuByTheme(ctx context.Context, id int64) (Spus []Spu, err error)
+	ListSpuByIds(ctx context.Context, ids []int64) (Spus []Spu, err error)
 }
 type SpuUsecase struct {
 	repo SpuRepo
@@ -37,4 +37,7 @@ func NewSpuUsecase(repo SpuRepo, logger log.Logger) *SpuUsecase {
 		repo: repo,
 		log:  log.NewHelper(logger),
 	}
+}
+func (uc *SpuUsecase) ListSpuByIds(ctx context.Context, ids []int64) (Spus []Spu, err error) {
+	return uc.repo.ListSpuByIds(ctx, ids)
 }

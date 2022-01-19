@@ -4,7 +4,7 @@ package app.service;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-
+    import "google/protobuf/timestamp.proto";
 import "api/mall/common.proto";
 import "validate/validate.proto";
 option go_package = "mall-go/api/app/service";
@@ -26,7 +26,7 @@ service App {
       get : "/theme/by/names"
     };
   }
-  rpc GetThemeByName(nameRequest) returns (Theme) {
+  rpc GetThemeByName(nameRequest) returns (ThemeSpu) {
     option (google.api.http) = {
       get : "/theme/name/{name}"
     };
@@ -126,6 +126,18 @@ message Category {
   int32 index = 6;
 }
 message Themes { repeated Theme theme = 1; }
+message ThemeSpu{
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  string name = 4;
+  string entrance_img = 5;
+  string internal_top_img = 7;
+  string title_img = 8;
+  string tpl_name = 9;
+  int32 online = 10;
+  repeated int64 spu_ids=11;
+}
 message Theme {
   int64 id = 1;
   string title = 2;
@@ -161,8 +173,8 @@ message Activity {
   string entrance_img = 3;
   int32 online = 4;
   string remark = 5;
-  int64 start_time = 6;
-  int64 end_time = 7;
+  google.protobuf.Timestamp start_time = 6;
+  google.protobuf.Timestamp end_time = 7;
 }
 message ActivityCoupon {
   int64 id = 1;
@@ -170,8 +182,8 @@ message ActivityCoupon {
   string entrance_img = 3;
   int32 online = 4;
   string remark = 5;
-  int64 start_time = 6;
-  int64 end_time = 7;
+  google.protobuf.Timestamp start_time = 6;
+  google.protobuf.Timestamp end_time = 7;
   repeated CouponBo coupon = 8;
 }
 
@@ -185,14 +197,14 @@ message Coupons { repeated CouponBo coupon = 1; }
 message CouponBo {
   int64 id = 1;
   string title = 2;
-  int64 start_time = 3;
-  int64 end_time = 4;
+  google.protobuf.Timestamp start_time = 3;
+  google.protobuf.Timestamp end_time = 4;
   string description = 5;
   double full_money = 6;
   double minus = 7;
   double rate = 8;
   int32 type = 9;
   string remark = 10;
-  bool whole_store = 11;
+  int32 whole_store = 11;
 }
 

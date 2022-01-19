@@ -27,8 +27,8 @@ func (r *activityRepo) GetActivityByName(ctx context.Context, name string) (c bi
 	return biz.Activity{
 		Id:          po.Id,
 		Title:       po.Title,
-		StartTime:   po.StartTime,
-		EndTime:     po.EndTime,
+		StartTime:   po.StartTime.AsTime(),
+		EndTime:     po.EndTime.AsTime(),
 		Remark:      po.Remark,
 		Online:      po.Online,
 		EntranceImg: po.EntranceImg,
@@ -44,8 +44,8 @@ func (r *activityRepo) GetActivityWithCoupon(ctx context.Context, name string) (
 		Id:          po.Id,
 		Title:       po.Title,
 		EntranceImg: po.EntranceImg,
-		StartTime:   po.StartTime,
-		EndTime:     po.EndTime,
+		StartTime:   po.StartTime.AsTime(),
+		EndTime:     po.EndTime.AsTime(),
 		Remark:      po.Remark,
 		Online:      po.Online,
 	}
@@ -54,15 +54,15 @@ func (r *activityRepo) GetActivityWithCoupon(ctx context.Context, name string) (
 		coupons = append(coupons, biz.Coupon{
 			Id:          v.Id,
 			Title:       v.Title,
-			StartTime:   v.StartTime,
-			EndTime:     v.EndTime,
+			StartTime:   v.StartTime.AsTime(),
+			EndTime:     v.EndTime.AsTime(),
 			Description: v.Description,
 			FullMoney:   v.FullMoney,
 			Rate:        v.Rate,
 			Minus:       v.Minus,
-			Type:        v.Type,
+			Type:        int(v.Type),
 			Remark:      v.Remark,
-			WholeStore:  v.WholeStore,
+			WholeStore:  int(v.WholeStore),
 		})
 	}
 	return biz.ActivityCoupon{

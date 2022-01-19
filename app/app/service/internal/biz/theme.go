@@ -22,10 +22,11 @@ type Theme struct {
 
 type ThemeSpu struct {
 	Theme
+	SpuIds []int64 `json:"spu_ids"`
 }
 type ThemeRepo interface {
 	GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error)
-	GetThemeByName(ctx context.Context, name string) (t Theme, err error)
+	GetThemeByName(ctx context.Context, name string) (t ThemeSpu, err error)
 	CreateTheme(ctx context.Context, req app.Theme) (err error)
 	ListTheme(ctx context.Context) (t []Theme, err error)
 	UpdateTheme(ctx context.Context, req app.Theme) (err error)
@@ -44,5 +45,9 @@ func NewThemeUsecase(repo ThemeRepo, logger log.Logger) *ThemeUsecase {
 }
 func (uc *ThemeUsecase) GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error) {
 	t, err = uc.repo.GetThemeByNames(ctx, names)
+	return
+}
+func (uc *ThemeUsecase) GetThemeByName(ctx context.Context, name string) (t ThemeSpu, err error) {
+	t, err = uc.repo.GetThemeByName(ctx, name)
 	return
 }

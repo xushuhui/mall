@@ -2,9 +2,9 @@ package data
 
 import (
 	"context"
-	"mall-go/app/spu/service/internal/biz"
-
 	"github.com/go-kratos/kratos/v2/log"
+	_ "github.com/go-sql-driver/mysql"
+	"mall-go/app/spu/service/internal/biz"
 )
 
 type skuRepo struct {

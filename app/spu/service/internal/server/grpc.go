@@ -14,7 +14,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, as *intenal.SkuService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, as *intenal.SpuService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -33,6 +33,6 @@ func NewGRPCServer(c *conf.Server, as *intenal.SkuService, logger log.Logger) *g
 	}
 	srv := grpc.NewServer(opts...)
 
-	service.RegisterSkuServer(srv, as)
+	service.RegisterSpuServer(srv, as)
 	return srv
 }
