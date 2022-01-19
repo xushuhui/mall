@@ -59,11 +59,7 @@ service App {
       get : "/tag/type/{type}"
     };
   }
-  rpc GetCouponByCategory(IdRequest) returns (Coupons) {
-    option (google.api.http) = {
-      get : "/coupon/category/{id}"
-    };
-  }
+
   rpc GetCouponByType(typeRequest) returns (Coupons) {
     option (google.api.http) = {
       get : "/coupon/type/{type}"

@@ -299,7 +299,7 @@ message CouponBo {
   double rate = 8;
   int32 type = 9;
   string remark = 10;
-  bool whole_store = 11;
+  int32 whole_store = 11;
 }
 
 message CancelOrderRequest { int64 id = 1; }

@@ -29,7 +29,7 @@ config:
 	protoc --proto_path=. \
 	       --proto_path=./third_party \
  	       --go_out=paths=source_relative:. \
-	       ./app/order/service/internal/conf/conf.proto
+	       $(INTERNAL_PROTO_FILES)
 
 .PHONY: api
 # generate api proto

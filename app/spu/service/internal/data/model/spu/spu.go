@@ -112,7 +112,7 @@ var Columns = []string{
 	FieldForThemeImg,
 }
 
-// ForeignKeys holds the SQL foreign-keys that are owned by the "spu"
+// ForeignKeys holds the SQL foreign-keys that are owned by the "spus"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"brand_spu",

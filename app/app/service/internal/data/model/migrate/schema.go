@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	// ActivityColumns holds the columns for the "activity" table.
-	ActivityColumns = []*schema.Column{
+	// ActivitiesColumns holds the columns for the "activities" table.
+	ActivitiesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -25,14 +25,14 @@ var (
 		{Name: "internal_top_img", Type: field.TypeString},
 		{Name: "name", Type: field.TypeString},
 	}
-	// ActivityTable holds the schema information for the "activity" table.
-	ActivityTable = &schema.Table{
-		Name:       "activity",
-		Columns:    ActivityColumns,
-		PrimaryKey: []*schema.Column{ActivityColumns[0]},
+	// ActivitiesTable holds the schema information for the "activities" table.
+	ActivitiesTable = &schema.Table{
+		Name:       "activities",
+		Columns:    ActivitiesColumns,
+		PrimaryKey: []*schema.Column{ActivitiesColumns[0]},
 	}
-	// BannerColumns holds the columns for the "banner" table.
-	BannerColumns = []*schema.Column{
+	// BannersColumns holds the columns for the "banners" table.
+	BannersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -42,14 +42,14 @@ var (
 		{Name: "title", Type: field.TypeString},
 		{Name: "img", Type: field.TypeString},
 	}
-	// BannerTable holds the schema information for the "banner" table.
-	BannerTable = &schema.Table{
-		Name:       "banner",
-		Columns:    BannerColumns,
-		PrimaryKey: []*schema.Column{BannerColumns[0]},
+	// BannersTable holds the schema information for the "banners" table.
+	BannersTable = &schema.Table{
+		Name:       "banners",
+		Columns:    BannersColumns,
+		PrimaryKey: []*schema.Column{BannersColumns[0]},
 	}
-	// BannerItemColumns holds the columns for the "banner_item" table.
-	BannerItemColumns = []*schema.Column{
+	// BannerItemsColumns holds the columns for the "banner_items" table.
+	BannerItemsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -60,22 +60,22 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "banner_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// BannerItemTable holds the schema information for the "banner_item" table.
-	BannerItemTable = &schema.Table{
-		Name:       "banner_item",
-		Columns:    BannerItemColumns,
-		PrimaryKey: []*schema.Column{BannerItemColumns[0]},
+	// BannerItemsTable holds the schema information for the "banner_items" table.
+	BannerItemsTable = &schema.Table{
+		Name:       "banner_items",
+		Columns:    BannerItemsColumns,
+		PrimaryKey: []*schema.Column{BannerItemsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "banner_item_banner_banner_item",
-				Columns:    []*schema.Column{BannerItemColumns[8]},
-				RefColumns: []*schema.Column{BannerColumns[0]},
+				Symbol:     "banner_items_banners_banner_item",
+				Columns:    []*schema.Column{BannerItemsColumns[8]},
+				RefColumns: []*schema.Column{BannersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// CategoryColumns holds the columns for the "category" table.
-	CategoryColumns = []*schema.Column{
+	// CategoriesColumns holds the columns for the "categories" table.
+	CategoriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -89,22 +89,22 @@ var (
 		{Name: "level", Type: field.TypeInt},
 		{Name: "parent_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// CategoryTable holds the schema information for the "category" table.
-	CategoryTable = &schema.Table{
-		Name:       "category",
-		Columns:    CategoryColumns,
-		PrimaryKey: []*schema.Column{CategoryColumns[0]},
+	// CategoriesTable holds the schema information for the "categories" table.
+	CategoriesTable = &schema.Table{
+		Name:       "categories",
+		Columns:    CategoriesColumns,
+		PrimaryKey: []*schema.Column{CategoriesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "category_category_children",
-				Columns:    []*schema.Column{CategoryColumns[11]},
-				RefColumns: []*schema.Column{CategoryColumns[0]},
+				Symbol:     "categories_categories_children",
+				Columns:    []*schema.Column{CategoriesColumns[11]},
+				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// ChargeColumns holds the columns for the "charge" table.
-	ChargeColumns = []*schema.Column{
+	// ChargesColumns holds the columns for the "charges" table.
+	ChargesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -116,11 +116,11 @@ var (
 		{Name: "pay_way", Type: field.TypeInt},
 		{Name: "client_type", Type: field.TypeInt},
 	}
-	// ChargeTable holds the schema information for the "charge" table.
-	ChargeTable = &schema.Table{
-		Name:       "charge",
-		Columns:    ChargeColumns,
-		PrimaryKey: []*schema.Column{ChargeColumns[0]},
+	// ChargesTable holds the schema information for the "charges" table.
+	ChargesTable = &schema.Table{
+		Name:       "charges",
+		Columns:    ChargesColumns,
+		PrimaryKey: []*schema.Column{ChargesColumns[0]},
 	}
 	// GridCategoryColumns holds the columns for the "grid_category" table.
 	GridCategoryColumns = []*schema.Column{
@@ -140,8 +140,8 @@ var (
 		Columns:    GridCategoryColumns,
 		PrimaryKey: []*schema.Column{GridCategoryColumns[0]},
 	}
-	// RefundColumns holds the columns for the "refund" table.
-	RefundColumns = []*schema.Column{
+	// RefundsColumns holds the columns for the "refunds" table.
+	RefundsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -154,11 +154,11 @@ var (
 		{Name: "order_sub_id", Type: field.TypeInt64, Nullable: true},
 		{Name: "status", Type: field.TypeInt},
 	}
-	// RefundTable holds the schema information for the "refund" table.
-	RefundTable = &schema.Table{
-		Name:       "refund",
-		Columns:    RefundColumns,
-		PrimaryKey: []*schema.Column{RefundColumns[0]},
+	// RefundsTable holds the schema information for the "refunds" table.
+	RefundsTable = &schema.Table{
+		Name:       "refunds",
+		Columns:    RefundsColumns,
+		PrimaryKey: []*schema.Column{RefundsColumns[0]},
 	}
 	// ThemeColumns holds the columns for the "theme" table.
 	ThemeColumns = []*schema.Column{
@@ -204,21 +204,21 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		ActivityTable,
-		BannerTable,
-		BannerItemTable,
-		CategoryTable,
-		ChargeTable,
+		ActivitiesTable,
+		BannersTable,
+		BannerItemsTable,
+		CategoriesTable,
+		ChargesTable,
 		GridCategoryTable,
-		RefundTable,
+		RefundsTable,
 		ThemeTable,
 		ThemeSpuTable,
 	}
 )
 
 func init() {
-	BannerItemTable.ForeignKeys[0].RefTable = BannerTable
-	CategoryTable.ForeignKeys[0].RefTable = CategoryTable
+	BannerItemsTable.ForeignKeys[0].RefTable = BannersTable
+	CategoriesTable.ForeignKeys[0].RefTable = CategoriesTable
 	GridCategoryTable.Annotation = &entsql.Annotation{
 		Table: "grid_category",
 	}

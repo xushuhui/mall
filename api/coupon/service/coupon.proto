@@ -4,7 +4,27 @@ package coupon.service;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "validate/validate.proto";
 option go_package = "mall-go/api/coupon/service";
 service Coupon{
-
+  rpc GetCouponByCategory(IdRequest) returns (Coupons) {
+    option (google.api.http) = {
+      get : "/coupon/category/{id}"
+    };
+  }
+}
+message IdRequest { int64 id = 1  [(validate.rules).int64 = {gt: 0}]; }
+message Coupons { repeated CouponBo coupon = 1; }
+message CouponBo {
+  int64 id = 1;
+  string title = 2;
+  int64 start_time = 3;
+  int64 end_time = 4;
+  string description = 5;
+  double full_money = 6;
+  double minus = 7;
+  double rate = 8;
+  int32 type = 9;
+  string remark = 10;
+  bool whole_store = 11;
 }

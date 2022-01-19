@@ -12,6 +12,9 @@ import (
 const _ = errors.SupportPackageIsVersion1
 
 func IsOk(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_Ok.String() && e.Code == 200
 }
@@ -21,6 +24,9 @@ func ErrorOk(format string, args ...interface{}) *errors.Error {
 }
 
 func IsNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_NotFound.String() && e.Code == 404
 }
@@ -30,6 +36,9 @@ func ErrorNotFound(format string, args ...interface{}) *errors.Error {
 }
 
 func IsInvalidParams(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_InvalidParams.String() && e.Code == 400
 }
@@ -39,6 +48,9 @@ func ErrorInvalidParams(format string, args ...interface{}) *errors.Error {
 }
 
 func IsUnauthorized(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_Unauthorized.String() && e.Code == 401
 }
@@ -48,6 +60,9 @@ func ErrorUnauthorized(format string, args ...interface{}) *errors.Error {
 }
 
 func IsForbidden(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_Forbidden.String() && e.Code == 403
 }
@@ -57,6 +72,9 @@ func ErrorForbidden(format string, args ...interface{}) *errors.Error {
 }
 
 func IsInternalServer(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_InternalServer.String() && e.Code == 500
 }
@@ -66,6 +84,9 @@ func ErrorInternalServer(format string, args ...interface{}) *errors.Error {
 }
 
 func IsLoginFail(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_LoginFail.String() && e.Code == 400
 }
@@ -75,6 +96,9 @@ func ErrorLoginFail(format string, args ...interface{}) *errors.Error {
 }
 
 func IsToken(err error) bool {
+	if err == nil {
+		return false
+	}
 	e := errors.FromError(err)
 	return e.Reason == ErrorReason_Token.String() && e.Code == 400
 }

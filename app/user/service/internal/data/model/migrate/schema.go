@@ -43,8 +43,8 @@ var (
 		Columns:    UserInfoColumns,
 		PrimaryKey: []*schema.Column{UserInfoColumns[0]},
 	}
-	// UserPointColumns holds the columns for the "user_point" table.
-	UserPointColumns = []*schema.Column{
+	// UserPointsColumns holds the columns for the "user_points" table.
+	UserPointsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -52,11 +52,11 @@ var (
 		{Name: "value", Type: field.TypeInt},
 		{Name: "status", Type: field.TypeInt},
 	}
-	// UserPointTable holds the schema information for the "user_point" table.
-	UserPointTable = &schema.Table{
-		Name:       "user_point",
-		Columns:    UserPointColumns,
-		PrimaryKey: []*schema.Column{UserPointColumns[0]},
+	// UserPointsTable holds the schema information for the "user_points" table.
+	UserPointsTable = &schema.Table{
+		Name:       "user_points",
+		Columns:    UserPointsColumns,
+		PrimaryKey: []*schema.Column{UserPointsColumns[0]},
 	}
 	// UserPointDetailColumns holds the columns for the "user_point_detail" table.
 	UserPointDetailColumns = []*schema.Column{
@@ -73,22 +73,22 @@ var (
 		Columns:    UserPointDetailColumns,
 		PrimaryKey: []*schema.Column{UserPointDetailColumns[0]},
 	}
-	// UserWalletColumns holds the columns for the "user_wallet" table.
-	UserWalletColumns = []*schema.Column{
+	// UserWalletsColumns holds the columns for the "user_wallets" table.
+	UserWalletsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
 		{Name: "value", Type: field.TypeInt},
 	}
-	// UserWalletTable holds the schema information for the "user_wallet" table.
-	UserWalletTable = &schema.Table{
-		Name:       "user_wallet",
-		Columns:    UserWalletColumns,
-		PrimaryKey: []*schema.Column{UserWalletColumns[0]},
+	// UserWalletsTable holds the schema information for the "user_wallets" table.
+	UserWalletsTable = &schema.Table{
+		Name:       "user_wallets",
+		Columns:    UserWalletsColumns,
+		PrimaryKey: []*schema.Column{UserWalletsColumns[0]},
 	}
-	// UserWalletDetailColumns holds the columns for the "user_wallet_detail" table.
-	UserWalletDetailColumns = []*schema.Column{
+	// UserWalletDetailsColumns holds the columns for the "user_wallet_details" table.
+	UserWalletDetailsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -99,20 +99,20 @@ var (
 		{Name: "value", Type: field.TypeInt},
 		{Name: "type", Type: field.TypeInt, Default: 1},
 	}
-	// UserWalletDetailTable holds the schema information for the "user_wallet_detail" table.
-	UserWalletDetailTable = &schema.Table{
-		Name:       "user_wallet_detail",
-		Columns:    UserWalletDetailColumns,
-		PrimaryKey: []*schema.Column{UserWalletDetailColumns[0]},
+	// UserWalletDetailsTable holds the schema information for the "user_wallet_details" table.
+	UserWalletDetailsTable = &schema.Table{
+		Name:       "user_wallet_details",
+		Columns:    UserWalletDetailsColumns,
+		PrimaryKey: []*schema.Column{UserWalletDetailsColumns[0]},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		LinUserIdentiyTable,
 		UserInfoTable,
-		UserPointTable,
+		UserPointsTable,
 		UserPointDetailTable,
-		UserWalletTable,
-		UserWalletDetailTable,
+		UserWalletsTable,
+		UserWalletDetailsTable,
 	}
 )
 

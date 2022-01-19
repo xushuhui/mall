@@ -170,15 +170,15 @@ func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *mall.Acti
 		coupons = append(coupons, &mall.CouponBo{
 			Id:          v.Id,
 			Title:       v.Title,
-			StartTime:   v.StartTime,
-			EndTime:     v.EndTime,
+			StartTime:   v.StartTime.Unix(),
+			EndTime:     v.EndTime.Unix(),
 			Description: v.Description,
 			FullMoney:   v.FullMoney,
 			Minus:       v.Minus,
 			Rate:        v.Rate,
-			Type:        v.Type,
+			Type:        int32(v.Type),
 			Remark:      v.Remark,
-			WholeStore:  v.WholeStore,
+			WholeStore:  int32(v.WholeStore),
 		})
 	}
 	return &mall.ActivityCoupon{
@@ -248,5 +248,6 @@ func (s *MallInterface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequ
 	return
 }
 func (s *MallInterface) MiniappLogin(ctx context.Context, in *mall.MiniappLoginRequest) (out *mall.LoginReply, err error) {
+
 	return
 }

@@ -8,16 +8,18 @@ import (
 )
 
 type Coupon struct {
-	Id         int64
-	StartTime  time.Time
-	EndTime    time.Time
-	WholeStore int8       `json:"whole_store"`
-	Category   []Category `json:"category"`
-	Type       int        `json:"type"`
-	FullMoney  float64    `json:"full_money"`
-	Title      string     `json:"title"`
-	Minus      float64    `json:"minus"`
-	Rate       float64    `json:"rate"`
+	Id          int64
+	StartTime   time.Time  `json:"start_time"`
+	EndTime     time.Time  `json:"end_time"`
+	Description string     `json:"description"`
+	WholeStore  int8       `json:"whole_store"`
+	Category    []Category `json:"category"`
+	Type        int        `json:"type"`
+	FullMoney   float64    `json:"full_money"`
+	Title       string     `json:"title"`
+	Minus       float64    `json:"minus"`
+	Rate        float64    `json:"rate"`
+	Remark      string     `json:"remark"`
 }
 
 type CouponRepo interface {

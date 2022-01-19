@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	// BrandColumns holds the columns for the "brand" table.
-	BrandColumns = []*schema.Column{
+	// BrandsColumns holds the columns for the "brands" table.
+	BrandsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -18,14 +18,14 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "description", Type: field.TypeString},
 	}
-	// BrandTable holds the schema information for the "brand" table.
-	BrandTable = &schema.Table{
-		Name:       "brand",
-		Columns:    BrandColumns,
-		PrimaryKey: []*schema.Column{BrandColumns[0]},
+	// BrandsTable holds the schema information for the "brands" table.
+	BrandsTable = &schema.Table{
+		Name:       "brands",
+		Columns:    BrandsColumns,
+		PrimaryKey: []*schema.Column{BrandsColumns[0]},
 	}
-	// SaleExplainColumns holds the columns for the "sale_explain" table.
-	SaleExplainColumns = []*schema.Column{
+	// SaleExplainsColumns holds the columns for the "sale_explains" table.
+	SaleExplainsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -36,22 +36,22 @@ var (
 		{Name: "replace_id", Type: field.TypeInt64},
 		{Name: "spu_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// SaleExplainTable holds the schema information for the "sale_explain" table.
-	SaleExplainTable = &schema.Table{
-		Name:       "sale_explain",
-		Columns:    SaleExplainColumns,
-		PrimaryKey: []*schema.Column{SaleExplainColumns[0]},
+	// SaleExplainsTable holds the schema information for the "sale_explains" table.
+	SaleExplainsTable = &schema.Table{
+		Name:       "sale_explains",
+		Columns:    SaleExplainsColumns,
+		PrimaryKey: []*schema.Column{SaleExplainsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "sale_explain_spu_sale_explain",
-				Columns:    []*schema.Column{SaleExplainColumns[8]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				Symbol:     "sale_explains_spus_sale_explain",
+				Columns:    []*schema.Column{SaleExplainsColumns[8]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// SkuColumns holds the columns for the "sku" table.
-	SkuColumns = []*schema.Column{
+	// SkusColumns holds the columns for the "skus" table.
+	SkusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -68,28 +68,28 @@ var (
 		{Name: "category_id", Type: field.TypeInt64},
 		{Name: "root_category_id", Type: field.TypeInt64},
 	}
-	// SkuTable holds the schema information for the "sku" table.
-	SkuTable = &schema.Table{
-		Name:       "sku",
-		Columns:    SkuColumns,
-		PrimaryKey: []*schema.Column{SkuColumns[0]},
+	// SkusTable holds the schema information for the "skus" table.
+	SkusTable = &schema.Table{
+		Name:       "skus",
+		Columns:    SkusColumns,
+		PrimaryKey: []*schema.Column{SkusColumns[0]},
 	}
-	// SkuSpecColumns holds the columns for the "sku_spec" table.
-	SkuSpecColumns = []*schema.Column{
+	// SkuSpecsColumns holds the columns for the "sku_specs" table.
+	SkuSpecsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "spu_id", Type: field.TypeInt64},
 		{Name: "sku_id", Type: field.TypeInt64},
 		{Name: "key_id", Type: field.TypeInt64},
 		{Name: "value_id", Type: field.TypeInt64},
 	}
-	// SkuSpecTable holds the schema information for the "sku_spec" table.
-	SkuSpecTable = &schema.Table{
-		Name:       "sku_spec",
-		Columns:    SkuSpecColumns,
-		PrimaryKey: []*schema.Column{SkuSpecColumns[0]},
+	// SkuSpecsTable holds the schema information for the "sku_specs" table.
+	SkuSpecsTable = &schema.Table{
+		Name:       "sku_specs",
+		Columns:    SkuSpecsColumns,
+		PrimaryKey: []*schema.Column{SkuSpecsColumns[0]},
 	}
-	// SpecKeyColumns holds the columns for the "spec_key" table.
-	SpecKeyColumns = []*schema.Column{
+	// SpecKeysColumns holds the columns for the "spec_keys" table.
+	SpecKeysColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -99,14 +99,14 @@ var (
 		{Name: "standard", Type: field.TypeInt},
 		{Name: "description", Type: field.TypeString},
 	}
-	// SpecKeyTable holds the schema information for the "spec_key" table.
-	SpecKeyTable = &schema.Table{
-		Name:       "spec_key",
-		Columns:    SpecKeyColumns,
-		PrimaryKey: []*schema.Column{SpecKeyColumns[0]},
+	// SpecKeysTable holds the schema information for the "spec_keys" table.
+	SpecKeysTable = &schema.Table{
+		Name:       "spec_keys",
+		Columns:    SpecKeysColumns,
+		PrimaryKey: []*schema.Column{SpecKeysColumns[0]},
 	}
-	// SpecValueColumns holds the columns for the "spec_value" table.
-	SpecValueColumns = []*schema.Column{
+	// SpecValuesColumns holds the columns for the "spec_values" table.
+	SpecValuesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -115,14 +115,14 @@ var (
 		{Name: "spec_id", Type: field.TypeInt64},
 		{Name: "extend", Type: field.TypeString},
 	}
-	// SpecValueTable holds the schema information for the "spec_value" table.
-	SpecValueTable = &schema.Table{
-		Name:       "spec_value",
-		Columns:    SpecValueColumns,
-		PrimaryKey: []*schema.Column{SpecValueColumns[0]},
+	// SpecValuesTable holds the schema information for the "spec_values" table.
+	SpecValuesTable = &schema.Table{
+		Name:       "spec_values",
+		Columns:    SpecValuesColumns,
+		PrimaryKey: []*schema.Column{SpecValuesColumns[0]},
 	}
-	// SpuColumns holds the columns for the "spu" table.
-	SpuColumns = []*schema.Column{
+	// SpusColumns holds the columns for the "spus" table.
+	SpusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -143,16 +143,16 @@ var (
 		{Name: "for_theme_img", Type: field.TypeString},
 		{Name: "brand_spu", Type: field.TypeInt64, Nullable: true},
 	}
-	// SpuTable holds the schema information for the "spu" table.
-	SpuTable = &schema.Table{
-		Name:       "spu",
-		Columns:    SpuColumns,
-		PrimaryKey: []*schema.Column{SpuColumns[0]},
+	// SpusTable holds the schema information for the "spus" table.
+	SpusTable = &schema.Table{
+		Name:       "spus",
+		Columns:    SpusColumns,
+		PrimaryKey: []*schema.Column{SpusColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "spu_brand_spu",
-				Columns:    []*schema.Column{SpuColumns[18]},
-				RefColumns: []*schema.Column{BrandColumns[0]},
+				Symbol:     "spus_brands_spu",
+				Columns:    []*schema.Column{SpusColumns[18]},
+				RefColumns: []*schema.Column{BrandsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -174,15 +174,15 @@ var (
 		PrimaryKey: []*schema.Column{SpuDetailImgColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "spu_detail_img_spu_spu_detail_img",
+				Symbol:     "spu_detail_img_spus_spu_detail_img",
 				Columns:    []*schema.Column{SpuDetailImgColumns[6]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// SpuImgColumns holds the columns for the "spu_img" table.
-	SpuImgColumns = []*schema.Column{
+	// SpuImgsColumns holds the columns for the "spu_imgs" table.
+	SpuImgsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -190,22 +190,22 @@ var (
 		{Name: "img", Type: field.TypeString},
 		{Name: "spu_id", Type: field.TypeInt64, Nullable: true},
 	}
-	// SpuImgTable holds the schema information for the "spu_img" table.
-	SpuImgTable = &schema.Table{
-		Name:       "spu_img",
-		Columns:    SpuImgColumns,
-		PrimaryKey: []*schema.Column{SpuImgColumns[0]},
+	// SpuImgsTable holds the schema information for the "spu_imgs" table.
+	SpuImgsTable = &schema.Table{
+		Name:       "spu_imgs",
+		Columns:    SpuImgsColumns,
+		PrimaryKey: []*schema.Column{SpuImgsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "spu_img_spu_spu_img",
-				Columns:    []*schema.Column{SpuImgColumns[5]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				Symbol:     "spu_imgs_spus_spu_img",
+				Columns:    []*schema.Column{SpuImgsColumns[5]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
-	// TagColumns holds the columns for the "tag" table.
-	TagColumns = []*schema.Column{
+	// TagsColumns holds the columns for the "tags" table.
+	TagsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
@@ -215,11 +215,11 @@ var (
 		{Name: "highlight", Type: field.TypeInt},
 		{Name: "type", Type: field.TypeInt},
 	}
-	// TagTable holds the schema information for the "tag" table.
-	TagTable = &schema.Table{
-		Name:       "tag",
-		Columns:    TagColumns,
-		PrimaryKey: []*schema.Column{TagColumns[0]},
+	// TagsTable holds the schema information for the "tags" table.
+	TagsTable = &schema.Table{
+		Name:       "tags",
+		Columns:    TagsColumns,
+		PrimaryKey: []*schema.Column{TagsColumns[0]},
 	}
 	// UserFavorColumns holds the columns for the "user_favor" table.
 	UserFavorColumns = []*schema.Column{
@@ -251,13 +251,13 @@ var (
 			{
 				Symbol:     "spu_key_spu_id",
 				Columns:    []*schema.Column{SpuKeyColumns[0]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "spu_key_spec_key_id",
 				Columns:    []*schema.Column{SpuKeyColumns[1]},
-				RefColumns: []*schema.Column{SpecKeyColumns[0]},
+				RefColumns: []*schema.Column{SpecKeysColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -276,29 +276,29 @@ var (
 			{
 				Symbol:     "spu_tag_spu_id",
 				Columns:    []*schema.Column{SpuTagColumns[0]},
-				RefColumns: []*schema.Column{SpuColumns[0]},
+				RefColumns: []*schema.Column{SpusColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "spu_tag_tag_id",
 				Columns:    []*schema.Column{SpuTagColumns[1]},
-				RefColumns: []*schema.Column{TagColumns[0]},
+				RefColumns: []*schema.Column{TagsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		BrandTable,
-		SaleExplainTable,
-		SkuTable,
-		SkuSpecTable,
-		SpecKeyTable,
-		SpecValueTable,
-		SpuTable,
+		BrandsTable,
+		SaleExplainsTable,
+		SkusTable,
+		SkuSpecsTable,
+		SpecKeysTable,
+		SpecValuesTable,
+		SpusTable,
 		SpuDetailImgTable,
-		SpuImgTable,
-		TagTable,
+		SpuImgsTable,
+		TagsTable,
 		UserFavorTable,
 		SpuKeyTable,
 		SpuTagTable,
@@ -306,18 +306,18 @@ var (
 )
 
 func init() {
-	SaleExplainTable.ForeignKeys[0].RefTable = SpuTable
-	SpuTable.ForeignKeys[0].RefTable = BrandTable
-	SpuDetailImgTable.ForeignKeys[0].RefTable = SpuTable
+	SaleExplainsTable.ForeignKeys[0].RefTable = SpusTable
+	SpusTable.ForeignKeys[0].RefTable = BrandsTable
+	SpuDetailImgTable.ForeignKeys[0].RefTable = SpusTable
 	SpuDetailImgTable.Annotation = &entsql.Annotation{
 		Table: "spu_detail_img",
 	}
-	SpuImgTable.ForeignKeys[0].RefTable = SpuTable
+	SpuImgsTable.ForeignKeys[0].RefTable = SpusTable
 	UserFavorTable.Annotation = &entsql.Annotation{
 		Table: "user_favor",
 	}
-	SpuKeyTable.ForeignKeys[0].RefTable = SpuTable
-	SpuKeyTable.ForeignKeys[1].RefTable = SpecKeyTable
-	SpuTagTable.ForeignKeys[0].RefTable = SpuTable
-	SpuTagTable.ForeignKeys[1].RefTable = TagTable
+	SpuKeyTable.ForeignKeys[0].RefTable = SpusTable
+	SpuKeyTable.ForeignKeys[1].RefTable = SpecKeysTable
+	SpuTagTable.ForeignKeys[0].RefTable = SpusTable
+	SpuTagTable.ForeignKeys[1].RefTable = TagsTable
 }
