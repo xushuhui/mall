@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package mall.admin;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+
+
+option go_package = "mall-go/api/mall/admin";
+
+service Admin {
+
+  rpc GetBannerById(IdRequest) returns (Banner) {
+    option (google.api.http) = {
+      get : "/banner/id/{id}"
+    };
+  }
+}
+message IdRequest { int64 id = 1; }
+
+message Banner {
+  int64 id = 1;
+  string name = 2;
+  string title = 3;
+  string img = 4;
+  string description = 5;
+  repeated BannerItem items = 6;
+}
+message BannerItem {
+  int64 id = 1;
+  string img = 2;
+  string keyword = 3;
+  int32 type = 4;
+  string name = 5;
+  int64 bannerId = 6;
+}

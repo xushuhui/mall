@@ -12,8 +12,36 @@ service Coupon{
       get : "/coupon/category/{id}"
     };
   }
+  rpc GetCouponByType(typeRequest) returns (Coupons) {
+    option (google.api.http) = {
+      get : "/coupon/type/{type}"
+    };
+  }
+  rpc GetUserCouponByStatus(statusRequest) returns (Coupons) {
+    option (google.api.http) = {
+      get : "/coupon/user/status/{status}"
+    };
+  }
+  rpc GetUserCouponByStatusWithCategory(statusRequest) returns (Coupons) {
+    option (google.api.http) = {
+      get : "/coupon/user/status/{status}/with_category"
+    };
+  }
+
+  rpc CreateUserCoupon(CreateUserCouponRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post : "/coupon/user"
+      body : "*"
+    };
+  }
 }
+message typeRequest{ int32  type=1  [(validate.rules).int32 = {gte: 0}];}
+message statusRequest{ int32  status=1 [(validate.rules).int32 = {gte: 0}] ;}
 message IdRequest { int64 id = 1  [(validate.rules).int64 = {gt: 0}]; }
+message  CreateUserCouponRequest {
+  int64 userId = 1;
+  int64 couponId = 2;
+}
 message Coupons { repeated CouponBo coupon = 1; }
 message CouponBo {
   int64 id = 1;

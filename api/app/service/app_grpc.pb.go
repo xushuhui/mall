@@ -32,10 +32,6 @@ type AppClient interface {
 	ListCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Categories, error)
 	ListGridCategory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GridCategories, error)
 	GetTagByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (*Tags, error)
-	GetCouponByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (*Coupons, error)
-	GetUserCouponByStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error)
-	GetUserCouponByStatusWithCategory(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error)
-	CreateUserCoupon(ctx context.Context, in *CreateUserCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type appClient struct {
@@ -127,42 +123,6 @@ func (c *appClient) GetTagByType(ctx context.Context, in *TypeRequest, opts ...g
 	return out, nil
 }
 
-func (c *appClient) GetCouponByType(ctx context.Context, in *TypeRequest, opts ...grpc.CallOption) (*Coupons, error) {
-	out := new(Coupons)
-	err := c.cc.Invoke(ctx, "/app.service.App/GetCouponByType", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetUserCouponByStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error) {
-	out := new(Coupons)
-	err := c.cc.Invoke(ctx, "/app.service.App/GetUserCouponByStatus", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) GetUserCouponByStatusWithCategory(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*Coupons, error) {
-	out := new(Coupons)
-	err := c.cc.Invoke(ctx, "/app.service.App/GetUserCouponByStatusWithCategory", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *appClient) CreateUserCoupon(ctx context.Context, in *CreateUserCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/app.service.App/CreateUserCoupon", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AppServer is the server API for App service.
 // All implementations must embed UnimplementedAppServer
 // for forward compatibility
@@ -176,10 +136,6 @@ type AppServer interface {
 	ListCategory(context.Context, *emptypb.Empty) (*Categories, error)
 	ListGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
 	GetTagByType(context.Context, *TypeRequest) (*Tags, error)
-	GetCouponByType(context.Context, *TypeRequest) (*Coupons, error)
-	GetUserCouponByStatus(context.Context, *StatusRequest) (*Coupons, error)
-	GetUserCouponByStatusWithCategory(context.Context, *StatusRequest) (*Coupons, error)
-	CreateUserCoupon(context.Context, *CreateUserCouponRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAppServer()
 }
 
@@ -213,18 +169,6 @@ func (UnimplementedAppServer) ListGridCategory(context.Context, *emptypb.Empty) 
 }
 func (UnimplementedAppServer) GetTagByType(context.Context, *TypeRequest) (*Tags, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTagByType not implemented")
-}
-func (UnimplementedAppServer) GetCouponByType(context.Context, *TypeRequest) (*Coupons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCouponByType not implemented")
-}
-func (UnimplementedAppServer) GetUserCouponByStatus(context.Context, *StatusRequest) (*Coupons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserCouponByStatus not implemented")
-}
-func (UnimplementedAppServer) GetUserCouponByStatusWithCategory(context.Context, *StatusRequest) (*Coupons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserCouponByStatusWithCategory not implemented")
-}
-func (UnimplementedAppServer) CreateUserCoupon(context.Context, *CreateUserCouponRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateUserCoupon not implemented")
 }
 func (UnimplementedAppServer) mustEmbedUnimplementedAppServer() {}
 
@@ -401,78 +345,6 @@ func _App_GetTagByType_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _App_GetCouponByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TypeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetCouponByType(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/GetCouponByType",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetCouponByType(ctx, req.(*TypeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetUserCouponByStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StatusRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetUserCouponByStatus(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/GetUserCouponByStatus",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetUserCouponByStatus(ctx, req.(*StatusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_GetUserCouponByStatusWithCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StatusRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).GetUserCouponByStatusWithCategory(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/GetUserCouponByStatusWithCategory",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).GetUserCouponByStatusWithCategory(ctx, req.(*StatusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _App_CreateUserCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateUserCouponRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppServer).CreateUserCoupon(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.service.App/CreateUserCoupon",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppServer).CreateUserCoupon(ctx, req.(*CreateUserCouponRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // App_ServiceDesc is the grpc.ServiceDesc for App service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -515,22 +387,6 @@ var App_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTagByType",
 			Handler:    _App_GetTagByType_Handler,
-		},
-		{
-			MethodName: "GetCouponByType",
-			Handler:    _App_GetCouponByType_Handler,
-		},
-		{
-			MethodName: "GetUserCouponByStatus",
-			Handler:    _App_GetUserCouponByStatus_Handler,
-		},
-		{
-			MethodName: "GetUserCouponByStatusWithCategory",
-			Handler:    _App_GetUserCouponByStatusWithCategory_Handler,
-		},
-		{
-			MethodName: "CreateUserCoupon",
-			Handler:    _App_CreateUserCoupon_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -27,7 +27,7 @@ type InterfaceHTTPServer interface {
 	GetActivityWithCoupon(context.Context, *ActivityWithCouponRequest) (*ActivityCoupon, error)
 	GetAddress(context.Context, *GetAddressRequest) (*emptypb.Empty, error)
 	GetAllCategory(context.Context, *emptypb.Empty) (*AllCategory, error)
-	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
+	GetBannerById(context.Context, *IdRequest) (*Banner, error)
 	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
 	GetCouponByCategory(context.Context, *CouponByCategoryRequest) (*Coupons, error)
 	GetGridCategory(context.Context, *emptypb.Empty) (*GridCategories, error)
@@ -83,7 +83,7 @@ func RegisterInterfaceHTTPServer(s *http.Server, srv InterfaceHTTPServer) {
 
 func _Interface_GetBannerById0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in BannerByIdRequest
+		var in IdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
@@ -92,7 +92,7 @@ func _Interface_GetBannerById0_HTTP_Handler(srv InterfaceHTTPServer) func(ctx ht
 		}
 		http.SetOperation(ctx, "/mall.Interface/GetBannerById")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetBannerById(ctx, req.(*BannerByIdRequest))
+			return srv.GetBannerById(ctx, req.(*IdRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -664,7 +664,7 @@ type InterfaceHTTPClient interface {
 	GetActivityWithCoupon(ctx context.Context, req *ActivityWithCouponRequest, opts ...http.CallOption) (rsp *ActivityCoupon, err error)
 	GetAddress(ctx context.Context, req *GetAddressRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	GetAllCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *AllCategory, err error)
-	GetBannerById(ctx context.Context, req *BannerByIdRequest, opts ...http.CallOption) (rsp *Banner, err error)
+	GetBannerById(ctx context.Context, req *IdRequest, opts ...http.CallOption) (rsp *Banner, err error)
 	GetBannerByName(ctx context.Context, req *BannerByNameRequest, opts ...http.CallOption) (rsp *Banner, err error)
 	GetCouponByCategory(ctx context.Context, req *CouponByCategoryRequest, opts ...http.CallOption) (rsp *Coupons, err error)
 	GetGridCategory(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *GridCategories, err error)
@@ -798,7 +798,7 @@ func (c *InterfaceHTTPClientImpl) GetAllCategory(ctx context.Context, in *emptyp
 	return &out, err
 }
 
-func (c *InterfaceHTTPClientImpl) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...http.CallOption) (*Banner, error) {
+func (c *InterfaceHTTPClientImpl) GetBannerById(ctx context.Context, in *IdRequest, opts ...http.CallOption) (*Banner, error) {
 	var out Banner
 	pattern := "/banner/id/{id}"
 	path := binding.EncodeURL(pattern, in, true)

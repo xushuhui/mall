@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InterfaceClient interface {
-	GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error)
+	GetBannerById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetBannerByName(ctx context.Context, in *BannerByNameRequest, opts ...grpc.CallOption) (*Banner, error)
 	GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest, opts ...grpc.CallOption) (*Themes, error)
 	//
@@ -62,7 +62,7 @@ func NewInterfaceClient(cc grpc.ClientConnInterface) InterfaceClient {
 	return &interfaceClient{cc}
 }
 
-func (c *interfaceClient) GetBannerById(ctx context.Context, in *BannerByIdRequest, opts ...grpc.CallOption) (*Banner, error) {
+func (c *interfaceClient) GetBannerById(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*Banner, error) {
 	out := new(Banner)
 	err := c.cc.Invoke(ctx, "/mall.Interface/GetBannerById", in, out, opts...)
 	if err != nil {
@@ -318,7 +318,7 @@ func (c *interfaceClient) DeleteAddress(ctx context.Context, in *DeleteAddressRe
 // All implementations must embed UnimplementedInterfaceServer
 // for forward compatibility
 type InterfaceServer interface {
-	GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error)
+	GetBannerById(context.Context, *IdRequest) (*Banner, error)
 	GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error)
 	GetThemeByNames(context.Context, *ThemeByNamesRequest) (*Themes, error)
 	//
@@ -354,7 +354,7 @@ type InterfaceServer interface {
 type UnimplementedInterfaceServer struct {
 }
 
-func (UnimplementedInterfaceServer) GetBannerById(context.Context, *BannerByIdRequest) (*Banner, error) {
+func (UnimplementedInterfaceServer) GetBannerById(context.Context, *IdRequest) (*Banner, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBannerById not implemented")
 }
 func (UnimplementedInterfaceServer) GetBannerByName(context.Context, *BannerByNameRequest) (*Banner, error) {
@@ -452,7 +452,7 @@ func RegisterInterfaceServer(s grpc.ServiceRegistrar, srv InterfaceServer) {
 }
 
 func _Interface_GetBannerById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BannerByIdRequest)
+	in := new(IdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -464,7 +464,7 @@ func _Interface_GetBannerById_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/mall.Interface/GetBannerById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InterfaceServer).GetBannerById(ctx, req.(*BannerByIdRequest))
+		return srv.(InterfaceServer).GetBannerById(ctx, req.(*IdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

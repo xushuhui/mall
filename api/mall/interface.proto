@@ -11,7 +11,7 @@ option go_package = "mall-go/api/mall";
 
 service Interface {
 
-  rpc GetBannerById(BannerByIdRequest) returns (Banner) {
+  rpc GetBannerById(IdRequest) returns (Banner) {
     option (google.api.http) = {
       get : "/banner/id/{id}"
     };
@@ -192,7 +192,7 @@ message BannerItem {
   string name = 5;
   int64 bannerId = 6;
 }
-message BannerByIdRequest { int64 id = 1; }
+message IdRequest { int64 id = 1; }
 message BannerByNameRequest { string name = 1; }
 message ThemeByNamesRequest { string names = 1; }
 message ThemeWithSpuRequest { string name = 1; }

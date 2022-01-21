@@ -234,22 +234,3 @@ func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (o
 func (s *AppService) GetTagByType(ctx context.Context, in *service.TypeRequest) (out *service.Tags, err error) {
 	return
 }
-func (s *AppService) CreateUserCoupon(ctx context.Context, in *service.CreateUserCouponRequest) (out *emptypb.Empty, err error) {
-	panic("implement me")
-}
-
-func (s *AppService) GetCouponByCategory(ctx context.Context, in *service.IdRequest) (out *service.Coupons, err error) {
-	panic("implement me")
-}
-
-func (s *AppService) GetUserCouponByStatusWithCategory(ctx context.Context, in *service.StatusRequest) (out *service.Coupons, err error) {
-	panic("implement me")
-}
-
-func (s *AppService) GetUserCouponByStatus(ctx context.Context, in *service.StatusRequest) (out *service.Coupons, err error) {
-	panic("implement me")
-}
-
-func (s *AppService) GetCouponByType(ctx context.Context, in *service.TypeRequest) (out *service.Coupons, err error) {
-	panic("implement me")
-}

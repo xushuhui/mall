@@ -35,6 +35,227 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on TypeRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TypeRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TypeRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in TypeRequestMultiError, or
+// nil if none found.
+func (m *TypeRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TypeRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetType() < 0 {
+		err := TypeRequestValidationError{
+			field:  "Type",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return TypeRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// TypeRequestMultiError is an error wrapping multiple validation errors
+// returned by TypeRequest.ValidateAll() if the designated constraints aren't met.
+type TypeRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TypeRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TypeRequestMultiError) AllErrors() []error { return m }
+
+// TypeRequestValidationError is the validation error returned by
+// TypeRequest.Validate if the designated constraints aren't met.
+type TypeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TypeRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TypeRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TypeRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TypeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TypeRequestValidationError) ErrorName() string { return "TypeRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TypeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTypeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TypeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TypeRequestValidationError{}
+
+// Validate checks the field values on StatusRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *StatusRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on StatusRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in StatusRequestMultiError, or
+// nil if none found.
+func (m *StatusRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *StatusRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetStatus() < 0 {
+		err := StatusRequestValidationError{
+			field:  "Status",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return StatusRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// StatusRequestMultiError is an error wrapping multiple validation errors
+// returned by StatusRequest.ValidateAll() if the designated constraints
+// aren't met.
+type StatusRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m StatusRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m StatusRequestMultiError) AllErrors() []error { return m }
+
+// StatusRequestValidationError is the validation error returned by
+// StatusRequest.Validate if the designated constraints aren't met.
+type StatusRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e StatusRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e StatusRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e StatusRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e StatusRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e StatusRequestValidationError) ErrorName() string { return "StatusRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e StatusRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sStatusRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = StatusRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = StatusRequestValidationError{}
+
 // Validate checks the field values on IdRequest with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -144,6 +365,112 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = IdRequestValidationError{}
+
+// Validate checks the field values on CreateUserCouponRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateUserCouponRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateUserCouponRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateUserCouponRequestMultiError, or nil if none found.
+func (m *CreateUserCouponRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateUserCouponRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for UserId
+
+	// no validation rules for CouponId
+
+	if len(errors) > 0 {
+		return CreateUserCouponRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateUserCouponRequestMultiError is an error wrapping multiple validation
+// errors returned by CreateUserCouponRequest.ValidateAll() if the designated
+// constraints aren't met.
+type CreateUserCouponRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateUserCouponRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateUserCouponRequestMultiError) AllErrors() []error { return m }
+
+// CreateUserCouponRequestValidationError is the validation error returned by
+// CreateUserCouponRequest.Validate if the designated constraints aren't met.
+type CreateUserCouponRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateUserCouponRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateUserCouponRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateUserCouponRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateUserCouponRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateUserCouponRequestValidationError) ErrorName() string {
+	return "CreateUserCouponRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateUserCouponRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateUserCouponRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateUserCouponRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateUserCouponRequestValidationError{}
 
 // Validate checks the field values on Coupons with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
