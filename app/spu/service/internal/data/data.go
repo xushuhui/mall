@@ -1,46 +1,44 @@
 package data
 
 import (
-	"mall-go/app/spu/service/internal/conf"
-	"mall-go/app/spu/service/internal/data/model"
-
+	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"mall-go/app/spu/service/internal/conf"
+	"time"
 )
 
-var ProviderSet = wire.NewSet(NewData, NewEntClient, NewSkuRepo, NewSpuRepo)
+var ProviderSet = wire.NewSet(NewData, NewMongo, NewSkuRepo, NewSpuRepo)
 
 // Data .
 type Data struct {
-	db  *model.Client
 	log *log.Helper
-	//rdb *redis.Client
-}
-
-func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
-	l := log.NewHelper(logger)
-	client, err := model.Open(
-		conf.Database.Driver,
-		conf.Database.Source,
-	)
-	if err != nil {
-		l.Fatalf("failed opening connection to db: %v", err)
-	}
-	client = client.Debug()
-
-	// if err := client.Schema.Create(context.Background(), migrate.WithForeignKeys(false)); err != nil {
-	// 	l.Fatalf("failed creating schema resources: %v", err)
-	// }
-	return client
+	db  *mongo.Database
 }
 
 // NewData .
-func NewData(entClient *model.Client, logger log.Logger) (*Data, func(), error) {
+func NewData(db *mongo.Database, logger log.Logger) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
 	return &Data{
-		db:  entClient,
+		db:  db,
 		log: log.NewHelper(logger),
 	}, cleanup, nil
+}
+
+func NewMongo(conf *conf.Data) *mongo.Database {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(conf.Mongodb.Uri))
+	if err != nil {
+		panic(err)
+	}
+	err = client.Ping(ctx, readpref.Primary())
+	if err != nil {
+		panic(err)
+	}
+	return client.Database(conf.Mongodb.Database)
 }

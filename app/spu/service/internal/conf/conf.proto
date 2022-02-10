@@ -8,7 +8,6 @@ import "google/protobuf/duration.proto";
 message Bootstrap {
   Server server = 1;
   Data data = 2;
-
 }
 
 message Server {
@@ -27,17 +26,19 @@ message Server {
 }
 
 message Data {
-  message Database {
-    string driver = 1;
-    string source = 2;
+
+  message MongoDB {
+    string uri = 1;
+    string database = 2;
   }
+
   message Redis {
     string network = 1;
     string addr = 2;
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
   }
-  Database database = 1;
+  MongoDB mongodb = 1;
   Redis redis = 2;
 }
 

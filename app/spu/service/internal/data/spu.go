@@ -3,7 +3,6 @@ package data
 import (
 	"context"
 	"mall-go/app/spu/service/internal/biz"
-	"mall-go/app/spu/service/internal/data/model/spu"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -27,18 +26,18 @@ func (r *spuRepo) GetSpuByCategory(ctx context.Context, id int64) (Spus []biz.Sp
 	return
 }
 func (r *spuRepo) ListSpuByIds(ctx context.Context, ids []int64) (spuList []biz.Spu, err error) {
-	pos, err := r.data.db.Spu.Query().Where(spu.IDIn(ids...)).All(ctx)
-	if err != nil {
-		return
-	}
-	for _, po := range pos {
-		spuList = append(spuList, biz.Spu{
-			Id:       po.ID,
-			Title:    po.Title,
-			Subtitle: po.Subtitle,
-			Img:      po.Img,
-		})
-	}
+	//pos, err := r.data.db.Spu.Query().Where(spu.IDIn(ids...)).All(ctx)
+	//if err != nil {
+	//	return
+	//}
+	//for _, po := range pos {
+	//	spuList = append(spuList, biz.Spu{
+	//		Id:       po.ID,
+	//		Title:    po.Title,
+	//		Subtitle: po.Subtitle,
+	//		Img:      po.Img,
+	//	})
+	//}
 
 	return
 }

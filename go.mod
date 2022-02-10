@@ -14,9 +14,10 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/hashicorp/consul/api v1.9.1
 	github.com/medivhzhan/weapp/v2 v2.4.2
-	github.com/pkg/errors v0.8.1
+	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.7.0
 	github.com/xushuhui/goal v0.1.0
+	go.mongodb.org/mongo-driver v1.8.3
 	golang.org/x/sys v0.0.0-20211124211545-fe61309f8881 // indirect
 	google.golang.org/genproto v0.0.0-20211118181313-81c1377c94b1
 	google.golang.org/grpc v1.42.0

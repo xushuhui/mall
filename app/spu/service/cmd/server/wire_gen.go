@@ -20,8 +20,8 @@ import (
 
 // initApp init kratos application.
 func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
-	client := data.NewEntClient(confData, logger)
-	dataData, cleanup, err := data.NewData(client, logger)
+	database := data.NewMongo(confData)
+	dataData, cleanup, err := data.NewData(database, logger)
 	if err != nil {
 		return nil, nil, err
 	}
