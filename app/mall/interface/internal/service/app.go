@@ -31,7 +31,7 @@ func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityU
 	}
 }
 
-func (s *MallInterface) GetBannerById(ctx context.Context, in *mall.BannerByIdRequest) (out *mall.Banner, err error) {
+func (s *MallInterface) GetBannerById(ctx context.Context, in *mall.IdRequest) (out *mall.Banner, err error) {
 	b, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
