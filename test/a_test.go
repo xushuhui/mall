@@ -8,6 +8,7 @@ import (
 type IPerson interface {
 	Say() string
 }
+
 type liyuanqi struct{}
 
 //
@@ -19,6 +20,7 @@ func NewPerson() IPerson {
 // 没有像Java/PHP 要implements关键字指定实现哪个接口
 func (liyuanqi) Say() string {
 	fmt.Println(" say ", "liyuanqi")
+
 	return "liyuanqi"
 }
 
