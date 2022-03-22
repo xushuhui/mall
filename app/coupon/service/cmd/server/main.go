@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
-	"os"
+	"go.uber.org/zap/zapcore"
+	"mall-go/pkg/utils"
 
 	"mall-go/app/coupon/service/internal/conf"
 
+	zaplog "github.com/go-kratos/kratos/contrib/log/zap/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
@@ -14,6 +16,7 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"go.uber.org/zap"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -43,12 +46,41 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server, rr registry.Reg
 			hs,
 			gs,
 		),
-		kratos.Registrar(rr),
+		//kratos.Registrar(rr),
 	)
 }
-func main() {
-	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
+func newLogger() log.Logger {
+	var tops = []utils.TeeOption{
+		{
+			Filename: "./access.log",
+			Ropt: utils.RotateOptions{
+				MaxSize:    1,
+				MaxAge:     10,
+				MaxBackups: 10,
+			},
+			Lef: func(level zapcore.Level) bool {
+				return level >= zapcore.InfoLevel
+			},
+		},
+		{
+			Filename: "./error.log",
+			Ropt: utils.RotateOptions{
+				MaxSize:    1,
+				MaxAge:     10,
+				MaxBackups: 10,
+			},
+
+			Lef: func(level zapcore.Level) bool {
+				return level >= zapcore.WarnLevel
+			},
+		},
+	}
+
+	zlogger := zaplog.NewLogger(utils.NewTeeWithRotate(tops, zap.AddCaller()))
+
+	defer func() { _ = zlogger.Sync() }()
+
+	logger := log.With(zlogger,
 		"ts", log.DefaultTimestamp,
 		"caller", log.DefaultCaller,
 		"service.id", id,
@@ -57,6 +89,11 @@ func main() {
 		"trace_id", tracing.TraceID(),
 		"span_id", tracing.SpanID(),
 	)
+	return logger
+}
+func main() {
+	flag.Parse()
+	logger := newLogger()
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
