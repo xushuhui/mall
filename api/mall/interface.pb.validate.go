@@ -35,6 +35,214 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on PageReply with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PageReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PageReply with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PageReplyMultiError, or nil
+// if none found.
+func (m *PageReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PageReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Total
+
+	// no validation rules for Page
+
+	// no validation rules for Count
+
+	if len(errors) > 0 {
+		return PageReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// PageReplyMultiError is an error wrapping multiple validation errors returned
+// by PageReply.ValidateAll() if the designated constraints aren't met.
+type PageReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PageReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PageReplyMultiError) AllErrors() []error { return m }
+
+// PageReplyValidationError is the validation error returned by
+// PageReply.Validate if the designated constraints aren't met.
+type PageReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PageReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PageReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PageReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PageReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PageReplyValidationError) ErrorName() string { return "PageReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PageReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPageReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PageReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PageReplyValidationError{}
+
+// Validate checks the field values on PageRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PageRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PageRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PageRequestMultiError, or
+// nil if none found.
+func (m *PageRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PageRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Page
+
+	// no validation rules for Count
+
+	if len(errors) > 0 {
+		return PageRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// PageRequestMultiError is an error wrapping multiple validation errors
+// returned by PageRequest.ValidateAll() if the designated constraints aren't met.
+type PageRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PageRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PageRequestMultiError) AllErrors() []error { return m }
+
+// PageRequestValidationError is the validation error returned by
+// PageRequest.Validate if the designated constraints aren't met.
+type PageRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PageRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PageRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PageRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PageRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PageRequestValidationError) ErrorName() string { return "PageRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PageRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPageRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PageRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PageRequestValidationError{}
+
 // Validate checks the field values on Banner with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -103,6 +311,7 @@ func (m *Banner) validate(all bool) error {
 	if len(errors) > 0 {
 		return BannerMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -213,6 +422,7 @@ func (m *BannerItem) validate(all bool) error {
 	if len(errors) > 0 {
 		return BannerItemMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -286,22 +496,22 @@ var _ interface {
 	ErrorName() string
 } = BannerItemValidationError{}
 
-// Validate checks the field values on BannerByIdRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *BannerByIdRequest) Validate() error {
+// Validate checks the field values on IdRequest with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *IdRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on BannerByIdRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// BannerByIdRequestMultiError, or nil if none found.
-func (m *BannerByIdRequest) ValidateAll() error {
+// ValidateAll checks the field values on IdRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in IdRequestMultiError, or nil
+// if none found.
+func (m *IdRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *BannerByIdRequest) validate(all bool) error {
+func (m *IdRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -311,18 +521,18 @@ func (m *BannerByIdRequest) validate(all bool) error {
 	// no validation rules for Id
 
 	if len(errors) > 0 {
-		return BannerByIdRequestMultiError(errors)
+		return IdRequestMultiError(errors)
 	}
+
 	return nil
 }
 
-// BannerByIdRequestMultiError is an error wrapping multiple validation errors
-// returned by BannerByIdRequest.ValidateAll() if the designated constraints
-// aren't met.
-type BannerByIdRequestMultiError []error
+// IdRequestMultiError is an error wrapping multiple validation errors returned
+// by IdRequest.ValidateAll() if the designated constraints aren't met.
+type IdRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m BannerByIdRequestMultiError) Error() string {
+func (m IdRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -331,11 +541,11 @@ func (m BannerByIdRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m BannerByIdRequestMultiError) AllErrors() []error { return m }
+func (m IdRequestMultiError) AllErrors() []error { return m }
 
-// BannerByIdRequestValidationError is the validation error returned by
-// BannerByIdRequest.Validate if the designated constraints aren't met.
-type BannerByIdRequestValidationError struct {
+// IdRequestValidationError is the validation error returned by
+// IdRequest.Validate if the designated constraints aren't met.
+type IdRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -343,24 +553,22 @@ type BannerByIdRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e BannerByIdRequestValidationError) Field() string { return e.field }
+func (e IdRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e BannerByIdRequestValidationError) Reason() string { return e.reason }
+func (e IdRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e BannerByIdRequestValidationError) Cause() error { return e.cause }
+func (e IdRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e BannerByIdRequestValidationError) Key() bool { return e.key }
+func (e IdRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e BannerByIdRequestValidationError) ErrorName() string {
-	return "BannerByIdRequestValidationError"
-}
+func (e IdRequestValidationError) ErrorName() string { return "IdRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e BannerByIdRequestValidationError) Error() string {
+func (e IdRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -372,14 +580,14 @@ func (e BannerByIdRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sBannerByIdRequest.%s: %s%s",
+		"invalid %sIdRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = BannerByIdRequestValidationError{}
+var _ error = IdRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -387,7 +595,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = BannerByIdRequestValidationError{}
+} = IdRequestValidationError{}
 
 // Validate checks the field values on BannerByNameRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -416,6 +624,7 @@ func (m *BannerByNameRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return BannerByNameRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -519,6 +728,7 @@ func (m *ThemeByNamesRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return ThemeByNamesRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -622,6 +832,7 @@ func (m *ThemeWithSpuRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return ThemeWithSpuRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -725,6 +936,7 @@ func (m *ActivityByNameRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return ActivityByNameRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -828,6 +1040,7 @@ func (m *ActivityWithCouponRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return ActivityWithCouponRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -962,6 +1175,7 @@ func (m *Themes) validate(all bool) error {
 	if len(errors) > 0 {
 		return ThemesMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1077,6 +1291,7 @@ func (m *Theme) validate(all bool) error {
 	if len(errors) > 0 {
 		return ThemeMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1227,6 +1442,7 @@ func (m *ThemeSpu) validate(all bool) error {
 	if len(errors) > 0 {
 		return ThemeSpuMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1348,6 +1564,7 @@ func (m *Spu) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1448,6 +1665,7 @@ func (m *TagByTypeRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return TagByTypeRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1580,6 +1798,7 @@ func (m *Tags) validate(all bool) error {
 	if len(errors) > 0 {
 		return TagsMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1712,6 +1931,7 @@ func (m *GridCategories) validate(all bool) error {
 	if len(errors) > 0 {
 		return GridCategoriesMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1879,6 +2099,7 @@ func (m *AllCategory) validate(all bool) error {
 	if len(errors) > 0 {
 		return AllCategoryMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -1989,6 +2210,7 @@ func (m *Category) validate(all bool) error {
 	if len(errors) > 0 {
 		return CategoryMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2101,6 +2323,7 @@ func (m *Activity) validate(all bool) error {
 	if len(errors) > 0 {
 		return ActivityMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2247,6 +2470,7 @@ func (m *ActivityCoupon) validate(all bool) error {
 	if len(errors) > 0 {
 		return ActivityCouponMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2348,6 +2572,7 @@ func (m *CouponByCategoryRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return CouponByCategoryRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2451,6 +2676,7 @@ func (m *MyCouponByStatusRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return MyCouponByStatusRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2554,6 +2780,7 @@ func (m *CollectCouponRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return CollectCouponRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2688,6 +2915,7 @@ func (m *Coupons) validate(all bool) error {
 	if len(errors) > 0 {
 		return CouponsMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2808,6 +3036,7 @@ func (m *CouponBo) validate(all bool) error {
 	if len(errors) > 0 {
 		return CouponBoMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -2908,6 +3137,7 @@ func (m *CancelOrderRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return CancelOrderRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3011,6 +3241,7 @@ func (m *GetOrderRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return GetOrderRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3113,6 +3344,7 @@ func (m *SkuInfo) validate(all bool) error {
 	if len(errors) > 0 {
 		return SkuInfoMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3227,6 +3459,7 @@ func (m *OrderAddress) validate(all bool) error {
 	if len(errors) > 0 {
 		return OrderAddressMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3394,6 +3627,7 @@ func (m *PlaceOrderRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return PlaceOrderRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3497,6 +3731,7 @@ func (m *PlaceOrderReply) validate(all bool) error {
 	if len(errors) > 0 {
 		return PlaceOrderReplyMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3627,6 +3862,7 @@ func (m *ListUserOrdersRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return ListUserOrdersRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3759,6 +3995,7 @@ func (m *ListUserOrdersReply) validate(all bool) error {
 	if len(errors) > 0 {
 		return ListUserOrdersReplyMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3866,6 +4103,7 @@ func (m *SearchRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return SearchRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -3967,6 +4205,7 @@ func (m *SpuByIdRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuByIdRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4068,6 +4307,7 @@ func (m *SpuByCategoryRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuByCategoryRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4299,6 +4539,7 @@ func (m *SpuDetail) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuDetailMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4438,6 +4679,7 @@ func (m *SpuPage) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuPageMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4570,6 +4812,7 @@ func (m *SaleExplains) validate(all bool) error {
 	if len(errors) > 0 {
 		return SaleExplainsMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4672,6 +4915,7 @@ func (m *LoginRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return LoginRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4772,6 +5016,7 @@ func (m *MiniappLoginRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return MiniappLoginRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4875,6 +5120,7 @@ func (m *VerifyTokenRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return VerifyTokenRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -4976,6 +5222,7 @@ func (m *UpdateInfoRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return UpdateInfoRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5079,6 +5326,7 @@ func (m *VerifyTokenReply) validate(all bool) error {
 	if len(errors) > 0 {
 		return VerifyTokenReplyMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5180,6 +5428,7 @@ func (m *LoginReply) validate(all bool) error {
 	if len(errors) > 0 {
 		return LoginReplyMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5282,6 +5531,7 @@ func (m *ChargeRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return ChargeRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5381,6 +5631,7 @@ func (m *CreateAddressRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return CreateAddressRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5484,6 +5735,7 @@ func (m *DeleteAddressRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return DeleteAddressRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5587,6 +5839,7 @@ func (m *GetAddressRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return GetAddressRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5690,6 +5943,7 @@ func (m *SetDefaultAddrRequest) validate(all bool) error {
 	if len(errors) > 0 {
 		return SetDefaultAddrRequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5801,6 +6055,7 @@ func (m *Tags_Tag) validate(all bool) error {
 	if len(errors) > 0 {
 		return Tags_TagMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -5911,6 +6166,7 @@ func (m *GridCategories_GridCategory) validate(all bool) error {
 	if len(errors) > 0 {
 		return GridCategories_GridCategoryMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -6021,6 +6277,7 @@ func (m *SpuDetail_Specs) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuDetail_SpecsMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -6176,6 +6433,7 @@ func (m *SpuDetail_SkuList) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuDetail_SkuListMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -6283,6 +6541,7 @@ func (m *SpuDetail_SpuImgList) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuDetail_SpuImgListMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -6392,6 +6651,7 @@ func (m *SpuDetail_SpuDetailImgList) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuDetail_SpuDetailImgListMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -6517,6 +6777,7 @@ func (m *SpuPage_Items) validate(all bool) error {
 	if len(errors) > 0 {
 		return SpuPage_ItemsMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -6628,6 +6889,7 @@ func (m *SaleExplains_SaleExplain) validate(all bool) error {
 	if len(errors) > 0 {
 		return SaleExplains_SaleExplainMultiError(errors)
 	}
+
 	return nil
 }
 
