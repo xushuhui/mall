@@ -95,6 +95,15 @@ func TestListGridCategory(t *testing.T) {
 	assert.Equal(t, len(reply.Category), 6)
 }
 
+func TestGetTagByType(t *testing.T) {
+	reply, err := appClient.GetTagByType(context.Background(), &app.TypeRequest{Type: 1})
+	if err != nil {
+		log.Fatal(err)
+	}
+	t.Log(reply)
+	assert.NotEmpty(t, reply)
+}
+
 func TestMain(m *testing.M) {
 	var err error
 	appconn, err := transhttp.NewClient(

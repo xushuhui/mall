@@ -17,11 +17,12 @@ type AppService struct {
 	tu *biz.ThemeUsecase
 	au *biz.ActivityUsecase
 	cu *biz.CateGoryUsecase
+	ta *biz.TagUsecase
 
 	log *log.Helper
 }
 
-func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CateGoryUsecase,
+func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CateGoryUsecase, ta *biz.TagUsecase,
 	logger log.Logger) *AppService {
 
 	return &AppService{
@@ -29,6 +30,7 @@ func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.Activity
 		tu:  tu,
 		au:  au,
 		cu:  cu,
+		ta:  ta,
 		log: log.NewHelper(logger),
 	}
 }
@@ -232,5 +234,20 @@ func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (o
 	return out, nil
 }
 func (s *AppService) GetTagByType(ctx context.Context, in *service.TypeRequest) (out *service.Tags, err error) {
-	return
+	rv, err := s.ta.GetTagByType(ctx, int(in.Type))
+	if err != nil {
+		return
+	}
+	var tags []*service.Tags_Tag
+	for _, v := range rv {
+		tags = append(tags, &service.Tags_Tag{
+			Id:          v.Id,
+			Title:       v.Title,
+			Highlight:   uint32(v.Highlight),
+			Description: v.Description,
+			Type:        uint32(v.Type),
+		})
+	}
+	out = &service.Tags{Tag: tags}
+	return out, nil
 }

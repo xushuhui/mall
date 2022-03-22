@@ -99,6 +99,19 @@ func (f RefundFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, 
 	return f(ctx, mv)
 }
 
+// The TagFunc type is an adapter to allow the use of ordinary
+// function as Tag mutator.
+type TagFunc func(context.Context, *model.TagMutation) (model.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TagFunc) Mutate(ctx context.Context, m model.Mutation) (model.Value, error) {
+	mv, ok := m.(*model.TagMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *model.TagMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The ThemeFunc type is an adapter to allow the use of ordinary
 // function as Theme mutator.
 type ThemeFunc func(context.Context, *model.ThemeMutation) (model.Value, error)

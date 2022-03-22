@@ -16,6 +16,7 @@ import (
 	"mall-go/app/app/service/internal/data/model/charge"
 	"mall-go/app/app/service/internal/data/model/gridcategory"
 	"mall-go/app/app/service/internal/data/model/refund"
+	"mall-go/app/app/service/internal/data/model/tag"
 	"mall-go/app/app/service/internal/data/model/theme"
 	"mall-go/app/app/service/internal/data/model/themespu"
 
@@ -43,6 +44,8 @@ type Client struct {
 	GridCategory *GridCategoryClient
 	// Refund is the client for interacting with the Refund builders.
 	Refund *RefundClient
+	// Tag is the client for interacting with the Tag builders.
+	Tag *TagClient
 	// Theme is the client for interacting with the Theme builders.
 	Theme *ThemeClient
 	// ThemeSpu is the client for interacting with the ThemeSpu builders.
@@ -67,6 +70,7 @@ func (c *Client) init() {
 	c.Charge = NewChargeClient(c.config)
 	c.GridCategory = NewGridCategoryClient(c.config)
 	c.Refund = NewRefundClient(c.config)
+	c.Tag = NewTagClient(c.config)
 	c.Theme = NewThemeClient(c.config)
 	c.ThemeSpu = NewThemeSpuClient(c.config)
 }
@@ -109,6 +113,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Charge:       NewChargeClient(cfg),
 		GridCategory: NewGridCategoryClient(cfg),
 		Refund:       NewRefundClient(cfg),
+		Tag:          NewTagClient(cfg),
 		Theme:        NewThemeClient(cfg),
 		ThemeSpu:     NewThemeSpuClient(cfg),
 	}, nil
@@ -136,6 +141,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Charge:       NewChargeClient(cfg),
 		GridCategory: NewGridCategoryClient(cfg),
 		Refund:       NewRefundClient(cfg),
+		Tag:          NewTagClient(cfg),
 		Theme:        NewThemeClient(cfg),
 		ThemeSpu:     NewThemeSpuClient(cfg),
 	}, nil
@@ -174,6 +180,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Charge.Use(hooks...)
 	c.GridCategory.Use(hooks...)
 	c.Refund.Use(hooks...)
+	c.Tag.Use(hooks...)
 	c.Theme.Use(hooks...)
 	c.ThemeSpu.Use(hooks...)
 }
@@ -870,6 +877,96 @@ func (c *RefundClient) GetX(ctx context.Context, id int64) *Refund {
 // Hooks returns the client hooks.
 func (c *RefundClient) Hooks() []Hook {
 	return c.hooks.Refund
+}
+
+// TagClient is a client for the Tag schema.
+type TagClient struct {
+	config
+}
+
+// NewTagClient returns a client for the Tag from the given config.
+func NewTagClient(c config) *TagClient {
+	return &TagClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tag.Hooks(f(g(h())))`.
+func (c *TagClient) Use(hooks ...Hook) {
+	c.hooks.Tag = append(c.hooks.Tag, hooks...)
+}
+
+// Create returns a create builder for Tag.
+func (c *TagClient) Create() *TagCreate {
+	mutation := newTagMutation(c.config, OpCreate)
+	return &TagCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Tag entities.
+func (c *TagClient) CreateBulk(builders ...*TagCreate) *TagCreateBulk {
+	return &TagCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Tag.
+func (c *TagClient) Update() *TagUpdate {
+	mutation := newTagMutation(c.config, OpUpdate)
+	return &TagUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TagClient) UpdateOne(t *Tag) *TagUpdateOne {
+	mutation := newTagMutation(c.config, OpUpdateOne, withTag(t))
+	return &TagUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TagClient) UpdateOneID(id int64) *TagUpdateOne {
+	mutation := newTagMutation(c.config, OpUpdateOne, withTagID(id))
+	return &TagUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Tag.
+func (c *TagClient) Delete() *TagDelete {
+	mutation := newTagMutation(c.config, OpDelete)
+	return &TagDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *TagClient) DeleteOne(t *Tag) *TagDeleteOne {
+	return c.DeleteOneID(t.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *TagClient) DeleteOneID(id int64) *TagDeleteOne {
+	builder := c.Delete().Where(tag.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TagDeleteOne{builder}
+}
+
+// Query returns a query builder for Tag.
+func (c *TagClient) Query() *TagQuery {
+	return &TagQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Tag entity by its id.
+func (c *TagClient) Get(ctx context.Context, id int64) (*Tag, error) {
+	return c.Query().Where(tag.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TagClient) GetX(ctx context.Context, id int64) *Tag {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *TagClient) Hooks() []Hook {
+	return c.hooks.Tag
 }
 
 // ThemeClient is a client for the Theme schema.

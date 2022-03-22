@@ -160,6 +160,23 @@ var (
 		Columns:    RefundsColumns,
 		PrimaryKey: []*schema.Column{RefundsColumns[0]},
 	}
+	// TagColumns holds the columns for the "tag" table.
+	TagColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "delete_time", Type: field.TypeTime, Nullable: true},
+		{Name: "title", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString},
+		{Name: "highlight", Type: field.TypeInt},
+		{Name: "type", Type: field.TypeInt},
+	}
+	// TagTable holds the schema information for the "tag" table.
+	TagTable = &schema.Table{
+		Name:       "tag",
+		Columns:    TagColumns,
+		PrimaryKey: []*schema.Column{TagColumns[0]},
+	}
 	// ThemeColumns holds the columns for the "theme" table.
 	ThemeColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
@@ -211,6 +228,7 @@ var (
 		ChargesTable,
 		GridCategoryTable,
 		RefundsTable,
+		TagTable,
 		ThemeTable,
 		ThemeSpuTable,
 	}
@@ -221,6 +239,9 @@ func init() {
 	CategoriesTable.ForeignKeys[0].RefTable = CategoriesTable
 	GridCategoryTable.Annotation = &entsql.Annotation{
 		Table: "grid_category",
+	}
+	TagTable.Annotation = &entsql.Annotation{
+		Table: "tag",
 	}
 	ThemeTable.Annotation = &entsql.Annotation{
 		Table: "theme",

@@ -6,5 +6,5 @@ import (
 
 // ProviderSet is biz providers.
 var ProviderSet = wire.NewSet(NewThemeUsecase,
-	NewBannerUsecase, NewActivityUsecase, NewCateGoryUsecase,
+	NewBannerUsecase, NewActivityUsecase, NewCateGoryUsecase, NewTagUsecase,
 )

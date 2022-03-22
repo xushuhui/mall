@@ -27,6 +27,9 @@ type GridCategory func(*sql.Selector)
 // Refund is the predicate function for refund builders.
 type Refund func(*sql.Selector)
 
+// Tag is the predicate function for tag builders.
+type Tag func(*sql.Selector)
+
 // Theme is the predicate function for theme builders.
 type Theme func(*sql.Selector)
 

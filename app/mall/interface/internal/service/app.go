@@ -15,11 +15,12 @@ type MallInterface struct {
 	tu *biz.ThemeUsecase
 	au *biz.ActivityUsecase
 	cu *biz.CategoryUsecase
+	gu *biz.TagUsecase
 
 	log *log.Helper
 }
 
-func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase,
+func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase, gu *biz.TagUsecase,
 	logger log.Logger) *MallInterface {
 
 	return &MallInterface{
@@ -27,6 +28,7 @@ func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityU
 		tu:  tu,
 		au:  au,
 		cu:  cu,
+		gu:  gu,
 		log: log.NewHelper(logger),
 	}
 }
@@ -245,7 +247,21 @@ func (s *MallInterface) GetGridCategory(ctx context.Context, in *emptypb.Empty) 
 	}, nil
 }
 func (s *MallInterface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
-	return
+	t, err := s.gu.GetTagByType(ctx, in.Type)
+	if err != nil {
+		return
+	}
+	var tags []*mall.Tags_Tag
+	for _, v := range t {
+		tags = append(tags, &mall.Tags_Tag{
+			Id:          v.Id,
+			Title:       v.Title,
+			Highlight:   v.Highlight,
+			Description: v.Description,
+			Type:        v.Type,
+		})
+	}
+	return &mall.Tags{Tag: tags}, nil
 }
 func (s *MallInterface) MiniappLogin(ctx context.Context, in *mall.MiniappLoginRequest) (out *mall.LoginReply, err error) {
 
