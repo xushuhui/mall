@@ -53,22 +53,14 @@ func newLogger() log.Logger {
 	var tops = []utils.TeeOption{
 		{
 			Filename: "./access.log",
-			Ropt: utils.RotateOptions{
-				MaxSize:    1,
-				MaxAge:     10,
-				MaxBackups: 10,
-			},
+			Ropt:     utils.DefaultRotate(),
 			Lef: func(level zapcore.Level) bool {
 				return level >= zapcore.InfoLevel
 			},
 		},
 		{
 			Filename: "./error.log",
-			Ropt: utils.RotateOptions{
-				MaxSize:    1,
-				MaxAge:     10,
-				MaxBackups: 10,
-			},
+			Ropt:     utils.DefaultRotate(),
 
 			Lef: func(level zapcore.Level) bool {
 				return level >= zapcore.WarnLevel

@@ -1,9 +1,9 @@
 package utils
 
 import (
+	"github.com/lestrrat/go-file-rotatelogs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"os"
 	"time"
@@ -12,10 +12,15 @@ import (
 type Option = zap.Option
 
 type RotateOptions struct {
-	MaxSize    int
-	MaxAge     int
-	MaxBackups int
-	Compress   bool
+	MaxAge       time.Duration
+	RotationTime time.Duration
+}
+
+func DefaultRotate() RotateOptions {
+	return RotateOptions{
+		MaxAge:       time.Hour * 24 * 30,
+		RotationTime: time.Hour * 24,
+	}
 }
 
 type TeeOption struct {
@@ -34,17 +39,16 @@ func NewTeeWithRotate(tops []TeeOption, opts ...Option) *zap.Logger {
 
 	for _, top := range tops {
 
-		w := zapcore.AddSync(&lumberjack.Logger{
-			Filename:   top.Filename,
-			MaxSize:    top.Ropt.MaxSize,
-			MaxBackups: top.Ropt.MaxBackups,
-			MaxAge:     top.Ropt.MaxAge,
-			Compress:   top.Ropt.Compress,
-		})
+		r, _ := rotatelogs.New(
+			top.Filename+".%Y%m%d",
+			rotatelogs.WithLinkName(top.Filename),
+			rotatelogs.WithMaxAge(time.Hour*24*30),
+			rotatelogs.WithRotationTime(time.Hour*24),
+		)
 
 		core := zapcore.NewCore(
 			zapcore.NewJSONEncoder(cfg),
-			zapcore.AddSync(w),
+			zapcore.AddSync(zapcore.AddSync(r)),
 			top.Lef,
 		)
 		cores = append(cores, core)
