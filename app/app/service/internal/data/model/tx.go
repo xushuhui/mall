@@ -26,6 +26,8 @@ type Tx struct {
 	GridCategory *GridCategoryClient
 	// Refund is the client for interacting with the Refund builders.
 	Refund *RefundClient
+	// Tag is the client for interacting with the Tag builders.
+	Tag *TagClient
 	// Theme is the client for interacting with the Theme builders.
 	Theme *ThemeClient
 	// ThemeSpu is the client for interacting with the ThemeSpu builders.
@@ -172,6 +174,7 @@ func (tx *Tx) init() {
 	tx.Charge = NewChargeClient(tx.config)
 	tx.GridCategory = NewGridCategoryClient(tx.config)
 	tx.Refund = NewRefundClient(tx.config)
+	tx.Tag = NewTagClient(tx.config)
 	tx.Theme = NewThemeClient(tx.config)
 	tx.ThemeSpu = NewThemeSpuClient(tx.config)
 }

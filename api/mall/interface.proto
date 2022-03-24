@@ -238,7 +238,7 @@ message Spu {
   string tags = 11;
   int32 online = 13;
 }
-message TagByTypeRequest { string type = 1; }
+message TagByTypeRequest { int32 type = 1; }
 
 message Tags {
   message Tag {
