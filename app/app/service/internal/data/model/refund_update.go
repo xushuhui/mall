@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/refund"
@@ -611,7 +612,7 @@ func (ruo *RefundUpdateOne) sqlSave(ctx context.Context) (_node *Refund, err err
 	}
 	id, ok := ruo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Refund.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "Refund.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := ruo.fields; len(fields) > 0 {

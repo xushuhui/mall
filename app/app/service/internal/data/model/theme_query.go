@@ -131,53 +131,8 @@ func (tq *ThemeQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last Theme entity from the query.
-// Returns a *NotFoundError when no Theme was found.
-func (tq *ThemeQuery) Last(ctx context.Context) (*Theme, error) {
-	nodes, err := tq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{theme.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (tq *ThemeQuery) LastX(ctx context.Context) *Theme {
-	node, err := tq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last Theme ID from the query.
-// Returns a *NotFoundError when no Theme ID was found.
-func (tq *ThemeQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = tq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{theme.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (tq *ThemeQuery) LastIDX(ctx context.Context) int64 {
-	id, err := tq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single Theme entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Theme entity is not found.
+// Returns a *NotSingularError when more than one Theme entity is found.
 // Returns a *NotFoundError when no Theme entities are found.
 func (tq *ThemeQuery) Only(ctx context.Context) (*Theme, error) {
 	nodes, err := tq.Limit(2).All(ctx)
@@ -204,7 +159,7 @@ func (tq *ThemeQuery) OnlyX(ctx context.Context) *Theme {
 }
 
 // OnlyID is like Only, but returns the only Theme ID in the query.
-// Returns a *NotSingularError when exactly one Theme ID is not found.
+// Returns a *NotSingularError when more than one Theme ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (tq *ThemeQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -314,8 +269,9 @@ func (tq *ThemeQuery) Clone() *ThemeQuery {
 		predicates:   append([]predicate.Theme{}, tq.predicates...),
 		withThemeSpu: tq.withThemeSpu.Clone(),
 		// clone intermediate query.
-		sql:  tq.sql.Clone(),
-		path: tq.path,
+		sql:    tq.sql.Clone(),
+		path:   tq.path,
+		unique: tq.unique,
 	}
 }
 
@@ -449,6 +405,10 @@ func (tq *ThemeQuery) sqlAll(ctx context.Context) ([]*Theme, error) {
 
 func (tq *ThemeQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tq.querySpec()
+	_spec.Node.Columns = tq.fields
+	if len(tq.fields) > 0 {
+		_spec.Unique = tq.unique != nil && *tq.unique
+	}
 	return sqlgraph.CountNodes(ctx, tq.driver, _spec)
 }
 
@@ -519,6 +479,9 @@ func (tq *ThemeQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tq.sql != nil {
 		selector = tq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if tq.unique != nil && *tq.unique {
+		selector.Distinct()
 	}
 	for _, p := range tq.predicates {
 		p(selector)
@@ -798,9 +761,7 @@ func (tgb *ThemeGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range tgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(tgb.fields...)...)

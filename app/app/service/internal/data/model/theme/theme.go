@@ -42,7 +42,7 @@ const (
 	// ThemeSpuTable is the table that holds the theme_spu relation/edge.
 	ThemeSpuTable = "theme_spu"
 	// ThemeSpuInverseTable is the table name for the ThemeSpu entity.
-	// It exists in this package in order to avoid lower111 circular dependency with the "themespu" package.
+	// It exists in this package in order to avoid circular dependency with the "themespu" package.
 	ThemeSpuInverseTable = "theme_spu"
 	// ThemeSpuColumn is the table column denoting the theme_spu relation/edge.
 	ThemeSpuColumn = "theme_id"

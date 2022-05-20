@@ -1,7 +1,7 @@
 package server
 
 import (
-	"mall-go/api/mall"
+	mall"mall-go/api/mall/interface"
 	"mall-go/app/mall/interface/internal/conf"
 	"mall-go/app/mall/interface/internal/service"
 

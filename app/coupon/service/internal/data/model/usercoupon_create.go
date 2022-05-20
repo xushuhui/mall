@@ -190,19 +190,19 @@ func (ucc *UserCouponCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ucc *UserCouponCreate) check() error {
 	if _, ok := ucc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "UserCoupon.create_time"`)}
 	}
 	if _, ok := ucc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "UserCoupon.update_time"`)}
 	}
 	if _, ok := ucc.mutation.UserID(); !ok {
-		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "user_id"`)}
+		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "UserCoupon.user_id"`)}
 	}
 	if _, ok := ucc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`model: missing required field "status"`)}
+		return &ValidationError{Name: "status", err: errors.New(`model: missing required field "UserCoupon.status"`)}
 	}
 	if _, ok := ucc.mutation.OrderID(); !ok {
-		return &ValidationError{Name: "order_id", err: errors.New(`model: missing required field "order_id"`)}
+		return &ValidationError{Name: "order_id", err: errors.New(`model: missing required field "UserCoupon.order_id"`)}
 	}
 	return nil
 }

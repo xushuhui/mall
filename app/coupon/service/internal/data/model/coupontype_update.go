@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/coupon/service/internal/data/model/coupontype"
 	"mall-go/app/coupon/service/internal/data/model/predicate"
@@ -370,7 +371,7 @@ func (ctuo *CouponTypeUpdateOne) sqlSave(ctx context.Context) (_node *CouponType
 	}
 	id, ok := ctuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing CouponType.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "CouponType.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := ctuo.fields; len(fields) > 0 {

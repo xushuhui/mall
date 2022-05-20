@@ -18,7 +18,7 @@ const (
 	// ThemeTable is the table that holds the theme relation/edge.
 	ThemeTable = "theme_spu"
 	// ThemeInverseTable is the table name for the Theme entity.
-	// It exists in this package in order to avoid lower111 circular dependency with the "theme" package.
+	// It exists in this package in order to avoid circular dependency with the "theme" package.
 	ThemeInverseTable = "theme"
 	// ThemeColumn is the table column denoting the theme relation/edge.
 	ThemeColumn = "theme_id"

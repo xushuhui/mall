@@ -222,31 +222,31 @@ func (cc *CategoryCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (cc *CategoryCreate) check() error {
 	if _, ok := cc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "Category.create_time"`)}
 	}
 	if _, ok := cc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "Category.update_time"`)}
 	}
 	if _, ok := cc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "Category.name"`)}
 	}
 	if _, ok := cc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "description"`)}
+		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "Category.description"`)}
 	}
 	if _, ok := cc.mutation.IsRoot(); !ok {
-		return &ValidationError{Name: "is_root", err: errors.New(`model: missing required field "is_root"`)}
+		return &ValidationError{Name: "is_root", err: errors.New(`model: missing required field "Category.is_root"`)}
 	}
 	if _, ok := cc.mutation.Img(); !ok {
-		return &ValidationError{Name: "img", err: errors.New(`model: missing required field "img"`)}
+		return &ValidationError{Name: "img", err: errors.New(`model: missing required field "Category.img"`)}
 	}
 	if _, ok := cc.mutation.Index(); !ok {
-		return &ValidationError{Name: "index", err: errors.New(`model: missing required field "index"`)}
+		return &ValidationError{Name: "index", err: errors.New(`model: missing required field "Category.index"`)}
 	}
 	if _, ok := cc.mutation.Online(); !ok {
-		return &ValidationError{Name: "online", err: errors.New(`model: missing required field "online"`)}
+		return &ValidationError{Name: "online", err: errors.New(`model: missing required field "Category.online"`)}
 	}
 	if _, ok := cc.mutation.Level(); !ok {
-		return &ValidationError{Name: "level", err: errors.New(`model: missing required field "level"`)}
+		return &ValidationError{Name: "level", err: errors.New(`model: missing required field "Category.level"`)}
 	}
 	return nil
 }

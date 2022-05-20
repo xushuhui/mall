@@ -130,53 +130,8 @@ func (tsq *ThemeSpuQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last ThemeSpu entity from the query.
-// Returns a *NotFoundError when no ThemeSpu was found.
-func (tsq *ThemeSpuQuery) Last(ctx context.Context) (*ThemeSpu, error) {
-	nodes, err := tsq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{themespu.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (tsq *ThemeSpuQuery) LastX(ctx context.Context) *ThemeSpu {
-	node, err := tsq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last ThemeSpu ID from the query.
-// Returns a *NotFoundError when no ThemeSpu ID was found.
-func (tsq *ThemeSpuQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = tsq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{themespu.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (tsq *ThemeSpuQuery) LastIDX(ctx context.Context) int64 {
-	id, err := tsq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single ThemeSpu entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one ThemeSpu entity is not found.
+// Returns a *NotSingularError when more than one ThemeSpu entity is found.
 // Returns a *NotFoundError when no ThemeSpu entities are found.
 func (tsq *ThemeSpuQuery) Only(ctx context.Context) (*ThemeSpu, error) {
 	nodes, err := tsq.Limit(2).All(ctx)
@@ -203,7 +158,7 @@ func (tsq *ThemeSpuQuery) OnlyX(ctx context.Context) *ThemeSpu {
 }
 
 // OnlyID is like Only, but returns the only ThemeSpu ID in the query.
-// Returns a *NotSingularError when exactly one ThemeSpu ID is not found.
+// Returns a *NotSingularError when more than one ThemeSpu ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (tsq *ThemeSpuQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -313,8 +268,9 @@ func (tsq *ThemeSpuQuery) Clone() *ThemeSpuQuery {
 		predicates: append([]predicate.ThemeSpu{}, tsq.predicates...),
 		withTheme:  tsq.withTheme.Clone(),
 		// clone intermediate query.
-		sql:  tsq.sql.Clone(),
-		path: tsq.path,
+		sql:    tsq.sql.Clone(),
+		path:   tsq.path,
+		unique: tsq.unique,
 	}
 }
 
@@ -449,6 +405,10 @@ func (tsq *ThemeSpuQuery) sqlAll(ctx context.Context) ([]*ThemeSpu, error) {
 
 func (tsq *ThemeSpuQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tsq.querySpec()
+	_spec.Node.Columns = tsq.fields
+	if len(tsq.fields) > 0 {
+		_spec.Unique = tsq.unique != nil && *tsq.unique
+	}
 	return sqlgraph.CountNodes(ctx, tsq.driver, _spec)
 }
 
@@ -519,6 +479,9 @@ func (tsq *ThemeSpuQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tsq.sql != nil {
 		selector = tsq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if tsq.unique != nil && *tsq.unique {
+		selector.Distinct()
 	}
 	for _, p := range tsq.predicates {
 		p(selector)
@@ -798,9 +761,7 @@ func (tsgb *ThemeSpuGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range tsgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(tsgb.fields...)...)

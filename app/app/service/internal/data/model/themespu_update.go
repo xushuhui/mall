@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/predicate"
 	"mall-go/app/app/service/internal/data/model/theme"
@@ -339,7 +340,7 @@ func (tsuo *ThemeSpuUpdateOne) sqlSave(ctx context.Context) (_node *ThemeSpu, er
 	}
 	id, ok := tsuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing ThemeSpu.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "ThemeSpu.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := tsuo.fields; len(fields) > 0 {

@@ -182,28 +182,28 @@ func (cc *ChargeCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (cc *ChargeCreate) check() error {
 	if _, ok := cc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "Charge.create_time"`)}
 	}
 	if _, ok := cc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "Charge.update_time"`)}
 	}
 	if _, ok := cc.mutation.UserID(); !ok {
-		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "user_id"`)}
+		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "Charge.user_id"`)}
 	}
 	if _, ok := cc.mutation.Amount(); !ok {
-		return &ValidationError{Name: "amount", err: errors.New(`model: missing required field "amount"`)}
+		return &ValidationError{Name: "amount", err: errors.New(`model: missing required field "Charge.amount"`)}
 	}
 	if _, ok := cc.mutation.ChargeNo(); !ok {
-		return &ValidationError{Name: "charge_no", err: errors.New(`model: missing required field "charge_no"`)}
+		return &ValidationError{Name: "charge_no", err: errors.New(`model: missing required field "Charge.charge_no"`)}
 	}
 	if _, ok := cc.mutation.TransactionID(); !ok {
-		return &ValidationError{Name: "transaction_id", err: errors.New(`model: missing required field "transaction_id"`)}
+		return &ValidationError{Name: "transaction_id", err: errors.New(`model: missing required field "Charge.transaction_id"`)}
 	}
 	if _, ok := cc.mutation.PayWay(); !ok {
-		return &ValidationError{Name: "pay_way", err: errors.New(`model: missing required field "pay_way"`)}
+		return &ValidationError{Name: "pay_way", err: errors.New(`model: missing required field "Charge.pay_way"`)}
 	}
 	if _, ok := cc.mutation.ClientType(); !ok {
-		return &ValidationError{Name: "client_type", err: errors.New(`model: missing required field "client_type"`)}
+		return &ValidationError{Name: "client_type", err: errors.New(`model: missing required field "Charge.client_type"`)}
 	}
 	return nil
 }

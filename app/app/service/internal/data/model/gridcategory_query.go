@@ -105,53 +105,8 @@ func (gcq *GridCategoryQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last GridCategory entity from the query.
-// Returns a *NotFoundError when no GridCategory was found.
-func (gcq *GridCategoryQuery) Last(ctx context.Context) (*GridCategory, error) {
-	nodes, err := gcq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{gridcategory.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (gcq *GridCategoryQuery) LastX(ctx context.Context) *GridCategory {
-	node, err := gcq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last GridCategory ID from the query.
-// Returns a *NotFoundError when no GridCategory ID was found.
-func (gcq *GridCategoryQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = gcq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{gridcategory.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (gcq *GridCategoryQuery) LastIDX(ctx context.Context) int64 {
-	id, err := gcq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single GridCategory entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one GridCategory entity is not found.
+// Returns a *NotSingularError when more than one GridCategory entity is found.
 // Returns a *NotFoundError when no GridCategory entities are found.
 func (gcq *GridCategoryQuery) Only(ctx context.Context) (*GridCategory, error) {
 	nodes, err := gcq.Limit(2).All(ctx)
@@ -178,7 +133,7 @@ func (gcq *GridCategoryQuery) OnlyX(ctx context.Context) *GridCategory {
 }
 
 // OnlyID is like Only, but returns the only GridCategory ID in the query.
-// Returns a *NotSingularError when exactly one GridCategory ID is not found.
+// Returns a *NotSingularError when more than one GridCategory ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (gcq *GridCategoryQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -287,8 +242,9 @@ func (gcq *GridCategoryQuery) Clone() *GridCategoryQuery {
 		order:      append([]OrderFunc{}, gcq.order...),
 		predicates: append([]predicate.GridCategory{}, gcq.predicates...),
 		// clone intermediate query.
-		sql:  gcq.sql.Clone(),
-		path: gcq.path,
+		sql:    gcq.sql.Clone(),
+		path:   gcq.path,
+		unique: gcq.unique,
 	}
 }
 
@@ -381,6 +337,10 @@ func (gcq *GridCategoryQuery) sqlAll(ctx context.Context) ([]*GridCategory, erro
 
 func (gcq *GridCategoryQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := gcq.querySpec()
+	_spec.Node.Columns = gcq.fields
+	if len(gcq.fields) > 0 {
+		_spec.Unique = gcq.unique != nil && *gcq.unique
+	}
 	return sqlgraph.CountNodes(ctx, gcq.driver, _spec)
 }
 
@@ -451,6 +411,9 @@ func (gcq *GridCategoryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if gcq.sql != nil {
 		selector = gcq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if gcq.unique != nil && *gcq.unique {
+		selector.Distinct()
 	}
 	for _, p := range gcq.predicates {
 		p(selector)
@@ -730,9 +693,7 @@ func (gcgb *GridCategoryGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range gcgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(gcgb.fields...)...)

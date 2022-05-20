@@ -182,28 +182,28 @@ func (ctc *CouponTemplateCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ctc *CouponTemplateCreate) check() error {
 	if _, ok := ctc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "CouponTemplate.create_time"`)}
 	}
 	if _, ok := ctc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "CouponTemplate.update_time"`)}
 	}
 	if _, ok := ctc.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "title"`)}
+		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "CouponTemplate.title"`)}
 	}
 	if _, ok := ctc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "description"`)}
+		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "CouponTemplate.description"`)}
 	}
 	if _, ok := ctc.mutation.FullMoney(); !ok {
-		return &ValidationError{Name: "full_money", err: errors.New(`model: missing required field "full_money"`)}
+		return &ValidationError{Name: "full_money", err: errors.New(`model: missing required field "CouponTemplate.full_money"`)}
 	}
 	if _, ok := ctc.mutation.Minus(); !ok {
-		return &ValidationError{Name: "minus", err: errors.New(`model: missing required field "minus"`)}
+		return &ValidationError{Name: "minus", err: errors.New(`model: missing required field "CouponTemplate.minus"`)}
 	}
 	if _, ok := ctc.mutation.Discount(); !ok {
-		return &ValidationError{Name: "discount", err: errors.New(`model: missing required field "discount"`)}
+		return &ValidationError{Name: "discount", err: errors.New(`model: missing required field "CouponTemplate.discount"`)}
 	}
 	if _, ok := ctc.mutation.GetType(); !ok {
-		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "type"`)}
+		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "CouponTemplate.type"`)}
 	}
 	return nil
 }

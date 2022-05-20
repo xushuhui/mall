@@ -176,25 +176,25 @@ func (gcc *GridCategoryCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (gcc *GridCategoryCreate) check() error {
 	if _, ok := gcc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "GridCategory.create_time"`)}
 	}
 	if _, ok := gcc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "GridCategory.update_time"`)}
 	}
 	if _, ok := gcc.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "title"`)}
+		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "GridCategory.title"`)}
 	}
 	if _, ok := gcc.mutation.Img(); !ok {
-		return &ValidationError{Name: "img", err: errors.New(`model: missing required field "img"`)}
+		return &ValidationError{Name: "img", err: errors.New(`model: missing required field "GridCategory.img"`)}
 	}
 	if _, ok := gcc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "GridCategory.name"`)}
 	}
 	if _, ok := gcc.mutation.CategoryID(); !ok {
-		return &ValidationError{Name: "category_id", err: errors.New(`model: missing required field "category_id"`)}
+		return &ValidationError{Name: "category_id", err: errors.New(`model: missing required field "GridCategory.category_id"`)}
 	}
 	if _, ok := gcc.mutation.RootCategoryID(); !ok {
-		return &ValidationError{Name: "root_category_id", err: errors.New(`model: missing required field "root_category_id"`)}
+		return &ValidationError{Name: "root_category_id", err: errors.New(`model: missing required field "GridCategory.root_category_id"`)}
 	}
 	return nil
 }

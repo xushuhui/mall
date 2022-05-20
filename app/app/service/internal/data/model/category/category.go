@@ -38,13 +38,13 @@ const (
 	// EdgeChildren holds the string denoting the children edge name in mutations.
 	EdgeChildren = "children"
 	// Table holds the table name of the category in the database.
-	Table = "category"
+	Table = "categories"
 	// ParentTable is the table that holds the parent relation/edge.
-	ParentTable = "category"
+	ParentTable = "categories"
 	// ParentColumn is the table column denoting the parent relation/edge.
 	ParentColumn = "parent_id"
 	// ChildrenTable is the table that holds the children relation/edge.
-	ChildrenTable = "category"
+	ChildrenTable = "categories"
 	// ChildrenColumn is the table column denoting the children relation/edge.
 	ChildrenColumn = "parent_id"
 )

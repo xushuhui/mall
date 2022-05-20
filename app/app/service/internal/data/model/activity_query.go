@@ -105,53 +105,8 @@ func (aq *ActivityQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last Activity entity from the query.
-// Returns a *NotFoundError when no Activity was found.
-func (aq *ActivityQuery) Last(ctx context.Context) (*Activity, error) {
-	nodes, err := aq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{activity.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (aq *ActivityQuery) LastX(ctx context.Context) *Activity {
-	node, err := aq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last Activity ID from the query.
-// Returns a *NotFoundError when no Activity ID was found.
-func (aq *ActivityQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = aq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{activity.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (aq *ActivityQuery) LastIDX(ctx context.Context) int64 {
-	id, err := aq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single Activity entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Activity entity is not found.
+// Returns a *NotSingularError when more than one Activity entity is found.
 // Returns a *NotFoundError when no Activity entities are found.
 func (aq *ActivityQuery) Only(ctx context.Context) (*Activity, error) {
 	nodes, err := aq.Limit(2).All(ctx)
@@ -178,7 +133,7 @@ func (aq *ActivityQuery) OnlyX(ctx context.Context) *Activity {
 }
 
 // OnlyID is like Only, but returns the only Activity ID in the query.
-// Returns a *NotSingularError when exactly one Activity ID is not found.
+// Returns a *NotSingularError when more than one Activity ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (aq *ActivityQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -287,8 +242,9 @@ func (aq *ActivityQuery) Clone() *ActivityQuery {
 		order:      append([]OrderFunc{}, aq.order...),
 		predicates: append([]predicate.Activity{}, aq.predicates...),
 		// clone intermediate query.
-		sql:  aq.sql.Clone(),
-		path: aq.path,
+		sql:    aq.sql.Clone(),
+		path:   aq.path,
+		unique: aq.unique,
 	}
 }
 
@@ -381,6 +337,10 @@ func (aq *ActivityQuery) sqlAll(ctx context.Context) ([]*Activity, error) {
 
 func (aq *ActivityQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := aq.querySpec()
+	_spec.Node.Columns = aq.fields
+	if len(aq.fields) > 0 {
+		_spec.Unique = aq.unique != nil && *aq.unique
+	}
 	return sqlgraph.CountNodes(ctx, aq.driver, _spec)
 }
 
@@ -451,6 +411,9 @@ func (aq *ActivityQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if aq.sql != nil {
 		selector = aq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if aq.unique != nil && *aq.unique {
+		selector.Distinct()
 	}
 	for _, p := range aq.predicates {
 		p(selector)
@@ -730,9 +693,7 @@ func (agb *ActivityGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range agb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(agb.fields...)...)

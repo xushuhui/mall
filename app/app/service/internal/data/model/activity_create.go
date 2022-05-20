@@ -200,37 +200,37 @@ func (ac *ActivityCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ac *ActivityCreate) check() error {
 	if _, ok := ac.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "Activity.create_time"`)}
 	}
 	if _, ok := ac.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "Activity.update_time"`)}
 	}
 	if _, ok := ac.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "title"`)}
+		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "Activity.title"`)}
 	}
 	if _, ok := ac.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "description"`)}
+		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "Activity.description"`)}
 	}
 	if _, ok := ac.mutation.StartTime(); !ok {
-		return &ValidationError{Name: "start_time", err: errors.New(`model: missing required field "start_time"`)}
+		return &ValidationError{Name: "start_time", err: errors.New(`model: missing required field "Activity.start_time"`)}
 	}
 	if _, ok := ac.mutation.EndTime(); !ok {
-		return &ValidationError{Name: "end_time", err: errors.New(`model: missing required field "end_time"`)}
+		return &ValidationError{Name: "end_time", err: errors.New(`model: missing required field "Activity.end_time"`)}
 	}
 	if _, ok := ac.mutation.Remark(); !ok {
-		return &ValidationError{Name: "remark", err: errors.New(`model: missing required field "remark"`)}
+		return &ValidationError{Name: "remark", err: errors.New(`model: missing required field "Activity.remark"`)}
 	}
 	if _, ok := ac.mutation.Online(); !ok {
-		return &ValidationError{Name: "online", err: errors.New(`model: missing required field "online"`)}
+		return &ValidationError{Name: "online", err: errors.New(`model: missing required field "Activity.online"`)}
 	}
 	if _, ok := ac.mutation.EntranceImg(); !ok {
-		return &ValidationError{Name: "entrance_img", err: errors.New(`model: missing required field "entrance_img"`)}
+		return &ValidationError{Name: "entrance_img", err: errors.New(`model: missing required field "Activity.entrance_img"`)}
 	}
 	if _, ok := ac.mutation.InternalTopImg(); !ok {
-		return &ValidationError{Name: "internal_top_img", err: errors.New(`model: missing required field "internal_top_img"`)}
+		return &ValidationError{Name: "internal_top_img", err: errors.New(`model: missing required field "Activity.internal_top_img"`)}
 	}
 	if _, ok := ac.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "Activity.name"`)}
 	}
 	return nil
 }

@@ -105,53 +105,8 @@ func (rq *RefundQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last Refund entity from the query.
-// Returns a *NotFoundError when no Refund was found.
-func (rq *RefundQuery) Last(ctx context.Context) (*Refund, error) {
-	nodes, err := rq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{refund.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (rq *RefundQuery) LastX(ctx context.Context) *Refund {
-	node, err := rq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last Refund ID from the query.
-// Returns a *NotFoundError when no Refund ID was found.
-func (rq *RefundQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = rq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{refund.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (rq *RefundQuery) LastIDX(ctx context.Context) int64 {
-	id, err := rq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single Refund entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Refund entity is not found.
+// Returns a *NotSingularError when more than one Refund entity is found.
 // Returns a *NotFoundError when no Refund entities are found.
 func (rq *RefundQuery) Only(ctx context.Context) (*Refund, error) {
 	nodes, err := rq.Limit(2).All(ctx)
@@ -178,7 +133,7 @@ func (rq *RefundQuery) OnlyX(ctx context.Context) *Refund {
 }
 
 // OnlyID is like Only, but returns the only Refund ID in the query.
-// Returns a *NotSingularError when exactly one Refund ID is not found.
+// Returns a *NotSingularError when more than one Refund ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (rq *RefundQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -287,8 +242,9 @@ func (rq *RefundQuery) Clone() *RefundQuery {
 		order:      append([]OrderFunc{}, rq.order...),
 		predicates: append([]predicate.Refund{}, rq.predicates...),
 		// clone intermediate query.
-		sql:  rq.sql.Clone(),
-		path: rq.path,
+		sql:    rq.sql.Clone(),
+		path:   rq.path,
+		unique: rq.unique,
 	}
 }
 
@@ -381,6 +337,10 @@ func (rq *RefundQuery) sqlAll(ctx context.Context) ([]*Refund, error) {
 
 func (rq *RefundQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := rq.querySpec()
+	_spec.Node.Columns = rq.fields
+	if len(rq.fields) > 0 {
+		_spec.Unique = rq.unique != nil && *rq.unique
+	}
 	return sqlgraph.CountNodes(ctx, rq.driver, _spec)
 }
 
@@ -451,6 +411,9 @@ func (rq *RefundQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if rq.sql != nil {
 		selector = rq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if rq.unique != nil && *rq.unique {
+		selector.Distinct()
 	}
 	for _, p := range rq.predicates {
 		p(selector)
@@ -730,9 +693,7 @@ func (rgb *RefundGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range rgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(rgb.fields...)...)

@@ -116,7 +116,7 @@ func (tsc *ThemeSpuCreate) ExecX(ctx context.Context) {
 // check runs all checks and user-defined validators on the builder.
 func (tsc *ThemeSpuCreate) check() error {
 	if _, ok := tsc.mutation.SpuID(); !ok {
-		return &ValidationError{Name: "spu_id", err: errors.New(`model: missing required field "spu_id"`)}
+		return &ValidationError{Name: "spu_id", err: errors.New(`model: missing required field "ThemeSpu.spu_id"`)}
 	}
 	return nil
 }

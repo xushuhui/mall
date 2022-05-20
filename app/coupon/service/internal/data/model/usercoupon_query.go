@@ -105,53 +105,8 @@ func (ucq *UserCouponQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last UserCoupon entity from the query.
-// Returns a *NotFoundError when no UserCoupon was found.
-func (ucq *UserCouponQuery) Last(ctx context.Context) (*UserCoupon, error) {
-	nodes, err := ucq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{usercoupon.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (ucq *UserCouponQuery) LastX(ctx context.Context) *UserCoupon {
-	node, err := ucq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last UserCoupon ID from the query.
-// Returns a *NotFoundError when no UserCoupon ID was found.
-func (ucq *UserCouponQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = ucq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{usercoupon.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (ucq *UserCouponQuery) LastIDX(ctx context.Context) int64 {
-	id, err := ucq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single UserCoupon entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one UserCoupon entity is not found.
+// Returns a *NotSingularError when more than one UserCoupon entity is found.
 // Returns a *NotFoundError when no UserCoupon entities are found.
 func (ucq *UserCouponQuery) Only(ctx context.Context) (*UserCoupon, error) {
 	nodes, err := ucq.Limit(2).All(ctx)
@@ -178,7 +133,7 @@ func (ucq *UserCouponQuery) OnlyX(ctx context.Context) *UserCoupon {
 }
 
 // OnlyID is like Only, but returns the only UserCoupon ID in the query.
-// Returns a *NotSingularError when exactly one UserCoupon ID is not found.
+// Returns a *NotSingularError when more than one UserCoupon ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (ucq *UserCouponQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -287,8 +242,9 @@ func (ucq *UserCouponQuery) Clone() *UserCouponQuery {
 		order:      append([]OrderFunc{}, ucq.order...),
 		predicates: append([]predicate.UserCoupon{}, ucq.predicates...),
 		// clone intermediate query.
-		sql:  ucq.sql.Clone(),
-		path: ucq.path,
+		sql:    ucq.sql.Clone(),
+		path:   ucq.path,
+		unique: ucq.unique,
 	}
 }
 
@@ -381,6 +337,10 @@ func (ucq *UserCouponQuery) sqlAll(ctx context.Context) ([]*UserCoupon, error) {
 
 func (ucq *UserCouponQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := ucq.querySpec()
+	_spec.Node.Columns = ucq.fields
+	if len(ucq.fields) > 0 {
+		_spec.Unique = ucq.unique != nil && *ucq.unique
+	}
 	return sqlgraph.CountNodes(ctx, ucq.driver, _spec)
 }
 
@@ -451,6 +411,9 @@ func (ucq *UserCouponQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if ucq.sql != nil {
 		selector = ucq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if ucq.unique != nil && *ucq.unique {
+		selector.Distinct()
 	}
 	for _, p := range ucq.predicates {
 		p(selector)
@@ -730,9 +693,7 @@ func (ucgb *UserCouponGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range ucgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(ucgb.fields...)...)

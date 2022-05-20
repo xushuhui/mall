@@ -153,53 +153,8 @@ func (cq *CategoryQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last Category entity from the query.
-// Returns a *NotFoundError when no Category was found.
-func (cq *CategoryQuery) Last(ctx context.Context) (*Category, error) {
-	nodes, err := cq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{category.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (cq *CategoryQuery) LastX(ctx context.Context) *Category {
-	node, err := cq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last Category ID from the query.
-// Returns a *NotFoundError when no Category ID was found.
-func (cq *CategoryQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = cq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{category.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (cq *CategoryQuery) LastIDX(ctx context.Context) int64 {
-	id, err := cq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single Category entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Category entity is not found.
+// Returns a *NotSingularError when more than one Category entity is found.
 // Returns a *NotFoundError when no Category entities are found.
 func (cq *CategoryQuery) Only(ctx context.Context) (*Category, error) {
 	nodes, err := cq.Limit(2).All(ctx)
@@ -226,7 +181,7 @@ func (cq *CategoryQuery) OnlyX(ctx context.Context) *Category {
 }
 
 // OnlyID is like Only, but returns the only Category ID in the query.
-// Returns a *NotSingularError when exactly one Category ID is not found.
+// Returns a *NotSingularError when more than one Category ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (cq *CategoryQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -337,8 +292,9 @@ func (cq *CategoryQuery) Clone() *CategoryQuery {
 		withParent:   cq.withParent.Clone(),
 		withChildren: cq.withChildren.Clone(),
 		// clone intermediate query.
-		sql:  cq.sql.Clone(),
-		path: cq.path,
+		sql:    cq.sql.Clone(),
+		path:   cq.path,
+		unique: cq.unique,
 	}
 }
 
@@ -510,6 +466,10 @@ func (cq *CategoryQuery) sqlAll(ctx context.Context) ([]*Category, error) {
 
 func (cq *CategoryQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
+	_spec.Node.Columns = cq.fields
+	if len(cq.fields) > 0 {
+		_spec.Unique = cq.unique != nil && *cq.unique
+	}
 	return sqlgraph.CountNodes(ctx, cq.driver, _spec)
 }
 
@@ -580,6 +540,9 @@ func (cq *CategoryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if cq.sql != nil {
 		selector = cq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if cq.unique != nil && *cq.unique {
+		selector.Distinct()
 	}
 	for _, p := range cq.predicates {
 		p(selector)
@@ -859,9 +822,7 @@ func (cgb *CategoryGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range cgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(cgb.fields...)...)

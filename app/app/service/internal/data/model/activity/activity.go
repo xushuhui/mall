@@ -36,7 +36,7 @@ const (
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// Table holds the table name of the activity in the database.
-	Table = "activity"
+	Table = "activities"
 )
 
 // Columns holds all SQL columns for activity fields.

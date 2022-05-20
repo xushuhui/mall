@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/coupon/service/internal/data/model/coupon"
 	"mall-go/app/coupon/service/internal/data/model/predicate"
@@ -701,7 +702,7 @@ func (cuo *CouponUpdateOne) sqlSave(ctx context.Context) (_node *Coupon, err err
 	}
 	id, ok := cuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Coupon.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "Coupon.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := cuo.fields; len(fields) > 0 {

@@ -32,7 +32,7 @@ const (
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the refund in the database.
-	Table = "refund"
+	Table = "refunds"
 )
 
 // Columns holds all SQL columns for refund fields.

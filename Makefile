@@ -84,7 +84,7 @@ generate:
 
 .PHONY: ent
 ent:
-	go generate ./internal/data/ent
+	cd ./app/app/service/internal/data/ && go generate ./ent
 
 .PHONY: validate
 # validate

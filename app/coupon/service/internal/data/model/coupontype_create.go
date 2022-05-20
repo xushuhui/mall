@@ -164,19 +164,19 @@ func (ctc *CouponTypeCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ctc *CouponTypeCreate) check() error {
 	if _, ok := ctc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "CouponType.create_time"`)}
 	}
 	if _, ok := ctc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "CouponType.update_time"`)}
 	}
 	if _, ok := ctc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "CouponType.name"`)}
 	}
 	if _, ok := ctc.mutation.Code(); !ok {
-		return &ValidationError{Name: "code", err: errors.New(`model: missing required field "code"`)}
+		return &ValidationError{Name: "code", err: errors.New(`model: missing required field "CouponType.code"`)}
 	}
 	if _, ok := ctc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "description"`)}
+		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "CouponType.description"`)}
 	}
 	return nil
 }

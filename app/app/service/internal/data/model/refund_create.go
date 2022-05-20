@@ -212,22 +212,22 @@ func (rc *RefundCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (rc *RefundCreate) check() error {
 	if _, ok := rc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "Refund.create_time"`)}
 	}
 	if _, ok := rc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "Refund.update_time"`)}
 	}
 	if _, ok := rc.mutation.RefundNo(); !ok {
-		return &ValidationError{Name: "refund_no", err: errors.New(`model: missing required field "refund_no"`)}
+		return &ValidationError{Name: "refund_no", err: errors.New(`model: missing required field "Refund.refund_no"`)}
 	}
 	if _, ok := rc.mutation.TransactionID(); !ok {
-		return &ValidationError{Name: "transaction_id", err: errors.New(`model: missing required field "transaction_id"`)}
+		return &ValidationError{Name: "transaction_id", err: errors.New(`model: missing required field "Refund.transaction_id"`)}
 	}
 	if _, ok := rc.mutation.Reason(); !ok {
-		return &ValidationError{Name: "reason", err: errors.New(`model: missing required field "reason"`)}
+		return &ValidationError{Name: "reason", err: errors.New(`model: missing required field "Refund.reason"`)}
 	}
 	if _, ok := rc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`model: missing required field "status"`)}
+		return &ValidationError{Name: "status", err: errors.New(`model: missing required field "Refund.status"`)}
 	}
 	return nil
 }

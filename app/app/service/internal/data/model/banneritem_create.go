@@ -190,22 +190,22 @@ func (bic *BannerItemCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (bic *BannerItemCreate) check() error {
 	if _, ok := bic.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "BannerItem.create_time"`)}
 	}
 	if _, ok := bic.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "BannerItem.update_time"`)}
 	}
 	if _, ok := bic.mutation.Img(); !ok {
-		return &ValidationError{Name: "img", err: errors.New(`model: missing required field "img"`)}
+		return &ValidationError{Name: "img", err: errors.New(`model: missing required field "BannerItem.img"`)}
 	}
 	if _, ok := bic.mutation.Keyword(); !ok {
-		return &ValidationError{Name: "keyword", err: errors.New(`model: missing required field "keyword"`)}
+		return &ValidationError{Name: "keyword", err: errors.New(`model: missing required field "BannerItem.keyword"`)}
 	}
 	if _, ok := bic.mutation.GetType(); !ok {
-		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "type"`)}
+		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "BannerItem.type"`)}
 	}
 	if _, ok := bic.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "BannerItem.name"`)}
 	}
 	return nil
 }

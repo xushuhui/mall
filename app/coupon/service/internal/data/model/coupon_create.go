@@ -226,43 +226,43 @@ func (cc *CouponCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (cc *CouponCreate) check() error {
 	if _, ok := cc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "Coupon.create_time"`)}
 	}
 	if _, ok := cc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "Coupon.update_time"`)}
 	}
 	if _, ok := cc.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "title"`)}
+		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "Coupon.title"`)}
 	}
 	if _, ok := cc.mutation.StartTime(); !ok {
-		return &ValidationError{Name: "start_time", err: errors.New(`model: missing required field "start_time"`)}
+		return &ValidationError{Name: "start_time", err: errors.New(`model: missing required field "Coupon.start_time"`)}
 	}
 	if _, ok := cc.mutation.EndTime(); !ok {
-		return &ValidationError{Name: "end_time", err: errors.New(`model: missing required field "end_time"`)}
+		return &ValidationError{Name: "end_time", err: errors.New(`model: missing required field "Coupon.end_time"`)}
 	}
 	if _, ok := cc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "description"`)}
+		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "Coupon.description"`)}
 	}
 	if _, ok := cc.mutation.FullMoney(); !ok {
-		return &ValidationError{Name: "full_money", err: errors.New(`model: missing required field "full_money"`)}
+		return &ValidationError{Name: "full_money", err: errors.New(`model: missing required field "Coupon.full_money"`)}
 	}
 	if _, ok := cc.mutation.Minus(); !ok {
-		return &ValidationError{Name: "minus", err: errors.New(`model: missing required field "minus"`)}
+		return &ValidationError{Name: "minus", err: errors.New(`model: missing required field "Coupon.minus"`)}
 	}
 	if _, ok := cc.mutation.Rate(); !ok {
-		return &ValidationError{Name: "rate", err: errors.New(`model: missing required field "rate"`)}
+		return &ValidationError{Name: "rate", err: errors.New(`model: missing required field "Coupon.rate"`)}
 	}
 	if _, ok := cc.mutation.GetType(); !ok {
-		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "type"`)}
+		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "Coupon.type"`)}
 	}
 	if _, ok := cc.mutation.Valitiy(); !ok {
-		return &ValidationError{Name: "valitiy", err: errors.New(`model: missing required field "valitiy"`)}
+		return &ValidationError{Name: "valitiy", err: errors.New(`model: missing required field "Coupon.valitiy"`)}
 	}
 	if _, ok := cc.mutation.Remark(); !ok {
-		return &ValidationError{Name: "remark", err: errors.New(`model: missing required field "remark"`)}
+		return &ValidationError{Name: "remark", err: errors.New(`model: missing required field "Coupon.remark"`)}
 	}
 	if _, ok := cc.mutation.WholeStore(); !ok {
-		return &ValidationError{Name: "whole_store", err: errors.New(`model: missing required field "whole_store"`)}
+		return &ValidationError{Name: "whole_store", err: errors.New(`model: missing required field "Coupon.whole_store"`)}
 	}
 	return nil
 }

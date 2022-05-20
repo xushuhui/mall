@@ -30,7 +30,7 @@ const (
 	// FieldClientType holds the string denoting the client_type field in the database.
 	FieldClientType = "client_type"
 	// Table holds the table name of the charge in the database.
-	Table = "charge"
+	Table = "charges"
 )
 
 // Columns holds all SQL columns for charge fields.

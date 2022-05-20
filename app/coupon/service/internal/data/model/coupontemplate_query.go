@@ -105,53 +105,8 @@ func (ctq *CouponTemplateQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last CouponTemplate entity from the query.
-// Returns a *NotFoundError when no CouponTemplate was found.
-func (ctq *CouponTemplateQuery) Last(ctx context.Context) (*CouponTemplate, error) {
-	nodes, err := ctq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{coupontemplate.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (ctq *CouponTemplateQuery) LastX(ctx context.Context) *CouponTemplate {
-	node, err := ctq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last CouponTemplate ID from the query.
-// Returns a *NotFoundError when no CouponTemplate ID was found.
-func (ctq *CouponTemplateQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = ctq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{coupontemplate.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (ctq *CouponTemplateQuery) LastIDX(ctx context.Context) int64 {
-	id, err := ctq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single CouponTemplate entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one CouponTemplate entity is not found.
+// Returns a *NotSingularError when more than one CouponTemplate entity is found.
 // Returns a *NotFoundError when no CouponTemplate entities are found.
 func (ctq *CouponTemplateQuery) Only(ctx context.Context) (*CouponTemplate, error) {
 	nodes, err := ctq.Limit(2).All(ctx)
@@ -178,7 +133,7 @@ func (ctq *CouponTemplateQuery) OnlyX(ctx context.Context) *CouponTemplate {
 }
 
 // OnlyID is like Only, but returns the only CouponTemplate ID in the query.
-// Returns a *NotSingularError when exactly one CouponTemplate ID is not found.
+// Returns a *NotSingularError when more than one CouponTemplate ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (ctq *CouponTemplateQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -287,8 +242,9 @@ func (ctq *CouponTemplateQuery) Clone() *CouponTemplateQuery {
 		order:      append([]OrderFunc{}, ctq.order...),
 		predicates: append([]predicate.CouponTemplate{}, ctq.predicates...),
 		// clone intermediate query.
-		sql:  ctq.sql.Clone(),
-		path: ctq.path,
+		sql:    ctq.sql.Clone(),
+		path:   ctq.path,
+		unique: ctq.unique,
 	}
 }
 
@@ -381,6 +337,10 @@ func (ctq *CouponTemplateQuery) sqlAll(ctx context.Context) ([]*CouponTemplate, 
 
 func (ctq *CouponTemplateQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := ctq.querySpec()
+	_spec.Node.Columns = ctq.fields
+	if len(ctq.fields) > 0 {
+		_spec.Unique = ctq.unique != nil && *ctq.unique
+	}
 	return sqlgraph.CountNodes(ctx, ctq.driver, _spec)
 }
 
@@ -451,6 +411,9 @@ func (ctq *CouponTemplateQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if ctq.sql != nil {
 		selector = ctq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if ctq.unique != nil && *ctq.unique {
+		selector.Distinct()
 	}
 	for _, p := range ctq.predicates {
 		p(selector)
@@ -730,9 +693,7 @@ func (ctgb *CouponTemplateGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range ctgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(ctgb.fields...)...)

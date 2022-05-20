@@ -131,53 +131,8 @@ func (bq *BannerQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last Banner entity from the query.
-// Returns a *NotFoundError when no Banner was found.
-func (bq *BannerQuery) Last(ctx context.Context) (*Banner, error) {
-	nodes, err := bq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{banner.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (bq *BannerQuery) LastX(ctx context.Context) *Banner {
-	node, err := bq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last Banner ID from the query.
-// Returns a *NotFoundError when no Banner ID was found.
-func (bq *BannerQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = bq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{banner.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (bq *BannerQuery) LastIDX(ctx context.Context) int64 {
-	id, err := bq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single Banner entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Banner entity is not found.
+// Returns a *NotSingularError when more than one Banner entity is found.
 // Returns a *NotFoundError when no Banner entities are found.
 func (bq *BannerQuery) Only(ctx context.Context) (*Banner, error) {
 	nodes, err := bq.Limit(2).All(ctx)
@@ -204,7 +159,7 @@ func (bq *BannerQuery) OnlyX(ctx context.Context) *Banner {
 }
 
 // OnlyID is like Only, but returns the only Banner ID in the query.
-// Returns a *NotSingularError when exactly one Banner ID is not found.
+// Returns a *NotSingularError when more than one Banner ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (bq *BannerQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -314,8 +269,9 @@ func (bq *BannerQuery) Clone() *BannerQuery {
 		predicates:     append([]predicate.Banner{}, bq.predicates...),
 		withBannerItem: bq.withBannerItem.Clone(),
 		// clone intermediate query.
-		sql:  bq.sql.Clone(),
-		path: bq.path,
+		sql:    bq.sql.Clone(),
+		path:   bq.path,
+		unique: bq.unique,
 	}
 }
 
@@ -449,6 +405,10 @@ func (bq *BannerQuery) sqlAll(ctx context.Context) ([]*Banner, error) {
 
 func (bq *BannerQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := bq.querySpec()
+	_spec.Node.Columns = bq.fields
+	if len(bq.fields) > 0 {
+		_spec.Unique = bq.unique != nil && *bq.unique
+	}
 	return sqlgraph.CountNodes(ctx, bq.driver, _spec)
 }
 
@@ -519,6 +479,9 @@ func (bq *BannerQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if bq.sql != nil {
 		selector = bq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if bq.unique != nil && *bq.unique {
+		selector.Distinct()
 	}
 	for _, p := range bq.predicates {
 		p(selector)
@@ -798,9 +761,7 @@ func (bgb *BannerGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range bgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(bgb.fields...)...)

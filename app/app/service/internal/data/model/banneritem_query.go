@@ -130,53 +130,8 @@ func (biq *BannerItemQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last BannerItem entity from the query.
-// Returns a *NotFoundError when no BannerItem was found.
-func (biq *BannerItemQuery) Last(ctx context.Context) (*BannerItem, error) {
-	nodes, err := biq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{banneritem.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (biq *BannerItemQuery) LastX(ctx context.Context) *BannerItem {
-	node, err := biq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last BannerItem ID from the query.
-// Returns a *NotFoundError when no BannerItem ID was found.
-func (biq *BannerItemQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = biq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{banneritem.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (biq *BannerItemQuery) LastIDX(ctx context.Context) int64 {
-	id, err := biq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single BannerItem entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one BannerItem entity is not found.
+// Returns a *NotSingularError when more than one BannerItem entity is found.
 // Returns a *NotFoundError when no BannerItem entities are found.
 func (biq *BannerItemQuery) Only(ctx context.Context) (*BannerItem, error) {
 	nodes, err := biq.Limit(2).All(ctx)
@@ -203,7 +158,7 @@ func (biq *BannerItemQuery) OnlyX(ctx context.Context) *BannerItem {
 }
 
 // OnlyID is like Only, but returns the only BannerItem ID in the query.
-// Returns a *NotSingularError when exactly one BannerItem ID is not found.
+// Returns a *NotSingularError when more than one BannerItem ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (biq *BannerItemQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -313,8 +268,9 @@ func (biq *BannerItemQuery) Clone() *BannerItemQuery {
 		predicates: append([]predicate.BannerItem{}, biq.predicates...),
 		withBanner: biq.withBanner.Clone(),
 		// clone intermediate query.
-		sql:  biq.sql.Clone(),
-		path: biq.path,
+		sql:    biq.sql.Clone(),
+		path:   biq.path,
+		unique: biq.unique,
 	}
 }
 
@@ -449,6 +405,10 @@ func (biq *BannerItemQuery) sqlAll(ctx context.Context) ([]*BannerItem, error) {
 
 func (biq *BannerItemQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := biq.querySpec()
+	_spec.Node.Columns = biq.fields
+	if len(biq.fields) > 0 {
+		_spec.Unique = biq.unique != nil && *biq.unique
+	}
 	return sqlgraph.CountNodes(ctx, biq.driver, _spec)
 }
 
@@ -519,6 +479,9 @@ func (biq *BannerItemQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if biq.sql != nil {
 		selector = biq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if biq.unique != nil && *biq.unique {
+		selector.Distinct()
 	}
 	for _, p := range biq.predicates {
 		p(selector)
@@ -798,9 +761,7 @@ func (bigb *BannerItemGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range bigb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(bigb.fields...)...)

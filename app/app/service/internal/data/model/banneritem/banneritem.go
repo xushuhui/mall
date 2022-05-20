@@ -30,12 +30,12 @@ const (
 	// EdgeBanner holds the string denoting the banner edge name in mutations.
 	EdgeBanner = "banner"
 	// Table holds the table name of the banneritem in the database.
-	Table = "banner_item"
+	Table = "banner_items"
 	// BannerTable is the table that holds the banner relation/edge.
-	BannerTable = "banner_item"
+	BannerTable = "banner_items"
 	// BannerInverseTable is the table name for the Banner entity.
-	// It exists in this package in order to avoid lower111 circular dependency with the "banner" package.
-	BannerInverseTable = "banner"
+	// It exists in this package in order to avoid circular dependency with the "banner" package.
+	BannerInverseTable = "banners"
 	// BannerColumn is the table column denoting the banner relation/edge.
 	BannerColumn = "banner_id"
 )

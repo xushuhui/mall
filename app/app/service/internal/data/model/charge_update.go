@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/charge"
 	"mall-go/app/app/service/internal/data/model/predicate"
@@ -469,7 +470,7 @@ func (cuo *ChargeUpdateOne) sqlSave(ctx context.Context) (_node *Charge, err err
 	}
 	id, ok := cuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Charge.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "Charge.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := cuo.fields; len(fields) > 0 {

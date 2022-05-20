@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/banner"
 	"mall-go/app/app/service/internal/data/model/banneritem"
@@ -495,7 +496,7 @@ func (buo *BannerUpdateOne) sqlSave(ctx context.Context) (_node *Banner, err err
 	}
 	id, ok := buo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Banner.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "Banner.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := buo.fields; len(fields) > 0 {

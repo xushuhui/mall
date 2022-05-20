@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/banner"
 	"mall-go/app/app/service/internal/data/model/banneritem"
@@ -487,7 +488,7 @@ func (biuo *BannerItemUpdateOne) sqlSave(ctx context.Context) (_node *BannerItem
 	}
 	id, ok := biuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing BannerItem.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "BannerItem.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := biuo.fields; len(fields) > 0 {

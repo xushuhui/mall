@@ -216,37 +216,37 @@ func (tc *ThemeCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (tc *ThemeCreate) check() error {
 	if _, ok := tc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "Theme.create_time"`)}
 	}
 	if _, ok := tc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "Theme.update_time"`)}
 	}
 	if _, ok := tc.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "title"`)}
+		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "Theme.title"`)}
 	}
 	if _, ok := tc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "description"`)}
+		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "Theme.description"`)}
 	}
 	if _, ok := tc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "Theme.name"`)}
 	}
 	if _, ok := tc.mutation.TplName(); !ok {
-		return &ValidationError{Name: "tpl_name", err: errors.New(`model: missing required field "tpl_name"`)}
+		return &ValidationError{Name: "tpl_name", err: errors.New(`model: missing required field "Theme.tpl_name"`)}
 	}
 	if _, ok := tc.mutation.EntranceImg(); !ok {
-		return &ValidationError{Name: "entrance_img", err: errors.New(`model: missing required field "entrance_img"`)}
+		return &ValidationError{Name: "entrance_img", err: errors.New(`model: missing required field "Theme.entrance_img"`)}
 	}
 	if _, ok := tc.mutation.Extend(); !ok {
-		return &ValidationError{Name: "extend", err: errors.New(`model: missing required field "extend"`)}
+		return &ValidationError{Name: "extend", err: errors.New(`model: missing required field "Theme.extend"`)}
 	}
 	if _, ok := tc.mutation.InternalTopImg(); !ok {
-		return &ValidationError{Name: "internal_top_img", err: errors.New(`model: missing required field "internal_top_img"`)}
+		return &ValidationError{Name: "internal_top_img", err: errors.New(`model: missing required field "Theme.internal_top_img"`)}
 	}
 	if _, ok := tc.mutation.TitleImg(); !ok {
-		return &ValidationError{Name: "title_img", err: errors.New(`model: missing required field "title_img"`)}
+		return &ValidationError{Name: "title_img", err: errors.New(`model: missing required field "Theme.title_img"`)}
 	}
 	if _, ok := tc.mutation.Online(); !ok {
-		return &ValidationError{Name: "online", err: errors.New(`model: missing required field "online"`)}
+		return &ValidationError{Name: "online", err: errors.New(`model: missing required field "Theme.online"`)}
 	}
 	return nil
 }

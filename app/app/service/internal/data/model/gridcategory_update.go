@@ -4,6 +4,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"mall-go/app/app/service/internal/data/model/gridcategory"
 	"mall-go/app/app/service/internal/data/model/predicate"
@@ -429,7 +430,7 @@ func (gcuo *GridCategoryUpdateOne) sqlSave(ctx context.Context) (_node *GridCate
 	}
 	id, ok := gcuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing GridCategory.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`model: missing "GridCategory.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := gcuo.fields; len(fields) > 0 {

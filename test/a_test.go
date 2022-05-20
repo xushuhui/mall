@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 )
 
@@ -93,7 +94,8 @@ type B struct {
 }
 
 func Test_a_test(t *testing.T) {
-
+	var resp Resp
+	http.Get(url,&resp)
 }
 
 func isEqual() {

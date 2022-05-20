@@ -105,53 +105,8 @@ func (cq *ChargeQuery) FirstIDX(ctx context.Context) int64 {
 	return id
 }
 
-// Last returns the last Charge entity from the query.
-// Returns a *NotFoundError when no Charge was found.
-func (cq *ChargeQuery) Last(ctx context.Context) (*Charge, error) {
-	nodes, err := cq.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, &NotFoundError{charge.Label}
-	}
-	return nodes[len(nodes)-1], nil
-}
-
-// LastX is like Last, but panics if an error occurs.
-func (cq *ChargeQuery) LastX(ctx context.Context) *Charge {
-	node, err := cq.Last(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return node
-}
-
-// LastID returns the last Charge ID from the query.
-// Returns a *NotFoundError when no Charge ID was found.
-func (cq *ChargeQuery) LastID(ctx context.Context) (id int64, err error) {
-	var ids []int64
-	if ids, err = cq.IDs(ctx); err != nil {
-		return
-	}
-	if len(ids) == 0 {
-		err = &NotFoundError{charge.Label}
-		return
-	}
-	return ids[len(ids)-1], nil
-}
-
-// LastIDX is like LastID, but panics if an error occurs.
-func (cq *ChargeQuery) LastIDX(ctx context.Context) int64 {
-	id, err := cq.LastID(ctx)
-	if err != nil && !IsNotFound(err) {
-		panic(err)
-	}
-	return id
-}
-
 // Only returns a single Charge entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Charge entity is not found.
+// Returns a *NotSingularError when more than one Charge entity is found.
 // Returns a *NotFoundError when no Charge entities are found.
 func (cq *ChargeQuery) Only(ctx context.Context) (*Charge, error) {
 	nodes, err := cq.Limit(2).All(ctx)
@@ -178,7 +133,7 @@ func (cq *ChargeQuery) OnlyX(ctx context.Context) *Charge {
 }
 
 // OnlyID is like Only, but returns the only Charge ID in the query.
-// Returns a *NotSingularError when exactly one Charge ID is not found.
+// Returns a *NotSingularError when more than one Charge ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (cq *ChargeQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
@@ -287,8 +242,9 @@ func (cq *ChargeQuery) Clone() *ChargeQuery {
 		order:      append([]OrderFunc{}, cq.order...),
 		predicates: append([]predicate.Charge{}, cq.predicates...),
 		// clone intermediate query.
-		sql:  cq.sql.Clone(),
-		path: cq.path,
+		sql:    cq.sql.Clone(),
+		path:   cq.path,
+		unique: cq.unique,
 	}
 }
 
@@ -381,6 +337,10 @@ func (cq *ChargeQuery) sqlAll(ctx context.Context) ([]*Charge, error) {
 
 func (cq *ChargeQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
+	_spec.Node.Columns = cq.fields
+	if len(cq.fields) > 0 {
+		_spec.Unique = cq.unique != nil && *cq.unique
+	}
 	return sqlgraph.CountNodes(ctx, cq.driver, _spec)
 }
 
@@ -451,6 +411,9 @@ func (cq *ChargeQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if cq.sql != nil {
 		selector = cq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if cq.unique != nil && *cq.unique {
+		selector.Distinct()
 	}
 	for _, p := range cq.predicates {
 		p(selector)
@@ -730,9 +693,7 @@ func (cgb *ChargeGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range cgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(cgb.fields...)...)
