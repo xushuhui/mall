@@ -12,6 +12,7 @@ import (
 	"mall-go/app/app/service/internal/data/model/charge"
 	"mall-go/app/app/service/internal/data/model/gridcategory"
 	"mall-go/app/app/service/internal/data/model/refund"
+	"mall-go/app/app/service/internal/data/model/tag"
 	"mall-go/app/app/service/internal/data/model/theme"
 	"mall-go/app/app/service/internal/data/model/themespu"
 
@@ -44,6 +45,7 @@ func columnChecker(table string) func(string) error {
 		charge.Table:       charge.ValidColumn,
 		gridcategory.Table: gridcategory.ValidColumn,
 		refund.Table:       refund.ValidColumn,
+		tag.Table:          tag.ValidColumn,
 		theme.Table:        theme.ValidColumn,
 		themespu.Table:     themespu.ValidColumn,
 	}

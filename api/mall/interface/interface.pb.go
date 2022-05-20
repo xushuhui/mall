@@ -1013,7 +1013,7 @@ type TagByTypeRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	Type int32 `protobuf:"varint,1,opt,name=type,proto3" json:"type,omitempty"`
 }
 
 func (x *TagByTypeRequest) Reset() {
@@ -1048,11 +1048,11 @@ func (*TagByTypeRequest) Descriptor() ([]byte, []int) {
 	return file_api_mall_interface_interface_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *TagByTypeRequest) GetType() string {
+func (x *TagByTypeRequest) GetType() int32 {
 	if x != nil {
 		return x.Type
 	}
-	return ""
+	return 0
 }
 
 type Tags struct {

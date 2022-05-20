@@ -31,6 +31,7 @@ type hooks struct {
 	Charge       []ent.Hook
 	GridCategory []ent.Hook
 	Refund       []ent.Hook
+	Tag          []ent.Hook
 	Theme        []ent.Hook
 	ThemeSpu     []ent.Hook
 }
