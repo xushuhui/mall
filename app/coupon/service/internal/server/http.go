@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/go-kratos/kratos/v2/middleware/validate"
-	"mall-go/api/coupon/service"
-	intenal "mall-go/app/coupon/service/internal/service"
+
+	"mall-go/app/coupon/service/internal/service"
 
 	"mall-go/app/coupon/service/internal/conf"
 
@@ -15,8 +15,8 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, as *intenal.CouponService, logger log.Logger) *http.Server {
-	var opts = []http.ServerOption{
+func NewHTTPServer(c *conf.Server, as *service.CouponService, logger log.Logger) *http.Server {
+	opts := []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),

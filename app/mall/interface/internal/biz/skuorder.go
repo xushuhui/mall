@@ -1,6 +1,6 @@
 package biz
 
-import "mall-go/api/mall"
+import "mall-go/app/mall/interface/internal/service"
 
 type SkuOrder struct {
 	ActualPrice float64
@@ -8,7 +8,7 @@ type SkuOrder struct {
 	CategoryId  int64
 }
 
-func NewSkuOrder(sku Sku, skuInfoDTO *mall.SkuInfo) SkuOrder {
+func NewSkuOrder(sku Sku, skuInfoDTO *service.SkuInfo) SkuOrder {
 	return SkuOrder{
 		ActualPrice: sku.GetActualPrice(),
 		Count:       skuInfoDTO.Count,

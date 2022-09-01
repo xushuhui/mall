@@ -3,9 +3,9 @@ package server
 import (
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
-	"mall-go/api/coupon/service"
+
 	"mall-go/app/coupon/service/internal/conf"
-	intenal "mall-go/app/coupon/service/internal/service"
+	"mall-go/app/coupon/service/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -13,8 +13,8 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, as *intenal.CouponService, logger log.Logger) *grpc.Server {
-	var opts = []grpc.ServerOption{
+func NewGRPCServer(c *conf.Server, as *service.CouponService, logger log.Logger) *grpc.Server {
+	opts := []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),

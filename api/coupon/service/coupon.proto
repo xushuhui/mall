@@ -5,7 +5,8 @@ package coupon.service;
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "validate/validate.proto";
-option go_package = "mall-go/api/coupon/service";
+option go_package = "/service";
+
 service Coupon{
   rpc GetCouponByCategory(IdRequest) returns (Coupons) {
     option (google.api.http) = {

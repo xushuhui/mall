@@ -1,7 +1,6 @@
 package server
 
 import (
-	mall"mall-go/api/mall/interface"
 	"mall-go/app/mall/interface/internal/conf"
 	"mall-go/app/mall/interface/internal/service"
 
@@ -14,7 +13,7 @@ import (
 
 // NewHTTPServer new a HTTP server.
 func NewHTTPServer(c *conf.Bootstrap, as *service.MallInterface, logger log.Logger) *http.Server {
-	var opts = []http.ServerOption{
+	opts := []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),
@@ -37,7 +36,7 @@ func NewHTTPServer(c *conf.Bootstrap, as *service.MallInterface, logger log.Logg
 	}
 	srv := http.NewServer(opts...)
 
-	mall.RegisterInterfaceHTTPServer(srv, as)
+	service.RegisterInterfaceHTTPServer(srv, as)
 
 	return srv
 }

@@ -2,13 +2,12 @@ package service
 
 import (
 	"context"
-	"mall-go/app/order/service/internal/biz"
 
-	"mall-go/api/order/service"
+	"mall-go/app/order/service/internal/biz"
 )
 
 type OrderService struct {
-	service.UnimplementedOrderServer
+	UnimplementedOrderServer
 	ou *biz.OrderUsecase
 }
 
@@ -18,6 +17,6 @@ func NewUserService(ou *biz.OrderUsecase) *OrderService {
 	}
 }
 
-func (s *OrderService) GetOrderById(ctx context.Context, req *service.IdRequest) (*service.OrderVO, error) {
-	return &service.OrderVO{}, nil
+func (s *OrderService) GetOrderById(ctx context.Context, req *IdRequest) (*OrderVO, error) {
+	return &OrderVO{}, nil
 }

@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 package service
 
 import (
 	"context"
-	mall"mall-go/api/mall/interface"
+
 	"mall-go/app/mall/interface/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -11,261 +10,7 @@ import (
 )
 
 type MallInterface struct {
-	mall.UnimplementedInterfaceServer
-	bu *biz.BannerUsecase
-	tu *biz.ThemeUsecase
-	au *biz.ActivityUsecase
-	cu *biz.CategoryUsecase
-
-	log *log.Helper
-}
-
-func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase,
-	logger log.Logger) *MallInterface {
-
-	return &MallInterface{
-		bu:  bu,
-		tu:  tu,
-		au:  au,
-		cu:  cu,
-		log: log.NewHelper(logger),
-	}
-}
-
-func (s *MallInterface) GetBannerById(ctx context.Context, in *mall.IdRequest) (out *mall.Banner, err error) {
-	b, err := s.bu.GetBannerById(ctx, in.Id)
-	if err != nil {
-		return nil, err
-	}
-
-	var items []*mall.BannerItem
-	for _, v := range b.Items {
-		items = append(items, &mall.BannerItem{
-			Id:       v.ID,
-			Img:      v.Img,
-			Keyword:  v.Keyword,
-			Type:     int32(v.Type),
-			Name:     v.Name,
-			BannerId: v.BannerId,
-		})
-
-	}
-	return &mall.Banner{
-		Id:          b.Id,
-		Name:        b.Name,
-		Title:       b.Title,
-		Img:         b.Img,
-		Description: b.Description,
-		Items:       items,
-	}, nil
-
-}
-func (s *MallInterface) GetBannerByName(ctx context.Context, in *mall.BannerByNameRequest) (out *mall.Banner, err error) {
-	b, err := s.bu.GetBannerByName(ctx, in.Name)
-	if err != nil {
-		return
-	}
-	var items []*mall.BannerItem
-	for _, v := range b.Items {
-		items = append(items, &mall.BannerItem{
-			Id:       v.ID,
-			Img:      v.Img,
-			Name:     v.Name,
-			Keyword:  v.Keyword,
-			Type:     int32(v.Type),
-			BannerId: v.BannerId,
-		})
-	}
-	return &mall.Banner{
-		Id:          b.Id,
-		Name:        b.Name,
-		Title:       b.Title,
-		Img:         b.Img,
-		Description: b.Description,
-		Items:       items,
-	}, nil
-}
-func (s *MallInterface) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRequest) (out *mall.Themes, err error) {
-	t, err := s.tu.GetThemeByNames(ctx, in.Names)
-	if err != nil {
-		return
-	}
-	var thems []*mall.Theme
-	for _, v := range t {
-		thems = append(thems, &mall.Theme{
-			Id:             v.Id,
-			Title:          v.Title,
-			Description:    v.Description,
-			Name:           v.Name,
-			EntranceImg:    v.EntranceImg,
-			InternalTopImg: v.InternalTopImg,
-			TitleImg:       v.TitleImg,
-			TplName:        v.TplName,
-			Online:         v.Online,
-		})
-	}
-	return &mall.Themes{
-		Theme: thems,
-	}, nil
-}
-
-func (s *MallInterface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuRequest) (out *mall.ThemeSpu, err error) {
-	t, err := s.tu.GetThemeWithSpu(ctx, in.Name)
-	if err != nil {
-		return
-	}
-	var spuList []*mall.Spu
-	for _, v := range t.SpuList {
-		spuList = append(spuList, &mall.Spu{
-			Id:             v.Id,
-			Title:          v.Title,
-			Subtitle:       v.Subtitle,
-			CategoryId:     v.CategoryId,
-			RootCategoryId: v.RootCategoryId,
-			Price:          v.Price,
-			Img:            v.Img,
-			ForThemeImg:    v.ForThemeImg,
-			Description:    v.Description,
-			DiscountPrice:  v.DiscountPrice,
-			Tags:           v.Tags,
-			Online:         v.Online,
-		})
-	}
-
-	return &mall.ThemeSpu{
-		Id:             t.Id,
-		Title:          t.Title,
-		Description:    t.Description,
-		Name:           t.Name,
-		EntranceImg:    t.EntranceImg,
-		InternalTopImg: t.InternalTopImg,
-		TitleImg:       t.TitleImg,
-		TplName:        t.TplName,
-		Online:         t.Online,
-		SpuList:        spuList,
-	}, nil
-}
-func (s *MallInterface) GetActivityByName(ctx context.Context, in *mall.ActivityByNameRequest) (out *mall.Activity, err error) {
-	c, err := s.au.GetActivityByName(ctx, in.Name)
-	if err != nil {
-		return
-	}
-	out = &mall.Activity{
-		Id:          c.Id,
-		Title:       c.Title,
-		EntranceImg: c.EntranceImg,
-		Online:      c.Online,
-		Remark:      c.Remark,
-		StartTime:   c.StartTime.Unix(),
-		EndTime:     c.EndTime.Unix(),
-	}
-	return out, nil
-}
-func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *mall.ActivityWithCouponRequest) (out *mall.ActivityCoupon, err error) {
-	c, err := s.au.GetActivityWithCoupon(ctx, in.Name)
-	if err != nil {
-		return
-	}
-	var coupons []*mall.CouponBo
-	for _, v := range c.Coupons {
-		coupons = append(coupons, &mall.CouponBo{
-			Id:          v.Id,
-			Title:       v.Title,
-			StartTime:   v.StartTime.Unix(),
-			EndTime:     v.EndTime.Unix(),
-			Description: v.Description,
-			FullMoney:   v.FullMoney,
-			Minus:       v.Minus,
-			Rate:        v.Rate,
-			Type:        int32(v.Type),
-			Remark:      v.Remark,
-			WholeStore:  int32(v.WholeStore),
-		})
-	}
-	return &mall.ActivityCoupon{
-		Id:          c.Id,
-		Title:       c.Title,
-		EntranceImg: c.EntranceImg,
-		Online:      c.Online,
-		Remark:      c.Remark,
-		StartTime:   c.StartTime.Unix(),
-		EndTime:     c.EndTime.Unix(),
-		Coupon:      coupons,
-	}, nil
-}
-func (s *MallInterface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *mall.AllCategory, err error) {
-	c, err := s.cu.GetAllCategory(ctx)
-	if err != nil {
-		return
-	}
-	var roots []*mall.Category
-	var subs []*mall.Category
-	for _, v := range c.Roots {
-		roots = append(roots, &mall.Category{
-			Id:       v.Id,
-			Name:     v.Name,
-			IsRoot:   v.IsRoot,
-			Img:      v.Img,
-			ParentId: v.ParentId,
-			Index:    v.Index,
-		})
-	}
-	for _, v := range c.Subs {
-		subs = append(subs, &mall.Category{
-			Id:       v.Id,
-			Name:     v.Name,
-			IsRoot:   v.IsRoot,
-			Img:      v.Img,
-			ParentId: v.ParentId,
-			Index:    v.Index,
-		})
-	}
-	return &mall.AllCategory{
-		Roots: roots,
-		Subs:  subs,
-	}, nil
-}
-func (s *MallInterface) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *mall.GridCategories, err error) {
-	c, err := s.cu.GetGridCategory(ctx)
-	if err != nil {
-		return
-	}
-	var category []*mall.GridCategories_GridCategory
-	for _, v := range c {
-		category = append(category, &mall.GridCategories_GridCategory{
-			Id:             v.Id,
-			Name:           v.Name,
-			Title:          v.Title,
-			Img:            v.Img,
-			CategoryId:     v.CategoryId,
-			RootCategoryId: v.RootCategoryId,
-		})
-	}
-	return &mall.GridCategories{
-		Category: category,
-	}, nil
-}
-func (s *MallInterface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
-	return
-}
-func (s *MallInterface) MiniappLogin(ctx context.Context, in *mall.MiniappLoginRequest) (out *mall.LoginReply, err error) {
-
-	return
-}
-=======
-package service
-
-import (
-	"context"
-	"mall-go/api/mall"
-	"mall-go/app/mall/interface/internal/biz"
-
-	"github.com/go-kratos/kratos/v2/log"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
-)
-
-type MallInterface struct {
-	mall.UnimplementedInterfaceServer
+	UnimplementedInterfaceServer
 	bu *biz.BannerUsecase
 	tu *biz.ThemeUsecase
 	au *biz.ActivityUsecase
@@ -276,8 +21,8 @@ type MallInterface struct {
 }
 
 func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase, gu *biz.TagUsecase,
-	logger log.Logger) *MallInterface {
-
+	logger log.Logger,
+) *MallInterface {
 	return &MallInterface{
 		bu:  bu,
 		tu:  tu,
@@ -288,15 +33,15 @@ func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityU
 	}
 }
 
-func (s *MallInterface) GetBannerById(ctx context.Context, in *mall.IdRequest) (out *mall.Banner, err error) {
+func (s *MallInterface) GetBannerById(ctx context.Context, in *IdRequest) (out *Banner, err error) {
 	b, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	var items []*mall.BannerItem
+	var items []*BannerItem
 	for _, v := range b.Items {
-		items = append(items, &mall.BannerItem{
+		items = append(items, &BannerItem{
 			Id:       v.ID,
 			Img:      v.Img,
 			Keyword:  v.Keyword,
@@ -304,9 +49,8 @@ func (s *MallInterface) GetBannerById(ctx context.Context, in *mall.IdRequest) (
 			Name:     v.Name,
 			BannerId: v.BannerId,
 		})
-
 	}
-	return &mall.Banner{
+	return &Banner{
 		Id:          b.Id,
 		Name:        b.Name,
 		Title:       b.Title,
@@ -314,16 +58,16 @@ func (s *MallInterface) GetBannerById(ctx context.Context, in *mall.IdRequest) (
 		Description: b.Description,
 		Items:       items,
 	}, nil
-
 }
-func (s *MallInterface) GetBannerByName(ctx context.Context, in *mall.BannerByNameRequest) (out *mall.Banner, err error) {
+
+func (s *MallInterface) GetBannerByName(ctx context.Context, in *BannerByNameRequest) (out *Banner, err error) {
 	b, err := s.bu.GetBannerByName(ctx, in.Name)
 	if err != nil {
 		return
 	}
-	var items []*mall.BannerItem
+	var items []*BannerItem
 	for _, v := range b.Items {
-		items = append(items, &mall.BannerItem{
+		items = append(items, &BannerItem{
 			Id:       v.ID,
 			Img:      v.Img,
 			Name:     v.Name,
@@ -332,7 +76,7 @@ func (s *MallInterface) GetBannerByName(ctx context.Context, in *mall.BannerByNa
 			BannerId: v.BannerId,
 		})
 	}
-	return &mall.Banner{
+	return &Banner{
 		Id:          b.Id,
 		Name:        b.Name,
 		Title:       b.Title,
@@ -341,14 +85,15 @@ func (s *MallInterface) GetBannerByName(ctx context.Context, in *mall.BannerByNa
 		Items:       items,
 	}, nil
 }
-func (s *MallInterface) GetThemeByNames(ctx context.Context, in *mall.ThemeByNamesRequest) (out *mall.Themes, err error) {
+
+func (s *MallInterface) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest) (out *Themes, err error) {
 	t, err := s.tu.GetThemeByNames(ctx, in.Names)
 	if err != nil {
 		return
 	}
-	var thems []*mall.Theme
+	var thems []*Theme
 	for _, v := range t {
-		thems = append(thems, &mall.Theme{
+		thems = append(thems, &Theme{
 			Id:             v.Id,
 			Title:          v.Title,
 			Description:    v.Description,
@@ -360,19 +105,19 @@ func (s *MallInterface) GetThemeByNames(ctx context.Context, in *mall.ThemeByNam
 			Online:         v.Online,
 		})
 	}
-	return &mall.Themes{
+	return &Themes{
 		Theme: thems,
 	}, nil
 }
 
-func (s *MallInterface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithSpuRequest) (out *mall.ThemeSpu, err error) {
+func (s *MallInterface) GetThemeWithSpu(ctx context.Context, in *ThemeWithSpuRequest) (out *ThemeSpu, err error) {
 	t, err := s.tu.GetThemeWithSpu(ctx, in.Name)
 	if err != nil {
 		return
 	}
-	var spuList []*mall.Spu
+	var spuList []*Spu
 	for _, v := range t.SpuList {
-		spuList = append(spuList, &mall.Spu{
+		spuList = append(spuList, &Spu{
 			Id:             v.Id,
 			Title:          v.Title,
 			Subtitle:       v.Subtitle,
@@ -388,7 +133,7 @@ func (s *MallInterface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithS
 		})
 	}
 
-	return &mall.ThemeSpu{
+	return &ThemeSpu{
 		Id:             t.Id,
 		Title:          t.Title,
 		Description:    t.Description,
@@ -401,12 +146,13 @@ func (s *MallInterface) GetThemeWithSpu(ctx context.Context, in *mall.ThemeWithS
 		SpuList:        spuList,
 	}, nil
 }
-func (s *MallInterface) GetActivityByName(ctx context.Context, in *mall.ActivityByNameRequest) (out *mall.Activity, err error) {
+
+func (s *MallInterface) GetActivityByName(ctx context.Context, in *ActivityByNameRequest) (out *Activity, err error) {
 	c, err := s.au.GetActivityByName(ctx, in.Name)
 	if err != nil {
 		return
 	}
-	out = &mall.Activity{
+	out = &Activity{
 		Id:          c.Id,
 		Title:       c.Title,
 		EntranceImg: c.EntranceImg,
@@ -417,14 +163,15 @@ func (s *MallInterface) GetActivityByName(ctx context.Context, in *mall.Activity
 	}
 	return out, nil
 }
-func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *mall.ActivityWithCouponRequest) (out *mall.ActivityCoupon, err error) {
+
+func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *ActivityWithCouponRequest) (out *ActivityCoupon, err error) {
 	c, err := s.au.GetActivityWithCoupon(ctx, in.Name)
 	if err != nil {
 		return
 	}
-	var coupons []*mall.CouponBo
+	var coupons []*CouponBo
 	for _, v := range c.Coupons {
-		coupons = append(coupons, &mall.CouponBo{
+		coupons = append(coupons, &CouponBo{
 			Id:          v.Id,
 			Title:       v.Title,
 			StartTime:   v.StartTime.Unix(),
@@ -438,7 +185,7 @@ func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *mall.Acti
 			WholeStore:  int32(v.WholeStore),
 		})
 	}
-	return &mall.ActivityCoupon{
+	return &ActivityCoupon{
 		Id:          c.Id,
 		Title:       c.Title,
 		EntranceImg: c.EntranceImg,
@@ -449,15 +196,16 @@ func (s *MallInterface) GetActivityWithCoupon(ctx context.Context, in *mall.Acti
 		Coupon:      coupons,
 	}, nil
 }
-func (s *MallInterface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *mall.AllCategory, err error) {
+
+func (s *MallInterface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (out *AllCategory, err error) {
 	c, err := s.cu.GetAllCategory(ctx)
 	if err != nil {
 		return
 	}
-	var roots []*mall.Category
-	var subs []*mall.Category
+	var roots []*Category
+	var subs []*Category
 	for _, v := range c.Roots {
-		roots = append(roots, &mall.Category{
+		roots = append(roots, &Category{
 			Id:       v.Id,
 			Name:     v.Name,
 			IsRoot:   v.IsRoot,
@@ -467,7 +215,7 @@ func (s *MallInterface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (
 		})
 	}
 	for _, v := range c.Subs {
-		subs = append(subs, &mall.Category{
+		subs = append(subs, &Category{
 			Id:       v.Id,
 			Name:     v.Name,
 			IsRoot:   v.IsRoot,
@@ -476,19 +224,20 @@ func (s *MallInterface) GetAllCategory(ctx context.Context, in *emptypb.Empty) (
 			Index:    v.Index,
 		})
 	}
-	return &mall.AllCategory{
+	return &AllCategory{
 		Roots: roots,
 		Subs:  subs,
 	}, nil
 }
-func (s *MallInterface) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *mall.GridCategories, err error) {
+
+func (s *MallInterface) GetGridCategory(ctx context.Context, in *emptypb.Empty) (out *GridCategories, err error) {
 	c, err := s.cu.GetGridCategory(ctx)
 	if err != nil {
 		return
 	}
-	var category []*mall.GridCategories_GridCategory
+	var category []*GridCategories_GridCategory
 	for _, v := range c {
-		category = append(category, &mall.GridCategories_GridCategory{
+		category = append(category, &GridCategories_GridCategory{
 			Id:             v.Id,
 			Name:           v.Name,
 			Title:          v.Title,
@@ -497,18 +246,19 @@ func (s *MallInterface) GetGridCategory(ctx context.Context, in *emptypb.Empty) 
 			RootCategoryId: v.RootCategoryId,
 		})
 	}
-	return &mall.GridCategories{
+	return &GridCategories{
 		Category: category,
 	}, nil
 }
-func (s *MallInterface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequest) (out *mall.Tags, err error) {
+
+func (s *MallInterface) GetTagByType(ctx context.Context, in *TagByTypeRequest) (out *Tags, err error) {
 	t, err := s.gu.GetTagByType(ctx, in.Type)
 	if err != nil {
 		return
 	}
-	var tags []*mall.Tags_Tag
+	var tags []*Tags_Tag
 	for _, v := range t {
-		tags = append(tags, &mall.Tags_Tag{
+		tags = append(tags, &Tags_Tag{
 			Id:          v.Id,
 			Title:       v.Title,
 			Highlight:   v.Highlight,
@@ -516,10 +266,9 @@ func (s *MallInterface) GetTagByType(ctx context.Context, in *mall.TagByTypeRequ
 			Type:        v.Type,
 		})
 	}
-	return &mall.Tags{Tag: tags}, nil
+	return &Tags{Tag: tags}, nil
 }
-func (s *MallInterface) MiniappLogin(ctx context.Context, in *mall.MiniappLoginRequest) (out *mall.LoginReply, err error) {
 
+func (s *MallInterface) MiniappLogin(ctx context.Context, in *MiniappLoginRequest) (out *LoginReply, err error) {
 	return
 }
->>>>>>> dd2f92e7fccdb2b4aee0e1f943fee52bcb280357
