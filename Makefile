@@ -64,8 +64,9 @@ build:
 .PHONY: generate
 # generate
 generate:
+	go mod tidy
+	go get github.com/google/wire/cmd/wire@latest
 	go generate ./...
-
 
 
 .PHONY: validate
@@ -81,7 +82,6 @@ validate:
 # generate all
 all:
 	make api;
-	make errors;
 	make config;
 	make generate;
 

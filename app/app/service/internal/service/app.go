@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
+	"strings"
 
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/pkg/utils"
-	"strings"
 
 	"github.com/go-kratos/kratos/v2/log"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -23,8 +23,8 @@ type AppService struct {
 }
 
 func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CateGoryUsecase,
-	logger log.Logger) *AppService {
-
+	logger log.Logger,
+) *AppService {
 	return &AppService{
 		bu:  bu,
 		tu:  tu,
@@ -60,8 +60,8 @@ func (s *AppService) GetBannerById(ctx context.Context, in *IdRequest) (out *Ban
 		Description: rv.Description,
 		Items:       items,
 	}, nil
-
 }
+
 func (s *AppService) GetBannerByName(ctx context.Context, in *NameRequest) (out *Banner, err error) {
 	rv, err := s.bu.GetBannerByName(ctx, in.Name)
 	if err != nil {
@@ -86,7 +86,6 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *NameRequest) (out 
 		Description: rv.Description,
 		Items:       items,
 	}, nil
-
 }
 
 func (s *AppService) GetThemeByName(ctx context.Context, in *NameRequest) (out *ThemeSpu, err error) {
@@ -103,6 +102,7 @@ func (s *AppService) GetThemeByName(ctx context.Context, in *NameRequest) (out *
 		SpuIds: rv.SpuIds,
 	}, nil
 }
+
 func (s *AppService) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest) (out *Themes, err error) {
 	rv, err := s.tu.GetThemeByNames(ctx, strings.Split(in.Names, `,`))
 	if err != nil {
@@ -124,7 +124,6 @@ func (s *AppService) GetThemeByNames(ctx context.Context, in *ThemeByNamesReques
 }
 
 func (s *AppService) GetActivityByName(ctx context.Context, in *NameRequest) (out *Activity, err error) {
-
 	rv, err := s.au.GetActivityByName(ctx, in.Name)
 	if err != nil {
 		return
@@ -149,7 +148,6 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *NameRequest)
 
 	var coupons []*CouponBo
 	for _, v := range rv.Coupons {
-
 		coupons = append(coupons, &CouponBo{
 			Id:          v.Id,
 			Title:       v.Title,
@@ -176,8 +174,8 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *NameRequest)
 		Coupon:      coupons,
 	}
 	return
-
 }
+
 func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *Categories, err error) {
 	rv, err := s.cu.ListCategory(ctx)
 	if err != nil {
@@ -213,6 +211,7 @@ func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *
 	}
 	return out, nil
 }
+
 func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (out *GridCategories, err error) {
 	rv, err := s.cu.ListGridCategory(ctx)
 	if err != nil {
@@ -232,6 +231,7 @@ func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (o
 	out = &GridCategories{Category: category}
 	return out, nil
 }
+
 func (s *AppService) GetTagByType(ctx context.Context, in *TypeRequest) (out *Tags, err error) {
 	return
 }

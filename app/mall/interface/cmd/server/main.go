@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
+	"os"
+
 	"github.com/go-kratos/kratos/v2/encoding/json"
 	"google.golang.org/protobuf/encoding/protojson"
-
-	"os"
 
 	"mall-go/app/mall/interface/internal/conf"
 

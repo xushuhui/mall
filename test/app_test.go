@@ -2,11 +2,13 @@ package test
 
 import (
 	"context"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
+	"testing"
+
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	app "mall-go/api/app/service"
 	spu "mall-go/api/spu/service"
-	"testing"
 
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	transhttp "github.com/go-kratos/kratos/v2/transport/http"
@@ -19,15 +21,14 @@ var (
 )
 
 func TestGetBannerById(t *testing.T) {
-
 	reply, err := appClient.GetBannerById(context.Background(), &app.IdRequest{Id: -1})
 	if err != nil {
 		log.Fatal(err)
 	}
 	t.Log(reply)
 	assert.Equal(t, reply.Id, int64(1))
-
 }
+
 func TestGetBannerByName(t *testing.T) {
 	reply, err := appClient.GetBannerByName(context.Background(), &app.NameRequest{Name: "b-1"})
 	if err != nil {
@@ -35,27 +36,24 @@ func TestGetBannerByName(t *testing.T) {
 	}
 	t.Log(reply)
 	assert.Equal(t, reply.Name, "b-1")
-
 }
-func TestGetActivtyByName(t *testing.T) {
 
+func TestGetActivtyByName(t *testing.T) {
 	reply, err := appClient.GetActivityByName(context.Background(), &app.NameRequest{Name: "a-2"})
 	if err != nil {
 		log.Fatal(err)
 	}
 	t.Log(reply)
 	assert.Equal(t, reply.Title, "夏日好礼送不停")
-
 }
-func TestGetActivityWithCoupon(t *testing.T) {
 
+func TestGetActivityWithCoupon(t *testing.T) {
 	reply, err := appClient.GetActivityWithCoupon(context.Background(), &app.NameRequest{Name: "a-2"})
 	if err != nil {
 		log.Fatal(err)
 	}
 	t.Log(reply)
 	assert.Equal(t, reply.Title, "夏日好礼送不停")
-
 }
 
 func TestGetThemeByNames(t *testing.T) {
@@ -73,7 +71,6 @@ func TestGetThemeByName(t *testing.T) {
 		log.Fatal(err)
 	}
 	t.Log(reply)
-
 }
 
 func TestListCategory(t *testing.T) {

@@ -262,7 +262,6 @@ func (aq *ActivityQuery) Clone() *ActivityQuery {
 //		GroupBy(activity.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (aq *ActivityQuery) GroupBy(field string, fields ...string) *ActivityGroupBy {
 	group := &ActivityGroupBy{config: aq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (aq *ActivityQuery) GroupBy(field string, fields ...string) *ActivityGroupB
 //	client.Activity.Query().
 //		Select(activity.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (aq *ActivityQuery) Select(fields ...string) *ActivitySelect {
 	aq.fields = append(aq.fields, fields...)
 	return &ActivitySelect{ActivityQuery: aq}

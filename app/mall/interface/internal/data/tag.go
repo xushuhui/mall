@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 	app "mall-go/api/app/service"
 	"mall-go/app/mall/interface/internal/biz"
@@ -32,7 +33,6 @@ func (r *tagRepo) GetTagByType(ctx context.Context, kind int32) (t []biz.Tag, er
 			Description: v.Description,
 			Type:        v.Type,
 		})
-
 	}
 	return t, nil
 }

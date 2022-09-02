@@ -262,7 +262,6 @@ func (rq *RefundQuery) Clone() *RefundQuery {
 //		GroupBy(refund.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (rq *RefundQuery) GroupBy(field string, fields ...string) *RefundGroupBy {
 	group := &RefundGroupBy{config: rq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (rq *RefundQuery) GroupBy(field string, fields ...string) *RefundGroupBy {
 //	client.Refund.Query().
 //		Select(refund.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (rq *RefundQuery) Select(fields ...string) *RefundSelect {
 	rq.fields = append(rq.fields, fields...)
 	return &RefundSelect{RefundQuery: rq}

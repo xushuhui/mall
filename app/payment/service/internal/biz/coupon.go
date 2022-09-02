@@ -25,8 +25,7 @@ type PayUsecase struct {
 	repo PayRepo
 	log  *log.Helper
 }
-type PayRepo interface {
-}
+type PayRepo interface{}
 
 func NewPayUsecase(repo PayRepo, logger log.Logger) *PayUsecase {
 	return &PayUsecase{

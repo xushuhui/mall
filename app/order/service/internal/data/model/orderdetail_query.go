@@ -262,7 +262,6 @@ func (odq *OrderDetailQuery) Clone() *OrderDetailQuery {
 //		GroupBy(orderdetail.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (odq *OrderDetailQuery) GroupBy(field string, fields ...string) *OrderDetailGroupBy {
 	group := &OrderDetailGroupBy{config: odq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (odq *OrderDetailQuery) GroupBy(field string, fields ...string) *OrderDetai
 //	client.OrderDetail.Query().
 //		Select(orderdetail.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (odq *OrderDetailQuery) Select(fields ...string) *OrderDetailSelect {
 	odq.fields = append(odq.fields, fields...)
 	return &OrderDetailSelect{OrderDetailQuery: odq}

@@ -262,7 +262,6 @@ func (cq *ChargeQuery) Clone() *ChargeQuery {
 //		GroupBy(charge.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (cq *ChargeQuery) GroupBy(field string, fields ...string) *ChargeGroupBy {
 	group := &ChargeGroupBy{config: cq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (cq *ChargeQuery) GroupBy(field string, fields ...string) *ChargeGroupBy {
 //	client.Charge.Query().
 //		Select(charge.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (cq *ChargeQuery) Select(fields ...string) *ChargeSelect {
 	cq.fields = append(cq.fields, fields...)
 	return &ChargeSelect{ChargeQuery: cq}

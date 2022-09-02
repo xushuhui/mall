@@ -336,7 +336,6 @@ func (oq *OrderQuery) WithOrderSub(opts ...func(*OrderSubQuery)) *OrderQuery {
 //		GroupBy(order.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (oq *OrderQuery) GroupBy(field string, fields ...string) *OrderGroupBy {
 	group := &OrderGroupBy{config: oq.config}
 	group.fields = append([]string{field}, fields...)
@@ -361,7 +360,6 @@ func (oq *OrderQuery) GroupBy(field string, fields ...string) *OrderGroupBy {
 //	client.Order.Query().
 //		Select(order.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (oq *OrderQuery) Select(fields ...string) *OrderSelect {
 	oq.fields = append(oq.fields, fields...)
 	return &OrderSelect{OrderQuery: oq}

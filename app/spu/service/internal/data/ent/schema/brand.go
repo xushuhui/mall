@@ -16,11 +16,13 @@ func (Brand) Fields() []ent.Field {
 		field.String("description").Comment(""),
 	}
 }
+
 func (Brand) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
 	}
 }
+
 func (Brand) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("spu", Spu.Type),

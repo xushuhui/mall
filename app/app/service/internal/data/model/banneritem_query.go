@@ -299,7 +299,6 @@ func (biq *BannerItemQuery) WithBanner(opts ...func(*BannerQuery)) *BannerItemQu
 //		GroupBy(banneritem.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (biq *BannerItemQuery) GroupBy(field string, fields ...string) *BannerItemGroupBy {
 	group := &BannerItemGroupBy{config: biq.config}
 	group.fields = append([]string{field}, fields...)
@@ -324,7 +323,6 @@ func (biq *BannerItemQuery) GroupBy(field string, fields ...string) *BannerItemG
 //	client.BannerItem.Query().
 //		Select(banneritem.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (biq *BannerItemQuery) Select(fields ...string) *BannerItemSelect {
 	biq.fields = append(biq.fields, fields...)
 	return &BannerItemSelect{BannerItemQuery: biq}

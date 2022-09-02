@@ -1,8 +1,7 @@
 package server
 
 import (
-	"mall-go/api/spu/service"
-	intenal "mall-go/app/spu/service/internal/service"
+	"mall-go/app/spu/service/internal/service"
 
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 
@@ -16,8 +15,8 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, as *intenal.SpuService, logger log.Logger) *http.Server {
-	var opts = []http.ServerOption{
+func NewHTTPServer(c *conf.Server, as *service.SpuService, logger log.Logger) *http.Server {
+	opts := []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),

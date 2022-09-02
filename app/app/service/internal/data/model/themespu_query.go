@@ -299,7 +299,6 @@ func (tsq *ThemeSpuQuery) WithTheme(opts ...func(*ThemeQuery)) *ThemeSpuQuery {
 //		GroupBy(themespu.FieldThemeID).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (tsq *ThemeSpuQuery) GroupBy(field string, fields ...string) *ThemeSpuGroupBy {
 	group := &ThemeSpuGroupBy{config: tsq.config}
 	group.fields = append([]string{field}, fields...)
@@ -324,7 +323,6 @@ func (tsq *ThemeSpuQuery) GroupBy(field string, fields ...string) *ThemeSpuGroup
 //	client.ThemeSpu.Query().
 //		Select(themespu.FieldThemeID).
 //		Scan(ctx, &v)
-//
 func (tsq *ThemeSpuQuery) Select(fields ...string) *ThemeSpuSelect {
 	tsq.fields = append(tsq.fields, fields...)
 	return &ThemeSpuSelect{ThemeSpuQuery: tsq}

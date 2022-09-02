@@ -29,6 +29,7 @@ func NewTagUsecase(repo TagRepo, logger log.Logger) *TagUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (uc *TagUsecase) GetTagByType(ctx context.Context, kind int) (t []Tag, err error) {
 	t, err = uc.repo.GetTagByType(ctx, kind)
 	return

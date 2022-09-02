@@ -2,9 +2,8 @@ package data
 
 import (
 	"context"
-	"mall-go/api/mall"
+
 	"mall-go/app/app/service/internal/biz"
-	"mall-go/app/app/service/internal/data/model"
 	"mall-go/app/app/service/internal/data/model/activity"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -21,12 +20,9 @@ func NewActivityRepo(data *Data, logger log.Logger) biz.ActivityRepo {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (r *activityRepo) GetActivityByName(ctx context.Context, name string) (a biz.Activity, err error) {
 	po, err := r.data.db.Activity.Query().Where(activity.Name(name)).First(ctx)
-	if model.IsNotFound(err) {
-		err = mall.ErrorNotFound("activity")
-		return
-	}
 
 	if err != nil {
 		return

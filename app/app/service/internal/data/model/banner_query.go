@@ -300,7 +300,6 @@ func (bq *BannerQuery) WithBannerItem(opts ...func(*BannerItemQuery)) *BannerQue
 //		GroupBy(banner.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (bq *BannerQuery) GroupBy(field string, fields ...string) *BannerGroupBy {
 	group := &BannerGroupBy{config: bq.config}
 	group.fields = append([]string{field}, fields...)
@@ -325,7 +324,6 @@ func (bq *BannerQuery) GroupBy(field string, fields ...string) *BannerGroupBy {
 //	client.Banner.Query().
 //		Select(banner.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (bq *BannerQuery) Select(fields ...string) *BannerSelect {
 	bq.fields = append(bq.fields, fields...)
 	return &BannerSelect{BannerQuery: bq}

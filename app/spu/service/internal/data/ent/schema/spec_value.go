@@ -17,6 +17,7 @@ func (SpecValue) Fields() []ent.Field {
 		field.String("extend").Comment(""),
 	}
 }
+
 func (SpecValue) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

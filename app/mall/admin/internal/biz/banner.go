@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -36,6 +37,7 @@ func NewBannerUsecase(repo BannerRepo, logger log.Logger) *BannerUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (uc *BannerUsecase) GetBannerById(ctx context.Context, id int64) (b Banner, err error) {
 	b, err = uc.repo.GetBannerById(ctx, id)
 	return

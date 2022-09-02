@@ -2,10 +2,12 @@ package data
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/medivhzhan/weapp/v2"
+
 	user "mall-go/api/user/service"
 	"mall-go/app/mall/interface/internal/biz"
+
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/medivhzhan/weapp/v2"
 )
 
 type userRepo struct {
@@ -28,8 +30,8 @@ func (r *userRepo) GetOpenidByCode(ctx context.Context, code string) (resp *weap
 	err = resp.CommonError.GetResponseError()
 	return
 }
-func (r *userRepo) GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
 
+func (r *userRepo) GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
 	po, err := r.data.uc.GetUserIdentiy(ctx, &user.UserIdentiyRequest{Identifier: identifier, Credential: credential, IdentityType: identityType})
 	if err != nil {
 		return
@@ -39,8 +41,8 @@ func (r *userRepo) GetUserIdentiy(ctx context.Context, identityType, identifier,
 		Id: po.Id,
 	}, nil
 }
-func (r *userRepo) CreateUserIdentiy(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
 
+func (r *userRepo) CreateUserIdentiy(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
 	po, err := r.data.uc.CreateUserIdentiy(ctx, &user.UserIdentiyRequest{Identifier: identifier, Credential: credential, IdentityType: identityType})
 	if err != nil {
 		return
@@ -49,13 +51,18 @@ func (r *userRepo) CreateUserIdentiy(ctx context.Context, identityType, identifi
 		Id: po.Id,
 	}, nil
 }
-func (r *userRepo) CreateUser(ctx context.Context, in *user.CreateUserRequest) (u biz.User, err error) {
-	po, err := r.data.uc.CreateUser(ctx, in)
+
+func (r *userRepo) CreateUser(ctx context.Context, in *biz.User) (u int64, err error) {
+
+	po, err := r.data.uc.CreateUser(ctx, &user.CreateUserRequest{
+		Nickname:     "",
+		Identifier:   "",
+		Credential:   "",
+		IdentityType: "",
+	})
 	if err != nil {
 		return
 	}
 
-	return biz.User{
-		Id: po.Id,
-	}, nil
+	return po.Id, nil
 }

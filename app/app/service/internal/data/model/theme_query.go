@@ -300,7 +300,6 @@ func (tq *ThemeQuery) WithThemeSpu(opts ...func(*ThemeSpuQuery)) *ThemeQuery {
 //		GroupBy(theme.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (tq *ThemeQuery) GroupBy(field string, fields ...string) *ThemeGroupBy {
 	group := &ThemeGroupBy{config: tq.config}
 	group.fields = append([]string{field}, fields...)
@@ -325,7 +324,6 @@ func (tq *ThemeQuery) GroupBy(field string, fields ...string) *ThemeGroupBy {
 //	client.Theme.Query().
 //		Select(theme.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (tq *ThemeQuery) Select(fields ...string) *ThemeSelect {
 	tq.fields = append(tq.fields, fields...)
 	return &ThemeSelect{ThemeQuery: tq}

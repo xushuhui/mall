@@ -262,7 +262,6 @@ func (uwq *UserWalletQuery) Clone() *UserWalletQuery {
 //		GroupBy(userwallet.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (uwq *UserWalletQuery) GroupBy(field string, fields ...string) *UserWalletGroupBy {
 	group := &UserWalletGroupBy{config: uwq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (uwq *UserWalletQuery) GroupBy(field string, fields ...string) *UserWalletG
 //	client.UserWallet.Query().
 //		Select(userwallet.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (uwq *UserWalletQuery) Select(fields ...string) *UserWalletSelect {
 	uwq.fields = append(uwq.fields, fields...)
 	return &UserWalletSelect{UserWalletQuery: uwq}

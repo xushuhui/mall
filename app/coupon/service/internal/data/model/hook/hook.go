@@ -155,7 +155,6 @@ func HasFields(field string, fields ...string) Condition {
 // If executes the given hook under condition.
 //
 //	hook.If(ComputeAverage, And(HasFields(...), HasAddedFields(...)))
-//
 func If(hk model.Hook, cond Condition) model.Hook {
 	return func(next model.Mutator) model.Mutator {
 		return model.MutateFunc(func(ctx context.Context, m model.Mutation) (model.Value, error) {
@@ -170,7 +169,6 @@ func If(hk model.Hook, cond Condition) model.Hook {
 // On executes the given hook only for the given operation.
 //
 //	hook.On(Log, model.Delete|model.Create)
-//
 func On(hk model.Hook, op model.Op) model.Hook {
 	return If(hk, HasOp(op))
 }
@@ -178,7 +176,6 @@ func On(hk model.Hook, op model.Op) model.Hook {
 // Unless skips the given hook only for the given operation.
 //
 //	hook.Unless(Log, model.Update|model.UpdateOne)
-//
 func Unless(hk model.Hook, op model.Op) model.Hook {
 	return If(hk, Not(HasOp(op)))
 }
@@ -199,7 +196,6 @@ func FixedError(err error) model.Hook {
 //			Reject(model.Delete|model.Update),
 //		}
 //	}
-//
 func Reject(op model.Op) model.Hook {
 	hk := FixedError(fmt.Errorf("%s operation is not allowed", op))
 	return On(hk, op)

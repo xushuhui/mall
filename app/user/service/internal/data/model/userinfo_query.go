@@ -262,7 +262,6 @@ func (uiq *UserInfoQuery) Clone() *UserInfoQuery {
 //		GroupBy(userinfo.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (uiq *UserInfoQuery) GroupBy(field string, fields ...string) *UserInfoGroupBy {
 	group := &UserInfoGroupBy{config: uiq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (uiq *UserInfoQuery) GroupBy(field string, fields ...string) *UserInfoGroup
 //	client.UserInfo.Query().
 //		Select(userinfo.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (uiq *UserInfoQuery) Select(fields ...string) *UserInfoSelect {
 	uiq.fields = append(uiq.fields, fields...)
 	return &UserInfoSelect{UserInfoQuery: uiq}

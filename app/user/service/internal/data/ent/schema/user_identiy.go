@@ -16,6 +16,7 @@ func (UserIdentiy) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "lin_user_identiy"},
 	}
 }
+
 func (UserIdentiy) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("user_id").Comment("用户id"),

@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/wire"
@@ -16,7 +17,7 @@ var ProviderSet = wire.NewSet(NewData, NewEntClient, NewUserRepo)
 type Data struct {
 	db  *model.Client
 	log *log.Helper
-	//rdb *redis.Client
+	// rdb *redis.Client
 }
 
 func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {
@@ -46,6 +47,7 @@ func NewData(entClient *model.Client, logger log.Logger) (*Data, func(), error) 
 		log: log.NewHelper(logger),
 	}, cleanup, nil
 }
+
 func WithTx(ctx context.Context, client *model.Client, fn func(tx *model.Tx) error) error {
 	tx, err := client.Tx(ctx)
 	if err != nil {

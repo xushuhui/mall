@@ -262,7 +262,6 @@ func (ucq *UserCouponQuery) Clone() *UserCouponQuery {
 //		GroupBy(usercoupon.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (ucq *UserCouponQuery) GroupBy(field string, fields ...string) *UserCouponGroupBy {
 	group := &UserCouponGroupBy{config: ucq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (ucq *UserCouponQuery) GroupBy(field string, fields ...string) *UserCouponG
 //	client.UserCoupon.Query().
 //		Select(usercoupon.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (ucq *UserCouponQuery) Select(fields ...string) *UserCouponSelect {
 	ucq.fields = append(ucq.fields, fields...)
 	return &UserCouponSelect{UserCouponQuery: ucq}

@@ -16,6 +16,7 @@ func (GridCategory) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "grid_category"},
 	}
 }
+
 func (GridCategory) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment(""),
@@ -26,6 +27,7 @@ func (GridCategory) Fields() []ent.Field {
 		field.Int("root_category_id").Comment(""),
 	}
 }
+
 func (GridCategory) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

@@ -1,11 +1,11 @@
 package biz
 
 import (
-	"mall-go/pkg/enum"
-	"mall-go/pkg/utils"
+	"errors"
 	"time"
 
-	"github.com/xushuhui/goal/core"
+	"mall-go/pkg/enum"
+	"mall-go/pkg/utils"
 )
 
 type CouponChecker struct {
@@ -21,7 +21,7 @@ func NewCouponChecker(coupon Coupon) *CouponChecker {
 func (c *CouponChecker) IsOk() (err error) {
 	in := utils.IsInTime(time.Now(), c.Coupon.StartTime, c.Coupon.EndTime)
 	if !in {
-		err = core.ParamsError(core.InvalidParams)
+		err = errors.New("invalid params")
 		return
 	}
 	return
@@ -49,13 +49,14 @@ func (c *CouponChecker) couponCanBeUsed(orderCategoryPrice float64) (err error) 
 	case enum.FULL_MINUS:
 	case enum.FULL_OFF:
 		if c.Coupon.FullMoney > orderCategoryPrice {
-			err = core.ParamsError(core.InvalidParams)
+			err = errors.New("invalid params")
+
 			return
 		}
 	case enum.NO_THRESHOLD_MINUS:
 		return
 	default:
-		err = core.ParamsError(core.InvalidParams)
+		err = errors.New("invalid params")
 
 		return
 	}
@@ -85,21 +86,21 @@ func (c *CouponChecker) FinalTotalPriceIsOk(orderFinalTotalPrice float64, server
 	case enum.NO_THRESHOLD_MINUS:
 		serverFinalTotalPrice = serverTotalPrice - c.Coupon.Minus
 		if serverFinalTotalPrice <= 0 {
-			err = core.ParamsError(core.InvalidParams)
+			err = errors.New("invalid params")
 			return
 		}
 
 	case enum.FULL_OFF:
-		//todo
+		// todo
 		serverFinalTotalPrice = serverTotalPrice * c.Coupon.Rate
 
 	default:
-		err = core.ParamsError(core.InvalidParams)
+		err = errors.New("invalid params")
 
 		return
 	}
 	if serverFinalTotalPrice != orderFinalTotalPrice {
-		err = core.ParamsError(core.InvalidParams)
+		err = errors.New("invalid params")
 
 		return
 	}

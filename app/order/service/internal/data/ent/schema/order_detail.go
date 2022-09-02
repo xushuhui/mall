@@ -11,7 +11,6 @@ type OrderDetail struct {
 
 func (OrderDetail) Fields() []ent.Field {
 	return []ent.Field{
-
 		field.Int64("user_id").Comment("user表外键"),
 
 		field.Int("pay_way").Comment("支付方式：1微信支付，2支付宝支付，3余额支付").Default(1),
@@ -19,6 +18,7 @@ func (OrderDetail) Fields() []ent.Field {
 		field.String("ship_no").Comment("物流单号"),
 	}
 }
+
 func (OrderDetail) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

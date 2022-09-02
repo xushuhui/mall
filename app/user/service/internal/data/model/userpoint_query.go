@@ -262,7 +262,6 @@ func (upq *UserPointQuery) Clone() *UserPointQuery {
 //		GroupBy(userpoint.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (upq *UserPointQuery) GroupBy(field string, fields ...string) *UserPointGroupBy {
 	group := &UserPointGroupBy{config: upq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (upq *UserPointQuery) GroupBy(field string, fields ...string) *UserPointGro
 //	client.UserPoint.Query().
 //		Select(userpoint.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (upq *UserPointQuery) Select(fields ...string) *UserPointSelect {
 	upq.fields = append(upq.fields, fields...)
 	return &UserPointSelect{UserPointQuery: upq}

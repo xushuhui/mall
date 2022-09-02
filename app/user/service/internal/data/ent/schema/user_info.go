@@ -16,6 +16,7 @@ func (UserInfo) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "user_info"},
 	}
 }
+
 func (UserInfo) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("nickname").Comment(""),
@@ -24,6 +25,7 @@ func (UserInfo) Fields() []ent.Field {
 		field.String("wx_profile").Comment(""),
 	}
 }
+
 func (UserInfo) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

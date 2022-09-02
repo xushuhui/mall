@@ -262,7 +262,6 @@ func (gcq *GridCategoryQuery) Clone() *GridCategoryQuery {
 //		GroupBy(gridcategory.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (gcq *GridCategoryQuery) GroupBy(field string, fields ...string) *GridCategoryGroupBy {
 	group := &GridCategoryGroupBy{config: gcq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (gcq *GridCategoryQuery) GroupBy(field string, fields ...string) *GridCateg
 //	client.GridCategory.Query().
 //		Select(gridcategory.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (gcq *GridCategoryQuery) Select(fields ...string) *GridCategorySelect {
 	gcq.fields = append(gcq.fields, fields...)
 	return &GridCategorySelect{GridCategoryQuery: gcq}

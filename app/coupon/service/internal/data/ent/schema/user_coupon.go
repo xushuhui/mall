@@ -16,6 +16,7 @@ func (UserCoupon) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "user_coupon"},
 	}
 }
+
 func (UserCoupon) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("user_id").Comment(""),
@@ -25,6 +26,7 @@ func (UserCoupon) Fields() []ent.Field {
 		field.Int("order_id").Comment(""),
 	}
 }
+
 func (UserCoupon) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

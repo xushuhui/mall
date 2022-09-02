@@ -19,6 +19,7 @@ func (CouponTemplate) Fields() []ent.Field {
 		field.Int("type").Comment("1. 满减券 2.折扣券 3.无门槛券 4.满金额折扣券"),
 	}
 }
+
 func (CouponTemplate) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

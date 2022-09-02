@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -28,7 +29,7 @@ type Data struct {
 	uc user.UserClient
 
 	log *log.Helper
-	//rdb *redis.Client
+	// rdb *redis.Client
 }
 
 // NewData .
@@ -43,6 +44,7 @@ func NewData(ac app.AppClient, sc spu.SpuClient, uc user.UserClient, logger log.
 		log: log.NewHelper(logger),
 	}, cleanup, nil
 }
+
 func NewDiscovery(conf *conf.Registry) registry.Discovery {
 	c := consulAPI.DefaultConfig()
 	c.Address = conf.Consul.Address
@@ -54,6 +56,7 @@ func NewDiscovery(conf *conf.Registry) registry.Discovery {
 	r := consul.New(cli, consul.WithHealthCheck(false))
 	return r
 }
+
 func NewRegistrar(conf *conf.Registry) registry.Registrar {
 	c := consulAPI.DefaultConfig()
 	c.Address = conf.Consul.Address
@@ -65,6 +68,7 @@ func NewRegistrar(conf *conf.Registry) registry.Registrar {
 	r := consul.New(cli, consul.WithHealthCheck(false))
 	return r
 }
+
 func NewAppServiceClient(r registry.Discovery) app.AppClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
@@ -80,6 +84,7 @@ func NewAppServiceClient(r registry.Discovery) app.AppClient {
 	c := app.NewAppClient(conn)
 	return c
 }
+
 func NewUserServiceClient(r registry.Discovery) user.UserClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
@@ -95,6 +100,7 @@ func NewUserServiceClient(r registry.Discovery) user.UserClient {
 	c := user.NewUserClient(conn)
 	return c
 }
+
 func NewSpuServiceClient(r registry.Discovery) spu.SpuClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),

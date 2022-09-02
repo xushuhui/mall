@@ -19,11 +19,13 @@ func (SpecKey) Fields() []ent.Field {
 		field.String("description").Comment(""),
 	}
 }
+
 func (SpecKey) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
 	}
 }
+
 func (SpecKey) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("spu", Spu.Type).Ref("spec_key"),

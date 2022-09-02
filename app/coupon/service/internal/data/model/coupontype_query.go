@@ -262,7 +262,6 @@ func (ctq *CouponTypeQuery) Clone() *CouponTypeQuery {
 //		GroupBy(coupontype.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (ctq *CouponTypeQuery) GroupBy(field string, fields ...string) *CouponTypeGroupBy {
 	group := &CouponTypeGroupBy{config: ctq.config}
 	group.fields = append([]string{field}, fields...)
@@ -287,7 +286,6 @@ func (ctq *CouponTypeQuery) GroupBy(field string, fields ...string) *CouponTypeG
 //	client.CouponType.Query().
 //		Select(coupontype.FieldCreateTime).
 //		Scan(ctx, &v)
-//
 func (ctq *CouponTypeQuery) Select(fields ...string) *CouponTypeSelect {
 	ctq.fields = append(ctq.fields, fields...)
 	return &CouponTypeSelect{CouponTypeQuery: ctq}

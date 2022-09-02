@@ -54,10 +54,12 @@ func NewThemeUsecase(repo ThemeRepo, logger log.Logger) *ThemeUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (uc *ThemeUsecase) GetThemeByNames(ctx context.Context, names string) (t []Theme, err error) {
 	t, err = uc.repo.GetThemeByNames(ctx, names)
 	return
 }
+
 func (uc *ThemeUsecase) GetThemeWithSpu(ctx context.Context, name string) (t ThemeSpu, err error) {
 	t, err = uc.repo.GetThemeWithSpu(ctx, name)
 	return

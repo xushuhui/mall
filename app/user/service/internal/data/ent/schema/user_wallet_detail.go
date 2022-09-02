@@ -18,6 +18,7 @@ func (UserWalletDetail) Fields() []ent.Field {
 		field.Int("type").Comment("1充值，2消费").Default(1),
 	}
 }
+
 func (UserWalletDetail) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

@@ -31,11 +31,13 @@ func (Spu) Fields() []ent.Field {
 		field.String("for_theme_img").Comment(""),
 	}
 }
+
 func (Spu) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
 	}
 }
+
 func (Spu) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("sale_explain", SaleExplain.Type),
@@ -45,8 +47,8 @@ func (Spu) Edges() []ent.Edge {
 			edge.Table("spu_key"), edge.Columns("spu_id", "spec_key_id")),
 		edge.To("tag", Tag.Type).StorageKey(
 			edge.Table("spu_tag"), edge.Columns("spu_id", "tag_id")),
-		//edge.From("theme", schema.Theme.Type).Ref("spu"),
-		//edge.From("activity", schema.Activity.Type).Ref("spu"),
-		//edge.From("brand", schema.Brand.Type).Ref("spu"),
+		// edge.From("theme", schema.Theme.Type).Ref("spu"),
+		// edge.From("activity", schema.Activity.Type).Ref("spu"),
+		// edge.From("brand", schema.Brand.Type).Ref("spu"),
 	}
 }

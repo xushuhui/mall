@@ -26,10 +26,10 @@ func main() {
 		log.Fatal("running ent codegen:", err)
 	}
 }
+
 func EnsureStructTag() gen.Hook {
 	return func(next gen.Generator) gen.Generator {
 		return gen.GenerateFunc(func(g *gen.Graph) error {
-			
 			return next.Generate(g)
 		})
 	}

@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	app "mall-go/api/app/service"
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/app/app/service/internal/data/model/theme"
@@ -20,6 +21,7 @@ func NewThemeRepo(data *Data, logger log.Logger) biz.ThemeRepo {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (r *themeRepo) GetThemeByName(ctx context.Context, name string) (t biz.ThemeSpu, err error) {
 	po, err := r.data.db.Theme.Query().Where(theme.Name(name)).WithThemeSpu().First(ctx)
 	if err != nil {
@@ -43,8 +45,8 @@ func (r *themeRepo) GetThemeByName(ctx context.Context, name string) (t biz.Them
 	return biz.ThemeSpu{
 		Theme: theme, SpuIds: spuIds,
 	}, nil
-
 }
+
 func (r *themeRepo) GetThemeByNames(ctx context.Context, names []string) (themes []biz.Theme, err error) {
 	pos, err := r.data.db.Theme.Query().Where(theme.NameIn(names...)).All(ctx)
 	if err != nil {
@@ -66,12 +68,15 @@ func (r *themeRepo) GetThemeByNames(ctx context.Context, names []string) (themes
 	}
 	return themes, nil
 }
+
 func (r *themeRepo) CreateTheme(ctx context.Context, req app.Theme) (err error) {
 	return
 }
+
 func (r *themeRepo) ListTheme(ctx context.Context) (t []biz.Theme, err error) {
 	return
 }
+
 func (r *themeRepo) UpdateTheme(ctx context.Context, req app.Theme) (err error) {
 	return
 }

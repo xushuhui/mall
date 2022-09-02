@@ -25,6 +25,7 @@ func (Sku) Fields() []ent.Field {
 		field.Int64("root_category_id").Comment(""),
 	}
 }
+
 func (Sku) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

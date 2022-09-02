@@ -299,7 +299,6 @@ func (osq *OrderSnapQuery) WithOrder(opts ...func(*OrderQuery)) *OrderSnapQuery 
 //		GroupBy(ordersnap.FieldSnapImg).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
-//
 func (osq *OrderSnapQuery) GroupBy(field string, fields ...string) *OrderSnapGroupBy {
 	group := &OrderSnapGroupBy{config: osq.config}
 	group.fields = append([]string{field}, fields...)
@@ -324,7 +323,6 @@ func (osq *OrderSnapQuery) GroupBy(field string, fields ...string) *OrderSnapGro
 //	client.OrderSnap.Query().
 //		Select(ordersnap.FieldSnapImg).
 //		Scan(ctx, &v)
-//
 func (osq *OrderSnapQuery) Select(fields ...string) *OrderSnapSelect {
 	osq.fields = append(osq.fields, fields...)
 	return &OrderSnapSelect{OrderSnapQuery: osq}
