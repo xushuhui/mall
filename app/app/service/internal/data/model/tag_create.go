@@ -170,22 +170,22 @@ func (tc *TagCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (tc *TagCreate) check() error {
 	if _, ok := tc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "Tag.create_time"`)}
 	}
 	if _, ok := tc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "Tag.update_time"`)}
 	}
 	if _, ok := tc.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "title"`)}
+		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "Tag.title"`)}
 	}
 	if _, ok := tc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "description"`)}
+		return &ValidationError{Name: "description", err: errors.New(`model: missing required field "Tag.description"`)}
 	}
 	if _, ok := tc.mutation.Highlight(); !ok {
-		return &ValidationError{Name: "highlight", err: errors.New(`model: missing required field "highlight"`)}
+		return &ValidationError{Name: "highlight", err: errors.New(`model: missing required field "Tag.highlight"`)}
 	}
 	if _, ok := tc.mutation.GetType(); !ok {
-		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "type"`)}
+		return &ValidationError{Name: "type", err: errors.New(`model: missing required field "Tag.type"`)}
 	}
 	return nil
 }

@@ -20,16 +20,15 @@ import (
 
 // initApp init kratos application.
 func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
-	client := data.NewEntClient(confData, logger)
-	dataData, cleanup, err := data.NewData(client, logger)
+	dataData, cleanup, err := data.NewData(logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	couponRepo := data.NewCouponRepo(dataData, logger)
-	couponUsecase := biz.NewCouponUsecase(couponRepo, logger)
-	couponService := service.NewCouponService(couponUsecase)
-	httpServer := server.NewHTTPServer(confServer, couponService, logger)
-	grpcServer := server.NewGRPCServer(confServer, couponService, logger)
+	payRepo := data.NewPayRepo(dataData, logger)
+	payUsecase := biz.NewPayUsecase(payRepo, logger)
+	paymentService := service.NewPayService(payUsecase)
+	httpServer := server.NewHTTPServer(confServer, paymentService, logger)
+	grpcServer := server.NewGRPCServer(confServer, paymentService, logger)
 	registrar := server.NewRegistrar(registry)
 	app := newApp(logger, httpServer, grpcServer, registrar)
 	return app, func() {

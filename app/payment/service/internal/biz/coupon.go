@@ -22,11 +22,15 @@ type Category struct {
 	Id int64
 }
 type PayUsecase struct {
-	log *log.Helper
+	repo PayRepo
+	log  *log.Helper
+}
+type PayRepo interface {
 }
 
-func NewPayUsecase(logger log.Logger) *PayUsecase {
+func NewPayUsecase(repo PayRepo, logger log.Logger) *PayUsecase {
 	return &PayUsecase{
-		log: log.NewHelper(logger),
+		repo: repo,
+		log:  log.NewHelper(logger),
 	}
 }

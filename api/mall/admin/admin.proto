@@ -3,7 +3,6 @@ syntax = "proto3";
 package mall.admin;
 
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 
 
 

@@ -3,7 +3,6 @@ syntax = "proto3";
 package order.service;
 
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 option go_package = "/service";
 
 service Order{
