@@ -17,8 +17,8 @@ type User struct {
 type UserRepo interface {
 	CreateUser(ctx context.Context, in *User) (userId int64, err error)
 
-	GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
-	CreateUserIdentiy(ctx context.Context, userId int64, identityType, identifier, credential string) (err error)
+	GetUserIdentity(ctx context.Context, identityType, identifier, credential string) (User, error)
+	CreateUserIdentity(ctx context.Context, userId int64, identityType, identifier, credential string) (err error)
 }
 type UserUsecase struct {
 	repo   UserRepo

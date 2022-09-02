@@ -22,7 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type UserIdentiyRequest struct {
+type UserIdentityRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -32,8 +32,8 @@ type UserIdentiyRequest struct {
 	IdentityType string `protobuf:"bytes,3,opt,name=identityType,proto3" json:"identityType,omitempty"`
 }
 
-func (x *UserIdentiyRequest) Reset() {
-	*x = UserIdentiyRequest{}
+func (x *UserIdentityRequest) Reset() {
+	*x = UserIdentityRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_user_service_user_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -41,13 +41,13 @@ func (x *UserIdentiyRequest) Reset() {
 	}
 }
 
-func (x *UserIdentiyRequest) String() string {
+func (x *UserIdentityRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UserIdentiyRequest) ProtoMessage() {}
+func (*UserIdentityRequest) ProtoMessage() {}
 
-func (x *UserIdentiyRequest) ProtoReflect() protoreflect.Message {
+func (x *UserIdentityRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_user_service_user_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -59,26 +59,26 @@ func (x *UserIdentiyRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserIdentiyRequest.ProtoReflect.Descriptor instead.
-func (*UserIdentiyRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UserIdentityRequest.ProtoReflect.Descriptor instead.
+func (*UserIdentityRequest) Descriptor() ([]byte, []int) {
 	return file_api_user_service_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UserIdentiyRequest) GetIdentifier() string {
+func (x *UserIdentityRequest) GetIdentifier() string {
 	if x != nil {
 		return x.Identifier
 	}
 	return ""
 }
 
-func (x *UserIdentiyRequest) GetCredential() string {
+func (x *UserIdentityRequest) GetCredential() string {
 	if x != nil {
 		return x.Credential
 	}
 	return ""
 }
 
-func (x *UserIdentiyRequest) GetIdentityType() string {
+func (x *UserIdentityRequest) GetIdentityType() string {
 	if x != nil {
 		return x.IdentityType
 	}
@@ -384,23 +384,23 @@ func file_api_user_service_user_proto_rawDescGZIP() []byte {
 
 var file_api_user_service_user_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_api_user_service_user_proto_goTypes = []interface{}{
-	(*UserIdentiyRequest)(nil), // 0: user.service.UserIdentiyRequest
-	(*IdsRequest)(nil),         // 1: user.service.IdsRequest
-	(*IdRequest)(nil),          // 2: user.service.IdRequest
-	(*CreateUserRequest)(nil),  // 3: user.service.CreateUserRequest
-	(*UserVO)(nil),             // 4: user.service.UserVO
-	(*emptypb.Empty)(nil),      // 5: google.protobuf.Empty
+	(*UserIdentityRequest)(nil), // 0: user.service.UserIdentityRequest
+	(*IdsRequest)(nil),          // 1: user.service.IdsRequest
+	(*IdRequest)(nil),           // 2: user.service.IdRequest
+	(*CreateUserRequest)(nil),   // 3: user.service.CreateUserRequest
+	(*UserVO)(nil),              // 4: user.service.UserVO
+	(*emptypb.Empty)(nil),       // 5: google.protobuf.Empty
 }
 var file_api_user_service_user_proto_depIdxs = []int32{
 	3, // 0: user.service.User.CreateUser:input_type -> user.service.CreateUserRequest
 	2, // 1: user.service.User.GetUser:input_type -> user.service.IdRequest
-	0, // 2: user.service.User.GetUserIdentiy:input_type -> user.service.UserIdentiyRequest
-	0, // 3: user.service.User.CreateUserIdentiy:input_type -> user.service.UserIdentiyRequest
+	0, // 2: user.service.User.GetUserIdentity:input_type -> user.service.UserIdentityRequest
+	0, // 3: user.service.User.CreateUserIdentity:input_type -> user.service.UserIdentityRequest
 	1, // 4: user.service.User.ListUser:input_type -> user.service.IdsRequest
 	4, // 5: user.service.User.CreateUser:output_type -> user.service.UserVO
 	4, // 6: user.service.User.GetUser:output_type -> user.service.UserVO
-	4, // 7: user.service.User.GetUserIdentiy:output_type -> user.service.UserVO
-	4, // 8: user.service.User.CreateUserIdentiy:output_type -> user.service.UserVO
+	4, // 7: user.service.User.GetUserIdentity:output_type -> user.service.UserVO
+	4, // 8: user.service.User.CreateUserIdentity:output_type -> user.service.UserVO
 	5, // 9: user.service.User.ListUser:output_type -> google.protobuf.Empty
 	5, // [5:10] is the sub-list for method output_type
 	0, // [0:5] is the sub-list for method input_type
@@ -416,7 +416,7 @@ func file_api_user_service_user_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_api_user_service_user_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserIdentiyRequest); i {
+			switch v := v.(*UserIdentityRequest); i {
 			case 0:
 				return &v.state
 			case 1:

@@ -11,24 +11,24 @@ import (
 
 type MallInterface struct {
 	UnimplementedInterfaceServer
-	bu *biz.BannerUsecase
-	tu *biz.ThemeUsecase
-	au *biz.ActivityUsecase
-	cu *biz.CategoryUsecase
-	gu *biz.TagUsecase
-
+	bu  *biz.BannerUsecase
+	tu  *biz.ThemeUsecase
+	au  *biz.ActivityUsecase
+	cu  *biz.CategoryUsecase
+	gu  *biz.TagUsecase
+	uu  *biz.UserUsecase
 	log *log.Helper
 }
 
-func NewInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase, gu *biz.TagUsecase,
-	logger log.Logger,
-) *MallInterface {
+func NewMallInterface(logger log.Logger, bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase, gu *biz.TagUsecase,
+	uu *biz.UserUsecase) *MallInterface {
 	return &MallInterface{
 		bu:  bu,
 		tu:  tu,
 		au:  au,
 		cu:  cu,
 		gu:  gu,
+		uu:  uu,
 		log: log.NewHelper(logger),
 	}
 }

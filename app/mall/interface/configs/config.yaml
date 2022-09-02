@@ -13,9 +13,10 @@ data:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
-auth:
-  service_key: some-secret-key
-  api_key: some-secret-key-for-forntend
-weapp:
-  appid: appid
-  secret: secret
+app:
+  auth:
+    service_key: some-secret-key
+    api_key: some-secret-key-for-forntend
+  weapp:
+    appid: appid
+    secret: secret

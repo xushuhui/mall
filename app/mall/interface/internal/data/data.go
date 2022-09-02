@@ -19,10 +19,9 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewBannerRepo, NewThemeRepo, NewRegistrar,
-	NewDiscovery, NewActivityRepo, NewCategoryRepo, NewAppServiceClient, NewSpuServiceClient, NewUserRepo, NewWeappClient, NewUserServiceClient,
-	NewTagRepo,
-)
+var ProviderSet = wire.NewSet(NewData, NewBannerRepo, NewThemeRepo, NewRegistrar, NewAppServiceClient, NewSpuServiceClient,
+	NewDiscovery, NewActivityRepo, NewCategoryRepo, NewUserRepo, NewWeappClient, NewUserServiceClient,
+	NewTagRepo)
 
 // Data .
 type Data struct {
@@ -41,8 +40,8 @@ type WeappClient struct {
 
 func NewWeappClient(c *conf.Bootstrap) *WeappClient {
 	return &WeappClient{
-		Appid:  c.Weapp.Appid,
-		Secret: c.Weapp.Sercret,
+		Appid:  c.App.Weapp.Appid,
+		Secret: c.App.Weapp.Sercret,
 	}
 }
 

@@ -31,8 +31,8 @@ func (r *userRepo) GetOpenidByCode(ctx context.Context, code string) (resp *weap
 	return
 }
 
-func (r *userRepo) GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
-	po, err := r.data.uc.GetUserIdentiy(ctx, &user.UserIdentiyRequest{Identifier: identifier, Credential: credential, IdentityType: identityType})
+func (r *userRepo) GetUserIdentity(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
+	po, err := r.data.uc.GetUserIdentity(ctx, &user.UserIdentityRequest{Identifier: identifier, Credential: credential, IdentityType: identityType})
 	if err != nil {
 		return
 	}
@@ -42,8 +42,8 @@ func (r *userRepo) GetUserIdentiy(ctx context.Context, identityType, identifier,
 	}, nil
 }
 
-func (r *userRepo) CreateUserIdentiy(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
-	po, err := r.data.uc.CreateUserIdentiy(ctx, &user.UserIdentiyRequest{Identifier: identifier, Credential: credential, IdentityType: identityType})
+func (r *userRepo) CreateUserIdentity(ctx context.Context, identityType, identifier, credential string) (u biz.User, err error) {
+	po, err := r.data.uc.CreateUserIdentity(ctx, &user.UserIdentityRequest{Identifier: identifier, Credential: credential, IdentityType: identityType})
 	if err != nil {
 		return
 	}

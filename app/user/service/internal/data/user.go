@@ -27,7 +27,7 @@ func (r *userRepo) CreateUser(ctx context.Context, in *biz.User) (userId int64, 
 		if err != nil {
 			return err
 		}
-		err = tx.UserIdentiy.Create().SetUserID(po.ID).
+		err = tx.UserIdentity.Create().SetUserID(po.ID).
 			SetIdentityType(in.IdentityType).SetIdentifier(in.Identifier).
 			SetCredential(in.Credential).Exec(ctx)
 		userId = po.ID
@@ -36,11 +36,11 @@ func (r *userRepo) CreateUser(ctx context.Context, in *biz.User) (userId int64, 
 	return
 }
 
-func (r *userRepo) GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (biz.User, error) {
+func (r *userRepo) GetUserIdentity(ctx context.Context, identityType, identifier, credential string) (biz.User, error) {
 	panic("not implemented") // TODO: Implement
 }
 
-func (r *userRepo) CreateUserIdentiy(ctx context.Context, userId int64, identityType, identifier, credential string) (err error) {
-	err = r.Data.db.UserIdentiy.Create().SetUserID(userId).SetIdentityType(identityType).SetIdentifier(identifier).SetCredential(credential).Exec(ctx)
+func (r *userRepo) CreateUserIdentity(ctx context.Context, userId int64, identityType, identifier, credential string) (err error) {
+	err = r.Data.db.UserIdentity.Create().SetUserID(userId).SetIdentityType(identityType).SetIdentifier(identifier).SetCredential(credential).Exec(ctx)
 	return
 }

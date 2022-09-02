@@ -7,17 +7,17 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-type UserIdentiy struct {
+type UserIdentity struct {
 	ent.Schema
 }
 
-func (UserIdentiy) Annotations() []schema.Annotation {
+func (UserIdentity) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "lin_user_identiy"},
+		entsql.Annotation{Table: "lin_user_identity"},
 	}
 }
 
-func (UserIdentiy) Fields() []ent.Field {
+func (UserIdentity) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("user_id").Comment("用户id"),
 		field.String("identity_type").Comment("phone,weapp"),
@@ -26,7 +26,7 @@ func (UserIdentiy) Fields() []ent.Field {
 	}
 }
 
-func (UserIdentiy) Mixin() []ent.Mixin {
+func (UserIdentity) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
 	}

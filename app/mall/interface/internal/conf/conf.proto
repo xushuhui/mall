@@ -8,8 +8,7 @@ import "google/protobuf/duration.proto";
 message Bootstrap {
   Server server = 1;
   Data data = 2;
-  Auth auth = 3;
-  Weapp weapp=4;
+  App app=3;
 }
 
 message Server {
@@ -41,14 +40,19 @@ message Data {
   Database database = 1;
   Redis redis = 2;
 }
-message Auth {
-  string service_key = 1;
-  string api_key = 2;
+message App {
+  message Auth {
+    string service_key = 1;
+    string api_key = 2;
+  }
+  message Weapp{
+    string appid=1;
+    string sercret=2;
+  }
+  Auth auth = 1;
+  Weapp weapp=2;
 }
-message Weapp{
-  string appid=1;
-  string sercret=2;
-}
+
 message Registry {
   message Consul {
     string address = 1;

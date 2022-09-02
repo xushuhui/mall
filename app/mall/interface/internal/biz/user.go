@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 	"errors"
+	"mall-go/app/mall/interface/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt"
@@ -19,19 +20,20 @@ type User struct {
 type UserRepo interface {
 	CreateUser(ctx context.Context, in *User) (u int64, err error)
 	GetOpenidByCode(ctx context.Context, code string) (resp *weapp.LoginResponse, err error)
-	GetUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
-	CreateUserIdentiy(ctx context.Context, identityType, identifier, credential string) (User, error)
+	GetUserIdentity(ctx context.Context, identityType, identifier, credential string) (User, error)
+	CreateUserIdentity(ctx context.Context, identityType, identifier, credential string) (User, error)
 }
 type UserUsecase struct {
-	repo   UserRepo
-	jwtKey string
-	log    *log.Helper
+	repo UserRepo
+	log  *log.Helper
+	conf *conf.App
 }
 
-func NewUserUsecase(repo UserRepo, logger log.Logger) *UserUsecase {
+func NewUserUsecase(repo UserRepo, logger log.Logger, c *conf.App) *UserUsecase {
 	return &UserUsecase{
 		repo: repo,
 		log:  log.NewHelper(logger),
+		conf: c,
 	}
 }
 
@@ -40,11 +42,11 @@ func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out string,
 	if err != nil {
 		return
 	}
-	user, err := u.repo.GetUserIdentiy(ctx, "weapp", resp.OpenID, "")
+	user, err := u.repo.GetUserIdentity(ctx, "weapp", resp.OpenID, "")
 	if err != nil {
 		return
 	}
-	// TODO notfound error
+
 	var id int64
 	if user.Id == 0 {
 		id, err = u.repo.CreateUser(ctx, &User{Nickname: "小程序用户", IdentityType: "weapp", Identifier: resp.OpenID})
@@ -52,11 +54,11 @@ func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out string,
 			return
 		}
 	}
-	// generate token
+
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": id,
 	})
-	signedString, err := claims.SignedString([]byte(u.jwtKey))
+	signedString, err := claims.SignedString([]byte(""))
 	if err != nil {
 		return
 	}
@@ -65,10 +67,10 @@ func (u *UserUsecase) MinappLogin(ctx context.Context, code string) (out string,
 
 func (u *UserUsecase) VerifyToken(ctx context.Context, tokenString string) (isValid bool, err error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(u.jwtKey), nil
+		return []byte(""), nil
 	})
 	if err.(*jwt.ValidationError).Errors&jwt.ValidationErrorMalformed != 0 {
-		err = errors.New("That's not even a token")
+		err = errors.New("that's not even a token")
 		return
 	}
 	if err.(*jwt.ValidationError).Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {

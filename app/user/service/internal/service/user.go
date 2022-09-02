@@ -27,11 +27,11 @@ func (s *UserService) GetUser(ctx context.Context, in *IdRequest) (*UserVO, erro
 	return &UserVO{}, nil
 }
 
-func (s *UserService) GetUserIdentiy(ctx context.Context, in *UserIdentiyRequest) (*UserVO, error) {
+func (s *UserService) GetUserIdentity(ctx context.Context, in *UserIdentityRequest) (*UserVO, error) {
 	return &UserVO{}, nil
 }
 
-func (s *UserService) CreateUserIdentiy(ctx context.Context, in *UserIdentiyRequest) (*UserVO, error) {
+func (s *UserService) CreateUserIdentity(ctx context.Context, in *UserIdentityRequest) (*UserVO, error) {
 	return &UserVO{}, nil
 }
 

@@ -10,7 +10,7 @@ ifeq ($(GOHOSTOS), windows)
 	INTERNAL_PROTO_FILES=$(shell $(Git_Bash) -c "find internal -name *.proto")
 	API_PROTO_FILES=$(shell $(Git_Bash) -c "find api -name *.proto")
 else
-	INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
+	INTERNAL_PROTO_FILES=$(shell find app -name *.proto)
 	API_PROTO_FILES=$(shell find api -name *.proto)
 
 endif
@@ -64,7 +64,7 @@ build:
 .PHONY: generate
 # generate
 generate:
-	go mod tidy
+	go mod tidy -compat=1.17
 	go get github.com/google/wire/cmd/wire@latest
 	go generate ./...
 

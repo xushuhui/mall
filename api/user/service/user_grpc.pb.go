@@ -25,8 +25,8 @@ const _ = grpc.SupportPackageIsVersion7
 type UserClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*UserVO, error)
 	GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserVO, error)
-	GetUserIdentiy(ctx context.Context, in *UserIdentiyRequest, opts ...grpc.CallOption) (*UserVO, error)
-	CreateUserIdentiy(ctx context.Context, in *UserIdentiyRequest, opts ...grpc.CallOption) (*UserVO, error)
+	GetUserIdentity(ctx context.Context, in *UserIdentityRequest, opts ...grpc.CallOption) (*UserVO, error)
+	CreateUserIdentity(ctx context.Context, in *UserIdentityRequest, opts ...grpc.CallOption) (*UserVO, error)
 	ListUser(ctx context.Context, in *IdsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -56,18 +56,18 @@ func (c *userClient) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *userClient) GetUserIdentiy(ctx context.Context, in *UserIdentiyRequest, opts ...grpc.CallOption) (*UserVO, error) {
+func (c *userClient) GetUserIdentity(ctx context.Context, in *UserIdentityRequest, opts ...grpc.CallOption) (*UserVO, error) {
 	out := new(UserVO)
-	err := c.cc.Invoke(ctx, "/user.service.User/GetUserIdentiy", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.service.User/GetUserIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) CreateUserIdentiy(ctx context.Context, in *UserIdentiyRequest, opts ...grpc.CallOption) (*UserVO, error) {
+func (c *userClient) CreateUserIdentity(ctx context.Context, in *UserIdentityRequest, opts ...grpc.CallOption) (*UserVO, error) {
 	out := new(UserVO)
-	err := c.cc.Invoke(ctx, "/user.service.User/CreateUserIdentiy", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.service.User/CreateUserIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +89,8 @@ func (c *userClient) ListUser(ctx context.Context, in *IdsRequest, opts ...grpc.
 type UserServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*UserVO, error)
 	GetUser(context.Context, *IdRequest) (*UserVO, error)
-	GetUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error)
-	CreateUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error)
+	GetUserIdentity(context.Context, *UserIdentityRequest) (*UserVO, error)
+	CreateUserIdentity(context.Context, *UserIdentityRequest) (*UserVO, error)
 	ListUser(context.Context, *IdsRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -105,11 +105,11 @@ func (UnimplementedUserServer) CreateUser(context.Context, *CreateUserRequest) (
 func (UnimplementedUserServer) GetUser(context.Context, *IdRequest) (*UserVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServer) GetUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserIdentiy not implemented")
+func (UnimplementedUserServer) GetUserIdentity(context.Context, *UserIdentityRequest) (*UserVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserIdentity not implemented")
 }
-func (UnimplementedUserServer) CreateUserIdentiy(context.Context, *UserIdentiyRequest) (*UserVO, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateUserIdentiy not implemented")
+func (UnimplementedUserServer) CreateUserIdentity(context.Context, *UserIdentityRequest) (*UserVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUserIdentity not implemented")
 }
 func (UnimplementedUserServer) ListUser(context.Context, *IdsRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUser not implemented")
@@ -163,38 +163,38 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_GetUserIdentiy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdentiyRequest)
+func _User_GetUserIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).GetUserIdentiy(ctx, in)
+		return srv.(UserServer).GetUserIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.service.User/GetUserIdentiy",
+		FullMethod: "/user.service.User/GetUserIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUserIdentiy(ctx, req.(*UserIdentiyRequest))
+		return srv.(UserServer).GetUserIdentity(ctx, req.(*UserIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_CreateUserIdentiy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserIdentiyRequest)
+func _User_CreateUserIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).CreateUserIdentiy(ctx, in)
+		return srv.(UserServer).CreateUserIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.service.User/CreateUserIdentiy",
+		FullMethod: "/user.service.User/CreateUserIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).CreateUserIdentiy(ctx, req.(*UserIdentiyRequest))
+		return srv.(UserServer).CreateUserIdentity(ctx, req.(*UserIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -233,12 +233,12 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_GetUser_Handler,
 		},
 		{
-			MethodName: "GetUserIdentiy",
-			Handler:    _User_GetUserIdentiy_Handler,
+			MethodName: "GetUserIdentity",
+			Handler:    _User_GetUserIdentity_Handler,
 		},
 		{
-			MethodName: "CreateUserIdentiy",
-			Handler:    _User_CreateUserIdentiy_Handler,
+			MethodName: "CreateUserIdentity",
+			Handler:    _User_CreateUserIdentity_Handler,
 		},
 		{
 			MethodName: "ListUser",

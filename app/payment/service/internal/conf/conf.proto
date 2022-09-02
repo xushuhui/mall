@@ -1,5 +1,5 @@
 syntax = "proto3";
-package coupon.service.internal.conf;
+package payment.service.internal.conf;
 
 option go_package = "mall-go/app/payment/service/internal/conf;conf";
 

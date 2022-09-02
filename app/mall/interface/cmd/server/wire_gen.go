@@ -19,7 +19,7 @@ import (
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(bootstrap *conf.Bootstrap, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
+func initApp(bootstrap *conf.Bootstrap, registry *conf.Registry, app *conf.App, logger log.Logger) (*kratos.App, func(), error) {
 	discovery := data.NewDiscovery(registry)
 	appClient := data.NewAppServiceClient(discovery)
 	spuClient := data.NewSpuServiceClient(discovery)
@@ -39,12 +39,14 @@ func initApp(bootstrap *conf.Bootstrap, registry *conf.Registry, logger log.Logg
 	categoryUsecase := biz.NewCategoryUsecase(categoryRepo, logger)
 	tagRepo := data.NewTagRepo(dataData, logger)
 	tagUsecase := biz.NewTagUsecase(tagRepo, logger)
-	mallInterface := service.NewInterface(bannerUsecase, themeUsecase, activityUsecase, categoryUsecase, tagUsecase, logger)
+	userRepo := data.NewUserRepo(dataData, logger)
+	userUsecase := biz.NewUserUsecase(userRepo, logger, app)
+	mallInterface := service.NewMallInterface(logger, bannerUsecase, themeUsecase, activityUsecase, categoryUsecase, tagUsecase, userUsecase)
 	httpServer := server.NewHTTPServer(bootstrap, mallInterface, logger)
 	grpcServer := server.NewGRPCServer(bootstrap, mallInterface, logger)
 	registrar := data.NewRegistrar(registry)
-	app := newApp(logger, httpServer, grpcServer, registrar)
-	return app, func() {
+	kratosApp := newApp(logger, httpServer, grpcServer, registrar)
+	return kratosApp, func() {
 		cleanup()
 	}, nil
 }
