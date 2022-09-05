@@ -18,8 +18,8 @@ import (
 
 // Injectors from wire.go:
 
-// initApp init kratos application.
-func initApp(bootstrap *conf.Bootstrap, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
+// wireApp init kratos application.
+func wireApp(bootstrap *conf.Bootstrap, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
 	discovery := data.NewDiscovery(registry)
 	appClient := data.NewAppServiceClient(discovery)
 	spuClient := data.NewSpuServiceClient(discovery)

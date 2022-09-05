@@ -84,7 +84,7 @@ func main() {
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
-	app, cleanup, err := initApp(&bc, &rc, logger)
+	app, cleanup, err := wireApp(&bc, &rc, logger)
 	if err != nil {
 		panic(err)
 	}

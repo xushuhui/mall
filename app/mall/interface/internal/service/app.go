@@ -20,8 +20,8 @@ type MallInterface struct {
 	log *log.Helper
 }
 
-func NewMallInterface(logger log.Logger, bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CategoryUsecase, gu *biz.TagUsecase,
-	uu *biz.UserUsecase) *MallInterface {
+func NewMallInterface(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase,
+	cu *biz.CategoryUsecase, gu *biz.TagUsecase, uu *biz.UserUsecase, logger log.Logger) *MallInterface {
 	return &MallInterface{
 		bu:  bu,
 		tu:  tu,

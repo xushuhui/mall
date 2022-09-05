@@ -38,10 +38,10 @@ type WeappClient struct {
 	Secret string `json:"secret"`
 }
 
-func NewWeappClient(c *conf.Bootstrap) *WeappClient {
+func NewWeappClient(c *conf.App) *WeappClient {
 	return &WeappClient{
-		Appid:  c.App.Weapp.Appid,
-		Secret: c.App.Weapp.Sercret,
+		Appid:  c.Weapp.Appid,
+		Secret: c.Weapp.Sercret,
 	}
 }
 

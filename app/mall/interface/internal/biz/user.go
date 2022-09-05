@@ -3,7 +3,6 @@ package biz
 import (
 	"context"
 	"errors"
-	"mall-go/app/mall/interface/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt"
@@ -26,14 +25,14 @@ type UserRepo interface {
 type UserUsecase struct {
 	repo UserRepo
 	log  *log.Helper
-	conf *conf.App
+	// conf *conf.App
 }
 
-func NewUserUsecase(repo UserRepo, logger log.Logger, c *conf.App) *UserUsecase {
+func NewUserUsecase(repo UserRepo, logger log.Logger) *UserUsecase {
 	return &UserUsecase{
 		repo: repo,
 		log:  log.NewHelper(logger),
-		conf: c,
+		// conf: c,
 	}
 }
 
