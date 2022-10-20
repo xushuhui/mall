@@ -8,6 +8,7 @@ func IsInTime(t time.Time, start time.Time, end time.Time) (in bool) {
 	}
 	return
 }
+
 func Int2Bool(i int) bool {
 	return i == 1
 }

@@ -14,7 +14,7 @@ var ProviderSet = wire.NewSet(NewData, NewEntClient, NewOrderRepo)
 type Data struct {
 	db  *model.Client
 	log *log.Helper
-	//rdb *redis.Client
+	// rdb *redis.Client
 }
 
 func NewEntClient(conf *conf.Data, logger log.Logger) *model.Client {

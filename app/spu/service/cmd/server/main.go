@@ -46,6 +46,7 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server, rr registry.Reg
 		kratos.Registrar(rr),
 	)
 }
+
 func main() {
 	flag.Parse()
 	logger := log.With(log.NewStdLogger(os.Stdout),
@@ -76,7 +77,7 @@ func main() {
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
-	app, cleanup, err := initApp(bc.Server, bc.Data, &rc, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, &rc, logger)
 	if err != nil {
 		panic(err)
 	}

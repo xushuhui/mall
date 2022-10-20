@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
+	"os"
+
 	"github.com/go-kratos/kratos/v2/encoding/json"
 	"google.golang.org/protobuf/encoding/protojson"
-
-	"os"
 
 	"mall-go/app/mall/admin/internal/conf"
 
@@ -84,7 +84,7 @@ func main() {
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
-	app, cleanup, err := initApp(&bc, &rc, logger)
+	app, cleanup, err := wireApp(&bc, &rc, logger)
 	if err != nil {
 		panic(err)
 	}

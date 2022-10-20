@@ -1,18 +1,31 @@
+GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 
-API_PROTO_FILES=$(shell find api -name *.proto)
-MODEL_PATH=$(shell find . -name model -type d)
-INTERNAL_PATH=$(shell find . -name internal -type d)
-INTERNAL_PROTO_FILES=$(shell find . -name conf.proto)
+ifeq ($(GOHOSTOS), windows)
+	#the `find.exe` is different from `find` in bash/shell.
+	#to see https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/find.
+	#changed to use git-bash.exe to run find cli or other cli friendly, caused of every developer has a Git.
+	Git_Bash= $(subst cmd\,bin\bash.exe,$(dir $(shell where git)))
+	INTERNAL_PROTO_FILES=$(shell $(Git_Bash) -c "find internal -name *.proto")
+	API_PROTO_FILES=$(shell $(Git_Bash) -c "find api -name *.proto")
+else
+	INTERNAL_PROTO_FILES=$(shell find app -name *.proto)
+	API_PROTO_FILES=$(shell find api -name *.proto)
+
+endif
+
+include scripts/make/api.mk
+include scripts/make/build.mk
 .PHONY: init
 # init env
 init:
-	go get -u github.com/go-kratos/kratos/cmd/kratos/v2
-	go get -u google.golang.org/protobuf/cmd/protoc-gen-go
-	go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
-	go get -u github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2
-	go get -u github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	go install github.com/go-kratos/kratos/cmd/kratos/v2@latest
+	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
+	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
+
 
 .PHONY: errors
 # generate errors code
@@ -46,45 +59,15 @@ api:
 build:
 	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
 
-.PHONY: app
-app:
-	cd 	app/app/service && mkdir -p bin/ && \
-	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
-	 ./bin/server -conf ./configs
 
-.PHONY: user
-user:
-	cd 	app/user/service && mkdir -p bin/ && \
-	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
-	  ./bin/server -conf ./configs
-
-.PHONY: order
-order:
-	cd 	app/order/service && mkdir -p bin/ && \
-	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
-	 ./bin/server -conf ./configs
-
-.PHONY: spu
-spu:
-	cd 	app/spu/service && mkdir -p bin/ && \
-	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
-	 ./bin/server -conf ./configs
-
-.PHONY: interface
-interface:
-	cd 	app/mall/interface && mkdir -p bin/ && \
-	go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./... && \
-	 ./bin/server -conf ./configs
 
 .PHONY: generate
 # generate
 generate:
+	go mod tidy -compat=1.17
+	go get github.com/google/wire/cmd/wire@latest
 	go generate ./...
 
-
-.PHONY: ent
-ent:
-	cd ./app/app/service/internal/data/ && go generate ./ent
 
 .PHONY: validate
 # validate
@@ -99,7 +82,6 @@ validate:
 # generate all
 all:
 	make api;
-	make errors;
 	make config;
 	make generate;
 

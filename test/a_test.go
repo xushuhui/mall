@@ -2,7 +2,6 @@ package test
 
 import (
 	"fmt"
-	"net/http"
 	"testing"
 )
 
@@ -11,7 +10,6 @@ type IPerson interface {
 }
 type liyuanqi struct{}
 
-//
 func NewPerson() IPerson {
 	return liyuanqi{}
 }
@@ -39,42 +37,35 @@ type arr2 struct {
 func Test_Interface(t *testing.T) {
 	var ex []arr
 	ex = []arr{
-		{1, "ORD00000000001", "m1", 1, 30.0, 125}, {2, "ORD00000000001", "m2", 2, 67.0, 125},
+		{1, "ORD00000000001", "m1", 1, 30.0, 125},
+		{2, "ORD00000000001", "m2", 2, 67.0, 125},
 		{3, "ORD00000000001", "m3", 2, 3.0, 216},
 		{4, "ORD00000000002", "m3", 2, 3.0, 216},
 	}
 
 	m1 := make(map[string][]arr)
 	for _, a := range ex {
-
 		m1[a.OrderCode] = append(m1[a.OrderCode], a)
 	}
 	var radio float64
 	for _, a := range m1["ORD00000000001"] {
-
 		if a.Type == 2 && a.Mycat == 216 {
 			radio += a.Radio
-
 		}
-
 	}
 	for i, a := range m1["ORD00000000001"] {
-
 		if a.Type == 1 {
 			m1["ORD00000000001"][i].Radio = a.Radio + radio
 			t.Log(a.Radio, radio, m1["ORD00000000001"][i].Radio)
 		}
-
 	}
 	t.Log(radio)
 
 	t.Log(m1)
-
 }
 
 type xushuhui struct{}
 
-//
 func NewPerson2() IPerson {
 	return xushuhui{}
 }
@@ -94,8 +85,7 @@ type B struct {
 }
 
 func Test_a_test(t *testing.T) {
-	var resp Resp
-	http.Get(url,&resp)
+
 }
 
 func isEqual() {

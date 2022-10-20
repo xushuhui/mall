@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -38,6 +39,7 @@ func NewSpuUsecase(repo SpuRepo, logger log.Logger) *SpuUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (uc *SpuUsecase) ListSpuByIds(ctx context.Context, ids []int64) (Spus []Spu, err error) {
 	return uc.repo.ListSpuByIds(ctx, ids)
 }

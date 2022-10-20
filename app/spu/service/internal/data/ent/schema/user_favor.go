@@ -16,6 +16,7 @@ func (UserFavor) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "user_favor"},
 	}
 }
+
 func (UserFavor) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("user_id").Comment(""),
@@ -23,6 +24,7 @@ func (UserFavor) Fields() []ent.Field {
 		field.Int("status").Default(1).Comment("1收藏 0取消收藏"),
 	}
 }
+
 func (UserFavor) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

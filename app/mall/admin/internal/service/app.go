@@ -2,21 +2,21 @@ package service
 
 import (
 	"context"
-	"mall-go/api/mall/admin"
+
 	"mall-go/app/mall/admin/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
 
 type MallAdmin struct {
-	admin.UnimplementedAdminServer
+	UnimplementedAdminServer
 	bu  *biz.BannerUsecase
 	log *log.Helper
 }
 
 func NewAdmin(bu *biz.BannerUsecase,
-	logger log.Logger) *MallAdmin {
-
+	logger log.Logger,
+) *MallAdmin {
 	return &MallAdmin{
 		bu: bu,
 
@@ -24,15 +24,15 @@ func NewAdmin(bu *biz.BannerUsecase,
 	}
 }
 
-func (s *MallAdmin) GetBannerById(ctx context.Context, in *admin.IdRequest) (out *admin.Banner, err error) {
+func (s *MallAdmin) GetBannerById(ctx context.Context, in *IdRequest) (out *Banner, err error) {
 	b, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	var items []*admin.BannerItem
+	var items []*BannerItem
 	for _, v := range b.Items {
-		items = append(items, &admin.BannerItem{
+		items = append(items, &BannerItem{
 			Id:       v.ID,
 			Img:      v.Img,
 			Keyword:  v.Keyword,
@@ -40,9 +40,8 @@ func (s *MallAdmin) GetBannerById(ctx context.Context, in *admin.IdRequest) (out
 			Name:     v.Name,
 			BannerId: v.BannerId,
 		})
-
 	}
-	return &admin.Banner{
+	return &Banner{
 		Id:          b.Id,
 		Name:        b.Name,
 		Title:       b.Title,
@@ -50,5 +49,4 @@ func (s *MallAdmin) GetBannerById(ctx context.Context, in *admin.IdRequest) (out
 		Description: b.Description,
 		Items:       items,
 	}, nil
-
 }

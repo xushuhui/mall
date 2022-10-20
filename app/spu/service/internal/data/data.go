@@ -2,13 +2,14 @@ package data
 
 import (
 	"context"
+	"time"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"mall-go/app/spu/service/internal/conf"
-	"time"
 )
 
 var ProviderSet = wire.NewSet(NewData, NewMongo, NewSkuRepo, NewSpuRepo)

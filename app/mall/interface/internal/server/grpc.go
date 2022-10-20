@@ -1,7 +1,6 @@
 package server
 
 import (
-	mall "mall-go/api/mall/interface"
 	"mall-go/app/mall/interface/internal/conf"
 	"mall-go/app/mall/interface/internal/service"
 
@@ -10,25 +9,25 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 )
 
-// NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Bootstrap, as *service.MallInterface, logger log.Logger) *grpc.Server {
-	var opts = []grpc.ServerOption{
+// NewGRPCServer new a gRPC
+func NewGRPCServer(c *conf.Server, as *service.MallInterface, logger log.Logger) *grpc.Server {
+	opts := []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
 		),
 	}
-	if c.Server.Grpc.Network != "" {
-		opts = append(opts, grpc.Network(c.Server.Grpc.Network))
+	if c.Grpc.Network != "" {
+		opts = append(opts, grpc.Network(c.Grpc.Network))
 	}
-	if c.Server.Grpc.Addr != "" {
-		opts = append(opts, grpc.Address(c.Server.Grpc.Addr))
+	if c.Grpc.Addr != "" {
+		opts = append(opts, grpc.Address(c.Grpc.Addr))
 	}
-	if c.Server.Grpc.Timeout != nil {
-		opts = append(opts, grpc.Timeout(c.Server.Grpc.Timeout.AsDuration()))
+	if c.Grpc.Timeout != nil {
+		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
 
-	mall.RegisterInterfaceServer(srv, as)
+	service.RegisterInterfaceServer(srv, as)
 
 	return srv
 }

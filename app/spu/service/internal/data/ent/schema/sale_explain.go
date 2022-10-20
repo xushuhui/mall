@@ -19,6 +19,7 @@ func (SaleExplain) Fields() []ent.Field {
 		field.Int64("replace_id").Comment(""),
 	}
 }
+
 func (SaleExplain) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

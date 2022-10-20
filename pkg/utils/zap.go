@@ -1,12 +1,13 @@
 package utils
 
 import (
-	"github.com/lestrrat/go-file-rotatelogs"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"io"
 	"os"
 	"time"
+
+	"github.com/lestrrat/go-file-rotatelogs"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type Option = zap.Option

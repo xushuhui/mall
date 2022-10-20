@@ -21,8 +21,8 @@ func NewThemeRepo(data *Data, logger log.Logger) biz.ThemeRepo {
 		log:  log.NewHelper(logger),
 	}
 }
-func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.ThemeSpu, err error) {
 
+func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.ThemeSpu, err error) {
 	po, err := r.data.ac.GetThemeByName(ctx, &app.NameRequest{Name: name})
 	if err != nil {
 		return biz.ThemeSpu{}, err
@@ -65,6 +65,7 @@ func (r *themeRepo) GetThemeWithSpu(ctx context.Context, name string) (t biz.The
 		SpuList: themeSpus,
 	}, nil
 }
+
 func (r *themeRepo) GetThemeByNames(ctx context.Context, names string) (themes []biz.Theme, err error) {
 	po, err := r.data.ac.GetThemeByNames(ctx, &app.ThemeByNamesRequest{Names: names})
 	if err != nil {

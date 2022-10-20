@@ -4,7 +4,7 @@ package user.service;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-option go_package = "mall-go/api/user/service";
+option go_package = "/service";
 
 service User{
 
@@ -21,15 +21,15 @@ service User{
     };
   }
 
-  rpc GetUserIdentiy(UserIdentiyRequest) returns (UserVO) {
+  rpc GetUserIdentity(UserIdentityRequest) returns (UserVO) {
     option (google.api.http) = {
-      get : "/user/identiy"
+      get : "/user/identity"
 
     };
   }
-  rpc CreateUserIdentiy(UserIdentiyRequest) returns (UserVO) {
+  rpc CreateUserIdentity(UserIdentityRequest) returns (UserVO) {
     option (google.api.http) = {
-      post : "/user/identiy"
+      post : "/user/identity"
       body : "*"
     };
   }
@@ -39,7 +39,7 @@ service User{
     };
   }
 }
-message UserIdentiyRequest{
+message UserIdentityRequest{
   string identifier =1;
   string credential=2;
   string identityType=3;

@@ -6,8 +6,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 
-
-option go_package = "mall-go/api/mall";
+option go_package = "/service";
 
 service Interface {
 
@@ -238,7 +237,7 @@ message Spu {
   string tags = 11;
   int32 online = 13;
 }
-message TagByTypeRequest { string type = 1; }
+message TagByTypeRequest { int32 type = 1; }
 
 message Tags {
   message Tag {

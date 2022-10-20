@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"mall-go/api/app/service"
+	"strings"
+
 	"mall-go/app/app/service/internal/biz"
 	"mall-go/pkg/utils"
-	"strings"
 
 	"github.com/go-kratos/kratos/v2/log"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -13,7 +13,7 @@ import (
 )
 
 type AppService struct {
-	service.UnimplementedAppServer
+	UnimplementedAppServer
 	bu *biz.BannerUsecase
 	tu *biz.ThemeUsecase
 	au *biz.ActivityUsecase
@@ -23,8 +23,8 @@ type AppService struct {
 }
 
 func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.ActivityUsecase, cu *biz.CateGoryUsecase,
-	logger log.Logger) *AppService {
-
+	logger log.Logger,
+) *AppService {
 	return &AppService{
 		bu:  bu,
 		tu:  tu,
@@ -34,15 +34,15 @@ func NewAppService(bu *biz.BannerUsecase, tu *biz.ThemeUsecase, au *biz.Activity
 	}
 }
 
-func (s *AppService) GetBannerById(ctx context.Context, in *service.IdRequest) (out *service.Banner, err error) {
+func (s *AppService) GetBannerById(ctx context.Context, in *IdRequest) (out *Banner, err error) {
 	rv, err := s.bu.GetBannerById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
-	var items []*service.BannerItem
+	var items []*BannerItem
 	for _, v := range rv.Items {
 
-		item := &service.BannerItem{
+		item := &BannerItem{
 			Id:       v.ID,
 			Name:     v.Name,
 			Img:      v.Img,
@@ -52,7 +52,7 @@ func (s *AppService) GetBannerById(ctx context.Context, in *service.IdRequest) (
 		}
 		items = append(items, item)
 	}
-	return &service.Banner{
+	return &Banner{
 		Id:          rv.Id,
 		Name:        rv.Name,
 		Img:         rv.Img,
@@ -60,16 +60,16 @@ func (s *AppService) GetBannerById(ctx context.Context, in *service.IdRequest) (
 		Description: rv.Description,
 		Items:       items,
 	}, nil
-
 }
-func (s *AppService) GetBannerByName(ctx context.Context, in *service.NameRequest) (out *service.Banner, err error) {
+
+func (s *AppService) GetBannerByName(ctx context.Context, in *NameRequest) (out *Banner, err error) {
 	rv, err := s.bu.GetBannerByName(ctx, in.Name)
 	if err != nil {
 		return nil, err
 	}
-	var items []*service.BannerItem
+	var items []*BannerItem
 	for _, v := range rv.Items {
-		items = append(items, &service.BannerItem{
+		items = append(items, &BannerItem{
 			Id:       v.ID,
 			Name:     v.Name,
 			Img:      v.Img,
@@ -78,7 +78,7 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *service.NameReques
 			BannerId: v.BannerId,
 		})
 	}
-	return &service.Banner{
+	return &Banner{
 		Id:          rv.Id,
 		Name:        rv.Name,
 		Img:         rv.Img,
@@ -86,16 +86,15 @@ func (s *AppService) GetBannerByName(ctx context.Context, in *service.NameReques
 		Description: rv.Description,
 		Items:       items,
 	}, nil
-
 }
 
-func (s *AppService) GetThemeByName(ctx context.Context, in *service.NameRequest) (out *service.ThemeSpu, err error) {
+func (s *AppService) GetThemeByName(ctx context.Context, in *NameRequest) (out *ThemeSpu, err error) {
 	rv, err := s.tu.GetThemeByName(ctx, in.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	return &service.ThemeSpu{
+	return &ThemeSpu{
 		Id:     rv.Id,
 		Online: rv.Online,
 		Name:   rv.Name,
@@ -103,14 +102,15 @@ func (s *AppService) GetThemeByName(ctx context.Context, in *service.NameRequest
 		SpuIds: rv.SpuIds,
 	}, nil
 }
-func (s *AppService) GetThemeByNames(ctx context.Context, in *service.ThemeByNamesRequest) (out *service.Themes, err error) {
+
+func (s *AppService) GetThemeByNames(ctx context.Context, in *ThemeByNamesRequest) (out *Themes, err error) {
 	rv, err := s.tu.GetThemeByNames(ctx, strings.Split(in.Names, `,`))
 	if err != nil {
 		return nil, err
 	}
-	var items []*service.Theme
+	var items []*Theme
 	for _, v := range rv {
-		items = append(items, &service.Theme{
+		items = append(items, &Theme{
 			Id:     v.Id,
 			Online: v.Online,
 			Name:   v.Name,
@@ -118,19 +118,18 @@ func (s *AppService) GetThemeByNames(ctx context.Context, in *service.ThemeByNam
 		})
 	}
 
-	return &service.Themes{
+	return &Themes{
 		Theme: items,
 	}, nil
 }
 
-func (s *AppService) GetActivityByName(ctx context.Context, in *service.NameRequest) (out *service.Activity, err error) {
-
+func (s *AppService) GetActivityByName(ctx context.Context, in *NameRequest) (out *Activity, err error) {
 	rv, err := s.au.GetActivityByName(ctx, in.Name)
 	if err != nil {
 		return
 	}
 
-	return &service.Activity{
+	return &Activity{
 		Id:          rv.Id,
 		Title:       rv.Title,
 		EntranceImg: rv.EntranceImg,
@@ -141,16 +140,15 @@ func (s *AppService) GetActivityByName(ctx context.Context, in *service.NameRequ
 	}, nil
 }
 
-func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *service.NameRequest) (out *service.ActivityCoupon, err error) {
+func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *NameRequest) (out *ActivityCoupon, err error) {
 	rv, err := s.au.GetActivityWithCoupon(ctx, in.Name)
 	if err != nil {
 		return
 	}
 
-	var coupons []*service.CouponBo
+	var coupons []*CouponBo
 	for _, v := range rv.Coupons {
-
-		coupons = append(coupons, &service.CouponBo{
+		coupons = append(coupons, &CouponBo{
 			Id:          v.Id,
 			Title:       v.Title,
 			StartTime:   timestamppb.New(v.StartTime),
@@ -165,7 +163,7 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *service.Name
 		})
 	}
 
-	out = &service.ActivityCoupon{
+	out = &ActivityCoupon{
 		Id:          rv.Activity.Id,
 		Title:       rv.Activity.Title,
 		EntranceImg: rv.Activity.EntranceImg,
@@ -176,18 +174,18 @@ func (s *AppService) GetActivityWithCoupon(ctx context.Context, in *service.Name
 		Coupon:      coupons,
 	}
 	return
-
 }
-func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *service.Categories, err error) {
+
+func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *Categories, err error) {
 	rv, err := s.cu.ListCategory(ctx)
 	if err != nil {
 		return
 	}
 
-	var roots []*service.Category
-	var subs []*service.Category
+	var roots []*Category
+	var subs []*Category
 	for _, v := range rv.Roots {
-		roots = append(roots, &service.Category{
+		roots = append(roots, &Category{
 			Id:       v.Id,
 			Name:     v.Name,
 			IsRoot:   utils.Int2Bool(v.IsRoot),
@@ -198,7 +196,7 @@ func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *
 	}
 
 	for _, v := range rv.Subs {
-		subs = append(subs, &service.Category{
+		subs = append(subs, &Category{
 			Id:       v.Id,
 			Name:     v.Name,
 			IsRoot:   utils.Int2Bool(v.IsRoot),
@@ -207,20 +205,21 @@ func (s *AppService) ListCategory(ctx context.Context, in *emptypb.Empty) (out *
 			Index:    int32(v.Index),
 		})
 	}
-	out = &service.Categories{
+	out = &Categories{
 		Roots: roots,
 		Subs:  subs,
 	}
 	return out, nil
 }
-func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (out *service.GridCategories, err error) {
+
+func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (out *GridCategories, err error) {
 	rv, err := s.cu.ListGridCategory(ctx)
 	if err != nil {
 		return
 	}
-	var category []*service.GridCategories_GridCategory
+	var category []*GridCategories_GridCategory
 	for _, v := range rv {
-		category = append(category, &service.GridCategories_GridCategory{
+		category = append(category, &GridCategories_GridCategory{
 			Id:             v.Id,
 			Name:           v.Name,
 			Title:          v.Title,
@@ -229,9 +228,10 @@ func (s *AppService) ListGridCategory(ctx context.Context, in *emptypb.Empty) (o
 			RootCategoryId: int64(v.RootCategoryId),
 		})
 	}
-	out = &service.GridCategories{Category: category}
+	out = &GridCategories{Category: category}
 	return out, nil
 }
-func (s *AppService) GetTagByType(ctx context.Context, in *service.TypeRequest) (out *service.Tags, err error) {
+
+func (s *AppService) GetTagByType(ctx context.Context, in *TypeRequest) (out *Tags, err error) {
 	return
 }

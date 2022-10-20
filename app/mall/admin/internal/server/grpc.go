@@ -1,7 +1,6 @@
 package server
 
 import (
-	"mall-go/api/mall/admin"
 	"mall-go/app/mall/admin/internal/conf"
 	"mall-go/app/mall/admin/internal/service"
 
@@ -12,7 +11,7 @@ import (
 
 // NewGRPCServer new a gRPC server.
 func NewGRPCServer(c *conf.Bootstrap, as *service.MallAdmin, logger log.Logger) *grpc.Server {
-	var opts = []grpc.ServerOption{
+	opts := []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
 		),
@@ -28,7 +27,7 @@ func NewGRPCServer(c *conf.Bootstrap, as *service.MallAdmin, logger log.Logger) 
 	}
 	srv := grpc.NewServer(opts...)
 
-	admin.RegisterAdminServer(srv, as)
+	service.RegisterAdminServer(srv, as)
 
 	return srv
 }

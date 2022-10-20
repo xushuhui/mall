@@ -20,6 +20,7 @@ func (Refund) Fields() []ent.Field {
 		field.Int("status").Comment(""),
 	}
 }
+
 func (Refund) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

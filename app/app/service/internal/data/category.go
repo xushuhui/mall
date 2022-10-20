@@ -2,12 +2,12 @@ package data
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/log"
-	"mall-go/api/mall"
+
 	"mall-go/app/app/service/internal/biz"
-	"mall-go/app/app/service/internal/data/model"
 	"mall-go/app/app/service/internal/data/model/category"
 	"mall-go/pkg/enum"
+
+	"github.com/go-kratos/kratos/v2/log"
 )
 
 type categoryRepo struct {
@@ -24,16 +24,12 @@ func NewCategoryRepo(data *Data, logger log.Logger) biz.CategoryRepo {
 
 func (r *categoryRepo) ListCategory(ctx context.Context) (c biz.AllCateGory, err error) {
 	rootList, err := r.data.db.Category.Query().Where(category.IsRoot(enum.ROOT)).All(ctx)
-	if model.IsNotFound(err) {
-		err = mall.ErrorNotFound("category")
-	}
+
 	if err != nil {
 		return
 	}
 	subList, err := r.data.db.Category.Query().Where(category.IsRoot(enum.SUB)).All(ctx)
-	if model.IsNotFound(err) {
-		err = mall.ErrorNotFound("category")
-	}
+
 	if err != nil {
 		return
 	}
@@ -41,7 +37,6 @@ func (r *categoryRepo) ListCategory(ctx context.Context) (c biz.AllCateGory, err
 	var subs []biz.CateGory
 
 	for _, v := range rootList {
-
 		roots = append(roots, biz.CateGory{
 			Id:       v.ID,
 			Name:     v.Name,
@@ -53,7 +48,6 @@ func (r *categoryRepo) ListCategory(ctx context.Context) (c biz.AllCateGory, err
 	}
 
 	for _, v := range subList {
-
 		subs = append(subs, biz.CateGory{
 			Id:       v.ID,
 			Name:     v.Name,
@@ -68,9 +62,7 @@ func (r *categoryRepo) ListCategory(ctx context.Context) (c biz.AllCateGory, err
 
 func (r *categoryRepo) ListGridCategory(ctx context.Context) (c []biz.GridCategory, err error) {
 	po, err := r.data.db.GridCategory.Query().All(ctx)
-	if model.IsNotFound(err) {
-		err = mall.ErrorNotFound("gridCategory")
-	}
+
 	if err != nil {
 		return
 	}

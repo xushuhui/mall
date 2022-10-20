@@ -1,6 +1,8 @@
 package biz
 
-import "mall-go/api/mall"
+import (
+	"mall-go/app/mall/interface/internal/service"
+)
 
 type OrderSku struct {
 	id          int64
@@ -13,7 +15,7 @@ type OrderSku struct {
 	title       string
 }
 
-func NewOrderSku(sku Sku, skuInfoDTO *mall.SkuInfo) OrderSku {
+func NewOrderSku(sku Sku, skuInfoDTO *service.SkuInfo) OrderSku {
 	return OrderSku{
 		id:          sku.Id,
 		spuId:       sku.SpuID,

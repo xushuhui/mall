@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -24,10 +25,12 @@ func NewOrderUsecase(repo OrderRepo, logger log.Logger) *OrderUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (uc *OrderUsecase) GetOrderById(ctx context.Context, id int64) (o Order, err error) {
 	o, err = uc.repo.GetOrderById(ctx, id)
 	return
 }
+
 func (uc *OrderUsecase) GetOrderByOrderNo(ctx context.Context, orderNo string) (o Order, err error) {
 	o, err = uc.repo.GetOrderByOrderNo(ctx, orderNo)
 	return

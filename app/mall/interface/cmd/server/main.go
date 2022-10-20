@@ -2,9 +2,6 @@ package main
 
 import (
 	"flag"
-	"github.com/go-kratos/kratos/v2/encoding/json"
-	"google.golang.org/protobuf/encoding/protojson"
-
 	"os"
 
 	"mall-go/app/mall/interface/internal/conf"
@@ -33,10 +30,7 @@ var (
 
 func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
-	json.MarshalOptions = protojson.MarshalOptions{
-		EmitUnpopulated: true,
-		UseProtoNames:   true,
-	}
+
 }
 
 func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server, rr registry.Registrar) *kratos.App {
@@ -84,7 +78,7 @@ func main() {
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
-	app, cleanup, err := initApp(&bc, &rc, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, &rc, bc.App, logger)
 	if err != nil {
 		panic(err)
 	}

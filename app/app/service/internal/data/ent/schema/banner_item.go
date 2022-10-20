@@ -20,6 +20,7 @@ func (BannerItem) Fields() []ent.Field {
 		field.String("name").Comment(""),
 	}
 }
+
 func (BannerItem) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	app "mall-go/api/app/service"
 	"mall-go/app/mall/interface/internal/biz"
 
@@ -19,6 +20,7 @@ func NewBannerRepo(data *Data, logger log.Logger) biz.BannerRepo {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner, err error) {
 	po, err := r.data.ac.GetBannerById(ctx, &app.IdRequest{Id: id})
 	if err != nil {
@@ -26,7 +28,6 @@ func (r *bannerRepo) GetBannerById(ctx context.Context, id int64) (b biz.Banner,
 	}
 	var items []biz.BannerItem
 	for _, v := range po.Items {
-
 		items = append(items, biz.BannerItem{
 			ID:       v.Id,
 			Name:     v.Name,

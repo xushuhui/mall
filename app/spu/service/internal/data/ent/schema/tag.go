@@ -19,11 +19,13 @@ func (Tag) Fields() []ent.Field {
 		field.Int("type").Comment(""),
 	}
 }
+
 func (Tag) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
 	}
 }
+
 func (Tag) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("spu", Spu.Type).Ref("tag"),

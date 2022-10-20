@@ -19,11 +19,13 @@ func (Banner) Fields() []ent.Field {
 		field.String("img").Comment("部分banner可能有标题图片"),
 	}
 }
+
 func (Banner) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
 	}
 }
+
 func (Banner) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("banner_item", BannerItem.Type),

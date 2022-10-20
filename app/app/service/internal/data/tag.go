@@ -2,11 +2,11 @@ package data
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/log"
-	"mall-go/api/mall"
+
 	"mall-go/app/app/service/internal/biz"
-	"mall-go/app/app/service/internal/data/model"
 	"mall-go/app/app/service/internal/data/model/tag"
+
+	"github.com/go-kratos/kratos/v2/log"
 )
 
 type tagRepo struct {
@@ -26,10 +26,7 @@ func (r *tagRepo) GetTagByType(ctx context.Context, kind int) (t []biz.Tag, err 
 	if err != nil {
 		return
 	}
-	if model.IsNotFound(err) {
-		err = mall.ErrorNotFound("tag")
-		return
-	}
+
 	for _, v := range po {
 		t = append(t, biz.Tag{
 			Id:          v.ID,

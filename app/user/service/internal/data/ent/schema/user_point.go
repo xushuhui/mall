@@ -16,6 +16,7 @@ func (UserPoint) Fields() []ent.Field {
 		field.Int("status").Comment(""),
 	}
 }
+
 func (UserPoint) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

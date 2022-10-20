@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 	_ "github.com/go-sql-driver/mysql"
 	"mall-go/app/spu/service/internal/biz"
@@ -18,8 +19,8 @@ func NewSkuRepo(data *Data, logger log.Logger) biz.SkuRepo {
 		log:  log.NewHelper(logger),
 	}
 }
-func (r *skuRepo) GetSkuById(ctx context.Context, id int64) (o biz.Sku, err error) {
 
+func (r *skuRepo) GetSkuById(ctx context.Context, id int64) (o biz.Sku, err error) {
 	return biz.Sku{
 		Id: 0,
 	}, nil

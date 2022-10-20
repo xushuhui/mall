@@ -32,7 +32,7 @@ func (Category) Mixin() []ent.Mixin {
 
 func (Category) Edges() []ent.Edge {
 	return []ent.Edge{
-		//edge.From("coupon", Coupon.Type).Ref("category"),
+		// edge.From("coupon", Coupon.Type).Ref("category"),
 		edge.To("children", Category.Type).From("parent").
 			Unique().Field("parent_id"),
 	}

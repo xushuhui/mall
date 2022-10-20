@@ -58,10 +58,12 @@ func (m *TypeRequest) validate(all bool) error {
 	var errors []error
 
 	if m.GetType() < 0 {
+
 		err := TypeRequestValidationError{
 			field:  "Type",
 			reason: "value must be greater than or equal to 0",
 		}
+
 		if !all {
 			return err
 		}
@@ -168,10 +170,12 @@ func (m *StatusRequest) validate(all bool) error {
 	var errors []error
 
 	if m.GetStatus() < 0 {
+
 		err := StatusRequestValidationError{
 			field:  "Status",
 			reason: "value must be greater than or equal to 0",
 		}
+
 		if !all {
 			return err
 		}
@@ -279,10 +283,12 @@ func (m *IdRequest) validate(all bool) error {
 	var errors []error
 
 	if m.GetId() <= 0 {
+
 		err := IdRequestValidationError{
 			field:  "Id",
 			reason: "value must be greater than 0",
 		}
+
 		if !all {
 			return err
 		}
@@ -500,28 +506,34 @@ func (m *Coupons) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
+
 					errors = append(errors, CouponsValidationError{
 						field:  fmt.Sprintf("Coupon[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
+
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
+
 					errors = append(errors, CouponsValidationError{
 						field:  fmt.Sprintf("Coupon[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
+
 				}
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return CouponsValidationError{
+
+				errors = append(errors, CouponsValidationError{
 					field:  fmt.Sprintf("Coupon[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				}
+				})
+
 			}
 		}
 

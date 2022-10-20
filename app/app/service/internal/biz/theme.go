@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+
 	app "mall-go/api/app/service"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -43,10 +44,12 @@ func NewThemeUsecase(repo ThemeRepo, logger log.Logger) *ThemeUsecase {
 		log:  log.NewHelper(logger),
 	}
 }
+
 func (uc *ThemeUsecase) GetThemeByNames(ctx context.Context, names []string) (t []Theme, err error) {
 	t, err = uc.repo.GetThemeByNames(ctx, names)
 	return
 }
+
 func (uc *ThemeUsecase) GetThemeByName(ctx context.Context, name string) (t ThemeSpu, err error) {
 	t, err = uc.repo.GetThemeByName(ctx, name)
 	return

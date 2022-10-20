@@ -23,10 +23,10 @@ type Category struct {
 	Id int64
 }
 type CouponRepo interface {
-	//CreateUserCoupon(ctx context.Context, couponId, userId int64) (err error)
-	//ListUserCoupon(ctx context.Context, userId int64) (list []Coupon, err error)
-	//CreateCoupon(ctx context.Context) (err error)
-	//ListCoupon(ctx context.Context) (list []Coupon, err error)
+	// CreateUserCoupon(ctx context.Context, couponId, userId int64) (err error)
+	// ListUserCoupon(ctx context.Context, userId int64) (list []Coupon, err error)
+	// CreateCoupon(ctx context.Context) (err error)
+	// ListCoupon(ctx context.Context) (list []Coupon, err error)
 }
 type CouponUsecase struct {
 	repo CouponRepo

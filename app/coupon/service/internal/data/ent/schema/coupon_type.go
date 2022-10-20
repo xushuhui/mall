@@ -16,6 +16,7 @@ func (CouponType) Fields() []ent.Field {
 		field.String("description").Comment(""),
 	}
 }
+
 func (CouponType) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

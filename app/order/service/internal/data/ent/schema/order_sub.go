@@ -22,11 +22,13 @@ func (OrderSub) Fields() []ent.Field {
 		field.Int64("order_id").Optional(),
 	}
 }
+
 func (OrderSub) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},
 	}
 }
+
 func (OrderSub) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("order", Order.Type).Ref("order_sub").Unique().Field("order_id"),

@@ -15,6 +15,7 @@ func (UserWallet) Fields() []ent.Field {
 		field.Int("value").Comment("余额"),
 	}
 }
+
 func (UserWallet) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		TimeMixin{},

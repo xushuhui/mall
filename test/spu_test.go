@@ -3,8 +3,9 @@ package test
 import (
 	"context"
 	"log"
-	spu "mall-go/api/spu/service"
 	"testing"
+
+	spu "mall-go/api/spu/service"
 )
 
 func TestListSpuByIds(t *testing.T) {
@@ -13,5 +14,4 @@ func TestListSpuByIds(t *testing.T) {
 		log.Fatal(err)
 	}
 	t.Log(reply)
-
 }

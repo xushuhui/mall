@@ -3,11 +3,10 @@ syntax = "proto3";
 package mall.admin;
 
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 
 
 
-option go_package = "mall-go/api/mall/admin";
+option go_package = "/service";
 
 service Admin {
 

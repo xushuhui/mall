@@ -19,6 +19,7 @@ func (OrderSnap) Fields() []ent.Field {
 		field.Int64("order_id").Optional(),
 	}
 }
+
 func (OrderSnap) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("order", Order.Type).Ref("order_snap").Unique().Field("order_id"),

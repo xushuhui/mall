@@ -4,7 +4,7 @@ package sku.service;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-option go_package = "mall-go/api/order/service";
+option go_package = "/service";
 
 service Spu{
   rpc GetSkuById(IdRequest) returns (SkuVO) {

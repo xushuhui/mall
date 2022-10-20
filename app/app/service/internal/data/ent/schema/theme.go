@@ -17,6 +17,7 @@ func (Theme) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "theme"},
 	}
 }
+
 func (Theme) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment(""),
@@ -36,6 +37,7 @@ func (Theme) Mixin() []ent.Mixin {
 		TimeMixin{},
 	}
 }
+
 func (Theme) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("theme_spu", ThemeSpu.Type),
@@ -51,13 +53,14 @@ func (ThemeSpu) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "theme_spu"},
 	}
 }
+
 func (ThemeSpu) Fields() []ent.Field {
 	return []ent.Field{
-
 		field.Int64("theme_id").Optional().Comment(""),
 		field.Int64("spu_id").Comment(""),
 	}
 }
+
 func (ThemeSpu) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("theme", Theme.Type).
